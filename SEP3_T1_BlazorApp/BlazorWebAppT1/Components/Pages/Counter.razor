@@ -1,19 +1,232 @@
 ﻿@page "/counter"
-@rendermode InteractiveServer
+@using System.ComponentModel.DataAnnotations
 
-<PageTitle>Counter</PageTitle>
+<PageTitle>Manage Users</PageTitle>
 
-<h1>Counter</h1>
+<h1>Manage Users</h1>
 
-<p role="status">Current count: @currentCount</p>
+<p>Here you can view and manage users by their roles.</p>
 
-<button class="btn btn-primary" @onclick="IncrementCount">Click me</button>
+<!-- Search and Sort Section -->
+<div class="d-flex mb-3">
+    <input class="form-control me-2" type="text" placeholder="Search by username or working number..." @bind="SearchQuery" @bind:event="oninput" />
+    <select class="form-select me-2" @bind="SortField">
+        <option value="Username">Username</option>
+        <option value="WorkingNumber">Working Number</option>
+        <option value="Role">Role</option>
+    </select>
+    <select class="form-select" @bind="SortOrder">
+        <option value="Ascending">Ascending</option>
+        <option value="Descending">Descending</option>
+    </select>
+</div>
+
+<!-- User Overview Section -->
+<h2>User Overview</h2>
+
+@if (GroupedUsers.Any())
+{
+    @foreach (var roleGroup in GroupedUsers)
+    {
+        <h3>@roleGroup.Key</h3>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Username</th>
+                    <th>Working Number</th>
+                    <th>Role</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var user in roleGroup)
+                {
+                    <tr>
+                        <td>@user.Username</td>
+                        <td>@user.WorkingNumber</td>
+                        <td>@user.Role</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+}
+else
+{
+    <p>No users found.</p>
+}
+
+<!-- Section to add a new user -->
+<h2>Add New User</h2>
+
+<EditForm Model="NewUser" OnValidSubmit="AddUser">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <div class="mb-3">
+        <label for="username" class="form-label">Username:</label>
+        <InputText id="username" class="form-control" @bind-Value="NewUser.Username" />
+    </div>
+
+    <div class="mb-3">
+        <label for="password" class="form-label">Password:</label>
+        <InputText id="password" class="form-control" @bind-Value="NewUser.Password" type="password" />
+    </div>
+
+    <div class="mb-3">
+        <label for="workingNumber" class="form-label">Working Number:</label>
+        <InputNumber id="workingNumber" class="form-control" @bind-Value="NewUser.WorkingNumber" />
+    </div>
+
+    <div class="mb-3">
+        <label for="role" class="form-label">Role:</label>
+        <select id="role" class="form-select" @bind="NewUser.Role">
+            <option value="">Select a role</option>
+            @foreach (var role in Roles)
+            {
+                <option value="@role">@role</option>
+            }
+        </select>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Add User</button>
+</EditForm>
 
 @code {
-    private int currentCount = 0;
-
-    private void IncrementCount()
+    // User class with validation attributes
+    public class User
     {
-        currentCount++;
+        [Required(ErrorMessage = "Username is required")]
+        public string Username { get; set; } = "";
+
+        [Required(ErrorMessage = "Password is required")]
+        public string Password { get; set; } = ""; // Note: In real applications, passwords should be hashed.
+
+        [Required(ErrorMessage = "Working Number is required")]
+        [Range(1, int.MaxValue, ErrorMessage = "Please enter a valid working number")]
+        public int WorkingNumber { get; set; }
+
+        [Required(ErrorMessage = "Role is required")]
+        public string Role { get; set; } = "";
+    }
+
+    // List of roles
+    private List<string> Roles = new List<string> { "Inventory Manager", "Warehouse Worker" };
+
+    // List of users (mock data)
+    private List<User> Users = new List<User>();
+
+    // Variables for search and sort
+    private string searchQuery = "";
+    private string sortField = "Username";
+    private string sortOrder = "Ascending";
+
+    private string SearchQuery
+    {
+        get => searchQuery;
+        set
+        {
+            if (searchQuery != value)
+            {
+                searchQuery = value;
+                ApplyFilters();
+            }
+        }
+    }
+
+    private string SortField
+    {
+        get => sortField;
+        set
+        {
+            if (sortField != value)
+            {
+                sortField = value;
+                ApplyFilters();
+            }
+        }
+    }
+
+    private string SortOrder
+    {
+        get => sortOrder;
+        set
+        {
+            if (sortOrder != value)
+            {
+                sortOrder = value;
+                ApplyFilters();
+            }
+        }
+    }
+
+    // Grouped and filtered users
+    private IEnumerable<IGrouping<string, User>> GroupedUsers = Enumerable.Empty<IGrouping<string, User>>();
+
+    private User NewUser = new User();
+
+    protected override void OnInitialized()
+    {
+        // Initialize mock data with more users
+        Users.Add(new User { Username = "manager1", Password = "pass123", WorkingNumber = 101, Role = "Inventory Manager" });
+        Users.Add(new User { Username = "worker1", Password = "pass456", WorkingNumber = 202, Role = "Warehouse Worker" });
+        Users.Add(new User { Username = "manager2", Password = "pass789", WorkingNumber = 103, Role = "Inventory Manager" });
+        Users.Add(new User { Username = "worker2", Password = "pass012", WorkingNumber = 204, Role = "Warehouse Worker" });
+        // Add more mock users as needed
+
+        ApplyFilters();
+    }
+
+    // Method to apply search, sort, and grouping
+    private void ApplyFilters()
+    {
+        IEnumerable<User> filtered = Users;
+
+        // Search
+        if (!string.IsNullOrWhiteSpace(SearchQuery))
+        {
+            filtered = filtered.Where(u =>
+                u.Username.Contains(SearchQuery, StringComparison.OrdinalIgnoreCase) ||
+                u.WorkingNumber.ToString().Contains(SearchQuery));
+        }
+
+        // Sort
+        filtered = SortOrder == "Ascending"
+            ? filtered.OrderBy(u => GetPropertyValue(u, SortField))
+            : filtered.OrderByDescending(u => GetPropertyValue(u, SortField));
+
+        // Group by Role
+        GroupedUsers = filtered.GroupBy(u => u.Role);
+
+        StateHasChanged();
+    }
+
+    private object GetPropertyValue(User user, string propertyName)
+    {
+        return propertyName switch
+        {
+            "Username" => user.Username,
+            "WorkingNumber" => user.WorkingNumber,
+            "Role" => user.Role,
+            _ => user.Username,
+        };
+    }
+
+    // Method to add a new user
+    private void AddUser()
+    {
+        // Add the new user to the users list
+        Users.Add(new User
+        {
+            Username = NewUser.Username,
+            Password = NewUser.Password,
+            WorkingNumber = NewUser.WorkingNumber,
+            Role = NewUser.Role
+        });
+
+        // Reset the newUser object for the next entry
+        NewUser = new User();
+
+        // Reapply filters
+        ApplyFilters();
     }
 }

@@ -2,6 +2,156 @@
 
 <PageTitle>Home</PageTitle>
 
-<h1>Hello, world!</h1>
+<h1>Inventory Dashboard</h1>
 
-Welcome to your new app.
+<p>Welcome to your inventory management system.</p>
+
+<!-- Items Table -->
+<table class="table">
+    <thead>
+        <tr>
+            <th>Select</th>
+            <th>Name</th>
+            <th>Description</th>
+            <th>ID</th>
+            <th>Quantity In Store</th>
+            <th>Order Quantity</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Items)
+        {
+            <tr @key="item.Id">
+                <td>
+                    <input type="checkbox" @bind="item.IsSelected" />
+                </td>
+                <td>@item.Name</td>
+                <td>@item.Description</td>
+                <td>@item.Id</td>
+                <td>@item.QuantityInStore</td>
+                <td>
+                    <input type="number" @bind="item.OrderQuantity" min="1" max="@item.QuantityInStore" disabled="@(!item.IsSelected)" />
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<button class="btn btn-primary" @onclick="PlaceOrder" disabled="@(!Items.Any(i => i.IsSelected))">
+    Place Order
+</button>
+
+@if (Orders.Any())
+{
+    <h2 class="mt-4">Orders Placed</h2>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Order ID</th>
+                <th>Date</th>
+                <th>Status</th>
+                <th>Items Ordered</th>
+                <th>Total Quantity</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var order in Orders)
+            {
+                <tr>
+                    <td>@order.OrderId</td>
+                    <td>@order.OrderDate.ToString("g")</td>
+                    <td>@order.Status</td>
+                    <td>
+                        <ul>
+                            @foreach (var orderItem in order.OrderItems)
+                            {
+                                <li>@orderItem.Name (Quantity: @orderItem.QuantityOrdered)</li>
+                            }
+                        </ul>
+                    </td>
+                    <td>@order.TotalQuantity</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>No orders have been placed yet.</p>
+}
+
+@code {
+    private List<Item> Items = new();
+    private List<Order> Orders = new();
+    private int nextOrderId = 1;
+
+    protected override void OnInitialized()
+    {
+        // Initialize mock data
+        Items = new List<Item>
+        {
+            new Item { Id = 1, Name = "Product A", Description = "Description for Product A", QuantityInStore = 50 },
+            new Item { Id = 2, Name = "Product B", Description = "Description for Product B", QuantityInStore = 30 },
+            new Item { Id = 3, Name = "Product C", Description = "Description for Product C", QuantityInStore = 20 }
+        };
+    }
+
+    private void PlaceOrder()
+    {
+        var selectedItems = Items
+            .Where(item => item.IsSelected && item.OrderQuantity > 0 && item.OrderQuantity <= item.QuantityInStore)
+            .ToList();
+
+        if (!selectedItems.Any()) return;
+
+        var newOrder = new Order
+        {
+            OrderId = nextOrderId++,
+            OrderDate = DateTime.Now,
+            TotalQuantity = selectedItems.Sum(i => i.OrderQuantity),
+            OrderItems = selectedItems.Select(item => new OrderItem
+            {
+                ItemId = item.Id,
+                Name = item.Name,
+                QuantityOrdered = item.OrderQuantity
+            }).ToList()
+        };
+
+        // Update inventory and reset items
+        foreach (var item in selectedItems)
+        {
+            item.QuantityInStore -= item.OrderQuantity;
+            item.OrderQuantity = 1;
+            item.IsSelected = false;
+        }
+
+        Orders.Add(newOrder);
+        StateHasChanged(); // Refresh UI
+    }
+
+    public class Item
+    {
+        public int Id { get; set; }
+        public string Name { get; set; } = "";
+        public string Description { get; set; } = "";
+        public int QuantityInStore { get; set; }
+        public int OrderQuantity { get; set; } = 1;
+        public bool IsSelected { get; set; } = false;
+    }
+
+    public class Order
+    {
+        public int OrderId { get; set; }
+        public DateTime OrderDate { get; set; }
+        public int TotalQuantity { get; set; }
+        public List<OrderItem> OrderItems { get; set; } = new();
+        public string Status { get; set; } = "Pending";
+    }
+
+    public class OrderItem
+    {
+        public int ItemId { get; set; }
+        public string Name { get; set; } = "";
+        public int QuantityOrdered { get; set; }
+    }
+}
