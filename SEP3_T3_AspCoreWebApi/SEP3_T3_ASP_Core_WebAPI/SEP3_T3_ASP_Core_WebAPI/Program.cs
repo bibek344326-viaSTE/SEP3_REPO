@@ -8,9 +8,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllers(); // Adds support for MVC controllers
 builder.Services.AddEndpointsApiExplorer(); // Adds support for minimal APIs
-
-// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
-builder.Services.AddOpenApi();
+builder.Services.AddSwaggerGen(); // Adds Swagger support
 
 // Configure PostgreSQL Database
 builder.Services.AddDbContext<AppDbContext>(options =>
@@ -22,8 +20,8 @@ var app = builder.Build();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-    app.MapOpenApi();
-
+    app.UseSwagger();
+    app.UseSwaggerUI();
 }
 
 app.UseHttpsRedirection();
