@@ -7,45 +7,85 @@
 <p>Welcome to your inventory management system.</p>
 
 <!-- Items Table -->
-<table class="table">
-    <thead>
+<h2>Products</h2>
+<table class="table table-bordered table-hover">
+    <thead class="thead-dark">
         <tr>
-            <th>Select</th>
+            <th class="text-center">Select</th>
             <th>Name</th>
             <th>Description</th>
             <th>ID</th>
             <th>Quantity In Store</th>
             <th>Order Quantity</th>
+            <th class="text-center">Delete</th>
         </tr>
     </thead>
     <tbody>
         @foreach (var item in Items)
         {
             <tr @key="item.Id">
-                <td>
-                    <input type="checkbox" @bind="item.IsSelected" />
+                <td class="text-center">
+                    <InputCheckbox @bind-Value="@item.IsSelected"></InputCheckbox>
                 </td>
-                <td>@item.Name</td>
-                <td>@item.Description</td>
-                <td>@item.Id</td>
-                <td>@item.QuantityInStore</td>
                 <td>
-                    <input type="number" @bind="item.OrderQuantity" min="1" max="@item.QuantityInStore" disabled="@(!item.IsSelected)" />
+                    <InputText @bind-Value="item.Name" class="form-control" />
+                </td>
+                <td>
+                    <InputText @bind-Value="item.Description" class="form-control" />
+                </td>
+                <td>@item.Id</td>
+                <td>
+                    <InputNumber @bind-Value="item.QuantityInStore" class="form-control" min="0" />
+                </td>
+                <td>
+                    <InputNumber @bind-Value="item.OrderQuantity" class="form-control"
+                                 min="1" max="@item.QuantityInStore"
+                                 disabled="!item.IsSelected" />
+                </td>
+                <td class="text-center">
+                    <button class="btn btn-danger btn-sm" @onclick="() => DeleteItem(item)">
+                        <i class="fas fa-trash-alt"></i> Delete
+                    </button>
                 </td>
             </tr>
         }
     </tbody>
 </table>
 
-<button class="btn btn-primary" @onclick="PlaceOrder" disabled="@(!Items.Any(i => i.IsSelected))">
-    Place Order
-</button>
+<div class="my-3">
+    <button class="btn btn-primary w-100" @onclick="PlaceOrder" disabled="@(!Items.Any(i => i.IsSelected))">
+        <i class="fas fa-shopping-cart"></i> Place Order
+    </button>
+</div>
+
+
+<h2>Add New Item</h2>
+<div class="card p-3 mb-4">
+    <div class="form-row">
+        <div class="form-group">
+            <label>Name:</label>
+            <InputText @bind-Value="newItem.Name" class="form-control" />
+        </div>
+        <div class="form-group">
+            <label>Description:</label>
+            <InputText @bind-Value="newItem.Description" class="form-control" />
+        </div>
+        <div class="form-group mb-3">
+            <label>Quantity In Store:</label>
+            <InputNumber @bind-Value="newItem.QuantityInStore" class="form-control" min="0" />
+        </div>
+    </div>
+    <button class="btn btn-success" @onclick="AddNewItem">
+        <i class="fas fa-plus"></i> Add Item
+    </button>
+</div>
+
 
 @if (Orders.Any())
 {
     <h2 class="mt-4">Orders Placed</h2>
     <table class="table table-striped">
-        <thead>
+        <thead class="thead-dark">
             <tr>
                 <th>Order ID</th>
                 <th>Date</th>
@@ -85,15 +125,146 @@ else
     private List<Order> Orders = new();
     private int nextOrderId = 1;
 
+    private Item newItem = new Item();
+
     protected override void OnInitialized()
     {
-        // Initialize mock data
+        // Initialize mock data for items
         Items = new List<Item>
         {
-            new Item { Id = 1, Name = "Product A", Description = "Description for Product A", QuantityInStore = 50 },
-            new Item { Id = 2, Name = "Product B", Description = "Description for Product B", QuantityInStore = 30 },
-            new Item { Id = 3, Name = "Product C", Description = "Description for Product C", QuantityInStore = 20 }
+            new Item { Id = 1, Name = "Milk", Description = "1 Gallon of Whole Milk", QuantityInStore = 20 },
+            new Item { Id = 2, Name = "Coffee", Description = "Ground Coffee Beans, 1 lb", QuantityInStore = 15 },
+            new Item { Id = 3, Name = "Chocolate", Description = "Dark Chocolate Bar, 70% Cocoa", QuantityInStore = 25 },
+            new Item { Id = 4, Name = "Bread", Description = "Whole Wheat Bread Loaf", QuantityInStore = 30 },
+            new Item { Id = 5, Name = "Butter", Description = "Salted Butter, 1 lb", QuantityInStore = 10 },
+            new Item { Id = 6, Name = "Cheese", Description = "Cheddar Cheese, 1 lb", QuantityInStore = 12 },
+            new Item { Id = 7, Name = "Eggs", Description = "Dozen Large Eggs", QuantityInStore = 18 },
+            new Item { Id = 8, Name = "Apples", Description = "Red Apples, 1 lb", QuantityInStore = 22 },
+            new Item { Id = 9, Name = "Bananas", Description = "Bananas, 1 lb", QuantityInStore = 25 },
+            new Item { Id = 10, Name = "Orange Juice", Description = "1 Gallon of Orange Juice", QuantityInStore = 14 },
+            new Item { Id = 11, Name = "Cereal", Description = "Oat Cereal, 500g", QuantityInStore = 16 },
+            new Item { Id = 12, Name = "Yogurt", Description = "Greek Yogurt, 1 lb", QuantityInStore = 20 },
+            new Item { Id = 13, Name = "Honey", Description = "Organic Honey, 12 oz", QuantityInStore = 8 },
+            new Item { Id = 14, Name = "Tea", Description = "Green Tea Bags, 20 count", QuantityInStore = 25 },
+            new Item { Id = 15, Name = "Sugar", Description = "Granulated Sugar, 2 lb", QuantityInStore = 30 }
         };
+
+        // Initialize mock data for orders
+        Orders = new List<Order>
+        {
+            new Order
+            {
+                OrderId = nextOrderId++,
+                OrderDate = DateTime.Now.AddDays(-7),
+                Status = "Completed",
+                TotalQuantity = 8,
+                OrderItems = new List<OrderItem>
+                {
+                    new OrderItem { ItemId = 2, Name = "Coffee", QuantityOrdered = 3 },
+                    new OrderItem { ItemId = 3, Name = "Chocolate", QuantityOrdered = 5 }
+                }
+            },
+            new Order
+            {
+                OrderId = nextOrderId++,
+                OrderDate = DateTime.Now.AddDays(-6),
+                Status = "Completed",
+                TotalQuantity = 10,
+                OrderItems = new List<OrderItem>
+                {
+                    new OrderItem { ItemId = 1, Name = "Milk", QuantityOrdered = 5 },
+                    new OrderItem { ItemId = 4, Name = "Bread", QuantityOrdered = 5 }
+                }
+            },
+            new Order
+            {
+                OrderId = nextOrderId++,
+                OrderDate = DateTime.Now.AddDays(-5),
+                Status = "Completed",
+                TotalQuantity = 7,
+                OrderItems = new List<OrderItem>
+                {
+                    new OrderItem { ItemId = 5, Name = "Butter", QuantityOrdered = 2 },
+                    new OrderItem { ItemId = 6, Name = "Cheese", QuantityOrdered = 5 }
+                }
+            },
+            new Order
+            {
+                OrderId = nextOrderId++,
+                OrderDate = DateTime.Now.AddDays(-4),
+                Status = "Completed",
+                TotalQuantity = 12,
+                OrderItems = new List<OrderItem>
+                {
+                    new OrderItem { ItemId = 7, Name = "Eggs", QuantityOrdered = 6 },
+                    new OrderItem { ItemId = 8, Name = "Apples", QuantityOrdered = 6 }
+                }
+            },
+            new Order
+            {
+                OrderId = nextOrderId++,
+                OrderDate = DateTime.Now.AddDays(-3),
+                Status = "Completed",
+                TotalQuantity = 9,
+                OrderItems = new List<OrderItem>
+                {
+                    new OrderItem { ItemId = 9, Name = "Bananas", QuantityOrdered = 4 },
+                    new OrderItem { ItemId = 10, Name = "Orange Juice", QuantityOrdered = 5 }
+                }
+            },
+            new Order
+            {
+                OrderId = nextOrderId++,
+                OrderDate = DateTime.Now.AddDays(-2),
+                Status = "Completed",
+                TotalQuantity = 6,
+                OrderItems = new List<OrderItem>
+                {
+                    new OrderItem { ItemId = 11, Name = "Cereal", QuantityOrdered = 3 },
+                    new OrderItem { ItemId = 12, Name = "Yogurt", QuantityOrdered = 3 }
+                }
+            },
+            new Order
+            {
+                OrderId = nextOrderId++,
+                OrderDate = DateTime.Now.AddDays(-1),
+                Status = "Pending",
+                TotalQuantity = 7,
+                OrderItems = new List<OrderItem>
+                {
+                    new OrderItem { ItemId = 13, Name = "Honey", QuantityOrdered = 2 },
+                    new OrderItem { ItemId = 14, Name = "Tea", QuantityOrdered = 5 }
+                }
+            }
+        };
+    }
+
+    private void AddNewItem()
+    {
+        if (!string.IsNullOrWhiteSpace(newItem.Name) && newItem.QuantityInStore > 0)
+        {
+            // Assign a new ID
+            int newId = Items.Any() ? Items.Max(i => i.Id) + 1 : 1;
+            var itemToAdd = new Item
+                {
+                    Id = newId,
+                    Name = newItem.Name,
+                    Description = newItem.Description,
+                    QuantityInStore = newItem.QuantityInStore,
+                    OrderQuantity = 1
+                };
+            Items.Add(itemToAdd);
+
+            // Reset newItem
+            newItem = new Item();
+            StateHasChanged();
+        }
+    }
+
+    private void DeleteItem(Item item)
+    {
+        Items.Remove(item);
+        StateHasChanged();
     }
 
     private void PlaceOrder()
@@ -105,17 +276,18 @@ else
         if (!selectedItems.Any()) return;
 
         var newOrder = new Order
-        {
-            OrderId = nextOrderId++,
-            OrderDate = DateTime.Now,
-            TotalQuantity = selectedItems.Sum(i => i.OrderQuantity),
-            OrderItems = selectedItems.Select(item => new OrderItem
             {
-                ItemId = item.Id,
-                Name = item.Name,
-                QuantityOrdered = item.OrderQuantity
-            }).ToList()
-        };
+                OrderId = nextOrderId++,
+                OrderDate = DateTime.Now,
+                TotalQuantity = selectedItems.Sum(i => i.OrderQuantity),
+                OrderItems = selectedItems.Select(item => new OrderItem
+                {
+                    ItemId = item.Id,
+                    Name = item.Name,
+                    QuantityOrdered = item.OrderQuantity
+                }).ToList(),
+                Status = "Pending"
+            };
 
         // Update inventory and reset items
         foreach (var item in selectedItems)

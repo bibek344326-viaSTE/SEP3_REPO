@@ -1,23 +1,24 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\amine\\Repos\\SEP3_REPO\\SEP3_T1_BlazorApp\\BlazorWebAppT1\\BlazorWebAppT1.csproj": {}
+    "C:\\Users\\AminAouina\\source\\SEP3_REPO\\SEP3_T1_BlazorApp\\BlazorWebAppT1\\BlazorWebAppT1.csproj": {}
   },
   "projects": {
-    "C:\\Users\\amine\\Repos\\SEP3_REPO\\SEP3_T1_BlazorApp\\BlazorWebAppT1\\BlazorWebAppT1.csproj": {
+    "C:\\Users\\AminAouina\\source\\SEP3_REPO\\SEP3_T1_BlazorApp\\BlazorWebAppT1\\BlazorWebAppT1.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\amine\\Repos\\SEP3_REPO\\SEP3_T1_BlazorApp\\BlazorWebAppT1\\BlazorWebAppT1.csproj",
+        "projectUniqueName": "C:\\Users\\AminAouina\\source\\SEP3_REPO\\SEP3_T1_BlazorApp\\BlazorWebAppT1\\BlazorWebAppT1.csproj",
         "projectName": "BlazorWebAppT1",
-        "projectPath": "C:\\Users\\amine\\Repos\\SEP3_REPO\\SEP3_T1_BlazorApp\\BlazorWebAppT1\\BlazorWebAppT1.csproj",
-        "packagesPath": "C:\\Users\\amine\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\amine\\Repos\\SEP3_REPO\\SEP3_T1_BlazorApp\\BlazorWebAppT1\\obj\\",
+        "projectPath": "C:\\Users\\AminAouina\\source\\SEP3_REPO\\SEP3_T1_BlazorApp\\BlazorWebAppT1\\BlazorWebAppT1.csproj",
+        "packagesPath": "C:\\Users\\AminAouina\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\AminAouina\\source\\SEP3_REPO\\SEP3_T1_BlazorApp\\BlazorWebAppT1\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
-          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",
+          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
         ],
         "configFilePaths": [
-          "C:\\Users\\amine\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\AminAouina\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
@@ -27,7 +28,8 @@
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "C:\\Program Files\\dotnet\\library-packs": {},
-          "https://api.nuget.org/v3/index.json": {}
+          "https://api.nuget.org/v3/index.json": {},
+          "https://pkgs.dev.azure.com/techsoftdk/_packaging/MesBaseFeed/nuget/v3/index.json": {}
         },
         "frameworks": {
           "net9.0": {
