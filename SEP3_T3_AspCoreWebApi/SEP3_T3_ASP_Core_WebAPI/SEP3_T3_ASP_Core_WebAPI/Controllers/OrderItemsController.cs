@@ -1,6 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using SEP3_T3_ASP_Core_WebAPI.Models;
+﻿using Entities;
+using Microsoft.AspNetCore.Mvc;
 using SEP3_T3_ASP_Core_WebAPI.RepositoryContracts;
 
 namespace SEP3_T3_ASP_Core_WebAPI.Controllers;
@@ -9,94 +8,101 @@ namespace SEP3_T3_ASP_Core_WebAPI.Controllers;
 [Route("[controller]")]
 public class OrderItemsController: ControllerBase
 {
-    private readonly AppDbContext _context;
+    private readonly IOrderItemRepository orderItemRepository;
     
-    public OrderItemsController(AppDbContext context)
+    public OrderItemsController(IOrderItemRepository orderItemRepository)
     {
-        _context = context;
-    }
-  
-    //Endpoint to get all order items
-    [HttpGet]
-    public async Task<ActionResult<IEnumerable<OrderItem>>> GetOrderItems()
-    {
-        return await _context.OrderItems.ToListAsync();
+        this.orderItemRepository = orderItemRepository;
     }
     
-    //Endpoint to get a specific order item
-    [HttpGet("{id}")]
-    public async Task<ActionResult<OrderItem>> GetOrderItem(int id)
-    {
-        var orderItem = await _context.OrderItems.FindAsync(id);
-
-        if (orderItem == null)
-        {
-            return NotFound();
-        }
-
-        return orderItem;
-    }
-    
-    //Endpoint to create a new order item
+    // Create Endpoints
+    // POST: /OrderItems
     [HttpPost]
-    public async Task<ActionResult<OrderItem>> PostOrderItem(OrderItem orderItem)
+    public async Task<ActionResult<OrderItem>> AddOrderItem([FromBody] OrderItem orderItem)
     {
-        _context.OrderItems.Add(orderItem);
-        await _context.SaveChangesAsync();
-
-        return CreatedAtAction("GetOrderItem", new { id = orderItem.OrderItemId }, orderItem);
+        OrderItem created = await orderItemRepository.AddOrderItemAsync(orderItem);
+        return Created($"/OrderItems/{created.OrderItemId}", created);
     }
     
-    //Endpoint to update an order item
+    // PUT: /OrderItems/{id}
     [HttpPut("{id}")]
-    public async Task<IActionResult> PutOrderItem(int id, OrderItem orderItem)
+    public async Task<ActionResult> UpdateOrderItem([FromRoute] int id, [FromBody] OrderItem orderItem)
     {
-        if (id != orderItem.OrderItemId)
+        try
         {
-            return BadRequest();
+            OrderItem orderItemToUpdate = await orderItemRepository.GetOrderItemById(id);
+            orderItemToUpdate.OrderId = orderItem.OrderId;
+            orderItemToUpdate.ItemId = orderItem.ItemId;
+            orderItemToUpdate.QuantityToPick = orderItem.QuantityToPick;
+            
+            await orderItemRepository.UpdateOrderItemAsync(orderItemToUpdate);
+            return NoContent();
         }
-
-        _context.Entry(orderItem).State = EntityState.Modified;
-        await _context.SaveChangesAsync();
-        
-        return NoContent();
+        catch (InvalidOperationException)
+        {
+            return NotFound($"OrderItem with ID {id} not found.");
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            return StatusCode(500, $"An error occurred: {e.Message}");
+        }
     }
     
-    //Endpoint to delete an order item
+    // DELETE: /OrderItems/{id}
     [HttpDelete("{id}")]
-    public async Task<IActionResult> DeleteOrderItem(int id)
+    public async Task<ActionResult> DeleteOrderItem([FromRoute] int id)
     {
-        var orderItem = await _context.OrderItems.FindAsync(id);
-        if (orderItem == null)
+        try
         {
-            return NotFound();
+            await orderItemRepository.DeleteOrderItemAsync(id);
+            return NoContent();
         }
-
-        _context.OrderItems.Remove(orderItem);
-        await _context.SaveChangesAsync();
-
-        return NoContent();
+        catch (InvalidOperationException)
+        {
+            return NotFound($"OrderItem with ID {id} not found.");
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            return StatusCode(500, $"An error occurred: {e.Message}");
+        }
     }
     
-    //Endpoint to get all order items of a specific order
-    [HttpGet("order/{orderId}")]
-    public async Task<ActionResult<IEnumerable<OrderItem>>> GetOrderItemsByOrderId(int orderId)
+    // GET: /OrderItems/{id}
+    [HttpGet("{id}")]
+    public async Task<ActionResult<OrderItem>> GetOrderItemById([FromRoute] int id)
     {
-        return await _context.OrderItems.Where(orderItem => orderItem.OrderId == orderId).ToListAsync();
+        try
+        {
+            OrderItem orderItem = await orderItemRepository.GetOrderItemById(id);
+            return Ok(orderItem);
+        }
+        catch (InvalidOperationException)
+        {
+            return NotFound($"OrderItem with ID {id} not found.");
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            return StatusCode(500, $"An error occurred: {e.Message}");
+        }
     }
     
-    //Endpoint to get all order items of a specific item
-    [HttpGet("item/{itemId}")]
-    public async Task<ActionResult<IEnumerable<OrderItem>>> GetOrderItemsByItemId(int itemId)
+    // GET: /OrderItems
+    [HttpGet]
+    public async Task<ActionResult<IEnumerable<OrderItem>>> GetAllOrderItems()
     {
-        return await _context.OrderItems.Where(orderItem => orderItem.ItemId == itemId).ToListAsync();
+        IQueryable<OrderItem> orderItems = orderItemRepository.GetAllOrderItems();
+        return Ok(orderItems);
     }
     
-    //Endpoint to get all order items of a specific order and item
-    [HttpGet("order/{orderId}/item/{itemId}")]
-    public async Task<ActionResult<IEnumerable<OrderItem>>> GetOrderItemsByOrderIdAndItemId(int orderId, int itemId)
+    // GET: /OrderItems/Order/{orderId}
+    [HttpGet("Order/{orderId}")]
+    public async Task<ActionResult<IEnumerable<OrderItem>>> GetOrderItemsByOrderId([FromRoute] int orderId)
     {
-        return await _context.OrderItems.Where(orderItem => orderItem.OrderId == orderId && orderItem.ItemId == itemId).ToListAsync();
+        IQueryable<OrderItem> orderItems = await orderItemRepository.GetAllOrderItemsByOrderId(orderId);
+        return Ok(orderItems);
     }
     
 }

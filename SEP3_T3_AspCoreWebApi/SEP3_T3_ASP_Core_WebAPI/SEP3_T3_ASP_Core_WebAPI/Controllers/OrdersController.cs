@@ -1,7 +1,6 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using Entities;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using SEP3_T3_ASP_Core_WebAPI.Models;
+using SEP3_T3_ASP_Core_WebAPI.RepositoryContracts;
 using RouteAttribute = Microsoft.AspNetCore.Mvc.RouteAttribute;
 
 namespace SEP3_T3_ASP_Core_WebAPI.Controllers
@@ -10,109 +9,116 @@ namespace SEP3_T3_ASP_Core_WebAPI.Controllers
     [Route("[controller]")]
     public class OrdersController : ControllerBase
     {
-        private readonly AppDbContext _context;
+        private readonly IOrderRepository orderRepository;
 
-        public OrdersController(AppDbContext context)
+        public OrdersController(IOrderRepository orderRepository)
         {
-            _context = context;
+            this.orderRepository = orderRepository;
         }
 
-        //Endpoint to get all orders
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<Order>>> GetOrders()
-        {
-            return await _context.Orders.ToListAsync();
-        }
-        
-        //Endpoint to get a specific order
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Order>> GetOrder(int id)
-        {
-            var order = await _context.Orders.FindAsync(id);
-
-            if (order == null)
-            {
-                return NotFound();
-            }
-
-            return order;
-        }
-        
-        //Endpoint to create a new order
+        // Create Endpoints
+        // POST: /Orders
         [HttpPost]
-        public async Task<ActionResult<Order>> PostOrder(Order order)
+        public async Task<ActionResult<Order>> AddOrder([FromBody] Order order)
         {
-            _context.Orders.Add(order);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetOrder", new { id = order.OrderId }, order);
+            Order created = await orderRepository.AddOrderAsync(order);
+            return Created($"/Orders/{created.OrderId}", created);
         }
-        
-        //Endpoint to update an order
+
+        // PUT: /Orders/{id}
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutOrder(int id, Order order)
+        public async Task<ActionResult> UpdateOrder([FromRoute] int id, [FromBody] Order order)
         {
-            if (id != order.OrderId)
-            {
-                return BadRequest();
-            }
-
-            _context.Entry(order).State = EntityState.Modified;
-
             try
             {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                throw new Exception($"Order with id {id} not found");
-            }
+                Order orderToUpdate = await orderRepository.GetOrderById(id);
+                orderToUpdate.OrderItems = order.OrderItems;
+                orderToUpdate.OrderStatus = order.OrderStatus;
+                orderToUpdate.DeliveryDate = order.DeliveryDate;
 
-            return NoContent();
+                await orderRepository.UpdateOrderAsync(orderToUpdate);
+                return NoContent();
+            }
+            catch (InvalidOperationException)
+            {
+                return NotFound($"Order with ID {id} not found.");
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return StatusCode(500, $"An error occurred: {e.Message}");
+            }
         }
-        //Endpoint to delete an order
+
+        // DELETE: /Orders/{id}
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteOrder(int id)
+        public async Task<ActionResult> DeleteOrder([FromRoute] int id)
         {
-            var order = await _context.Orders.FindAsync(id);
-            if (order == null)
+            try
             {
-                return NotFound();
+                await orderRepository.DeleteOrderAsync(id);
+                return NoContent();
             }
+            catch (InvalidOperationException)
+            {
+                return NotFound($"Order with ID {id} not found.");
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return StatusCode(500, $"An error occurred: {e.Message}");
+            }
+        }
 
-            _context.Orders.Remove(order);
-            await _context.SaveChangesAsync();
+        // GET: /Orders/{id}
+        [HttpGet("{id}")]
+        public async Task<ActionResult<Order>> GetSingleOrder([FromRoute] int id)
+        {
+            try
+            {
+                Order order = await orderRepository.GetOrderById(id);
+                return Ok(order);
+            }
+            catch (InvalidOperationException)
+            {
+                return NotFound($"Order with ID {id} not found.");
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return StatusCode(500, $"An error occurred: {e.Message}");
+            }
+        }
 
-            return NoContent();
-        }
-        
-        //Endpoint to get all orderItems in an order
-        
-        [HttpGet("{id}/orderitems")]
-        public async Task<ActionResult<IEnumerable<Item>>> GetOrderItems(int id)
+        // GET: /Orders
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<Order>>> GetAllOrders()
         {
-            var order = await _context.Orders.FindAsync(id);
-            if (order == null)
-            {
-                return NotFound();
-            }
-            return await _context.OrderItems.Where(oi => oi.OrderId == id).Select(oi => oi.Item).ToListAsync();
+            IQueryable<Order> orders = await orderRepository.GetAllOrders();
+            List<Order> dtos = orders.ToList();
+            return Ok(dtos);
         }
         
-        //Endpoint to add an Orderitem to an order
-        [HttpPost("{id}/orderitems")]
-        public async Task<ActionResult<OrderItem>> PostOrderItem(int id, OrderItem orderItem)
+        //Update order status
+        [HttpPut("{id}/status")]
+        public async Task<ActionResult> UpdateOrderStatus([FromRoute] int id, [FromBody] string orderStatus)
         {
-            var order = await _context.Orders.FindAsync(id);
-            if (order == null)
+            try
             {
-                return NotFound();
+                var orderToUpdate = await orderRepository.GetOrderById(id);
+                orderToUpdate.OrderStatus = orderStatus;
+                await orderRepository.UpdateOrderAsync(orderToUpdate);
+                return NoContent();
             }
-            orderItem.OrderId = id;
-            _context.OrderItems.Add(orderItem);
-            await _context.SaveChangesAsync();
-            return CreatedAtAction("GetOrderItem", new { id = orderItem.Order }, orderItem);
+            catch (InvalidOperationException)
+            {
+                return NotFound($"Order with ID {id} not found.");
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return StatusCode(500, $"An error occurred: {e.Message}");
+            }
         }
-        
     }
 }
