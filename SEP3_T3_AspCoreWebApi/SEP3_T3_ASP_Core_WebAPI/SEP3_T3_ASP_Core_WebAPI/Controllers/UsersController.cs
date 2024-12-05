@@ -1,7 +1,9 @@
-﻿using Microsoft.AspNetCore.Http.HttpResults;
+﻿// Purpose: Contains the UsersController class which is responsible for handling requests related to users.
+
+using Entities;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using SEP3_T3_ASP_Core_WebAPI.Models;
+using SEP3_T3_ASP_Core_WebAPI.ApiContracts.UserDto;
+using SEP3_T3_ASP_Core_WebAPI.RepositoryContracts;
 
 namespace SEP3_T3_ASP_Core_WebAPI.Controllers;
 
@@ -9,93 +11,174 @@ namespace SEP3_T3_ASP_Core_WebAPI.Controllers;
 [Route("[controller]")]
 public class UsersController: ControllerBase
 {
-    private readonly AppDbContext _context;
+    private readonly IUserRepository userRepo;
 
-    public UsersController(AppDbContext context)
+    public UsersController(IUserRepository userRepo)
     {
-        _context = context;
+        this.userRepo = userRepo;
     }
     
-    //Endpoint to get all users
-    [HttpGet]
-    public async Task<ActionResult<IEnumerable<User>>> GetUsers()
-    {
-        return await _context.Users.ToListAsync();
-    }
-    
-    //Endpoint to get a specific user
-    [HttpGet("{id}")]
-    public async Task<ActionResult<User>> GetUser(int id)
-    {
-        var user = await _context.Users.FindAsync(id);
-
-        if (user == null)
-        {
-            return NotFound();
-        }
-
-        return user;
-    }
-    
-    //Endpoint to create a new user
+    // Create Endpoints
+    // POST: /Users
     [HttpPost]
-    public async Task<ActionResult<User>> PostUser(User user)
+    public async Task<ActionResult<UserDto>> AddUser([FromBody] CreateUserDto request)
     {
-        _context.Users.Add(user);
-        await _context.SaveChangesAsync();
+        await VerifyUserNameIsAvailableAsync(request.UserName);
 
-        return CreatedAtAction("GetUser", new { id = user.UserId }, user);
+        User user = Entities.User.Create(request.UserName, request.Password, request.UserRole);
+        User created = await userRepo.AddUserAsync(user);
+        UserDto dto = new()
+        {
+            UserId = created.UserId,
+            UserName = created.UserName
+        };
+        return Created($"/Users/{dto.UserId}", created);
+    }
+
+    private async Task VerifyUserNameIsAvailableAsync(string requestUserName)
+    {
+        User existingUser = await userRepo.GetUserByUsernameAsync(requestUserName);
+        if (existingUser != null)
+        {
+            throw new InvalidOperationException($"Username {requestUserName} is already taken.");
+        }
     }
     
-    //Endpoint to update a user
+    // PUT: /Users/{id}
     [HttpPut("{id}")]
-    public async Task<IActionResult> PutUser(int id, User user)
+    public async Task<ActionResult> UpdateUser([FromRoute] int id, [FromBody] UpdateUserDto request)
     {
-        if (id != user.UserId)
+        try
         {
-            return BadRequest();
+            User userToUpdate = await userRepo.GetUserById(id);
+            userToUpdate.UserName = request.UserName;
+            userToUpdate.Password = request.Password;
+            userToUpdate.UserRole = request.UserRole;
+
+            await userRepo.UpdateUserAsync(userToUpdate);
+            return NoContent();
         }
-
-        _context.Entry(user).State = EntityState.Modified;
-        await _context.SaveChangesAsync();
-
-        return NoContent();
+        catch (InvalidOperationException)
+        {
+            return NotFound($"User with ID {id} not found.");
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            return StatusCode(500, $"An error occurred: {e.Message}");
+        }
     }
     
-    //Endpoint to delete a user
+    // DELETE: /Users/{id}
     [HttpDelete("{id}")]
-    public async Task<IActionResult> DeleteUser(int id)
+    public async Task<ActionResult> DeleteUser([FromRoute] int id)
     {
-        var user = await _context.Users.FindAsync(id);
-        if (user == null)
+        try
         {
-            return NotFound();
+            User userToDelete = await userRepo.GetUserById(id);
+            await userRepo.DeleteUserAsync(id);
+            return NoContent();
         }
-
-        _context.Users.Remove(user);
-        await _context.SaveChangesAsync();
-
-        return NoContent();
+        catch (InvalidOperationException)
+        {
+            return NotFound($"User with ID {id} not found.");
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            return StatusCode(500, $"An error occurred: {e.Message}");
+        }
     }
     
-    //Endpoint to get a user by username and password
-    [HttpGet("login")]
-    public async Task<ActionResult<User>> GetUserByUsernameAndPassword(string username, string password)
+    // GET: /Users/{id}
+    [HttpGet("{id}")]
+    public async Task<ActionResult<UserDto>> GetSingleUser([FromRoute] int id)
     {
-        var user = await _context.Users.FirstOrDefaultAsync(u => u.UserName == username && u.Password == password);
-
-        if (user == null)
+        try
         {
-            return NotFound();
+            User user = await userRepo.GetUserById(id);
+            UserDto dto = new()
+            {
+                UserId = user.UserId,
+                UserName = user.UserName
+            };
+            return Ok(dto);
         }
-
-        return user;
+        catch (InvalidOperationException)
+        {
+            return NotFound($"User with ID {id} not found.");
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            return StatusCode(500, $"An error occurred: {e.Message}");
+        }
     }
     
-    //Endpoint to get all users by role
-    [HttpGet("role/{role}")]
-    public async Task<ActionResult<IEnumerable<User>>> GetUsersByRole(string role)
+    // GET: /Users
+    [HttpGet]
+    public async Task<ActionResult<IEnumerable<UserDto>>> GetAllUsers()
     {
-        return await _context.Users.Where(u => u.UserRole == role).ToListAsync();
+        try
+        {
+            IQueryable<User> users = userRepo.GetAllUsers();
+            List<UserDto> dtos = users.Select(u => new UserDto()
+            {
+                UserId = u.UserId,
+                UserName = u.UserName
+            }).ToList();
+            return Ok(dtos);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            return StatusCode(500, $"An error occurred: {e.Message}");
+        }
+    }
+    
+    // GET: /Users/Type/{type}
+    [HttpGet("Type/{type}")]
+    public async Task<ActionResult<IEnumerable<UserDto>>> GetAllUsersByType([FromRoute] string type)
+    {
+        try
+        {
+            IQueryable<User> users = userRepo.GetAllUsersByType(type);
+            List<UserDto> dtos = users.Select(u => new UserDto()
+            {
+                UserId = u.UserId,
+                UserName = u.UserName
+            }).ToList();
+            return Ok(dtos);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            return StatusCode(500, $"An error occurred: {e.Message}");
+        }
+    }
+    
+    // GET: /Users/Username/{username} 
+    [HttpGet("Username/{username}")]
+    public async Task<ActionResult<UserDto>> GetUserByUsername([FromRoute] string username)
+    {
+        try
+        {
+            User user = await userRepo.GetUserByUsernameAsync(username);
+            UserDto dto = new()
+            {
+                UserId = user.UserId,
+                UserName = user.UserName
+            };
+            return Ok(dto);
+        }
+        catch (InvalidOperationException)
+        {
+            return NotFound($"User with username {username} not found.");
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            return StatusCode(500, $"An error occurred: {e.Message}");
+        }
     }
 }

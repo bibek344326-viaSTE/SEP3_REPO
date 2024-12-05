@@ -1,4 +1,4 @@
-﻿using SEP3_T3_ASP_Core_WebAPI.Models;
+﻿using SEP3_T3_ASP_Core_WebAPI.ApiContracts.OrderItemDto;
 
 namespace SEP3_T3_ASP_Core_WebAPI.ApiContracts.OrderDto;
 
