@@ -31,15 +31,23 @@
     </div>
 </div>
 
-<!-- Table -->
 <table class="table table-bordered table-hover">
     <thead class="thead-dark">
         <tr>
             <th class="text-center">Select</th>
-            <th>Name</th>
-            <th>Description</th>
+            <th @onclick="() => Manager.SortByName()" style="cursor: pointer;">
+                Name
+                <i class="@Manager.GetSortIcon("Name")"></i>
+            </th>
+            <th @onclick="() => Manager.SortByDescription()" style="cursor: pointer;">
+                Description
+                <i class="@Manager.GetSortIcon("Description")"></i>
+            </th>
             <th>ID</th>
-            <th>Quantity In Store</th>
+            <th @onclick="() => Manager.SortByQuantityInStore()" style="cursor: pointer;">
+                Quantity In Store
+                <i class="@Manager.GetSortIcon("QuantityInStore")"></i>
+            </th>
             <th>Order Quantity</th>
             <th class="text-center">Delete</th>
         </tr>
@@ -89,6 +97,7 @@
         }
     </tbody>
 </table>
+
 
 <!-- Pagination -->
 <div class="d-flex justify-content-between align-items-center mt-3">
