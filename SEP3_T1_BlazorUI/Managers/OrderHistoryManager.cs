@@ -17,9 +17,20 @@ namespace SEP3_T1_BlazorUI.Presentation.Managers
 
         public string SelectedStatus { get; set; } = string.Empty;
         public string SearchQuery { get; set; } = string.Empty;
+        public DateTime? StartDate { get; set; }
+        public DateTime? EndDate { get; set; }
 
         public int CurrentPage { get; private set; } = 1;
         public int PageSize { get; set; } = 10;
+
+        public string SortColumn { get; private set; } = "OrderDate";
+        public bool Ascending { get; private set; } = true;
+
+        public void SortByOrderId() => SortByColumn("OrderId");
+        public void SortByOrderDate() => SortByColumn("OrderDate");
+        public void SortByStatus() => SortByColumn("Status");
+        public void SortByEmployeeId() => SortByColumn("EmployeeId");
+
 
         public IEnumerable<Order> FilteredOrders
         {
@@ -32,13 +43,29 @@ namespace SEP3_T1_BlazorUI.Presentation.Managers
                     orders = orders.Where(o => o.Status.Equals(SelectedStatus, StringComparison.OrdinalIgnoreCase));
                 }
 
-                if (!string.IsNullOrWhiteSpace(SearchQuery))
+                if (!string.IsNullOrWhiteSpace(SearchQuery) && int.TryParse(SearchQuery, out var orderId))
                 {
-                    if (int.TryParse(SearchQuery, out var orderId))
-                    {
-                        orders = orders.Where(o => o.OrderId == orderId);
-                    }
+                    orders = orders.Where(o => o.OrderId == orderId);
                 }
+
+                if (StartDate.HasValue)
+                {
+                    orders = orders.Where(o => o.OrderDate >= StartDate.Value);
+                }
+
+                if (EndDate.HasValue)
+                {
+                    orders = orders.Where(o => o.OrderDate <= EndDate.Value);
+                }
+
+                orders = SortColumn switch
+                {
+                    "OrderId" => Ascending ? orders.OrderBy(o => o.OrderId) : orders.OrderByDescending(o => o.OrderId),
+                    "OrderDate" => Ascending ? orders.OrderBy(o => o.OrderDate) : orders.OrderByDescending(o => o.OrderDate),
+                    "Status" => Ascending ? orders.OrderBy(o => o.Status) : orders.OrderByDescending(o => o.Status),
+                    "EmployeeId" => Ascending ? orders.OrderBy(o => o.EmployeeId) : orders.OrderByDescending(o => o.EmployeeId),
+                    _ => orders
+                };
 
                 return orders.ToList();
             }
@@ -54,18 +81,32 @@ namespace SEP3_T1_BlazorUI.Presentation.Managers
 
         public void PreviousPage()
         {
-            if (!IsFirstPage)
-            {
-                CurrentPage--;
-            }
+            if (!IsFirstPage) CurrentPage--;
         }
 
         public void NextPage()
         {
-            if (!IsLastPage)
+            if (!IsLastPage) CurrentPage++;
+        }
+
+        public void SortByColumn(string columnName)
+        {
+            if (SortColumn == columnName)
             {
-                CurrentPage++;
+                Ascending = !Ascending;
             }
+            else
+            {
+                SortColumn = columnName;
+                Ascending = true;
+            }
+        }
+
+        public string GetSortIcon(string columnName)
+        {
+            return SortColumn == columnName
+                ? (Ascending ? "fas fa-sort-up" : "fas fa-sort-down")
+                : "fas fa-sort";
         }
 
         public string GetStatusClass(string status)

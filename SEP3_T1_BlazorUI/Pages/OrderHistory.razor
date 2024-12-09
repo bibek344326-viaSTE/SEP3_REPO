@@ -11,13 +11,21 @@
 <h1 class="text-center">Order History</h1>
 
 <div class="d-flex align-items-center justify-content-center mb-3 w-100">
-    <div class="me-3">
+    <div class="me-4">
         <select class="form-select" @bind="OrderHistoryManager.SelectedStatus">
             <option value="">All Statuses</option>
             <option value="Completed">Completed</option>
             <option value="Pending">Pending</option>
             <option value="Rejected">Rejected</option>
         </select>
+    </div>
+
+    <div class="me-3">
+        <input type="date" class="form-control" @bind="OrderHistoryManager.StartDate" />
+    </div>
+
+    <div class="me-3">
+        <input type="date" class="form-control" @bind="OrderHistoryManager.EndDate" />
     </div>
 
     <div class="input-group">
@@ -38,10 +46,18 @@
         <table class="table table-striped table-hover text-center">
             <thead class="table-dark">
                 <tr>
-                    <th>Order ID</th>
-                    <th>Date</th>
-                    <th>Status</th>
-                    <th>Employee ID</th>
+                    <th @onclick="() => OrderHistoryManager.SortByOrderId()" style="cursor: pointer;">
+                        Order ID <i class="@OrderHistoryManager.GetSortIcon("OrderId")"></i>
+                    </th>
+                    <th @onclick="() => OrderHistoryManager.SortByOrderDate()" style="cursor: pointer;">
+                        Date <i class="@OrderHistoryManager.GetSortIcon("OrderDate")"></i>
+                    </th>
+                    <th @onclick="() => OrderHistoryManager.SortByStatus()" style="cursor: pointer;">
+                        Status <i class="@OrderHistoryManager.GetSortIcon("Status")"></i>
+                    </th>
+                    <th @onclick="() => OrderHistoryManager.SortByEmployeeId()" style="cursor: pointer;">
+                        Employee ID <i class="@OrderHistoryManager.GetSortIcon("EmployeeId")"></i>
+                    </th>
                     <th>Items Ordered</th>
                 </tr>
             </thead>
