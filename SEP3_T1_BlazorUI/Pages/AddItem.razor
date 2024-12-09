@@ -1,4 +1,6 @@
 ﻿@page "/add-item"
+@attribute [Authorize(Roles = "@(Role.InventoryManager.ToString())")]
+
 @using SEP3_T1_BlazorUI.Models;
 @using SEP3_T1_BlazorUI.Application.UseCases;
 

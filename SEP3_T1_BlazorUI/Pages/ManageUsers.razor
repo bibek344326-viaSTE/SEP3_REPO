@@ -1,4 +1,6 @@
 ﻿@page "/manage-users"
+@attribute [Authorize(Roles = "@(Role.InventoryManager.ToString())")]
+
 @using Microsoft.AspNetCore.Components.Forms
 @using Microsoft.AspNetCore.Components.Web
 @using SEP3_T1_BlazorUI.Models

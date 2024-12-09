@@ -18,6 +18,7 @@ builder.Services.AddBlazoredLocalStorage();
 
 // Add the authentication state provider as a scoped service
 builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthenticationStateProvider>();
+builder.Services.AddAuthorizationCore(); 
 
 builder.Services.AddScoped<InventoryManager>();
 builder.Services.AddScoped<LoginManager>();

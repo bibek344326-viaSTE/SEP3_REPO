@@ -25,18 +25,45 @@ namespace SEP3_T1_BlazorUI.Infrastructure
                 return new AuthenticationState(new ClaimsPrincipal(new ClaimsIdentity()));
             }
 
-            // Parse the token to extract user information (simulating JWT token parsing)
-            var identity = new ClaimsIdentity(ParseClaimsFromToken(token), "jwt");
-            var user = new ClaimsPrincipal(identity);
+            var claims = ParseClaimsFromToken(token).ToList();
 
+            // Check for token expiration
+            var expirationClaim = claims.FirstOrDefault(c => c.Type == "exp")?.Value;
+            if (!string.IsNullOrEmpty(expirationClaim) && long.TryParse(expirationClaim, out long expirationTimestamp))
+            {
+                var expirationDateTime = DateTimeOffset.FromUnixTimeSeconds(expirationTimestamp).UtcDateTime;
+                if (expirationDateTime < DateTime.UtcNow)
+                {
+                    // Token has expired
+                    await MarkUserAsLoggedOut();
+                    return new AuthenticationState(new ClaimsPrincipal(new ClaimsIdentity()));
+                }
+            }
+
+            var identity = new ClaimsIdentity(claims, "jwt");
+            var user = new ClaimsPrincipal(identity);
             return new AuthenticationState(user);
         }
 
         public async Task MarkUserAsAuthenticated(string token)
         {
+            var claims = ParseClaimsFromToken(token).ToList();
+            var expirationClaim = claims.FirstOrDefault(c => c.Type == "exp")?.Value;
+
+            if (!string.IsNullOrEmpty(expirationClaim) && long.TryParse(expirationClaim, out long expirationTimestamp))
+            {
+                var expirationDateTime = DateTimeOffset.FromUnixTimeSeconds(expirationTimestamp).UtcDateTime;
+                if (expirationDateTime < DateTime.UtcNow)
+                {
+                    // Do not authenticate if the token is expired
+                    await MarkUserAsLoggedOut();
+                    return;
+                }
+            }
+
             await _localStorage.SetItemAsync("authToken", token);
 
-            var identity = new ClaimsIdentity(ParseClaimsFromToken(token), "jwt");
+            var identity = new ClaimsIdentity(claims, "jwt");
             var user = new ClaimsPrincipal(identity);
             var authenticationState = new AuthenticationState(user);
 
@@ -55,17 +82,15 @@ namespace SEP3_T1_BlazorUI.Infrastructure
 
         private IEnumerable<Claim> ParseClaimsFromToken(string token)
         {
-            // In a real-world scenario, you would decode a JWT and extract claims from it.
-            // Here we simulate the parsing:
             var parts = token.Split('|');
-            if (parts.Length == 3)
+            if (parts.Length == 4) // Assuming new token format: Username|WorkingNumber|Role|ExpirationTimestamp
             {
-                // Token format: Username|WorkingNumber|Role
                 return new List<Claim>
                 {
                     new Claim(ClaimTypes.Name, parts[0]), // Username
                     new Claim("WorkingNumber", parts[1]), // Working Number
-                    new Claim(ClaimTypes.Role, parts[2])   // Role
+                    new Claim(ClaimTypes.Role, parts[2]), // Role
+                    new Claim("exp", parts[3])            // Expiration
                 };
             }
             return new List<Claim>();

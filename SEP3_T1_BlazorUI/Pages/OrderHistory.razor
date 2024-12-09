@@ -1,4 +1,6 @@
 ﻿@page "/order-history"
+@attribute [Authorize(Roles = "@(Role.InventoryManager.ToString())")]
+
 @using SEP3_T1_BlazorUI.Models
 @using SEP3_T1_BlazorUI.Presentation.Managers
 

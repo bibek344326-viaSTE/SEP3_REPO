@@ -1,4 +1,6 @@
-﻿@page "/"
+﻿@page "/inventory-dashboard"
+@attribute [Authorize(Roles = "@(Role.InventoryManager.ToString())")]
+
 @using SEP3_T1_BlazorUI.Presentation.Managers;
 @using SEP3_T1_BlazorUI.Models;
 @inject InventoryManager Manager
