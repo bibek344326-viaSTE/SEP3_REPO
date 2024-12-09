@@ -92,5 +92,3 @@ TestResults/
 # IDE files
 .idea/
 .vs/
-/SEP3_T1_BlazorApp/BlazorWebAppT1/bin/Debug/net9.0/BlazorWebAppT1.dll
-/SEP3_T1_BlazorApp/BlazorWebAppT1/bin/Debug/net9.0/BlazorWebAppT1.exe
