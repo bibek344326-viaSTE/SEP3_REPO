@@ -51,5 +51,19 @@ namespace SEP3_T1_BlazorUI.Infrastructure.Repositories
 
             Console.WriteLine("Mock data initialized in ItemRepository.");
         }
+
+        public void UpdateItem(Item item)
+        {
+            var existingItem = _items.FirstOrDefault(i => i.Id == item.Id);
+            if (existingItem == null)
+            {
+                throw new InvalidOperationException("Item not found.");
+            }
+
+            existingItem.Name = item.Name;
+            existingItem.Description = item.Description;
+            existingItem.QuantityInStore = item.QuantityInStore;
+            existingItem.OrderQuantity = item.OrderQuantity;
+        }
     }
 }

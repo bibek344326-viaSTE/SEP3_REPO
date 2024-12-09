@@ -4,6 +4,7 @@
 @using SEP3_T1_BlazorUI.Presentation.Managers;
 @using SEP3_T1_BlazorUI.Models;
 @inject InventoryManager Manager
+@inject Blazored.Toast.Services.IToastService ToastService
 
 <PageTitle>Home</PageTitle>
 
@@ -18,14 +19,16 @@
             <i class="fas fa-search"></i>
         </span>
     </div>
-        <input type="text" class="form-control" placeholder="Search by Name or Description" @bind="Manager.SearchQuery" @oninput="RefreshView" />
-        <div class="input-group-append">
-            <button class="btn btn-outline-secondary" @onclick="Manager.ClearSearch" type="button">
-                <i class="fas fa-times"></i> Clear
-            </button>
-        </div>
-    
-   
+    <input type="text"
+           class="form-control"
+           placeholder="Search by Name or Description"
+           @bind="Manager.SearchQuery"
+           @bind:event="oninput" />
+    <div class="input-group-append">
+        <button class="btn btn-outline-secondary" @onclick="Manager.ClearSearch" type="button">
+            <i class="fas fa-times"></i> Clear
+        </button>
+    </div>
 </div>
 
 <!-- Table -->
@@ -33,22 +36,10 @@
     <thead class="thead-dark">
         <tr>
             <th class="text-center">Select</th>
-            <th>
-                <button class="btn btn-link" @onclick="Manager.SortByName">
-                    Name <i class="@Manager.GetSortIcon("Name")"></i>
-                </button>
-            </th>
-            <th>
-                <button class="btn btn-link" @onclick="Manager.SortByDescription">
-                    Description <i class="@Manager.GetSortIcon("Description")"></i>
-                </button>
-            </th>
+            <th>Name</th>
+            <th>Description</th>
             <th>ID</th>
-            <th>
-                <button class="btn btn-link" @onclick="Manager.SortByQuantityInStore">
-                    Quantity In Store <i class="@Manager.GetSortIcon("QuantityInStore")"></i>
-                </button>
-            </th>
+            <th>Quantity In Store</th>
             <th>Order Quantity</th>
             <th class="text-center">Delete</th>
         </tr>
@@ -58,15 +49,39 @@
         {
             <tr @key="item.Id">
                 <td class="text-center">
-                    <InputCheckbox @bind-Value="@item.IsSelected" @oninput="() => Manager.ToggleSelection(item)" />
+                    <InputCheckbox @bind-Value="item.IsSelected" disabled="@((item.QuantityInStore == 0))" />
                 </td>
-                <td><InputText @bind-Value="item.Name" class="form-control" /></td>
-                <td><InputText @bind-Value="item.Description" class="form-control" /></td>
+                <td>
+                    <input type="text"
+                           class="form-control"
+                           value="@item.Name"
+                           @onchange="args => UpdateItem(item, nameof(item.Name), args.Value?.ToString())" />
+                </td>
+                <td>
+                    <input type="text"
+                           class="form-control"
+                           value="@item.Description"
+                           @onchange="args => UpdateItem(item, nameof(item.Description), args.Value?.ToString())" />
+                </td>
                 <td>@item.Id</td>
-                <td><InputNumber TValue="int" @bind-Value="item.QuantityInStore" class="form-control" min="0" /></td>
-                <td><InputNumber TValue="int" @bind-Value="item.OrderQuantity" class="form-control" min="1" max="@item.QuantityInStore" disabled="@(item.IsSelected == false)" /></td>
+                <td>
+                    <input type="number"
+                           class="form-control"
+                           min="0"
+                           value="@item.QuantityInStore"
+                           @onchange="args => UpdateItem(item, nameof(item.QuantityInStore), args.Value?.ToString())" />
+                </td>
+                <td>
+                    <input type="number"
+                           class="form-control"
+                           min="1"
+                           @bind="item.OrderQuantity"
+                           @bind:event="oninput"
+                           @onblur="() => ResetOrderQuantityOnBlur(item)"
+                           disabled="@(!item.IsSelected || item.QuantityInStore == 0)" />
+                </td>
                 <td class="text-center">
-                    <button class="btn btn-danger btn-sm" @onclick="() => Manager.DeleteItem(item)">
+                    <button class="btn btn-danger btn-sm" @onclick="() => DeleteItem(item)">
                         <i class="fas fa-trash-alt"></i> Delete
                     </button>
                 </td>
@@ -88,7 +103,7 @@
 
 <!-- Place Order Button -->
 <div class="my-3">
-    <button class="btn btn-primary w-100" @onclick="Manager.PlaceOrder" disabled="@(!Manager.HasSelectedItems)">
+    <button class="btn btn-primary w-100" @onclick="PlaceOrder" disabled="@(!Manager.HasSelectedItems)">
         <i class="fas fa-shopping-cart"></i> Place Order
     </button>
 </div>
@@ -99,5 +114,102 @@
         Manager?.LoadData();
     }
 
-    private void RefreshView() => StateHasChanged();
+    private void UpdateItem(Item item, string propertyName, string? newValue)
+    {
+        if (string.IsNullOrWhiteSpace(newValue)) return;
+
+        switch (propertyName)
+        {
+            case nameof(Item.Name):
+                item.Name = newValue;
+                break;
+
+            case nameof(Item.Description):
+                item.Description = newValue;
+                break;
+
+            case nameof(Item.QuantityInStore):
+                if (int.TryParse(newValue, out var quantity))
+                {
+                    item.QuantityInStore = quantity;
+                    if (quantity == 0)
+                    {
+                        item.OrderQuantity = 0;
+                    }
+                    else if (item.OrderQuantity > item.QuantityInStore)
+                    {
+                        item.OrderQuantity = item.QuantityInStore;
+                    }
+                }
+                break;
+
+            case nameof(Item.OrderQuantity):
+                if (int.TryParse(newValue, out var orderQuantity))
+                {
+                    item.OrderQuantity = Math.Max(1, Math.Min(orderQuantity, item.QuantityInStore));
+                }
+                break;
+        }
+
+        Manager.UpdateItem(item);
+        ToastService.ShowSuccess($"Item '{item.Name}' updated successfully!");
+
+    }
+
+    private void HandleOrderQuantityInput(ChangeEventArgs args, Item item)
+    {
+        if (int.TryParse(args.Value?.ToString(), out var newOrderQuantity))
+        {
+            if (item.QuantityInStore == 0)
+            {
+                item.OrderQuantity = 0;
+            }
+            else if (newOrderQuantity > item.QuantityInStore)
+            {
+                item.OrderQuantity = item.QuantityInStore;
+                ToastService.ShowWarning($"Order quantity for '{item.Name}' cannot exceed {item.QuantityInStore}. It has been reset.");
+            }
+            else if (newOrderQuantity < 1)
+            {
+                item.OrderQuantity = 1;
+                ToastService.ShowWarning($"Order quantity for '{item.Name}' cannot be less than 1. It has been reset to 1.");
+            }
+            else
+            {
+                item.OrderQuantity = newOrderQuantity;
+            }
+            StateHasChanged();
+        }
+    }
+
+    private void ResetOrderQuantityOnBlur(Item item)
+    {
+        if (item.QuantityInStore == 0)
+        {
+            item.OrderQuantity = 0;
+        }
+        else if (item.OrderQuantity > item.QuantityInStore)
+        {
+            item.OrderQuantity = item.QuantityInStore;
+            ToastService.ShowWarning($"Order quantity for '{item.Name}' has been reset to {item.QuantityInStore} after editing.");
+        }
+        else if (item.OrderQuantity < 1)
+        {
+            item.OrderQuantity = 1;
+            ToastService.ShowWarning($"Order quantity for '{item.Name}' has been reset to 1 after editing.");
+        }
+        StateHasChanged();
+    }
+
+    private void DeleteItem(Item item)
+    {
+        Manager.DeleteItem(item);
+        ToastService.ShowSuccess($"Item '{item.Name}' deleted successfully!");
+        StateHasChanged();
+    }
+    private async Task PlaceOrder()
+    {
+        await Manager.PlaceOrder();
+        ToastService.ShowSuccess("Order placed successfully");
+    }
 }

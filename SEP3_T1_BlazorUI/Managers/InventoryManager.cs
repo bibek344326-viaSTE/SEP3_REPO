@@ -1,5 +1,7 @@
 ﻿using SEP3_T1_BlazorUI.Models;
 using SEP3_T1_BlazorUI.Application.UseCases;
+using Microsoft.AspNetCore.Components.Authorization; // Added for AuthenticationStateProvider, AuthenticationState
+using System.Security.Claims; // Added for Claim
 
 namespace SEP3_T1_BlazorUI.Presentation.Managers
 {
@@ -7,14 +9,29 @@ namespace SEP3_T1_BlazorUI.Presentation.Managers
     {
         private readonly ItemUseCases _itemUseCases;
         private readonly OrderUseCases _orderUseCases;
+        private readonly AuthenticationStateProvider _authenticationStateProvider; // Injected AuthenticationStateProvider
+        private string _searchQuery = string.Empty;
 
-        public InventoryManager(ItemUseCases itemUseCases, OrderUseCases orderUseCases)
+        public InventoryManager(ItemUseCases itemUseCases, OrderUseCases orderUseCases, AuthenticationStateProvider authenticationStateProvider)
         {
             _itemUseCases = itemUseCases;
             _orderUseCases = orderUseCases;
+            _authenticationStateProvider = authenticationStateProvider;
         }
 
-        public string SearchQuery { get; set; } = string.Empty;
+        public string SearchQuery
+        {
+            get => _searchQuery;
+            set
+            {
+                if (_searchQuery != value)
+                {
+                    _searchQuery = value;
+                    CurrentPage = 1; // Reset to the first page when search changes
+                }
+            }
+        }
+
         public string SortColumn { get; private set; } = "Name";
         public bool Ascending { get; private set; } = true;
         public int CurrentPage { get; private set; } = 1;
@@ -34,6 +51,7 @@ namespace SEP3_T1_BlazorUI.Presentation.Managers
         public void ClearSearch()
         {
             SearchQuery = string.Empty;
+            CurrentPage = 1; // Reset to the first page when clearing the search
         }
 
         public void SortByName() => SortByColumn("Name");
@@ -47,16 +65,32 @@ namespace SEP3_T1_BlazorUI.Presentation.Managers
             _itemUseCases.DeleteItem(item);
         }
 
-        public void PlaceOrder()
+        public async Task PlaceOrder()
         {
             var selectedItems = FilterAndSortItems().Where(i => i.IsSelected && i.OrderQuantity > 0).ToList();
-            if (!selectedItems.Any()) return;
+            if (!selectedItems.Any())
+            {
+                Console.WriteLine("No items selected for the order.");
+                return;
+            }
+
+            var authState = await _authenticationStateProvider.GetAuthenticationStateAsync();
+            var employeeIdClaim = authState.User.Claims.FirstOrDefault(c => c.Type == "WorkingNumber");
+
+            if (employeeIdClaim == null)
+            {
+                Console.WriteLine("Failed to get Employee ID from the authentication state.");
+                return;
+            }
+
+            var employeeId = employeeIdClaim.Value;
 
             var newOrder = new Order
             {
                 OrderDate = DateTime.Now,
                 Status = "Pending",
                 TotalQuantity = selectedItems.Sum(i => i.OrderQuantity),
+                EmployeeId = employeeId, // Attach EmployeeId from claim
                 OrderItems = selectedItems.Select(i => new OrderItem
                 {
                     ItemId = i.Id,
@@ -65,30 +99,47 @@ namespace SEP3_T1_BlazorUI.Presentation.Managers
                 }).ToList()
             };
 
-            _orderUseCases.AddOrder(newOrder);
+            // Log the order details to the console
+            Console.WriteLine("New Order Details:");
+            Console.WriteLine(Newtonsoft.Json.JsonConvert.SerializeObject(newOrder, Newtonsoft.Json.Formatting.Indented));
 
+            // Place the order
+             _orderUseCases.AddOrder(newOrder);
+
+            // Update the QuantityInStore for each item and clear selection
             foreach (var item in selectedItems)
             {
-                item.IsSelected = false;
-                item.OrderQuantity = 0;
+                item.QuantityInStore -= item.OrderQuantity; // Reduce quantity in store
+                if (item.QuantityInStore < 0) item.QuantityInStore = 0; // Ensure it doesn't go below zero
+                item.OrderQuantity = 0; // Clear the order quantity
+                item.IsSelected = false; // Deselect the item
+                UpdateItem(item); // Call UpdateItem to persist the changes
             }
         }
+
 
         public void PreviousPage()
         {
             if (!IsFirstPage)
                 CurrentPage--;
+
+            if (CurrentPage > TotalPages)
+                CurrentPage = TotalPages;
         }
 
         public void NextPage()
         {
             if (!IsLastPage)
                 CurrentPage++;
+
+            if (CurrentPage > TotalPages)
+                CurrentPage = TotalPages;
         }
 
         public bool IsFirstPage => CurrentPage == 1;
-        public bool IsLastPage => CurrentPage == TotalPages;
-        public int TotalPages => (int)Math.Ceiling(FilterAndSortItems().Count() / (double)PageSize);
+        public bool IsLastPage => CurrentPage >= TotalPages;
+
+        public int TotalPages => Math.Max(1, (int)Math.Ceiling(FilterAndSortItems().Count() / (double)PageSize));
 
         public void ToggleSelection(Item item)
         {
@@ -132,6 +183,11 @@ namespace SEP3_T1_BlazorUI.Presentation.Managers
             };
 
             return items;
+        }
+
+        public void UpdateItem(Item item)
+        {
+            _itemUseCases.UpdateItem(item);
         }
     }
 }

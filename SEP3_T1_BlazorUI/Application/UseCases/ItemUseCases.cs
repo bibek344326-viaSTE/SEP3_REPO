@@ -21,6 +21,10 @@ namespace SEP3_T1_BlazorUI.Application.UseCases
         {
             _itemRepository.DeleteItem(item);
         }
+        public void UpdateItem(Item item) {
+            _itemRepository.UpdateItem(item);
+
+        }
 
         public IEnumerable<Item> GetAllItems()
         {
