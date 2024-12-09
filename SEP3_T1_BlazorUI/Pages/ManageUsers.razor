@@ -1,11 +1,10 @@
 ﻿@page "/manage-users"
 @using Microsoft.AspNetCore.Components.Forms
 @using Microsoft.AspNetCore.Components.Web
-@using SEP3_T1_BlazorUI.Models;
-@using SEP3_T1_BlazorUI.Application.UseCases;
+@using SEP3_T1_BlazorUI.Models
 @using SEP3_T1_BlazorUI.Presentation.Managers
 
-@inject SEP3_T1_BlazorUI.Application.UseCases.UserUseCases UserUseCases
+@inject UserManager Manager
 
 <PageTitle>Manage Users</PageTitle>
 
@@ -19,7 +18,7 @@
            type="text"
            placeholder="Search by username or working number..."
            @bind="Manager.SearchQuery" />
-    <button class="btn btn-outline-secondary" type="button" @onclick="ClearFilter">
+    <button class="btn btn-outline-secondary" type="button" @onclick="Manager.ClearSearch">
         <i class="fas fa-times"></i> Clear
     </button>
 </div>
@@ -52,7 +51,7 @@
                                 <button class="btn btn-sm btn-warning me-2" @onclick="() => Manager.ToggleEditUser(user)">
                                     <i class="fas fa-edit"></i> Edit
                                 </button>
-                                <button class="btn btn-sm btn-danger" @onclick="() => DeleteUser(user)">
+                                <button class="btn btn-sm btn-danger" @onclick="() => Manager.DeleteUser(user)">
                                     <i class="fas fa-trash-alt"></i> Delete
                                 </button>
                             </td>
@@ -62,35 +61,26 @@
                         {
                             <tr>
                                 <td colspan="5">
-                                    <EditForm Model="Manager.EditingUser" OnValidSubmit="SaveUser">
+                                    <EditForm Model="Manager.EditingUser" OnValidSubmit="Manager.SaveUser">
                                         <div class="row">
                                             <div class="col-md-3">
                                                 <label>Username</label>
-                                                <InputText class="form-control mb-2"
-                                                           Value="@Manager.EditingUser.Username"
-                                                           ValueExpression="@(() => Manager.EditingUser.Username)" />
+                                                <InputText class="form-control mb-2" @bind="Manager.EditingUser.Username" />
                                             </div>
 
                                             <div class="col-md-3">
                                                 <label>Password</label>
-                                                <InputText class="form-control mb-2"
-                                                           type="password"
-                                                           Value="@Manager.EditingUser.Password"
-                                                           ValueExpression="@(() => Manager.EditingUser.Password)" />
+                                                <InputText class="form-control mb-2" type="password" @bind="Manager.EditingUser.Password" />
                                             </div>
 
                                             <div class="col-md-2">
                                                 <label>Working Number</label>
-                                                <InputNumber class="form-control mb-2"
-                                                             Value="@Manager.EditingUser.WorkingNumber"
-                                                             ValueExpression="@(() => Manager.EditingUser.WorkingNumber)" />
+                                                <InputNumber class="form-control mb-2" @bind="Manager.EditingUser.WorkingNumber" TValue="int" />
                                             </div>
 
                                             <div class="col-md-3">
                                                 <label>Role</label>
-                                                <select class="form-control mb-2"
-                                                        Value="@Manager.EditingUser.Role"
-                                                        ValueExpression="@(() => Manager.EditingUser.Role)">
+                                                <select class="form-control mb-2" @bind="Manager.EditingUser.Role">
                                                     <option value="InventoryManager">Inventory Manager</option>
                                                     <option value="WarehouseWorker">Warehouse Worker</option>
                                                     <option value="Admin">Admin</option>
@@ -101,7 +91,7 @@
                                                 <button type="submit" class="btn btn-success me-2">
                                                     <i class="fas fa-save"></i> Save
                                                 </button>
-                                                <button type="button" class="btn btn-secondary" @onclick="CancelEdit">
+                                                <button type="button" class="btn btn-secondary" @onclick="Manager.CancelEdit">
                                                     <i class="fas fa-times"></i> Cancel
                                                 </button>
                                             </div>
@@ -119,24 +109,4 @@
 else
 {
     <p>No users found.</p>
-}
-
-@code {
-    private UserManager Manager { get; set; }
-
-    protected override void OnInitialized()
-    {
-        Manager = new UserManager(UserUseCases);
-    }
-
-    private void SaveUser() => Manager.SaveUser();
-
-    private void CancelEdit() => Manager.CancelEdit();
-
-    private void ClearFilter() => Manager.SearchQuery = string.Empty;
-
-    private void DeleteUser(User user)
-    {
-        UserUseCases.DeleteUser(user);
-    }
 }

@@ -27,23 +27,16 @@ namespace SEP3_T1_BlazorUI.Presentation.Managers
             {
                 var orders = _orderUseCases.GetAllOrders().AsQueryable();
 
-                // Filter by Status
                 if (!string.IsNullOrWhiteSpace(SelectedStatus))
                 {
                     orders = orders.Where(o => o.Status.Equals(SelectedStatus, StringComparison.OrdinalIgnoreCase));
                 }
 
-                // Filter by Order ID
                 if (!string.IsNullOrWhiteSpace(SearchQuery))
                 {
                     if (int.TryParse(SearchQuery, out var orderId))
                     {
                         orders = orders.Where(o => o.OrderId == orderId);
-                    }
-                    else
-                    {
-                        // Reset to no results if searchQuery is invalid
-                        orders = Enumerable.Empty<Order>().AsQueryable();
                     }
                 }
 
@@ -79,23 +72,16 @@ namespace SEP3_T1_BlazorUI.Presentation.Managers
         {
             return status switch
             {
-                "Completed" => "bg-success text-white",
-                "Pending" => "bg-warning text-dark",
-                "Rejected" => "bg-danger text-white",
-                _ => "bg-secondary text-white"
+                "Completed" => "text-success fw-bold",
+                "Rejected" => "text-danger fw-bold",
+                _ => string.Empty
             };
-        }
-
-        public void HandleSearchInput(string input)
-        {
-            SearchQuery = input;
-            CurrentPage = 1; // Reset to the first page on new input
         }
 
         public void ClearSearch()
         {
             SearchQuery = string.Empty;
-            CurrentPage = 1; // Reset to the first page when clearing the search
+            CurrentPage = 1;
         }
     }
 }

@@ -7,6 +7,7 @@ using SEP3_T1_BlazorUI.Application.Interfaces;
 using SEP3_T1_BlazorUI.Application.UseCases;
 using SEP3_T1_BlazorUI.Infrastructure.Repositories;
 using SEP3_T1_BlazorUI.Infrastructure;
+using SEP3_T1_BlazorUI.Presentation.Managers;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.RootComponents.Add<App>("#app");
@@ -17,6 +18,11 @@ builder.Services.AddBlazoredLocalStorage();
 
 // Add the authentication state provider as a scoped service
 builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthenticationStateProvider>();
+
+builder.Services.AddScoped<InventoryManager>();
+builder.Services.AddScoped<LoginManager>();
+builder.Services.AddScoped<OrderHistoryManager>();
+builder.Services.AddScoped<UserManager>();
 
 // Add repositories
 builder.Services.AddScoped<IItemRepository, ItemRepository>();

@@ -1,8 +1,6 @@
 ﻿@page "/"
 @using SEP3_T1_BlazorUI.Presentation.Managers;
-@using SEP3_T1_BlazorUI.Application.UseCases;
 @using SEP3_T1_BlazorUI.Models;
-@using Microsoft.AspNetCore.Components.Forms
 
 <PageTitle>Home</PageTitle>
 
@@ -17,12 +15,16 @@
             <i class="fas fa-search"></i>
         </span>
     </div>
-    <input type="text" class="form-control" placeholder="Search by Name or Description" @bind="Manager.SearchQuery" @oninput="RefreshView" />
-    <div class="input-group-append">
-        <button class="btn btn-outline-secondary" @onclick="ClearSearch" type="button">
-            <i class="fas fa-times"></i> Clear
-        </button>
-    </div>
+    @if (Manager != null)
+    {
+        <input type="text" class="form-control" placeholder="Search by Name or Description" @bind="Manager.SearchQuery" @oninput="RefreshView" />
+        <div class="input-group-append">
+            <button class="btn btn-outline-secondary" @onclick="Manager.ClearSearch" type="button">
+                <i class="fas fa-times"></i> Clear
+            </button>
+        </div>
+    }
+   
 </div>
 
 <!-- Table -->
@@ -31,19 +33,19 @@
         <tr>
             <th class="text-center">Select</th>
             <th>
-                <button class="btn btn-link" @onclick="() => SortByName()">
-                    Name <i class="@GetSortIcon("Name")"></i>
+                <button class="btn btn-link" @onclick="Manager.SortByName">
+                    Name <i class="@Manager.GetSortIcon("Name")"></i>
                 </button>
             </th>
             <th>
-                <button class="btn btn-link" @onclick="() => SortByDescription()">
-                    Description <i class="@GetSortIcon("Description")"></i>
+                <button class="btn btn-link" @onclick="Manager.SortByDescription">
+                    Description <i class="@Manager.GetSortIcon("Description")"></i>
                 </button>
             </th>
             <th>ID</th>
             <th>
-                <button class="btn btn-link" @onclick="() => SortByQuantityInStore()">
-                    Quantity In Store <i class="@GetSortIcon("QuantityInStore")"></i>
+                <button class="btn btn-link" @onclick="Manager.SortByQuantityInStore">
+                    Quantity In Store <i class="@Manager.GetSortIcon("QuantityInStore")"></i>
                 </button>
             </th>
             <th>Order Quantity</th>
@@ -51,11 +53,11 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in PagedItems)
+        @foreach (var item in Manager.PagedItems)
         {
             <tr @key="item.Id">
                 <td class="text-center">
-                    <InputCheckbox @bind-Value="@item.IsSelected" @oninput="() => ToggleSelection(item)" />
+                    <InputCheckbox @bind-Value="@item.IsSelected" @oninput="() => Manager.ToggleSelection(item)" />
                 </td>
                 <td><InputText @bind-Value="item.Name" class="form-control" /></td>
                 <td><InputText @bind-Value="item.Description" class="form-control" /></td>
@@ -63,7 +65,7 @@
                 <td><InputNumber TValue="int" @bind-Value="item.QuantityInStore" class="form-control" min="0" /></td>
                 <td><InputNumber TValue="int" @bind-Value="item.OrderQuantity" class="form-control" min="1" max="@item.QuantityInStore" disabled="@(item.IsSelected == false)" /></td>
                 <td class="text-center">
-                    <button class="btn btn-danger btn-sm" @onclick="() => DeleteItem(item)">
+                    <button class="btn btn-danger btn-sm" @onclick="() => Manager.DeleteItem(item)">
                         <i class="fas fa-trash-alt"></i> Delete
                     </button>
                 </td>
@@ -74,105 +76,29 @@
 
 <!-- Pagination -->
 <div class="d-flex justify-content-between align-items-center mt-3">
-    <button class="btn btn-secondary" @onclick="PreviousPage" disabled="@Manager.IsFirstPage">
+    <button class="btn btn-secondary" @onclick="Manager.PreviousPage" disabled="@Manager.IsFirstPage">
         <i class="fas fa-arrow-left"></i> Previous
     </button>
     <span>Page @Manager.CurrentPage of @Manager.TotalPages</span>
-    <button class="btn btn-secondary" @onclick="NextPage" disabled="@Manager.IsLastPage">
+    <button class="btn btn-secondary" @onclick="Manager.NextPage" disabled="@Manager.IsLastPage">
         Next <i class="fas fa-arrow-right"></i>
     </button>
 </div>
 
 <!-- Place Order Button -->
 <div class="my-3">
-    <button class="btn btn-primary w-100" @onclick="PlaceOrder" disabled="@(!Manager.FilterAndSortItems().Any(i => i.IsSelected))">
+    <button class="btn btn-primary w-100" @onclick="Manager.PlaceOrder" disabled="@(!Manager.HasSelectedItems)">
         <i class="fas fa-shopping-cart"></i> Place Order
     </button>
 </div>
 
 @code {
-    public InventoryManager Manager { get; set; }
-
-    [Inject] private ItemUseCases ItemUseCases { get; set; }
-    [Inject] private OrderUseCases OrderUseCases { get; set; }
+    [Inject] private InventoryManager? Manager { get; set; }
 
     protected override void OnInitialized()
     {
-        Manager = new InventoryManager(ItemUseCases, OrderUseCases);
+        Manager?.LoadData();
     }
 
     private void RefreshView() => StateHasChanged();
-
-    private IEnumerable<Item> PagedItems => Manager.FilterAndSortItems()
-        .Skip((Manager.CurrentPage - 1) * Manager.PageSize)
-        .Take(Manager.PageSize);
-
-    private void SortByName() => Manager.SortByColumn("Name");
-
-    private void SortByDescription() => Manager.SortByColumn("Description");
-
-    private void SortByQuantityInStore() => Manager.SortByColumn("QuantityInStore");
-
-    private void ClearSearch()
-    {
-        Manager.SearchQuery = string.Empty;
-        RefreshView();
-    }
-
-    private void ToggleSelection(Item item)
-    {
-        Manager.ToggleSelection(item);
-    }
-
-    private async Task PlaceOrder()
-    {
-        var selectedItems = Manager.FilterAndSortItems().Where(i => i.IsSelected && i.OrderQuantity > 0).ToList();
-        
-        if (selectedItems.Any())
-        {
-            var newOrder = new Order
-            {
-                OrderDate = DateTime.Now,
-                Status = "Pending",
-                TotalQuantity = selectedItems.Sum(i => i.OrderQuantity),
-                EmployeeId = "CurrentEmployeeId", // Replace with logic to get the current employee ID
-                OrderItems = selectedItems.Select(i => new OrderItem
-                {
-                    ItemId = i.Id,
-                    Name = i.Name,
-                    QuantityOrdered = i.OrderQuantity
-                }).ToList()
-            };
-
-            OrderUseCases.AddOrder(newOrder);
-
-            foreach (var item in selectedItems)
-            {
-                item.IsSelected = false;
-                item.OrderQuantity = 0;
-            }
-
-            RefreshView();
-        }
-    }
-
-    private void PreviousPage()
-    {
-        Manager.PreviousPage();
-    }
-
-    private void NextPage()
-    {
-        Manager.NextPage();
-    }
-
-    private async Task DeleteItem(Item item)
-    {
-        ItemUseCases.DeleteItem(item);
-        RefreshView();
-    }
-
-    private string GetSortIcon(string columnName) => Manager.SortColumn == columnName
-        ? (Manager.Ascending ? "fas fa-sort-up" : "fas fa-sort-down")
-        : "fas fa-sort";
 }

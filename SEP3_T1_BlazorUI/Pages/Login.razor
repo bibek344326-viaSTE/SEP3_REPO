@@ -1,12 +1,10 @@
 @page "/login"
 @using Microsoft.AspNetCore.Components.Forms
 @using Microsoft.JSInterop
-@using SEP3_T1_BlazorUI.Application.UseCases;
 @using SEP3_T1_BlazorUI.Presentation.Managers;
 
 @inject NavigationManager NavigationManager
-@inject IJSRuntime JSRuntime
-@inject SEP3_T1_BlazorUI.Application.UseCases.AuthUseCases AuthUseCases
+@inject LoginManager loginManager
 
 <div class="container" style="max-width:400px; margin-top:100px;">
     <div class="card shadow-sm">
@@ -41,13 +39,6 @@
 </div>
 
 @code {
-    private LoginManager loginManager;
-
-    protected override void OnInitialized()
-    {
-        loginManager = new LoginManager(AuthUseCases, JSRuntime);
-    }
-
     private async Task HandleValidSubmit()
     {
         bool loginSuccess = await loginManager.AttemptLoginAsync();

@@ -20,56 +20,38 @@ namespace SEP3_T1_BlazorUI.Presentation.Managers
         public int CurrentPage { get; private set; } = 1;
         public int PageSize { get; private set; } = 12;
 
-        public IEnumerable<Item> FilterAndSortItems()
+        public IEnumerable<Item> PagedItems => FilterAndSortItems()
+            .Skip((CurrentPage - 1) * PageSize)
+            .Take(PageSize);
+
+        public bool HasSelectedItems => FilterAndSortItems().Any(i => i.IsSelected);
+
+        public void LoadData()
         {
-            var items = _itemUseCases.GetAllItems().AsQueryable();
-
-            // Search
-            if (!string.IsNullOrWhiteSpace(SearchQuery))
-            {
-                items = items.Where(i =>
-                    i.Name.Contains(SearchQuery, StringComparison.OrdinalIgnoreCase) ||
-                    i.Description.Contains(SearchQuery, StringComparison.OrdinalIgnoreCase));
-            }
-
-            // Sort
-            items = SortColumn switch
-            {
-                "Name" => Ascending ? items.OrderBy(i => i.Name) : items.OrderByDescending(i => i.Name),
-                "Description" => Ascending ? items.OrderBy(i => i.Description) : items.OrderByDescending(i => i.Description),
-                "QuantityInStore" => Ascending ? items.OrderBy(i => i.QuantityInStore) : items.OrderByDescending(i => i.QuantityInStore),
-                _ => items
-            };
-
-            return items;
+            // Load initial data if needed
         }
 
-        public void SortByColumn(string columnName)
+        public void ClearSearch()
         {
-            if (SortColumn == columnName)
-            {
-                Ascending = !Ascending; // Toggle sort order
-            }
-            else
-            {
-                SortColumn = columnName;
-                Ascending = true; // Default to ascending order
-            }
+            SearchQuery = string.Empty;
         }
 
-        public void ToggleSelection(Item item)
+        public void SortByName() => SortByColumn("Name");
+
+        public void SortByDescription() => SortByColumn("Description");
+
+        public void SortByQuantityInStore() => SortByColumn("QuantityInStore");
+
+        public void DeleteItem(Item item)
         {
-            item.IsSelected = !item.IsSelected;
+            _itemUseCases.DeleteItem(item);
         }
 
         public void PlaceOrder()
         {
-            var selectedItems = _itemUseCases.GetAllItems().Where(i => i.IsSelected && i.OrderQuantity > 0).ToList();
+            var selectedItems = FilterAndSortItems().Where(i => i.IsSelected && i.OrderQuantity > 0).ToList();
+            if (!selectedItems.Any()) return;
 
-            if (!selectedItems.Any())
-                throw new InvalidOperationException("No items selected for order.");
-
-            // Convert selected items into an order
             var newOrder = new Order
             {
                 OrderDate = DateTime.Now,
@@ -83,21 +65,14 @@ namespace SEP3_T1_BlazorUI.Presentation.Managers
                 }).ToList()
             };
 
-            // Deduct quantities and reset item state
+            _orderUseCases.AddOrder(newOrder);
+
             foreach (var item in selectedItems)
             {
-                item.QuantityInStore -= item.OrderQuantity;
-                item.OrderQuantity = 0;
                 item.IsSelected = false;
+                item.OrderQuantity = 0;
             }
-
-            _orderUseCases.AddOrder(newOrder);
         }
-
-        // Pagination
-        public int TotalPages => (int)Math.Ceiling(FilterAndSortItems().Count() / (double)PageSize);
-        public bool IsFirstPage => CurrentPage == 1;
-        public bool IsLastPage => CurrentPage == TotalPages;
 
         public void PreviousPage()
         {
@@ -109,6 +84,54 @@ namespace SEP3_T1_BlazorUI.Presentation.Managers
         {
             if (!IsLastPage)
                 CurrentPage++;
+        }
+
+        public bool IsFirstPage => CurrentPage == 1;
+        public bool IsLastPage => CurrentPage == TotalPages;
+        public int TotalPages => (int)Math.Ceiling(FilterAndSortItems().Count() / (double)PageSize);
+
+        public void ToggleSelection(Item item)
+        {
+            item.IsSelected = !item.IsSelected;
+        }
+
+        public string GetSortIcon(string columnName) => SortColumn == columnName
+            ? (Ascending ? "fas fa-sort-up" : "fas fa-sort-down")
+            : "fas fa-sort";
+
+        public void SortByColumn(string columnName)
+        {
+            if (SortColumn == columnName)
+            {
+                Ascending = !Ascending;
+            }
+            else
+            {
+                SortColumn = columnName;
+                Ascending = true;
+            }
+        }
+
+        public IEnumerable<Item> FilterAndSortItems()
+        {
+            var items = _itemUseCases.GetAllItems().AsQueryable();
+
+            if (!string.IsNullOrWhiteSpace(SearchQuery))
+            {
+                items = items.Where(i =>
+                    i.Name.Contains(SearchQuery, StringComparison.OrdinalIgnoreCase) ||
+                    i.Description.Contains(SearchQuery, StringComparison.OrdinalIgnoreCase));
+            }
+
+            items = SortColumn switch
+            {
+                "Name" => Ascending ? items.OrderBy(i => i.Name) : items.OrderByDescending(i => i.Name),
+                "Description" => Ascending ? items.OrderBy(i => i.Description) : items.OrderByDescending(i => i.Description),
+                "QuantityInStore" => Ascending ? items.OrderBy(i => i.QuantityInStore) : items.OrderByDescending(i => i.QuantityInStore),
+                _ => items
+            };
+
+            return items;
         }
     }
 }
