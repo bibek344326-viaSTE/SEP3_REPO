@@ -10,12 +10,17 @@
 <PageTitle>Manage Users</PageTitle>
 
 <h1>Manage Users</h1>
+
 <p>Here you can view and manage users by their roles.</p>
 
-<div class="input-group mb-3">
-    <input class="form-control" type="text" placeholder="Search by username or working number..." @bind="Manager.SearchQuery" />
+<!-- Search and Filter Section -->
+<div class="input-group mb-4">
+    <input class="form-control"
+           type="text"
+           placeholder="Search by username or working number..."
+           @bind="Manager.SearchQuery" />
     <button class="btn btn-outline-secondary" type="button" @onclick="ClearFilter">
-        Clear
+        <i class="fas fa-times"></i> Clear
     </button>
 </div>
 
@@ -23,15 +28,16 @@
 {
     @foreach (var roleGroup in Manager.GroupedUsers)
     {
-        <p>Role: @roleGroup.Key</p>
-        <div>
-            <table class="table">
-                <thead>
+        <h4 class="mt-4">Role: @roleGroup.Key</h4>
+        <div class="table-responsive">
+            <table class="table table-hover table-bordered">
+                <thead class="table-dark">
                     <tr>
                         <th>Username</th>
+                        <th>Password</th>
                         <th>Working Number</th>
                         <th>Role</th>
-                        <th>Actions</th>
+                        <th class="text-center">Actions</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -39,26 +45,67 @@
                     {
                         <tr>
                             <td>@user.Username</td>
+                            <td>******</td>
                             <td>@user.WorkingNumber</td>
                             <td>@user.Role</td>
-                            <td>
-                                <button class="btn btn-warning" @onclick="() => Manager.ToggleEditUser(user)">Edit</button>
-                                <button class="btn btn-danger" @onclick="() => DeleteUser(user)">Delete</button>
+                            <td class="text-center">
+                                <button class="btn btn-sm btn-warning me-2" @onclick="() => Manager.ToggleEditUser(user)">
+                                    <i class="fas fa-edit"></i> Edit
+                                </button>
+                                <button class="btn btn-sm btn-danger" @onclick="() => DeleteUser(user)">
+                                    <i class="fas fa-trash-alt"></i> Delete
+                                </button>
                             </td>
                         </tr>
 
                         @if (Manager.EditingUser?.Username == user.Username)
                         {
                             <tr>
-                                <td colspan="4">
+                                <td colspan="5">
                                     <EditForm Model="Manager.EditingUser" OnValidSubmit="SaveUser">
-                                        <InputText class="form-control" @bind="Manager.EditingUser.Username" readonly />
-                                        <InputNumber TValue="int" class="form-control" @bind="Manager.EditingUser.WorkingNumber" />
-                                        <select class="form-control" @bind="Manager.EditingUser.Role">
-                                            <option value="InventoryManager">Inventory Manager</option>
-                                            <option value="WarehouseWorker">Warehouse Worker</option>
-                                        </select>
-                                        <button type="submit" class="btn btn-success">Save</button>
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                                <label>Username</label>
+                                                <InputText class="form-control mb-2"
+                                                           Value="@Manager.EditingUser.Username"
+                                                           ValueExpression="@(() => Manager.EditingUser.Username)" />
+                                            </div>
+
+                                            <div class="col-md-3">
+                                                <label>Password</label>
+                                                <InputText class="form-control mb-2"
+                                                           type="password"
+                                                           Value="@Manager.EditingUser.Password"
+                                                           ValueExpression="@(() => Manager.EditingUser.Password)" />
+                                            </div>
+
+                                            <div class="col-md-2">
+                                                <label>Working Number</label>
+                                                <InputNumber class="form-control mb-2"
+                                                             Value="@Manager.EditingUser.WorkingNumber"
+                                                             ValueExpression="@(() => Manager.EditingUser.WorkingNumber)" />
+                                            </div>
+
+                                            <div class="col-md-3">
+                                                <label>Role</label>
+                                                <select class="form-control mb-2"
+                                                        Value="@Manager.EditingUser.Role"
+                                                        ValueExpression="@(() => Manager.EditingUser.Role)">
+                                                    <option value="InventoryManager">Inventory Manager</option>
+                                                    <option value="WarehouseWorker">Warehouse Worker</option>
+                                                    <option value="Admin">Admin</option>
+                                                </select>
+                                            </div>
+
+                                            <div class="col-md-12 text-end">
+                                                <button type="submit" class="btn btn-success me-2">
+                                                    <i class="fas fa-save"></i> Save
+                                                </button>
+                                                <button type="button" class="btn btn-secondary" @onclick="CancelEdit">
+                                                    <i class="fas fa-times"></i> Cancel
+                                                </button>
+                                            </div>
+                                        </div>
                                     </EditForm>
                                 </td>
                             </tr>

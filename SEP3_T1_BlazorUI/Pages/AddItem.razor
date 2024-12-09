@@ -6,7 +6,8 @@
 
 <PageTitle>Add New Item</PageTitle>
 
-<h2>Add New Item</h2>
+<h1>Add New Item</h1>
+
 <div class="card p-3">
     <EditForm Model="newItem" OnValidSubmit="AddNewItem">
         <DataAnnotationsValidator />
@@ -14,18 +15,19 @@
 
         <div class="mb-3">
             <label for="itemName" class="form-label">Name:</label>
-            <InputText id="itemName" @bind="newItem.Name" class="form-control" />
+            <InputText id="itemName" Value="@newItem.Name" ValueExpression="@(() => newItem.Name)" class="form-control" />
         </div>
 
         <div class="mb-3">
             <label for="itemDescription" class="form-label">Description:</label>
-            <InputText id="itemDescription" @bind="newItem.Description" class="form-control" />
+            <InputText id="itemDescription" Value="@newItem.Description" ValueExpression="@(() => newItem.Description)" class="form-control" />
         </div>
 
         <div class="mb-3">
             <label for="quantityInStore" class="form-label">Quantity In Store:</label>
-            <InputNumber TValue="int" id="quantityInStore" @bind="newItem.QuantityInStore" class="form-control" min="0" />
+            <InputNumber TValue="int" Value="@newItem.QuantityInStore" ValueExpression="@(() => newItem.QuantityInStore)" class="form-control" min="0" />
         </div>
+
 
         <button type="submit" class="btn btn-primary w-100">Add Item</button>
     </EditForm>
@@ -36,7 +38,7 @@
 
     private void AddNewItem()
     {
-        ItemUseCases.AddItem(newItem);  // Use the injected service instance
-        newItem = new Item();           // Reset the form after adding
+        ItemUseCases.AddItem(newItem);
+        newItem = new Item();          
     }
 }

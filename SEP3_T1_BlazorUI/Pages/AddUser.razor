@@ -6,7 +6,8 @@
 
 <PageTitle>Add User</PageTitle>
 
-<h2>Add New User</h2>
+<h1>Add New User</h1>
+
 <div class="card p-3">
     <EditForm Model="NewUser" OnValidSubmit="HandleAddUser">
         <DataAnnotationsValidator />
@@ -14,18 +15,19 @@
 
         <div class="mb-3">
             <label for="username" class="form-label">Username:</label>
-            <InputText id="username" class="form-control" @bind="NewUser.Username" />
+            <InputText id="username" Value="@NewUser.Username" ValueExpression="@(() => NewUser.Username)" class="form-control" />
         </div>
 
         <div class="mb-3">
             <label for="password" class="form-label">Password:</label>
-            <InputText id="password" class="form-control" @bind="NewUser.Password" type="password" />
+            <InputText id="password" Value="@NewUser.Password" ValueExpression="@(() => NewUser.Password)" class="form-control" type="password" />
         </div>
 
         <div class="mb-3">
             <label for="workingNumber" class="form-label">Working Number:</label>
-            <InputNumber TValue="int" id="workingNumber" class="form-control" @bind="NewUser.WorkingNumber" />
+            <InputNumber TValue="int" Value="@NewUser.WorkingNumber" ValueExpression="@(() => NewUser.WorkingNumber)" class="form-control" />
         </div>
+
 
         <div class="mb-3">
             <label for="role" class="form-label">Role:</label>
@@ -47,7 +49,7 @@
 
     private void HandleAddUser()
     {
-        UserUseCases.AddUser(NewUser); // Use the AddUser use case
-        NewUser = new User();          // Reset the form after submission
+        UserUseCases.AddUser(NewUser);
+        NewUser = new User();
     }
 }
