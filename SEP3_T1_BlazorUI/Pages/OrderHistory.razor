@@ -12,7 +12,9 @@
 
 <div class="d-flex align-items-center justify-content-center mb-3 w-100">
     <div class="me-4">
-        <select class="form-select" @bind="OrderHistoryManager.SelectedStatus">
+        <select class="form-select" style="
+                width: auto;"
+        @bind="OrderHistoryManager.SelectedStatus">
             <option value="">All Statuses</option>
             <option value="Completed">Completed</option>
             <option value="Pending">Pending</option>

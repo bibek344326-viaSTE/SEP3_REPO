@@ -21,7 +21,7 @@ namespace SEP3_T1_BlazorUI.Presentation.Managers
         public DateTime? EndDate { get; set; }
 
         public int CurrentPage { get; private set; } = 1;
-        public int PageSize { get; set; } = 10;
+        public int PageSize { get; set; } = 17;
 
         public string SortColumn { get; private set; } = "OrderDate";
         public bool Ascending { get; private set; } = true;
