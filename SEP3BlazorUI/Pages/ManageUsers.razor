@@ -1,0 +1,95 @@
+﻿@page "/manage-users"
+@using Microsoft.AspNetCore.Components.Forms
+@using Microsoft.AspNetCore.Components.Web
+@using SEP3BlazorUI.Models;
+@using SEP3BlazorUI.Application.UseCases;
+@using SEP3BlazorUI.Presentation.Managers
+
+@inject SEP3BlazorUI.Application.UseCases.UserUseCases UserUseCases
+
+<PageTitle>Manage Users</PageTitle>
+
+<h1>Manage Users</h1>
+<p>Here you can view and manage users by their roles.</p>
+
+<div class="input-group mb-3">
+    <input class="form-control" type="text" placeholder="Search by username or working number..." @bind="Manager.SearchQuery" />
+    <button class="btn btn-outline-secondary" type="button" @onclick="ClearFilter">
+        Clear
+    </button>
+</div>
+
+@if (Manager.GroupedUsers.Any())
+{
+    @foreach (var roleGroup in Manager.GroupedUsers)
+    {
+        <p>Role: @roleGroup.Key</p>
+        <div>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Username</th>
+                        <th>Working Number</th>
+                        <th>Role</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var user in roleGroup)
+                    {
+                        <tr>
+                            <td>@user.Username</td>
+                            <td>@user.WorkingNumber</td>
+                            <td>@user.Role</td>
+                            <td>
+                                <button class="btn btn-warning" @onclick="() => Manager.ToggleEditUser(user)">Edit</button>
+                                <button class="btn btn-danger" @onclick="() => DeleteUser(user)">Delete</button>
+                            </td>
+                        </tr>
+
+                        @if (Manager.EditingUser?.Username == user.Username)
+                        {
+                            <tr>
+                                <td colspan="4">
+                                    <EditForm Model="Manager.EditingUser" OnValidSubmit="SaveUser">
+                                        <InputText class="form-control" @bind="Manager.EditingUser.Username" readonly />
+                                        <InputNumber TValue="int" class="form-control" @bind="Manager.EditingUser.WorkingNumber" />
+                                        <select class="form-control" @bind="Manager.EditingUser.Role">
+                                            <option value="InventoryManager">Inventory Manager</option>
+                                            <option value="WarehouseWorker">Warehouse Worker</option>
+                                        </select>
+                                        <button type="submit" class="btn btn-success">Save</button>
+                                    </EditForm>
+                                </td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+}
+else
+{
+    <p>No users found.</p>
+}
+
+@code {
+    private UserManager Manager { get; set; }
+
+    protected override void OnInitialized()
+    {
+        Manager = new UserManager(UserUseCases);
+    }
+
+    private void SaveUser() => Manager.SaveUser();
+
+    private void CancelEdit() => Manager.CancelEdit();
+
+    private void ClearFilter() => Manager.SearchQuery = string.Empty;
+
+    private void DeleteUser(User user)
+    {
+        UserUseCases.DeleteUser(user);
+    }
+}

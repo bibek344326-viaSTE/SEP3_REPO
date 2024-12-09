@@ -1,0 +1,42 @@
+﻿@page "/add-item"
+@using SEP3BlazorUI.Models;
+@using SEP3BlazorUI.Application.UseCases;
+
+@inject SEP3BlazorUI.Application.UseCases.ItemUseCases ItemUseCases
+
+<PageTitle>Add New Item</PageTitle>
+
+<h2>Add New Item</h2>
+<div class="card p-3">
+    <EditForm Model="newItem" OnValidSubmit="AddNewItem">
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+
+        <div class="mb-3">
+            <label for="itemName" class="form-label">Name:</label>
+            <InputText id="itemName" @bind="newItem.Name" class="form-control" />
+        </div>
+
+        <div class="mb-3">
+            <label for="itemDescription" class="form-label">Description:</label>
+            <InputText id="itemDescription" @bind="newItem.Description" class="form-control" />
+        </div>
+
+        <div class="mb-3">
+            <label for="quantityInStore" class="form-label">Quantity In Store:</label>
+            <InputNumber TValue="int" id="quantityInStore" @bind="newItem.QuantityInStore" class="form-control" min="0" />
+        </div>
+
+        <button type="submit" class="btn btn-primary w-100">Add Item</button>
+    </EditForm>
+</div>
+
+@code {
+    private Item newItem = new Item();
+
+    private void AddNewItem()
+    {
+        ItemUseCases.AddItem(newItem);  // Use the injected service instance
+        newItem = new Item();           // Reset the form after adding
+    }
+}
