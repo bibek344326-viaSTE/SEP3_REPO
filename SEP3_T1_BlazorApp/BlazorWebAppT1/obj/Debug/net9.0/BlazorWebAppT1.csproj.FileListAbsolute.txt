@@ -239,7 +239,9 @@ C:\Users\AminAouina\source\SEP3_REPO\SEP3_T1_BlazorApp\BlazorWebAppT1\obj\Debug\
 C:\Users\AminAouina\source\SEP3_REPO\SEP3_T1_BlazorApp\BlazorWebAppT1\obj\Debug\net9.0\compressed\iulaihb94n-u9q1upor1n.gz
 C:\Users\AminAouina\source\SEP3_REPO\SEP3_T1_BlazorApp\BlazorWebAppT1\obj\Debug\net9.0\compressed\q4j2b7wnzm-4d85u1mtcx.gz
 C:\Users\AminAouina\source\SEP3_REPO\SEP3_T1_BlazorApp\BlazorWebAppT1\obj\Debug\net9.0\BlazorWe.DCB12737.Up2Date
-C:\Users\AminAouina\source\SEP3_REPO\SEP3_T1_BlazorApp\BlazorWebAppT1\obj\Debug\net9.0\scopedcss\Pages\Layout\NavMenu.razor.rz.scp.css
 C:\Users\AminAouina\source\SEP3_REPO\SEP3_T1_BlazorApp\BlazorWebAppT1\obj\Debug\net9.0\scopedcss\Shared\MainLayout.razor.rz.scp.css
-C:\Users\AminAouina\source\SEP3_REPO\SEP3_T1_BlazorApp\BlazorWebAppT1\obj\Debug\net9.0\compressed\6hmrfvcwav-rrdzy36sch.gz
-C:\Users\AminAouina\source\SEP3_REPO\SEP3_T1_BlazorApp\BlazorWebAppT1\obj\Debug\net9.0\compressed\9v48igvi67-rrdzy36sch.gz
+C:\Users\AminAouina\source\SEP3_REPO\SEP3_T1_BlazorApp\BlazorWebAppT1\bin\Debug\net9.0\package-lock.json
+C:\Users\AminAouina\source\SEP3_REPO\SEP3_T1_BlazorApp\BlazorWebAppT1\bin\Debug\net9.0\package.json
+C:\Users\AminAouina\source\SEP3_REPO\SEP3_T1_BlazorApp\BlazorWebAppT1\obj\Debug\net9.0\scopedcss\Shared\NavMenu.razor.rz.scp.css
+C:\Users\AminAouina\source\SEP3_REPO\SEP3_T1_BlazorApp\BlazorWebAppT1\obj\Debug\net9.0\compressed\6hmrfvcwav-5x39zfm8l9.gz
+C:\Users\AminAouina\source\SEP3_REPO\SEP3_T1_BlazorApp\BlazorWebAppT1\obj\Debug\net9.0\compressed\9v48igvi67-5x39zfm8l9.gz
