@@ -1,6 +1,8 @@
 ﻿@page "/add-item"
-@using static SEP3_Blazor_UI.Client.models.Models
-@inject SEP3_Blazor_UI.Client.Application.UseCases.ItemUseCases ItemUseCases
+@using SEP3_REPO.SEP3_T1_BlazorApp.BlazorWebAppT1.Models;
+@using SEP3_REPO.SEP3_T1_BlazorApp.BlazorWebAppT1.Application.UseCases;
+
+@inject SEP3_REPO.SEP3_T1_BlazorApp.BlazorWebAppT1.Application.UseCases.ItemUseCases ItemUseCases
 
 <PageTitle>Add New Item</PageTitle>
 
@@ -34,8 +36,7 @@
 
     private void AddNewItem()
     {
-        // Use the ItemUseCases instead of InventoryService
-        ItemUseCases.AddItem(newItem);  // Add new item via use case
+        ItemUseCases.AddItem(newItem);  // Use the injected service instance
         newItem = new Item();           // Reset the form after adding
     }
 }

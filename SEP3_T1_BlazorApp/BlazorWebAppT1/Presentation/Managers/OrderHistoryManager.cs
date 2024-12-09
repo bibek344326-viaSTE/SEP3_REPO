@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using SEP3_Blazor_UI.Client.Application.UseCases;
-using SEP3_Blazor_UI.Client.models;
-using static SEP3_Blazor_UI.Client.models.Models;
+using SEP3_REPO.SEP3_T1_BlazorApp.BlazorWebAppT1.Models;
+using SEP3_REPO.SEP3_T1_BlazorApp.BlazorWebAppT1.Application.UseCases;
 
-namespace SEP3_Blazor_UI.Client.Presentation.Managers
+namespace SEP3_REPO.SEP3_T1_BlazorApp.BlazorWebAppT1.Presentation.Managers
 {
     public class OrderHistoryManager
     {

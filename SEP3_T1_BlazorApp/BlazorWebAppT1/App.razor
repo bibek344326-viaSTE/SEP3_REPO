@@ -1,12 +1,15 @@
-﻿@using Microsoft.AspNetCore.Components.Routing
-@using Microsoft.AspNetCore.Components
-@using BlazorWebAppT1.Presentation.Layout
+﻿@namespace SEP3_REPO.SEP3_T1_BlazorApp.BlazorWebAppT1
+@using Microsoft.AspNetCore.Components.Routing
+@using SEP3_REPO.SEP3_T1_BlazorApp.BlazorWebAppT1.Shared
 
 <Router AppAssembly="@typeof(Program).Assembly">
-    <Found Context="routeData">
-        <RouteView RouteData="routeData" DefaultLayout="@typeof(MainLayout)" />
+    <Found Context="routeView">
+        <RouteView RouteData="@routeView" DefaultLayout="@typeof(MainLayout)" />
+        <FocusOnNavigate RouteData="@routeView" />
     </Found>
     <NotFound>
-        <p>Sorry, there's nothing at this address.</p>
+        <LayoutView Layout="@typeof(MainLayout)">
+            <p>Sorry, there's nothing at this address.</p>
+        </LayoutView>
     </NotFound>
 </Router>

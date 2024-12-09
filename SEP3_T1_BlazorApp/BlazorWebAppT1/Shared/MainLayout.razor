@@ -1,0 +1,29 @@
+﻿@namespace SEP3_REPO.SEP3_T1_BlazorApp.BlazorWebAppT1.Shared
+@inherits LayoutComponentBase
+
+<div class="content-wrapper">
+    <div class="sidebar">
+        <NavMenu />
+    </div>
+
+    <main>
+        <article class="content px-4">
+            @Body
+        </article>
+    </main>
+</div>
+
+<style>
+    .content-wrapper {
+        display: flex;
+    }
+
+    .sidebar {
+        width: 250px;
+        background-color: #343a40;
+    }
+
+    .content {
+        flex-grow: 1;
+    }
+</style>

@@ -1,6 +1,8 @@
 ﻿@page "/add-user"
-@using static SEP3_Blazor_UI.Client.models.Models
-@inject SEP3_Blazor_UI.Client.Application.UseCases.UserUseCases UserUseCases
+@using SEP3_REPO.SEP3_T1_BlazorApp.BlazorWebAppT1.Models;
+@using SEP3_REPO.SEP3_T1_BlazorApp.BlazorWebAppT1.Application.UseCases;
+
+@inject SEP3_REPO.SEP3_T1_BlazorApp.BlazorWebAppT1.Application.UseCases.UserUseCases UserUseCases
 
 <PageTitle>Add User</PageTitle>
 
@@ -45,7 +47,7 @@
 
     private void HandleAddUser()
     {
-        UserUseCases.AddUser(NewUser);  // Use the AddUser use case
-        NewUser = new User();            // Reset the form after submission
+        UserUseCases.AddUser(NewUser); // Use the AddUser use case
+        NewUser = new User();          // Reset the form after submission
     }
 }

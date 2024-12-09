@@ -1,7 +1,7 @@
-﻿using SEP3_Blazor_UI.Client.Application.Interfaces;
-using static SEP3_Blazor_UI.Client.models.Models;
+﻿using SEP3_REPO.SEP3_T1_BlazorApp.BlazorWebAppT1.Models;
+using SEP3_REPO.SEP3_T1_BlazorApp.BlazorWebAppT1.Application.Interfaces;
 
-namespace SEP3_Blazor_UI.Client.Application.UseCases
+namespace SEP3_REPO.SEP3_T1_BlazorApp.BlazorWebAppT1.Application.UseCases
 {
     public class AuthUseCases
     {

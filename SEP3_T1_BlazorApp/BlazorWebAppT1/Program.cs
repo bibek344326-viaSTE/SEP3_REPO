@@ -1,12 +1,13 @@
 using Blazored.LocalStorage; // Ensure Blazored.LocalStorage is installed
 using Microsoft.AspNetCore.Components.Authorization;
-using SEP3_Blazor_UI.Client.Application.Interfaces;
-using SEP3_Blazor_UI.Client.Application.UseCases;
-using SEP3_Blazor_UI.Client.Infrastructure;
-using SEP3_Blazor_UI.Client.Infrastructure.Repositories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.DependencyInjection;
+using SEP3_REPO.SEP3_T1_BlazorApp.BlazorWebAppT1.Application.UseCases;
+using SEP3_REPO.SEP3_T1_BlazorApp.BlazorWebAppT1.Application.UseCases;
+using SEP3_REPO.SEP3_T1_BlazorApp.BlazorWebAppT1.Application.Interfaces;
+using SEP3_REPO.SEP3_T1_BlazorApp.BlazorWebAppT1.Infrastructure;
+using SEP3_REPO.SEP3_T1_BlazorApp.BlazorWebAppT1.Infrastructure.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -48,7 +49,7 @@ app.UseRouting();
 app.UseAuthorization(); // Optional but recommended
 
 app.MapBlazorHub();
-app.MapFallbackToPage("/");
+app.MapFallbackToPage("/_Host");
 app.MapRazorPages(); // Ensure Razor Pages are mapped
 
 app.Run();

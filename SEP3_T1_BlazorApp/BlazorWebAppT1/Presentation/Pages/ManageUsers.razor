@@ -1,24 +1,21 @@
 ﻿@page "/manage-users"
 @using Microsoft.AspNetCore.Components.Forms
-@using SEP3_Blazor_UI.Client.Presentation.Managers
-@using SEP3_Blazor_UI.Client.Application.UseCases
-@using SEP3_Blazor_UI.Client.models
-@using static SEP3_Blazor_UI.Client.models.Models
-@inject UserUseCases UserUseCases
+@using Microsoft.AspNetCore.Components.Web
+@using SEP3_REPO.SEP3_T1_BlazorApp.BlazorWebAppT1.Presentation.Managers;
+@using SEP3_REPO.SEP3_T1_BlazorApp.BlazorWebAppT1.Application.UseCases;
+@using SEP3_REPO.SEP3_T1_BlazorApp.BlazorWebAppT1.Models;
+
+@inject SEP3_REPO.SEP3_T1_BlazorApp.BlazorWebAppT1.Application.UseCases.UserUseCases UserUseCases
 
 <PageTitle>Manage Users</PageTitle>
 
 <h1>Manage Users</h1>
 <p>Here you can view and manage users by their roles.</p>
 
-<!-- Search and Sort Section -->
 <div class="input-group mb-3">
-    <span class="input-group-text">
-        <i class="fas fa-search"></i>
-    </span>
-    <input class="form-control" type="text" placeholder="Search by username or working number..." @bind="Manager.SearchQuery" @bind:event="oninput" />
+    <input class="form-control" type="text" placeholder="Search by username or working number..." @bind="Manager.SearchQuery" />
     <button class="btn btn-outline-secondary" type="button" @onclick="ClearFilter">
-        <i class="fas fa-times-circle"></i> Clear
+        Clear
     </button>
 </div>
 
@@ -26,10 +23,9 @@
 {
     @foreach (var roleGroup in Manager.GroupedUsers)
     {
-        <p>Role: @roleGroup.Key - Total Users: @roleGroup.Count()</p>
-        <div class="mb-4">
-            <h3>@roleGroup.Key</h3>
-            <table class="table table-striped">
+        <p>Role: @roleGroup.Key</p>
+        <div>
+            <table class="table">
                 <thead>
                     <tr>
                         <th>Username</th>
@@ -39,19 +35,15 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach (var user in Manager.PaginatedUsers(roleGroup))
+                    @foreach (var user in roleGroup)
                     {
                         <tr>
                             <td>@user.Username</td>
                             <td>@user.WorkingNumber</td>
                             <td>@user.Role</td>
                             <td>
-                                <button class="btn btn-sm btn-warning me-2" @onclick="() => Manager.ToggleEditUser(user)">
-                                    <i class="fas fa-edit"></i> Edit
-                                </button>
-                                <button class="btn btn-sm btn-danger" @onclick="() => DeleteUser(user)">
-                                    <i class="fas fa-trash-alt"></i> Delete
-                                </button>
+                                <button class="btn btn-warning" @onclick="() => Manager.ToggleEditUser(user)">Edit</button>
+                                <button class="btn btn-danger" @onclick="() => DeleteUser(user)">Delete</button>
                             </td>
                         </tr>
 
@@ -60,34 +52,13 @@
                             <tr>
                                 <td colspan="4">
                                     <EditForm Model="Manager.EditingUser" OnValidSubmit="SaveUser">
-                                        <div class="row g-3">
-                                            <div class="col">
-                                                <label class="form-label">Username</label>
-                                                <InputText class="form-control" @bind="Manager.EditingUser.Username" readonly />
-                                            </div>
-                                            <div class="col">
-                                                <label class="form-label">Working Number</label>
-                                                <InputNumber TValue="int" class="form-control" @bind="Manager.EditingUser.WorkingNumber" />
-                                            </div>
-                                            <div class="col">
-                                                <label class="form-label">Role</label>
-                                                <select class="form-select" @bind="Manager.EditingUser.Role">
-                                                    <option value="">Select a role</option>
-                                                    @foreach (var role in Enum.GetValues<Role>())
-                                                    {
-                                                        <option value="@role">@role</option>
-                                                    }
-                                                </select>
-                                            </div>
-                                            <div class="col d-flex align-items-end">
-                                                <button type="submit" class="btn btn-success me-2">
-                                                    <i class="fas fa-check-circle"></i> Save
-                                                </button>
-                                                <button type="button" class="btn btn-secondary" @onclick="CancelEdit">
-                                                    <i class="fas fa-times-circle"></i> Cancel
-                                                </button>
-                                            </div>
-                                        </div>
+                                        <InputText class="form-control" @bind="Manager.EditingUser.Username" readonly />
+                                        <InputNumber TValue="int" class="form-control" @bind="Manager.EditingUser.WorkingNumber" />
+                                        <select class="form-control" @bind="Manager.EditingUser.Role">
+                                            <option value="InventoryManager">Inventory Manager</option>
+                                            <option value="WarehouseWorker">Warehouse Worker</option>
+                                        </select>
+                                        <button type="submit" class="btn btn-success">Save</button>
                                     </EditForm>
                                 </td>
                             </tr>
@@ -95,17 +66,6 @@
                     }
                 </tbody>
             </table>
-
-            <!-- Pagination Controls -->
-            <div class="d-flex justify-content-between align-items-center">
-                <button class="btn btn-secondary" @onclick="() => Manager.PreviousPage(roleGroup.Key)" disabled="@Manager.IsFirstPage(roleGroup.Key)">
-                    <i class="fas fa-arrow-left"></i> Previous
-                </button>
-                <span>Page @Manager.CurrentPages[roleGroup.Key] of @Manager.TotalPages(roleGroup.Key)</span>
-                <button class="btn btn-secondary" @onclick="() => Manager.NextPage(roleGroup.Key)" disabled="@Manager.IsLastPage(roleGroup.Key)">
-                    Next <i class="fas fa-arrow-right"></i>
-                </button>
-            </div>
         </div>
     }
 }
@@ -126,7 +86,7 @@ else
 
     private void CancelEdit() => Manager.CancelEdit();
 
-    private void ClearFilter() => Manager.SearchQuery = "";
+    private void ClearFilter() => Manager.SearchQuery = string.Empty;
 
     private void DeleteUser(User user)
     {

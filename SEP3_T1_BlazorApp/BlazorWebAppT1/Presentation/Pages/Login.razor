@@ -1,12 +1,12 @@
 @page "/login"
 @using Microsoft.AspNetCore.Components.Forms
 @using Microsoft.JSInterop
-@using SEP3_Blazor_UI.Client.Presentation.Managers
-@using SEP3_Blazor_UI.Client.Application.UseCases
+@using SEP3_REPO.SEP3_T1_BlazorApp.BlazorWebAppT1.Application.UseCases;
+@using SEP3_REPO.SEP3_T1_BlazorApp.BlazorWebAppT1.Presentation.Managers;
 
 @inject NavigationManager NavigationManager
-@inject AuthUseCases AuthUseCases
 @inject IJSRuntime JSRuntime
+@inject SEP3_REPO.SEP3_T1_BlazorApp.BlazorWebAppT1.Application.UseCases.AuthUseCases AuthUseCases
 
 <div class="container" style="max-width:400px; margin-top:100px;">
     <div class="card shadow-sm">

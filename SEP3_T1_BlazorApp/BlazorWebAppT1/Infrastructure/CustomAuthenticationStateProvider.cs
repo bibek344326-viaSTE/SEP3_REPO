@@ -1,9 +1,9 @@
 ﻿using Blazored.LocalStorage; // Added for ILocalStorageService
 using Microsoft.AspNetCore.Components.Authorization; // Added for AuthenticationStateProvider, AuthenticationState
-using SEP3_Blazor_UI.Client.Application.Interfaces;
 using System.Security.Claims; // Added for Claim, ClaimsIdentity, ClaimsPrincipal
+using SEP3_REPO.SEP3_T1_BlazorApp.BlazorWebAppT1.Application.Interfaces;
 
-namespace SEP3_Blazor_UI.Client.Infrastructure
+namespace SEP3_REPO.SEP3_T1_BlazorApp.BlazorWebAppT1.Infrastructure
 {
     public class CustomAuthenticationStateProvider : AuthenticationStateProvider
     {

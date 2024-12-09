@@ -1,28 +1,31 @@
-﻿using SEP3_Blazor_UI.Client.Application.Interfaces;
-using static SEP3_Blazor_UI.Client.models.Models;
+﻿using SEP3_REPO.SEP3_T1_BlazorApp.BlazorWebAppT1.Models;
+using SEP3_REPO.SEP3_T1_BlazorApp.BlazorWebAppT1.Application.Interfaces;
 
-public class OrderRepository : IOrderRepository
+namespace SEP3_REPO.SEP3_T1_BlazorApp.BlazorWebAppT1.Infrastructure.Repositories
 {
-    private readonly List<Order> _orders;
-    private int _nextOrderId = 1;
 
-    public OrderRepository()
+    public class OrderRepository : IOrderRepository
     {
-        _orders = new List<Order>();
-        InitializeMockData();
-    }
+        private readonly List<Order> _orders;
+        private int _nextOrderId = 1;
 
-    public IEnumerable<Order> GetAllOrders() => _orders;
+        public OrderRepository()
+        {
+            _orders = new List<Order>();
+            InitializeMockData();
+        }
 
-    public void AddOrder(Order order)
-    {
-        order.OrderId = _nextOrderId++;
-        _orders.Add(order);
-    }
+        public IEnumerable<Order> GetAllOrders() => _orders;
 
-    private void InitializeMockData()
-    {
-        var orders = new List<Order>
+        public void AddOrder(Order order)
+        {
+            order.OrderId = _nextOrderId++;
+            _orders.Add(order);
+        }
+
+        private void InitializeMockData()
+        {
+            var orders = new List<Order>
 {
     // New order #1 (Completed)
     new Order
@@ -379,12 +382,14 @@ public class OrderRepository : IOrderRepository
         }
     }
 };
-        ;
+            ;
 
 
-        foreach (var order in orders)
-        {
-            _orders.Add(order);
+            foreach (var order in orders)
+            {
+                _orders.Add(order);
+            }
         }
     }
+
 }

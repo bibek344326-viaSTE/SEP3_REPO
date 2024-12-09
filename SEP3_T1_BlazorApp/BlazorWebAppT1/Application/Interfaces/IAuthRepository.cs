@@ -1,6 +1,6 @@
-﻿using static SEP3_Blazor_UI.Client.models.Models;
+﻿using SEP3_REPO.SEP3_T1_BlazorApp.BlazorWebAppT1.Models;
 
-namespace SEP3_Blazor_UI.Client.Application.Interfaces
+namespace SEP3_REPO.SEP3_T1_BlazorApp.BlazorWebAppT1.Application.Interfaces
 {
     public interface IAuthRepository
     {
