@@ -1,0 +1,135 @@
+﻿@page "/manage-users"
+@using SEP3_Blazor_UI.Client.Presentation.Managers
+@using SEP3_Blazor_UI.Client.Application.UseCases
+@using SEP3_Blazor_UI.Client.models
+@using static SEP3_Blazor_UI.Client.models.Models
+@inject UserUseCases UserUseCases
+
+<PageTitle>Manage Users</PageTitle>
+
+<h1>Manage Users</h1>
+<p>Here you can view and manage users by their roles.</p>
+
+<!-- Search and Sort Section -->
+<div class="input-group mb-3">
+    <span class="input-group-text">
+        <i class="fas fa-search"></i>
+    </span>
+    <input class="form-control" type="text" placeholder="Search by username or working number..." @bind="Manager.SearchQuery" @bind:event="oninput" />
+    <button class="btn btn-outline-secondary" type="button" @onclick="ClearFilter">
+        <i class="fas fa-times-circle"></i> Clear
+    </button>
+</div>
+
+@if (Manager.GroupedUsers.Any())
+{
+    @foreach (var roleGroup in Manager.GroupedUsers)
+    {
+        <p>Role: @roleGroup.Key - Total Users: @roleGroup.Count()</p> <!-- Debug line -->
+        <div class="mb-4">
+            <h3>@roleGroup.Key</h3>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Username</th>
+                        <th>Working Number</th>
+                        <th>Role</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var user in Manager.PaginatedUsers(roleGroup))
+                    {
+                        <tr>
+                            <td>@user.Username</td>
+                            <td>@user.WorkingNumber</td>
+                            <td>@user.Role</td>
+                            <td>
+                                <button class="btn btn-sm btn-warning me-2" @onclick="() => Manager.ToggleEditUser(user)">
+                                    <i class="fas fa-edit"></i> Edit
+                                </button>
+                                <button class="btn btn-sm btn-danger" @onclick="() => DeleteUser(user)">
+                                    <i class="fas fa-trash-alt"></i> Delete
+                                </button>
+                            </td>
+                        </tr>
+
+                        @if (Manager.EditingUser?.Username == user.Username)
+                        {
+                            <tr>
+                                <td colspan="4">
+                                    <EditForm Model="Manager.EditingUser" OnValidSubmit="SaveUser">
+                                        <div class="row g-3">
+                                            <div class="col">
+                                                <label class="form-label">Username</label>
+                                                <InputText class="form-control" @bind-Value="Manager.EditingUser.Username" readonly />
+                                            </div>
+                                            <div class="col">
+                                                <label class="form-label">Working Number</label>
+                                                <InputNumber class="form-control" @bind-Value="Manager.EditingUser.WorkingNumber" />
+                                            </div>
+                                            <div class="col">
+                                                <label class="form-label">Role</label>
+                                                <select class="form-select" @bind="Manager.EditingUser.Role">
+                                                    <option value="">Select a role</option>
+                                                    @foreach (var role in Manager.Roles)
+                                                    {
+                                                        <option value="@role">@role</option>
+                                                    }
+                                                </select>
+                                            </div>
+                                            <div class="col d-flex align-items-end">
+                                                <button type="submit" class="btn btn-success me-2">
+                                                    <i class="fas fa-check-circle"></i> Save
+                                                </button>
+                                                <button type="button" class="btn btn-secondary" @onclick="CancelEdit">
+                                                    <i class="fas fa-times-circle"></i> Cancel
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </EditForm>
+                                </td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+
+            <!-- Pagination Controls -->
+            <div class="d-flex justify-content-between align-items-center">
+                <button class="btn btn-secondary" @onclick="() => Manager.PreviousPage(roleGroup.Key)" disabled="@Manager.IsFirstPage(roleGroup.Key)">
+                    <i class="fas fa-arrow-left"></i> Previous
+                </button>
+                <span>Page @Manager.CurrentPages[roleGroup.Key] of @Manager.TotalPages(roleGroup.Key)</span>
+                <button class="btn btn-secondary" @onclick="() => Manager.NextPage(roleGroup.Key)" disabled="@Manager.IsLastPage(roleGroup.Key)">
+                    Next <i class="fas fa-arrow-right"></i>
+                </button>
+            </div>
+        </div>
+    }
+}
+else
+{
+    <p>No users found.</p>
+}
+
+
+@code {
+    private UserManager Manager { get; set; }
+
+    protected override void OnInitialized()
+    {
+        Manager = new UserManager(UserUseCases);
+    }
+
+    private void SaveUser() => Manager.SaveUser();
+
+    private void CancelEdit() => Manager.CancelEdit();
+
+    private void ClearFilter() => Manager.SearchQuery = "";
+
+    private void DeleteUser(User user)
+    {
+        UserUseCases.DeleteUser(user);
+    }
+}

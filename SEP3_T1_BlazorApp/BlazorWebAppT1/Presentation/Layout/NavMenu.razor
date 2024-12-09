@@ -1,0 +1,191 @@
+﻿<div class="top-row ps-3 navbar navbar-dark bg-gradient-dark">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="/">
+            <i class="fas fa-cogs me-2"></i> SEP03
+        </a>
+        <button class="navbar-toggler" type="button" onclick="document.querySelector('.nav-scrollable').classList.toggle('show')">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+    </div>
+</div>
+
+<div class="nav-scrollable">
+    <nav class="nav flex-column">
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="/">
+                <i class="fas fa-home me-2" aria-hidden="true"></i> Home
+            </NavLink>
+        </div>
+
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="/order-history">
+                <i class="fas fa-receipt me-2" aria-hidden="true"></i> Orders
+            </NavLink>
+        </div>
+
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="/add-item">
+                <i class="fas fa-plus-circle me-2" aria-hidden="true"></i> Add Item
+            </NavLink>
+        </div>
+
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="/manage-users">
+                <i class="fas fa-users-cog me-2" aria-hidden="true"></i> Manage Users
+            </NavLink>
+        </div>
+
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="/add-user">
+                <i class="fas fa-user-plus me-2" aria-hidden="true"></i> Add User
+            </NavLink>
+        </div>
+
+        <div class="nav-item px-3">
+            <a class="nav-link" href="/" onclick="logOut()">
+                <i class="fas fa-sign-out-alt me-2" aria-hidden="true"></i> Log out
+            </a>
+        </div>
+    </nav>
+</div>
+
+<style>
+    /* Basic Reset */
+    body {
+        margin: 0;
+        padding: 0;
+        font-family: 'Arial', sans-serif;
+    }
+
+    /* Navbar and Menu */
+    .top-row {
+        position: sticky;
+        top: 0;
+        z-index: 1050;
+        background: linear-gradient(to right, #343a40, #212529);
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    }
+
+    .navbar-brand {
+        font-weight: bold;
+        font-size: 1.25rem;
+        color: #fff;
+    }
+
+    .navbar-toggler {
+        border: none;
+        background-color: transparent;
+    }
+
+    .navbar-toggler-icon {
+        background-image: url('data:image/svg+xml;charset=UTF-8,...');
+    }
+
+    .nav-scrollable {
+        display: none;
+        position: absolute;
+        top: 60px;
+        left: 0;
+        width: 100%;
+        background-color: #343a40;
+        padding: 1rem 0;
+        z-index: 1000;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease-in-out;
+        transform: translateY(-20px);
+    }
+
+    .nav-scrollable.show {
+        display: block;
+        transform: translateY(0);
+    }
+
+    .nav-link {
+        color: #fff;
+        font-size: 1.1rem;
+        padding: 0.8rem 1rem;
+        display: flex;
+        align-items: center;
+        text-decoration: none;
+        transition: background-color 0.2s, transform 0.2s ease-in-out;
+    }
+
+    .nav-link i {
+        font-size: 1.3rem;
+        transition: transform 0.3s ease;
+    }
+
+    .nav-link:hover,
+    .nav-link:focus {
+        background-color: #495057;
+        transform: scale(1.05);
+    }
+
+    .nav-link.active {
+        background-color: #007bff;
+        color: white;
+    }
+
+    .nav-item {
+        border-bottom: 1px solid #444;
+    }
+
+    .nav-item:last-child {
+        border-bottom: none;
+    }
+
+    /* Focus and Accessibility Enhancements */
+    .nav-link:focus {
+        outline: 2px solid #007bff;
+        outline-offset: 3px;
+    }
+
+    .nav-item:last-child a {
+        margin-bottom: 20px;
+    }
+
+    /* Ensure the nav links look great on mobile */
+    @@media (max-width: 767px) {
+        .nav-scrollable {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 250px;
+            height: 100%;
+            background-color: #343a40;
+            z-index: 1050;
+            padding-top: 3rem;
+            box-shadow: 2px 0 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .navbar-toggler {
+            z-index: 1060;
+        }
+    }
+
+    /* Ensure clean navbar behavior on desktop */
+    @@media (min-width: 768px) {
+        .nav-scrollable {
+            position: static;
+            width: auto;
+            background-color: transparent;
+            display: block;
+            transform: none;
+            box-shadow: none;
+            padding: 0;
+        }
+    }
+
+    /* Logo hover effect */
+    .navbar-brand:hover {
+        text-decoration: underline;
+    }
+</style>
+
+<script>
+    function logOut() {
+        // Handle logout logic here (e.g., clear session/cookies)
+        alert('Logged out');
+        window.location.href = '/'; // Redirect to home or login page
+    }
+</script>

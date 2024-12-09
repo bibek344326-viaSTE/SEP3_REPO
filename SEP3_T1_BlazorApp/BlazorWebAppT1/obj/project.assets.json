@@ -8,23 +8,25 @@
     "net9.0": []
   },
   "packageFolders": {
-    "C:\\Users\\racha\\.nuget\\packages\\": {},
-    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
+    "C:\\Users\\AminAouina\\.nuget\\packages\\": {},
+    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {},
+    "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "E:\\Semester3\\SEP 3\\Semester3_project\\SEP3_REPO\\SEP3_T1_BlazorApp\\BlazorWebAppT1\\BlazorWebAppT1.csproj",
+      "projectUniqueName": "C:\\Users\\AminAouina\\source\\SEP3_REPO\\SEP3_T1_BlazorApp\\BlazorWebAppT1\\BlazorWebAppT1.csproj",
       "projectName": "BlazorWebAppT1",
-      "projectPath": "E:\\Semester3\\SEP 3\\Semester3_project\\SEP3_REPO\\SEP3_T1_BlazorApp\\BlazorWebAppT1\\BlazorWebAppT1.csproj",
-      "packagesPath": "C:\\Users\\racha\\.nuget\\packages\\",
-      "outputPath": "E:\\Semester3\\SEP 3\\Semester3_project\\SEP3_REPO\\SEP3_T1_BlazorApp\\BlazorWebAppT1\\obj\\",
+      "projectPath": "C:\\Users\\AminAouina\\source\\SEP3_REPO\\SEP3_T1_BlazorApp\\BlazorWebAppT1\\BlazorWebAppT1.csproj",
+      "packagesPath": "C:\\Users\\AminAouina\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\AminAouina\\source\\SEP3_REPO\\SEP3_T1_BlazorApp\\BlazorWebAppT1\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
-        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",
+        "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
       ],
       "configFilePaths": [
-        "C:\\Users\\racha\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\AminAouina\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
@@ -34,7 +36,8 @@
       "sources": {
         "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
         "C:\\Program Files\\dotnet\\library-packs": {},
-        "https://api.nuget.org/v3/index.json": {}
+        "https://api.nuget.org/v3/index.json": {},
+        "https://pkgs.dev.azure.com/techsoftdk/_packaging/MesBaseFeed/nuget/v3/index.json": {}
       },
       "frameworks": {
         "net9.0": {
@@ -50,7 +53,7 @@
       "restoreAuditProperties": {
         "enableAudit": "true",
         "auditLevel": "low",
-        "auditMode": "all"
+        "auditMode": "direct"
       },
       "SdkAnalysisLevel": "9.0.100"
     },
@@ -76,7 +79,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.100/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.101/PortableRuntimeIdentifierGraph.json"
       }
     }
   }

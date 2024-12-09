@@ -1,0 +1,54 @@
+@page "/login"
+@using SEP3_Blazor_UI.Client.Presentation.Managers
+@inject NavigationManager NavigationManager
+
+@inject LoginManager LoginManager
+
+
+<div class="container" style="max-width:400px; margin-top:100px;">
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <h4 class="card-title text-center mb-4">Inventory Management Login</h4>
+
+            @if (!string.IsNullOrEmpty(loginManager.ErrorMessage))
+            {
+                <div class="alert alert-danger" role="alert">
+                    @loginManager.ErrorMessage
+                </div>
+            }
+
+            <EditForm Model="@loginManager.UserDTO" OnValidSubmit="@HandleValidSubmit">
+                <DataAnnotationsValidator />
+                <ValidationSummary />
+
+                <div class="form-group mb-3">
+                    <label for="username">Username</label>
+
+                    <InputText @bind-Value="loginManager.UserDTO.Username" class="form-control" id="username" required />
+                </div>
+
+                <div class="form-group mb-3">
+                    <label for="password">Password</label>
+
+                    <InputText @bind-Value="loginManager.UserDTO.Password" type="password" class="form-control" id="password" required />
+                </div>
+
+                <button type="submit" class="btn btn-primary w-100">Login</button>
+            </EditForm>
+        </div>
+    </div>
+</div>
+
+@code {
+
+    private LoginManager loginManager = new LoginManager();
+
+    private async Task HandleValidSubmit()
+    {
+        bool loginSuccess = await loginManager.AttemptLoginAsync();
+        if (loginSuccess)
+        {
+            NavigationManager.NavigateTo("/home");
+        }
+    }
+}

@@ -1,0 +1,41 @@
+﻿@page "/add-item"
+@using static SEP3_Blazor_UI.Client.models.Models
+@inject SEP3_Blazor_UI.Client.Application.UseCases.ItemUseCases ItemUseCases
+
+<PageTitle>Add New Item</PageTitle>
+
+<h2>Add New Item</h2>
+<div class="card p-3">
+    <EditForm Model="newItem" OnValidSubmit="AddNewItem">
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+
+        <div class="mb-3">
+            <label for="itemName" class="form-label">Name:</label>
+            <InputText id="itemName" @bind-Value="newItem.Name" class="form-control" />
+        </div>
+
+        <div class="mb-3">
+            <label for="itemDescription" class="form-label">Description:</label>
+            <InputText id="itemDescription" @bind-Value="newItem.Description" class="form-control" />
+        </div>
+
+        <div class="mb-3">
+            <label for="quantityInStore" class="form-label">Quantity In Store:</label>
+            <InputNumber id="quantityInStore" @bind-Value="newItem.QuantityInStore" class="form-control" min="0" />
+        </div>
+
+        <button type="submit" class="btn btn-primary w-100">Add Item</button>
+    </EditForm>
+</div>
+
+@code {
+    private Item newItem = new Item();
+
+    private void AddNewItem()
+    {
+        // Use the ItemUseCases instead of InventoryService
+        ItemUseCases.AddItem(newItem);  // Add new item via use case
+        newItem = new Item();           // Reset the form after adding
+    }
+}
