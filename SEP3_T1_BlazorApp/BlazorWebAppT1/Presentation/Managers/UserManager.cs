@@ -17,21 +17,20 @@ public class UserManager
     public string SearchQuery { get; set; } = string.Empty;
     public string SortField { get; private set; } = "Username";
     public string SortOrder { get; private set; } = "Ascending";
-    public Dictionary<string, int> CurrentPages { get; private set; }
+    public Dictionary<Role, int> CurrentPages { get; private set; }
     public int PageSize { get; private set; } = 5;
 
     public User? EditingUser { get; private set; }
 
-    public List<string> Roles => _userUseCases.Roles;
+    public List<Role> Roles => Enum.GetValues<Role>().ToList();
 
-    public IEnumerable<IGrouping<string, User>> GroupedUsers =>
+    public IEnumerable<IGrouping<Role, User>> GroupedUsers =>
         ApplyFilters().GroupBy(u => u.Role);
 
     private IEnumerable<User> ApplyFilters()
     {
         var filtered = _userUseCases.GetAllUsers();
 
-        // Search
         if (!string.IsNullOrWhiteSpace(SearchQuery))
         {
             filtered = filtered.Where(u =>
@@ -39,13 +38,12 @@ public class UserManager
                 u.WorkingNumber.ToString().Contains(SearchQuery));
         }
 
-        // Sort
         return SortOrder == "Ascending"
             ? filtered.OrderBy(u => GetPropertyValue(u, SortField))
             : filtered.OrderByDescending(u => GetPropertyValue(u, SortField));
     }
 
-    public IEnumerable<User> PaginatedUsers(IGrouping<string, User> roleGroup)
+    public IEnumerable<User> PaginatedUsers(IGrouping<Role, User> roleGroup)
     {
         int currentPage = CurrentPages[roleGroup.Key];
         return roleGroup.Skip((currentPage - 1) * PageSize).Take(PageSize);
@@ -94,7 +92,7 @@ public class UserManager
             _ => user.Username
         };
 
-    public void PreviousPage(string role)
+    public void PreviousPage(Role role)
     {
         if (CurrentPages.ContainsKey(role) && CurrentPages[role] > 1)
         {
@@ -102,7 +100,7 @@ public class UserManager
         }
     }
 
-    public void NextPage(string role)
+    public void NextPage(Role role)
     {
         if (CurrentPages.ContainsKey(role) && CurrentPages[role] < TotalPages(role))
         {
@@ -110,11 +108,11 @@ public class UserManager
         }
     }
 
-    public bool IsFirstPage(string role) => CurrentPages.ContainsKey(role) && CurrentPages[role] == 1;
+    public bool IsFirstPage(Role role) => CurrentPages.ContainsKey(role) && CurrentPages[role] == 1;
 
-    public bool IsLastPage(string role) => CurrentPages.ContainsKey(role) && CurrentPages[role] == TotalPages(role);
+    public bool IsLastPage(Role role) => CurrentPages.ContainsKey(role) && CurrentPages[role] == TotalPages(role);
 
-    public int TotalPages(string role)
+    public int TotalPages(Role role)
     {
         var totalUsers = _userUseCases.GetUsersByRole(role).Count();
         return (int)Math.Ceiling(totalUsers / (double)PageSize);

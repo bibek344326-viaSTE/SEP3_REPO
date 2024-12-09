@@ -1,4 +1,5 @@
 ﻿@page "/manage-users"
+@using Microsoft.AspNetCore.Components.Forms
 @using SEP3_Blazor_UI.Client.Presentation.Managers
 @using SEP3_Blazor_UI.Client.Application.UseCases
 @using SEP3_Blazor_UI.Client.models
@@ -25,7 +26,7 @@
 {
     @foreach (var roleGroup in Manager.GroupedUsers)
     {
-        <p>Role: @roleGroup.Key - Total Users: @roleGroup.Count()</p> <!-- Debug line -->
+        <p>Role: @roleGroup.Key - Total Users: @roleGroup.Count()</p>
         <div class="mb-4">
             <h3>@roleGroup.Key</h3>
             <table class="table table-striped">
@@ -62,17 +63,17 @@
                                         <div class="row g-3">
                                             <div class="col">
                                                 <label class="form-label">Username</label>
-                                                <InputText class="form-control" @bind-Value="Manager.EditingUser.Username" readonly />
+                                                <InputText class="form-control" @bind="Manager.EditingUser.Username" readonly />
                                             </div>
                                             <div class="col">
                                                 <label class="form-label">Working Number</label>
-                                                <InputNumber class="form-control" @bind-Value="Manager.EditingUser.WorkingNumber" />
+                                                <InputNumber TValue="int" class="form-control" @bind="Manager.EditingUser.WorkingNumber" />
                                             </div>
                                             <div class="col">
                                                 <label class="form-label">Role</label>
                                                 <select class="form-select" @bind="Manager.EditingUser.Role">
                                                     <option value="">Select a role</option>
-                                                    @foreach (var role in Manager.Roles)
+                                                    @foreach (var role in Enum.GetValues<Role>())
                                                     {
                                                         <option value="@role">@role</option>
                                                     }
@@ -112,7 +113,6 @@ else
 {
     <p>No users found.</p>
 }
-
 
 @code {
     private UserManager Manager { get; set; }

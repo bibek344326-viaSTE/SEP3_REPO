@@ -1,4 +1,5 @@
 ﻿@page "/"
+@using Microsoft.AspNetCore.Components.Forms
 @using SEP3_Blazor_UI.Client.Presentation.Managers
 @using SEP3_Blazor_UI.Client.models
 @using SEP3_Blazor_UI.Client.Application.UseCases
@@ -55,13 +56,13 @@
         {
             <tr @key="item.Id">
                 <td class="text-center">
-                    <InputCheckbox @bind-Value="@item.IsSelected" @oninput="() => ToggleSelection(item)" />
+                    <InputCheckbox @bind="item.IsSelected" @oninput="() => ToggleSelection(item)" />
                 </td>
-                <td><InputText @bind-Value="item.Name" class="form-control" /></td>
-                <td><InputText @bind-Value="item.Description" class="form-control" /></td>
+                <td><InputText @bind="item.Name" class="form-control" /></td>
+                <td><InputText @bind="item.Description" class="form-control" /></td>
                 <td>@item.Id</td>
-                <td><InputNumber @bind-Value="item.QuantityInStore" class="form-control" min="0" /></td>
-                <td><InputNumber @bind-Value="item.OrderQuantity" class="form-control" min="1" max="@item.QuantityInStore" disabled="@(item.IsSelected == false)" /></td>
+                <td><InputNumber TValue="int" @bind="item.QuantityInStore" class="form-control" min="0" /></td>
+                <td><InputNumber TValue="int" @bind="item.OrderQuantity" class="form-control" min="1" max="@item.QuantityInStore" disabled="@(item.IsSelected == false)" /></td>
                 <td class="text-center">
                     <button class="btn btn-danger btn-sm" @onclick="() => DeleteItem(item)">
                         <i class="fas fa-trash-alt"></i> Delete

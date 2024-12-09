@@ -15,9 +15,9 @@ namespace SEP3_Blazor_UI.Client.Infrastructure.Repositories
 
         private void InitializeMockUsers()
         {
-            _users.Add(new User { Username = "admin", Password = "admin", WorkingNumber = 1, Role = UserRole.InventoryManager });
-            _users.Add(new User { Username = "john", Password = "john123", WorkingNumber = 2, Role = UserRole.WarehouseWorker });
-            _users.Add(new User { Username = "jane", Password = "jane123", WorkingNumber = 3, Role = UserRole.WarehouseWorker });
+            _users.Add(new User { Username = "admin", Password = "admin", WorkingNumber = 1, Role = Role.InventoryManager });
+            _users.Add(new User { Username = "john", Password = "john123", WorkingNumber = 2, Role = Role.WarehouseWorker });
+            _users.Add(new User { Username = "jane", Password = "jane123", WorkingNumber = 3, Role = Role.WarehouseWorker });
         }
 
         public async Task<string> Login(UserDTO userDTO)

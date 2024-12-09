@@ -8,7 +8,7 @@ namespace SEP3_Blazor_UI.Client.Application.UseCases
         private readonly IUserRepository _userRepository;
 
         // Add a static list of roles
-        public List<string> Roles { get; } = new List<string> { "Admin", "User", "Manager" };
+        public List<Role> Roles { get; } = new List<Role> { Role.InventoryManager, Role.WarehouseWorker };
 
         public UserUseCases(IUserRepository userRepository)
         {
@@ -28,12 +28,10 @@ namespace SEP3_Blazor_UI.Client.Application.UseCases
             _userRepository.AddUser(user);
         }
 
-        public IEnumerable<User> GetUsersByRole(string role)
+        public IEnumerable<User> GetUsersByRole(Role role)
         {
             var users = _userRepository.GetAllUsers();
-            return string.IsNullOrWhiteSpace(role)
-                ? users
-                : users.Where(u => u.Role.Equals(role, StringComparison.OrdinalIgnoreCase));
+            return users.Where(u => u.Role == role);
         }
 
         public bool IsUsernameTaken(string username)

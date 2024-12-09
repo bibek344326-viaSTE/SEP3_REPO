@@ -9,10 +9,10 @@ public class UserRepository : IUserRepository
     {
         _users = new List<User>
         {
-            new User { Username = "manager1", Password = "pass123", WorkingNumber = 101, Role = "Inventory Manager" },
-            new User { Username = "worker1", Password = "pass456", WorkingNumber = 202, Role = "Warehouse Worker" },
-            new User { Username = "manager2", Password = "pass789", WorkingNumber = 103, Role = "Inventory Manager" },
-            new User { Username = "worker2", Password = "pass012", WorkingNumber = 204, Role = "Warehouse Worker" }
+            new User { Username = "manager1", Password = "pass123", WorkingNumber = 101, Role = Role.InventoryManager },
+            new User { Username = "worker1", Password = "pass456", WorkingNumber = 202, Role = Role.WarehouseWorker },
+            new User { Username = "manager2", Password = "pass789", WorkingNumber = 103, Role = Role.InventoryManager },
+            new User { Username = "worker2", Password = "pass012", WorkingNumber = 204, Role = Role.WarehouseWorker }
         };
     }
 

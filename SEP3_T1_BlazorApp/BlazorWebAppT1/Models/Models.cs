@@ -36,7 +36,7 @@
 
             public int WorkingNumber { get; set; }
 
-            public Role UserRole { get; set; }
+            public Role Role { get; set; }
         }
         public class UserDTO
         {

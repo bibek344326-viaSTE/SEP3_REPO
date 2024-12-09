@@ -1,9 +1,12 @@
 @page "/login"
+@using Microsoft.AspNetCore.Components.Forms
+@using Microsoft.JSInterop
 @using SEP3_Blazor_UI.Client.Presentation.Managers
+@using SEP3_Blazor_UI.Client.Application.UseCases
+
 @inject NavigationManager NavigationManager
-
-@inject LoginManager LoginManager
-
+@inject AuthUseCases AuthUseCases
+@inject IJSRuntime JSRuntime
 
 <div class="container" style="max-width:400px; margin-top:100px;">
     <div class="card shadow-sm">
@@ -23,14 +26,12 @@
 
                 <div class="form-group mb-3">
                     <label for="username">Username</label>
-
-                    <InputText @bind-Value="loginManager.UserDTO.Username" class="form-control" id="username" required />
+                    <InputText @bind="loginManager.UserDTO.Username" class="form-control" id="username" required />
                 </div>
 
                 <div class="form-group mb-3">
                     <label for="password">Password</label>
-
-                    <InputText @bind-Value="loginManager.UserDTO.Password" type="password" class="form-control" id="password" required />
+                    <InputText @bind="loginManager.UserDTO.Password" type="password" class="form-control" id="password" required />
                 </div>
 
                 <button type="submit" class="btn btn-primary w-100">Login</button>
@@ -40,8 +41,12 @@
 </div>
 
 @code {
+    private LoginManager loginManager;
 
-    private LoginManager loginManager = new LoginManager();
+    protected override void OnInitialized()
+    {
+        loginManager = new LoginManager(AuthUseCases, JSRuntime);
+    }
 
     private async Task HandleValidSubmit()
     {

@@ -12,17 +12,17 @@
 
         <div class="mb-3">
             <label for="itemName" class="form-label">Name:</label>
-            <InputText id="itemName" @bind-Value="newItem.Name" class="form-control" />
+            <InputText id="itemName" @bind="newItem.Name" class="form-control" />
         </div>
 
         <div class="mb-3">
             <label for="itemDescription" class="form-label">Description:</label>
-            <InputText id="itemDescription" @bind-Value="newItem.Description" class="form-control" />
+            <InputText id="itemDescription" @bind="newItem.Description" class="form-control" />
         </div>
 
         <div class="mb-3">
             <label for="quantityInStore" class="form-label">Quantity In Store:</label>
-            <InputNumber id="quantityInStore" @bind-Value="newItem.QuantityInStore" class="form-control" min="0" />
+            <InputNumber id="quantityInStore" @bind="newItem.QuantityInStore" class="form-control" min="0" />
         </div>
 
         <button type="submit" class="btn btn-primary w-100">Add Item</button>

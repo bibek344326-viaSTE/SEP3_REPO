@@ -1,4 +1,7 @@
-﻿using SEP3_Blazor_UI.Client.Application.Interfaces;
+﻿using Blazored.LocalStorage; // Added for ILocalStorageService
+using Microsoft.AspNetCore.Components.Authorization; // Added for AuthenticationStateProvider, AuthenticationState
+using SEP3_Blazor_UI.Client.Application.Interfaces;
+using System.Security.Claims; // Added for Claim, ClaimsIdentity, ClaimsPrincipal
 
 namespace SEP3_Blazor_UI.Client.Infrastructure
 {

@@ -1,15 +1,19 @@
-using Blazored.LocalStorage;
+using Blazored.LocalStorage; // Ensure Blazored.LocalStorage is installed
 using Microsoft.AspNetCore.Components.Authorization;
 using SEP3_Blazor_UI.Client.Application.Interfaces;
 using SEP3_Blazor_UI.Client.Application.UseCases;
 using SEP3_Blazor_UI.Client.Infrastructure;
 using SEP3_Blazor_UI.Client.Infrastructure.Repositories;
-using SEP3_Blazor_UI.Components;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.DependencyInjection;
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-builder.Services.AddRazorComponents()
-    .AddInteractiveServerComponents();
+// Add services to the container
+builder.Services.AddRazorPages();
+builder.Services.AddServerSideBlazor();
+
 // Add Blazored LocalStorage service (for token storage)
 builder.Services.AddBlazoredLocalStorage();
 
@@ -30,21 +34,21 @@ builder.Services.AddScoped<AuthUseCases>();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+// Configure the HTTP request pipeline
 if (!app.Environment.IsDevelopment())
 {
-    app.UseExceptionHandler("/Error", createScopeForErrors: true);
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+    app.UseExceptionHandler("/Error");
     app.UseHsts();
 }
 
 app.UseHttpsRedirection();
+app.UseStaticFiles();
+app.UseRouting();
 
+app.UseAuthorization(); // Optional but recommended
 
-app.UseAntiforgery();
-
-app.MapStaticAssets();
-app.MapRazorComponents<App>()
-    .AddInteractiveServerRenderMode();
+app.MapBlazorHub();
+app.MapFallbackToPage("/");
+app.MapRazorPages(); // Ensure Razor Pages are mapped
 
 app.Run();
