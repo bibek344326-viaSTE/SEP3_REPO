@@ -28,6 +28,18 @@ namespace SEP3_T1_BlazorUI.Presentation.Managers
 
                 if (!string.IsNullOrWhiteSpace(token))
                 {
+                    // Parse token expiration
+                    var parts = token.Split('|');
+                    if (parts.Length == 4 && long.TryParse(parts[3], out long expirationTimestamp))
+                    {
+                        var expirationDateTime = DateTimeOffset.FromUnixTimeSeconds(expirationTimestamp).UtcDateTime;
+                        if (expirationDateTime < DateTime.UtcNow)
+                        {
+                            ErrorMessage = "The token has expired.";
+                            return false;
+                        }
+                    }
+
                     // Save the token in localStorage
                     await _jsRuntime.InvokeVoidAsync("localStorage.setItem", "authToken", token);
                     return true;
@@ -44,6 +56,7 @@ namespace SEP3_T1_BlazorUI.Presentation.Managers
                 return false;
             }
         }
+
 
         public async Task LogoutAsync()
         {

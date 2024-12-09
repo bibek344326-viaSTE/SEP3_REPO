@@ -3,7 +3,7 @@ using SEP3_T1_BlazorUI.Models;
 
 namespace SEP3_T1_BlazorUI.Infrastructure.Repositories
 {
-    public class AuthRepository: IAuthRepository
+    public class AuthRepository : IAuthRepository
     {
         private readonly List<User> _users;
 
@@ -16,8 +16,7 @@ namespace SEP3_T1_BlazorUI.Infrastructure.Repositories
         private void InitializeMockUsers()
         {
             _users.Add(new User { Username = "admin", Password = "admin", WorkingNumber = 1, Role = Role.InventoryManager });
-            _users.Add(new User { Username = "john", Password = "john123", WorkingNumber = 2, Role = Role.WarehouseWorker });
-            _users.Add(new User { Username = "jane", Password = "jane123", WorkingNumber = 3, Role = Role.WarehouseWorker });
+            _users.Add(new User { Username = "worker", Password = "worker", WorkingNumber = 2, Role = Role.WarehouseWorker });
         }
 
         public async Task<string> Login(UserDTO userDTO)
@@ -26,11 +25,13 @@ namespace SEP3_T1_BlazorUI.Infrastructure.Repositories
 
             if (user != null)
             {
-                string token = $"{user.Username}|{user.WorkingNumber}|{user.Role}";
+                // Token format: Username|WorkingNumber|Role|ExpirationTimestamp
+                var expirationTime = DateTimeOffset.UtcNow.AddHours(1).ToUnixTimeSeconds(); // Token expires in 1 hour
+                string token = $"{user.Username}|{user.WorkingNumber}|{user.Role}|{expirationTime}";
                 return await Task.FromResult(token);
             }
 
-            return null;
+            return string.Empty;
         }
     }
 }

@@ -2,9 +2,9 @@
 @using Microsoft.AspNetCore.Components.Forms
 @using Microsoft.JSInterop
 @using SEP3_T1_BlazorUI.Presentation.Managers;
-
 @inject NavigationManager NavigationManager
 @inject LoginManager loginManager
+@inject Blazored.Toast.Services.IToastService ToastService
 
 <div class="container" style="max-width:400px; margin-top:100px;">
     <div class="card shadow-sm">
@@ -44,7 +44,19 @@
         bool loginSuccess = await loginManager.AttemptLoginAsync();
         if (loginSuccess)
         {
-            NavigationManager.NavigateTo("/home");
+            ToastService.ShowSuccess("Login successful! Welcome back.", settings =>
+            {
+                settings.Timeout = 5000; // 5-second timeout
+            });
+            NavigationManager.NavigateTo("/inventory-dashboard");
+        }
+        else
+        {
+            ToastService.ShowError(loginManager.ErrorMessage, settings =>
+            {
+                settings.Timeout = 7000; // 7-second timeout for error
+            });
         }
     }
+
 }
