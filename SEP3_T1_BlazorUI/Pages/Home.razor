@@ -1,6 +1,7 @@
 ﻿@page "/"
 @using SEP3_T1_BlazorUI.Presentation.Managers;
 @using SEP3_T1_BlazorUI.Models;
+@inject InventoryManager Manager
 
 <PageTitle>Home</PageTitle>
 
@@ -15,15 +16,13 @@
             <i class="fas fa-search"></i>
         </span>
     </div>
-    @if (Manager != null)
-    {
         <input type="text" class="form-control" placeholder="Search by Name or Description" @bind="Manager.SearchQuery" @oninput="RefreshView" />
         <div class="input-group-append">
             <button class="btn btn-outline-secondary" @onclick="Manager.ClearSearch" type="button">
                 <i class="fas fa-times"></i> Clear
             </button>
         </div>
-    }
+    
    
 </div>
 
@@ -93,8 +92,6 @@
 </div>
 
 @code {
-    [Inject] private InventoryManager? Manager { get; set; }
-
     protected override void OnInitialized()
     {
         Manager?.LoadData();
