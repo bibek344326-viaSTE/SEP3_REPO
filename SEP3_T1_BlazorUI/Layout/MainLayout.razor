@@ -88,17 +88,14 @@
     }
 </style>
 
-
 <CascadingAuthenticationState>
     <div class="page">
         @if (IsInventoryManager)
         {
             <div class="sidebar">
                 <NavMenu />
-
             </div>
         }
-        
 
         <main>
             <article class="content px-4">
@@ -107,11 +104,26 @@
         </main>
     </div>
 </CascadingAuthenticationState>
+<BlazoredToasts />
 
 @code {
     private bool IsInventoryManager = false;
 
     protected override async Task OnInitializedAsync()
+    {
+        // Subscribe to AuthenticationState changes
+        AuthenticationStateProvider.AuthenticationStateChanged += OnAuthenticationStateChanged;
+
+        // Initial check for user's role
+        await CheckUserRole();
+    }
+
+    private async void OnAuthenticationStateChanged(Task<AuthenticationState> task)
+    {
+        await CheckUserRole();
+    }
+
+    private async Task CheckUserRole()
     {
         var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
         var user = authState.User;
@@ -119,7 +131,19 @@
         if (user.Identity != null && user.Identity.IsAuthenticated)
         {
             // Check if the user is an Inventory Manager
-            IsInventoryManager = user.IsInRole(Role.InventoryManager.ToString());
+            IsInventoryManager = user.IsInRole("InventoryManager");
         }
+        else
+        {
+            IsInventoryManager = false; // User is not authenticated, hide sidebar
+        }
+
+        // Force Blazor to re-render the component
+        StateHasChanged();
+    }
+
+    public void Dispose()
+    {
+        AuthenticationStateProvider.AuthenticationStateChanged -= OnAuthenticationStateChanged;
     }
 }

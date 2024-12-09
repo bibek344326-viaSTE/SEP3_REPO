@@ -1,18 +1,21 @@
 using Microsoft.JSInterop;
 using SEP3_T1_BlazorUI.Models;
 using SEP3_T1_BlazorUI.Application.UseCases;
+using Microsoft.AspNetCore.Components.Authorization;
+using SEP3_T1_BlazorUI.Infrastructure;
+using System.Security.Claims;
 
 namespace SEP3_T1_BlazorUI.Presentation.Managers
 {
     public class LoginManager
     {
         private readonly AuthUseCases _authUseCases;
-        private readonly IJSRuntime _jsRuntime;
+        private readonly AuthenticationStateProvider _authenticationStateProvider;
 
-        public LoginManager(AuthUseCases authUseCases, IJSRuntime jsRuntime)
+        public LoginManager(AuthUseCases authUseCases, AuthenticationStateProvider authenticationStateProvider)
         {
             _authUseCases = authUseCases;
-            _jsRuntime = jsRuntime;
+            _authenticationStateProvider = authenticationStateProvider;
         }
 
         public UserDTO UserDTO { get; set; } = new UserDTO();
@@ -28,20 +31,11 @@ namespace SEP3_T1_BlazorUI.Presentation.Managers
 
                 if (!string.IsNullOrWhiteSpace(token))
                 {
-                    // Parse token expiration
-                    var parts = token.Split('|');
-                    if (parts.Length == 4 && long.TryParse(parts[3], out long expirationTimestamp))
+                    // Use CustomAuthenticationStateProvider to set user as authenticated
+                    if (_authenticationStateProvider is CustomAuthenticationStateProvider customAuthProvider)
                     {
-                        var expirationDateTime = DateTimeOffset.FromUnixTimeSeconds(expirationTimestamp).UtcDateTime;
-                        if (expirationDateTime < DateTime.UtcNow)
-                        {
-                            ErrorMessage = "The token has expired.";
-                            return false;
-                        }
+                        await customAuthProvider.MarkUserAsAuthenticated(token);
                     }
-
-                    // Save the token in localStorage
-                    await _jsRuntime.InvokeVoidAsync("localStorage.setItem", "authToken", token);
                     return true;
                 }
                 else
@@ -57,12 +51,21 @@ namespace SEP3_T1_BlazorUI.Presentation.Managers
             }
         }
 
+        public async Task<string> GetUserRole()
+        {
+            var authState = await _authenticationStateProvider.GetAuthenticationStateAsync();
+            var roleClaim = authState.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role);
+            return roleClaim?.Value ?? string.Empty;
+        }
 
         public async Task LogoutAsync()
         {
             try
             {
-                await _jsRuntime.InvokeVoidAsync("localStorage.removeItem", "authToken");
+                if (_authenticationStateProvider is CustomAuthenticationStateProvider customAuthProvider)
+                {
+                    await customAuthProvider.MarkUserAsLoggedOut();
+                }
             }
             catch (Exception ex)
             {
