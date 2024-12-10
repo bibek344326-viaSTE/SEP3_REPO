@@ -22,7 +22,7 @@ namespace SEP3_T1_BlazorUI.Application.UseCases
             return users;
         }
 
-        public void AddUser(User user)
+        public void AddUser(UserDTO user)
         {
             if (IsUsernameTaken(user.Username))
             {

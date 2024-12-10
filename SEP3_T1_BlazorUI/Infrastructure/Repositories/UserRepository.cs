@@ -18,7 +18,22 @@ new User { Username = "worker", Password = "worker", WorkingNumber = 2, Role = R
 
         public IEnumerable<User> GetAllUsers() => _users;
 
-        public void AddUser(User user) => _users.Add(user);
+        public void AddUser(UserDTO userDTO)
+        {
+            // Generate a new WorkingNumber for the new user
+            int newWorkingNumber = _users.Count == 0 ? 1 : _users.Max(u => u.WorkingNumber) + 1;
+
+            // Convert UserDTO to User and generate the working number
+            var newUser = new User
+            {
+                Username = userDTO.Username,
+                Password = userDTO.Password,
+                Role = userDTO.Role!.Value,
+                WorkingNumber = newWorkingNumber
+            };
+
+            _users.Add(newUser);
+        }
 
         public void DeleteUser(User user)
         {

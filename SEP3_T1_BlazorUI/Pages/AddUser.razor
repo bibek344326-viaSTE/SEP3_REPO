@@ -21,6 +21,7 @@
             <InputText id="username"
                        @bind-Value="UserManager.NewUser.Username"
                        class="@($"form-control {UserManager.ValidationClass(nameof(UserManager.NewUser.Username))}")" />
+            <ValidationMessage For="@(() => UserManager.NewUser.Username)" />
         </div>
 
         <!-- Password Field -->
@@ -30,13 +31,13 @@
                        @bind-Value="UserManager.NewUser.Password"
                        class="@($"form-control {UserManager.ValidationClass(nameof(UserManager.NewUser.Password))}")"
                        type="password" />
+            <ValidationMessage For="@(() => UserManager.NewUser.Password)" />
         </div>
 
         <!-- Role Dropdown -->
         <div class="mb-3">
             <label for="role" class="form-label">Role:</label>
             <select id="role" class="form-select" @bind="UserManager.NewUser.Role">
-                <option value="">Select a role</option>
                 @foreach (var role in UserManager.Roles)
                 {
                     <option value="@role">@UserManager.HumanizeRole(role)</option>
