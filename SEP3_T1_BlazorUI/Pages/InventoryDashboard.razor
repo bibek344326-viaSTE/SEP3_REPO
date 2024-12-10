@@ -62,23 +62,30 @@
                 <td>
                     <input type="text"
                            class="form-control"
-                           value="@item.Name"
-                           @onchange="args => UpdateItem(item, nameof(item.Name), args.Value?.ToString())" />
+                           value="@_nameInputs[item.Id]"
+                           @oninput="(ChangeEventArgs args) => _nameInputs[item.Id] = args.Value?.ToString()"
+                           @onblur="() => UpdateItemOnBlur(item, nameof(item.Name), _nameInputs[item.Id])" />
                 </td>
+
                 <td>
                     <input type="text"
                            class="form-control"
-                           value="@item.Description"
-                           @onchange="args => UpdateItem(item, nameof(item.Description), args.Value?.ToString())" />
+                           value="@_descriptionInputs[item.Id]"
+                           @oninput="(ChangeEventArgs args) => _descriptionInputs[item.Id] = args.Value?.ToString()"
+                           @onblur="() => UpdateItemOnBlur(item, nameof(item.Description), _descriptionInputs[item.Id])" />
                 </td>
+
                 <td>@item.Id</td>
+
                 <td>
                     <input type="number"
                            class="form-control"
                            min="0"
-                           value="@item.QuantityInStore"
-                           @onchange="args => UpdateItem(item, nameof(item.QuantityInStore), args.Value?.ToString())" />
+                           value="@_quantityInputs[item.Id]"
+                           @oninput="(ChangeEventArgs args) => _quantityInputs[item.Id] = args.Value?.ToString()"
+                           @onblur="() => UpdateItemOnBlur(item, nameof(item.QuantityInStore), _quantityInputs[item.Id])" />
                 </td>
+
                 <td>
                     <input type="number"
                            class="form-control"
@@ -88,6 +95,7 @@
                            @onblur="() => ResetOrderQuantityOnBlur(item)"
                            disabled="@(!item.IsSelected || item.QuantityInStore == 0)" />
                 </td>
+
                 <td class="text-center">
                     <button class="btn btn-danger btn-sm" @onclick="() => DeleteItem(item)">
                         <i class="fas fa-trash-alt"></i> Delete
@@ -96,6 +104,8 @@
             </tr>
         }
     </tbody>
+
+
 </table>
 
 
@@ -118,78 +128,116 @@
 </div>
 
 @code {
+    // Local state to track inputs for Name, Description, and Quantity
+    private Dictionary<int, string> _nameInputs = new();
+    private Dictionary<int, string> _descriptionInputs = new();
+    private Dictionary<int, string> _quantityInputs = new();
+
     protected override void OnInitialized()
     {
         Manager?.LoadData();
+        InitializeLocalInputs();
     }
 
-    private void UpdateItem(Item item, string propertyName, string? newValue)
+    private void InitializeLocalInputs()
     {
-        if (string.IsNullOrWhiteSpace(newValue)) return;
-
-        switch (propertyName)
+        foreach (var item in Manager.PagedItems)
         {
-            case nameof(Item.Name):
-                item.Name = newValue;
-                break;
+            _nameInputs[item.Id] = item.Name;
+            _descriptionInputs[item.Id] = item.Description;
+            _quantityInputs[item.Id] = item.QuantityInStore.ToString();
+        }
+    }
 
-            case nameof(Item.Description):
-                item.Description = newValue;
-                break;
-
-            case nameof(Item.QuantityInStore):
-                if (int.TryParse(newValue, out var quantity))
-                {
-                    item.QuantityInStore = quantity;
-                    if (quantity == 0)
-                    {
-                        item.OrderQuantity = 0;
-                    }
-                    else if (item.OrderQuantity > item.QuantityInStore)
-                    {
-                        item.OrderQuantity = item.QuantityInStore;
-                    }
-                }
-                break;
-
-            case nameof(Item.OrderQuantity):
-                if (int.TryParse(newValue, out var orderQuantity))
-                {
-                    item.OrderQuantity = Math.Max(1, Math.Min(orderQuantity, item.QuantityInStore));
-                }
-                break;
+    private void UpdateItemOnBlur(Item item, string propertyName, string? newValue)
+    {
+        if (string.IsNullOrWhiteSpace(newValue))
+        {
+            ToastService.ShowError($"{propertyName} cannot be empty. Reverting to the previous value.");
+            RevertInputValue(item, propertyName);
+            return;
         }
 
-        Manager.UpdateItem(item);
-        ToastService.ShowSuccess($"Item '{item.Name}' updated successfully!");
+        newValue = newValue.Trim(); // Trim to avoid unnecessary updates due to extra spaces
 
-    }
-
-    private void HandleOrderQuantityInput(ChangeEventArgs args, Item item)
-    {
-        if (int.TryParse(args.Value?.ToString(), out var newOrderQuantity))
+        // Validation and Change Detection for Name
+        if (propertyName == nameof(Item.Name))
         {
-            if (item.QuantityInStore == 0)
+            if (item.Name == newValue)
+            {
+                return; // No change, so exit early
+            }
+
+            item.Name = newValue;
+            _nameInputs[item.Id] = newValue;
+        }
+
+        // **NEW: Validation and Change Detection for Description**
+        if (propertyName == nameof(Item.Description))
+        {
+            if (item.Description == newValue)
+            {
+                return; // No change, so exit early
+            }
+
+            item.Description = newValue;
+            _descriptionInputs[item.Id] = newValue;
+        }
+
+        // Validation and Change Detection for QuantityInStore
+        if (propertyName == nameof(Item.QuantityInStore))
+        {
+            if (!int.TryParse(newValue, out var quantity))
+            {
+                ToastService.ShowError("Quantity In Store must be a number. Reverting to the previous value.");
+                RevertInputValue(item, propertyName);
+                return;
+            }
+
+            if (quantity < 0)
+            {
+                ToastService.ShowError("Quantity In Store cannot be negative. Reverting to the previous value.");
+                RevertInputValue(item, propertyName);
+                return;
+            }
+
+            if (item.QuantityInStore == quantity)
+            {
+                return; // No change, so exit early
+            }
+
+            item.QuantityInStore = quantity;
+            _quantityInputs[item.Id] = quantity.ToString();
+
+            if (quantity == 0)
             {
                 item.OrderQuantity = 0;
             }
-            else if (newOrderQuantity > item.QuantityInStore)
+            else if (item.OrderQuantity > item.QuantityInStore)
             {
                 item.OrderQuantity = item.QuantityInStore;
-                ToastService.ShowWarning($"Order quantity for '{item.Name}' cannot exceed {item.QuantityInStore}. It has been reset.");
             }
-            else if (newOrderQuantity < 1)
-            {
-                item.OrderQuantity = 1;
-                ToastService.ShowWarning($"Order quantity for '{item.Name}' cannot be less than 1. It has been reset to 1.");
-            }
-            else
-            {
-                item.OrderQuantity = newOrderQuantity;
-            }
-            StateHasChanged();
         }
+
+        // Update the item in the system only if there were changes
+        Manager.UpdateItem(item);
+        ToastService.ShowSuccess($"Item '{item.Name}' updated successfully!");
     }
+
+
+    private void RevertInputValue(Item item, string propertyName)
+    {
+        if (propertyName == nameof(Item.Name))
+        {
+            _nameInputs[item.Id] = item.Name;
+        }
+        else if (propertyName == nameof(Item.QuantityInStore))
+        {
+            _quantityInputs[item.Id] = item.QuantityInStore.ToString();
+        }
+        StateHasChanged();
+    }
+
 
     private void ResetOrderQuantityOnBlur(Item item)
     {
@@ -216,6 +264,7 @@
         ToastService.ShowSuccess($"Item '{item.Name}' deleted successfully!");
         StateHasChanged();
     }
+
     private async Task PlaceOrder()
     {
         await Manager.PlaceOrder();

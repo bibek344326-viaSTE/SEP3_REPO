@@ -6,12 +6,17 @@ namespace SEP3_T1_BlazorUI.Models
     {
         public int Id { get; set; }
         [Required(AllowEmptyStrings = false, ErrorMessage = "Item name is required and cannot be an empty string.")]
-        public string Name { get; set; } = "";
-        public string Description { get; set; } = "";
+
+        public string Name { get; set; } = string.Empty;
+        public string TempName { get; set; } = string.Empty; // Temporary state for input value
+        public string Description { get; set; } = string.Empty;
+        public string TempDescription { get; set; } = string.Empty; // Temporary state for input value
         public int QuantityInStore { get; set; }
-        public int OrderQuantity { get; set; } = 1;
-        public bool IsSelected { get; set; } = false;
+        public string TempQuantityInStore { get; set; } = "0"; // Temporary state for input value
+        public int OrderQuantity { get; set; }
+        public bool IsSelected { get; set; }
     }
+
 
     public class Order
     {
