@@ -18,13 +18,17 @@ namespace SEP3_T1_BlazorUI.Application.UseCases
         public IEnumerable<User> GetAllUsers()
         {
             var users = _userRepository.GetAllUsers();
-            Console.WriteLine($"Users count: {users.Count()}");  // Debug line
+            Console.WriteLine($"Users count: {users.Count()}"); // Debug line
             return users;
         }
 
-
         public void AddUser(User user)
         {
+            if (IsUsernameTaken(user.Username))
+            {
+                throw new Exception("Username already taken.");
+            }
+
             _userRepository.AddUser(user);
         }
 
@@ -44,4 +48,5 @@ namespace SEP3_T1_BlazorUI.Application.UseCases
             _userRepository.DeleteUser(user); // Implement this in your repository
         }
     }
+
 }

@@ -11,11 +11,9 @@ namespace SEP3_T1_BlazorUI.Infrastructure.Repositories
         {
             _users = new List<User>
         {
-            new User { Username = "manager1", Password = "pass123", WorkingNumber = 101, Role = Role.InventoryManager },
-            new User { Username = "worker1", Password = "pass456", WorkingNumber = 202, Role = Role.WarehouseWorker },
-            new User { Username = "manager2", Password = "pass789", WorkingNumber = 103, Role = Role.InventoryManager },
-            new User { Username = "worker2", Password = "pass012", WorkingNumber = 204, Role = Role.WarehouseWorker }
-        };
+new User { Username = "admin", Password = "admin", WorkingNumber = 1, Role = Role.InventoryManager },
+new User { Username = "worker", Password = "worker", WorkingNumber = 2, Role = Role.WarehouseWorker }
+            };
         }
 
         public IEnumerable<User> GetAllUsers() => _users;
