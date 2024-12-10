@@ -16,10 +16,7 @@
 
 <!-- Search and Filter Section -->
 <div class="input-group mb-4">
-    <input class="form-control"
-           type="text"
-           placeholder="Search by username or working number..."
-           @bind="Manager.SearchQuery" />
+    <input class="form-control" type="text" placeholder="Search by username or working number..." @bind="Manager.SearchQuery" />
     <button class="btn btn-outline-secondary" type="button" @onclick="Manager.ClearSearch">
         <i class="fas fa-times"></i> Clear
     </button>
@@ -59,33 +56,42 @@
                             </td>
                         </tr>
 
-                        @if (Manager.EditingUser?.Username == user.Username)
+                        @if (Manager.EditingUser?.WorkingNumber == user.WorkingNumber)
                         {
                             <tr>
                                 <td colspan="5">
                                     <EditForm Model="Manager.EditingUser" OnValidSubmit="Manager.SaveUser">
+                                        <DataAnnotationsValidator />
                                         <div class="row">
                                             <div class="col-md-3">
                                                 <label>Username</label>
-                                                <InputText class="form-control mb-2" @bind="Manager.EditingUser.Username" />
+                                                <InputText class="form-control mb-2"
+                                                           @bind-Value="Manager.EditingUser.Username" />
+                                                <ValidationMessage For="@(() => Manager.EditingUser.Username)" />
                                             </div>
 
                                             <div class="col-md-3">
                                                 <label>Password</label>
-                                                <InputText class="form-control mb-2" type="password" @bind="Manager.EditingUser.Password" />
+                                                <InputText class="form-control mb-2"
+                                                           type="password"
+                                                           @bind-Value="Manager.EditingUser.Password" />
+                                                <ValidationMessage For="@(() => Manager.EditingUser.Password)" />
                                             </div>
 
                                             <div class="col-md-2">
                                                 <label>Working Number</label>
-                                                <InputNumber class="form-control mb-2" @bind="Manager.EditingUser.WorkingNumber" TValue="int" />
+                                                <InputNumber class="form-control mb-2"
+                                                             @bind-Value="Manager.EditingUser.WorkingNumber"
+                                                             TValue="int"
+                                                             disabled />
                                             </div>
 
                                             <div class="col-md-3">
                                                 <label>Role</label>
-                                                <select class="form-control mb-2" @bind="Manager.EditingUser.Role">
+                                                <select class="form-control mb-2"
+                                                        @bind="Manager.EditingUser.Role">
                                                     <option value="InventoryManager">Inventory Manager</option>
                                                     <option value="WarehouseWorker">Warehouse Worker</option>
-                                                    <option value="Admin">Admin</option>
                                                 </select>
                                             </div>
 
@@ -93,7 +99,9 @@
                                                 <button type="submit" class="btn btn-success me-2">
                                                     <i class="fas fa-save"></i> Save
                                                 </button>
-                                                <button type="button" class="btn btn-secondary" @onclick="Manager.CancelEdit">
+                                                <button type="button"
+                                                        class="btn btn-secondary"
+                                                        @onclick="Manager.CancelEdit">
                                                     <i class="fas fa-times"></i> Cancel
                                                 </button>
                                             </div>

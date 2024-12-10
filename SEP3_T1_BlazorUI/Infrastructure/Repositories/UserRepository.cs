@@ -39,5 +39,20 @@ new User { Username = "worker", Password = "worker", WorkingNumber = 2, Role = R
         {
             _users.Remove(user);
         }
+
+        public void UpdateUser(User user)
+        {
+            var _user = _users.FirstOrDefault(u => u.WorkingNumber == user.WorkingNumber);
+            if (user != null)
+            {
+                _user.Username = user.Username;
+                _user.Password = user.Password;
+                _user.Role = user.Role;
+            }
+            else
+            {
+                throw new Exception("User not found");
+            }
+        }
     }
 }

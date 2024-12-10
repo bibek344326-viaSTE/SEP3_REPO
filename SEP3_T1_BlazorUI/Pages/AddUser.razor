@@ -20,7 +20,7 @@
             <label for="username" class="form-label">Username:</label>
             <InputText id="username"
                        @bind-Value="UserManager.NewUser.Username"
-                       class="@($"form-control {UserManager.ValidationClass(nameof(UserManager.NewUser.Username))}")" />
+                       class="@($"form-control {UserManager.ValidationClass(UserManager.NewUser, nameof(UserManager.NewUser.Username))}")" />
             <ValidationMessage For="@(() => UserManager.NewUser.Username)" />
         </div>
 
@@ -29,7 +29,7 @@
             <label for="password" class="form-label">Password:</label>
             <InputText id="password"
                        @bind-Value="UserManager.NewUser.Password"
-                       class="@($"form-control {UserManager.ValidationClass(nameof(UserManager.NewUser.Password))}")"
+                       class="@($"form-control {UserManager.ValidationClass(UserManager.NewUser, nameof(UserManager.NewUser.Password))}")"
                        type="password" />
             <ValidationMessage For="@(() => UserManager.NewUser.Password)" />
         </div>

@@ -47,6 +47,10 @@ namespace SEP3_T1_BlazorUI.Application.UseCases
         {
             _userRepository.DeleteUser(user); // Implement this in your repository
         }
+        public void UpdateUser(User user)
+        {
+            _userRepository.UpdateUser(user); // Implement this in your repository
+        }
     }
 
 }

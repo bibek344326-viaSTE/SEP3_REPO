@@ -44,29 +44,12 @@ namespace SEP3_T1_BlazorUI.Presentation.Managers
         public async Task HandleAddUser()
         {
             if (!EditContext.Validate())
-            {
-                _toastService.ShowError("Please fix validation errors before submitting.");
                 return;
-            }
-
-            if (string.IsNullOrWhiteSpace(NewUser.Username))
-            {
-                _toastService.ShowError("Username cannot be empty.");
-                return;
-            }
-
-            if (string.IsNullOrWhiteSpace(NewUser.Password))
-            {
-                _toastService.ShowError("Password cannot be empty.");
-                return;
-            }
 
             IsLoading = true;
 
             try
             {
-                Console.WriteLine(JsonConvert.SerializeObject(NewUser, Formatting.Indented));
-
                 var isUsernameTaken = _userUseCases.IsUsernameTaken(NewUser.Username);
                 if (isUsernameTaken)
                 {
@@ -80,7 +63,7 @@ namespace SEP3_T1_BlazorUI.Presentation.Managers
 
                 ResetForm();
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 _toastService.ShowError("An error occurred while adding the user.");
             }
@@ -99,9 +82,11 @@ namespace SEP3_T1_BlazorUI.Presentation.Managers
             EditContext = new EditContext(NewUser);
         }
 
-        public string ValidationClass(string fieldName)
+        public string ValidationClass(object model, string fieldName)
         {
-            var fieldIdentifier = new FieldIdentifier(NewUser, fieldName);
+            if (model == null) return string.Empty;
+
+            var fieldIdentifier = new FieldIdentifier(model, fieldName);
             var isValid = !EditContext.GetValidationMessages(fieldIdentifier).Any();
             return isValid ? "" : "is-invalid";
         }
@@ -116,36 +101,51 @@ namespace SEP3_T1_BlazorUI.Presentation.Managers
                 return role.ToString();
         }
 
+        public void ClearSearch()
+        {
+            SearchQuery = string.Empty;
+        }
+
         public void ToggleEditUser(User user)
         {
-            EditingUser = EditingUser?.Username == user.Username ? null : new User
+            if (EditingUser?.WorkingNumber == user.WorkingNumber)
+            {
+                // If you want to toggle edit mode, uncomment the line below
+                // EditingUser = null;
+                return;
+            }
+
+            EditingUser = new User
             {
                 Username = user.Username,
-                Password = user.Password,
+                Password = string.Empty, 
                 WorkingNumber = user.WorkingNumber,
                 Role = user.Role
             };
         }
 
-        public async Task SaveUser()
+        public void SaveUser()
         {
-            if (EditingUser == null) return;
+            if (EditingUser == null)
+                return;
+
+            var existingUsers = _userUseCases.GetAllUsers()
+                .Where(u => u.WorkingNumber != EditingUser.WorkingNumber)
+                .ToList();
+
+            if (existingUsers.Any(u => u.Username.Equals(EditingUser.Username, StringComparison.OrdinalIgnoreCase)))
+            {
+                _toastService.ShowError("This username is already taken. Please choose another one.");
+                return;
+            }
 
             try
             {
-                var userDTO = new UserDTO
-                {
-                    Username = EditingUser.Username,
-                    Password = EditingUser.Password,
-                    Role = EditingUser.Role
-                };
-
-                await Task.Run(() => _userUseCases.AddUser(userDTO));
-
+                _userUseCases.UpdateUser(EditingUser);
                 _toastService.ShowSuccess("User details updated successfully.");
-                EditingUser = null;
+                EditingUser = null; 
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 _toastService.ShowError("An error occurred while updating the user.");
             }
@@ -153,18 +153,21 @@ namespace SEP3_T1_BlazorUI.Presentation.Managers
 
         public void CancelEdit()
         {
-            EditingUser = null;
+            EditingUser = null; // Only clear the edit state when explicitly clicking "Cancel"
         }
+
 
         public void DeleteUser(User user)
         {
-            _userUseCases.DeleteUser(user);
-            _toastService.ShowInfo($"User '{user.Username}' was deleted successfully.");
-        }
-
-        public void ClearSearch()
-        {
-            SearchQuery = string.Empty;
+            try
+            {
+                _userUseCases.DeleteUser(user);
+                _toastService.ShowInfo($"User '{user.Username}' was deleted successfully.");
+            }
+            catch (Exception)
+            {
+                _toastService.ShowError("An error occurred while deleting the user.");
+            }
         }
     }
 }
