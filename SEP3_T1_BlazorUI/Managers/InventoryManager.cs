@@ -64,6 +64,28 @@ namespace SEP3_T1_BlazorUI.Presentation.Managers
     ? (Ascending ? "fas fa-sort-up" : "fas fa-sort-down")
     : "fas fa-sort";
 
+        public IEnumerable<Item> FilterAndSortItems()
+        {
+            var items = _itemUseCases.GetAllItems().AsQueryable();
+
+            if (!string.IsNullOrWhiteSpace(SearchQuery))
+            {
+                items = items.Where(i =>
+                    i.Name.Contains(SearchQuery, StringComparison.OrdinalIgnoreCase) ||
+                    i.Description.Contains(SearchQuery, StringComparison.OrdinalIgnoreCase));
+            }
+
+            items = SortColumn switch
+            {
+                "Name" => Ascending ? items.OrderBy(i => i.Name) : items.OrderByDescending(i => i.Name),
+                "Description" => Ascending ? items.OrderBy(i => i.Description) : items.OrderByDescending(i => i.Description),
+                "QuantityInStore" => Ascending ? items.OrderBy(i => i.QuantityInStore) : items.OrderByDescending(i => i.QuantityInStore),
+                _ => items
+            };
+
+            return items;
+        }
+
         //Pagination
         public bool IsFirstPage => CurrentPage == 1;
         public bool IsLastPage => CurrentPage >= TotalPages;
@@ -89,29 +111,6 @@ namespace SEP3_T1_BlazorUI.Presentation.Managers
 
             if (CurrentPage > TotalPages)
                 CurrentPage = TotalPages;
-        }
-
-
-        public IEnumerable<Item> FilterAndSortItems()
-        {
-            var items = _itemUseCases.GetAllItems().AsQueryable();
-
-            if (!string.IsNullOrWhiteSpace(SearchQuery))
-            {
-                items = items.Where(i =>
-                    i.Name.Contains(SearchQuery, StringComparison.OrdinalIgnoreCase) ||
-                    i.Description.Contains(SearchQuery, StringComparison.OrdinalIgnoreCase));
-            }
-
-            items = SortColumn switch
-            {
-                "Name" => Ascending ? items.OrderBy(i => i.Name) : items.OrderByDescending(i => i.Name),
-                "Description" => Ascending ? items.OrderBy(i => i.Description) : items.OrderByDescending(i => i.Description),
-                "QuantityInStore" => Ascending ? items.OrderBy(i => i.QuantityInStore) : items.OrderByDescending(i => i.QuantityInStore),
-                _ => items
-            };
-
-            return items;
         }
 
         public IEnumerable<Item> PagedItems => FilterAndSortItems()
