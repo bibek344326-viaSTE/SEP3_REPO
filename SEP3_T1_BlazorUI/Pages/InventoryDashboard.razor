@@ -31,6 +31,7 @@
     </div>
 </div>
 
+<!-- Table -->
 <table class="table table-bordered table-hover">
     <thead class="thead-dark">
         <tr>
@@ -59,20 +60,19 @@
                 <td class="text-center">
                     <InputCheckbox @bind-Value="item.IsSelected" disabled="@((item.QuantityInStore == 0))" />
                 </td>
+
                 <td>
                     <input type="text"
                            class="form-control"
-                           value="@_nameInputs[item.Id]"
-                           @oninput="(ChangeEventArgs args) => _nameInputs[item.Id] = args.Value?.ToString()"
-                           @onblur="() => UpdateItemOnBlur(item, nameof(item.Name), _nameInputs[item.Id])" />
+                           @bind="item.Name"
+                           @bind:after="() => UpdateItem(item)" />
                 </td>
 
                 <td>
                     <input type="text"
                            class="form-control"
-                           value="@_descriptionInputs[item.Id]"
-                           @oninput="(ChangeEventArgs args) => _descriptionInputs[item.Id] = args.Value?.ToString()"
-                           @onblur="() => UpdateItemOnBlur(item, nameof(item.Description), _descriptionInputs[item.Id])" />
+                           @bind="item.Description"
+                           @bind:after="() => UpdateItem(item)" />
                 </td>
 
                 <td>@item.Id</td>
@@ -81,9 +81,8 @@
                     <input type="number"
                            class="form-control"
                            min="0"
-                           value="@_quantityInputs[item.Id]"
-                           @oninput="(ChangeEventArgs args) => _quantityInputs[item.Id] = args.Value?.ToString()"
-                           @onblur="() => UpdateItemOnBlur(item, nameof(item.QuantityInStore), _quantityInputs[item.Id])" />
+                           @bind="item.QuantityInStore"
+                           @bind:after="() => UpdateItem(item)" />
                 </td>
 
                 <td>
@@ -91,9 +90,8 @@
                            class="form-control"
                            min="1"
                            @bind="item.OrderQuantity"
-                           @bind:event="oninput"
-                           @onblur="() => ResetOrderQuantityOnBlur(item)"
-                           disabled="@(!item.IsSelected || item.QuantityInStore == 0)" />
+                           @bind:after="() => ResetOrderQuantity(item)"
+                           disabled="@(!item.IsSelected)" />
                 </td>
 
                 <td class="text-center">
@@ -104,10 +102,7 @@
             </tr>
         }
     </tbody>
-
-
 </table>
-
 
 <!-- Pagination -->
 <div class="d-flex justify-content-between align-items-center mt-3">
@@ -128,118 +123,13 @@
 </div>
 
 @code {
-    // Local state to track inputs for Name, Description, and Quantity
-    private Dictionary<int, string> _nameInputs = new();
-    private Dictionary<int, string> _descriptionInputs = new();
-    private Dictionary<int, string> _quantityInputs = new();
-
-    protected override void OnInitialized()
+    private void UpdateItem(Item item)
     {
-        Manager?.LoadData();
-        InitializeLocalInputs();
-    }
-
-    private void InitializeLocalInputs()
-    {
-        foreach (var item in Manager.PagedItems)
-        {
-            _nameInputs[item.Id] = item.Name;
-            _descriptionInputs[item.Id] = item.Description;
-            _quantityInputs[item.Id] = item.QuantityInStore.ToString();
-        }
-    }
-
-    private void UpdateItemOnBlur(Item item, string propertyName, string? newValue)
-    {
-        if (string.IsNullOrWhiteSpace(newValue))
-        {
-            ToastService.ShowError($"{propertyName} cannot be empty. Reverting to the previous value.");
-            RevertInputValue(item, propertyName);
-            return;
-        }
-
-        newValue = newValue.Trim(); // Trim to avoid unnecessary updates due to extra spaces
-
-        // Validation and Change Detection for Name
-        if (propertyName == nameof(Item.Name))
-        {
-            if (item.Name == newValue)
-            {
-                return; // No change, so exit early
-            }
-
-            item.Name = newValue;
-            _nameInputs[item.Id] = newValue;
-        }
-
-        // **NEW: Validation and Change Detection for Description**
-        if (propertyName == nameof(Item.Description))
-        {
-            if (item.Description == newValue)
-            {
-                return; // No change, so exit early
-            }
-
-            item.Description = newValue;
-            _descriptionInputs[item.Id] = newValue;
-        }
-
-        // Validation and Change Detection for QuantityInStore
-        if (propertyName == nameof(Item.QuantityInStore))
-        {
-            if (!int.TryParse(newValue, out var quantity))
-            {
-                ToastService.ShowError("Quantity In Store must be a number. Reverting to the previous value.");
-                RevertInputValue(item, propertyName);
-                return;
-            }
-
-            if (quantity < 0)
-            {
-                ToastService.ShowError("Quantity In Store cannot be negative. Reverting to the previous value.");
-                RevertInputValue(item, propertyName);
-                return;
-            }
-
-            if (item.QuantityInStore == quantity)
-            {
-                return; // No change, so exit early
-            }
-
-            item.QuantityInStore = quantity;
-            _quantityInputs[item.Id] = quantity.ToString();
-
-            if (quantity == 0)
-            {
-                item.OrderQuantity = 0;
-            }
-            else if (item.OrderQuantity > item.QuantityInStore)
-            {
-                item.OrderQuantity = item.QuantityInStore;
-            }
-        }
-
-        // Update the item in the system only if there were changes
         Manager.UpdateItem(item);
         ToastService.ShowSuccess($"Item '{item.Name}' updated successfully!");
     }
 
-
-    private void RevertInputValue(Item item, string propertyName)
-    {
-        if (propertyName == nameof(Item.Name))
-        {
-            _nameInputs[item.Id] = item.Name;
-        }
-        else if (propertyName == nameof(Item.QuantityInStore))
-        {
-            _quantityInputs[item.Id] = item.QuantityInStore.ToString();
-        }
-        StateHasChanged();
-    }
-
-
-    private void ResetOrderQuantityOnBlur(Item item)
+    private void ResetOrderQuantity(Item item)
     {
         if (item.QuantityInStore == 0)
         {
@@ -248,12 +138,12 @@
         else if (item.OrderQuantity > item.QuantityInStore)
         {
             item.OrderQuantity = item.QuantityInStore;
-            ToastService.ShowWarning($"Order quantity for '{item.Name}' has been reset to {item.QuantityInStore} after editing.");
+            ToastService.ShowWarning($"Order quantity for '{item.Name}' has been reset to {item.QuantityInStore}.");
         }
         else if (item.OrderQuantity < 1)
         {
             item.OrderQuantity = 1;
-            ToastService.ShowWarning($"Order quantity for '{item.Name}' has been reset to 1 after editing.");
+            ToastService.ShowWarning($"Order quantity for '{item.Name}' has been reset to 1.");
         }
         StateHasChanged();
     }

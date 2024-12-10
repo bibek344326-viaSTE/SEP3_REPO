@@ -1,7 +1,6 @@
 ﻿using SEP3_T1_BlazorUI.Models;
 using SEP3_T1_BlazorUI.Application.UseCases;
-using Microsoft.AspNetCore.Components.Authorization; // Added for AuthenticationStateProvider, AuthenticationState
-using System.Security.Claims; // Added for Claim
+using Microsoft.AspNetCore.Components.Authorization;
 
 namespace SEP3_T1_BlazorUI.Presentation.Managers
 {
@@ -9,7 +8,7 @@ namespace SEP3_T1_BlazorUI.Presentation.Managers
     {
         private readonly ItemUseCases _itemUseCases;
         private readonly OrderUseCases _orderUseCases;
-        private readonly AuthenticationStateProvider _authenticationStateProvider; // Injected AuthenticationStateProvider
+        private readonly AuthenticationStateProvider _authenticationStateProvider;
         private string _searchQuery = string.Empty;
 
         public InventoryManager(ItemUseCases itemUseCases, OrderUseCases orderUseCases, AuthenticationStateProvider authenticationStateProvider)
@@ -19,6 +18,7 @@ namespace SEP3_T1_BlazorUI.Presentation.Managers
             _authenticationStateProvider = authenticationStateProvider;
         }
 
+        //Search filter
         public string SearchQuery
         {
             get => _searchQuery;
@@ -27,32 +27,20 @@ namespace SEP3_T1_BlazorUI.Presentation.Managers
                 if (_searchQuery != value)
                 {
                     _searchQuery = value;
-                    CurrentPage = 1; // Reset to the first page when search changes
+                    CurrentPage = 1;
                 }
             }
-        }
-
-        public string SortColumn { get; private set; } = "Name";
-        public bool Ascending { get; private set; } = true;
-        public int CurrentPage { get; private set; } = 1;
-        public int PageSize { get; private set; } = 12;
-
-        public IEnumerable<Item> PagedItems => FilterAndSortItems()
-            .Skip((CurrentPage - 1) * PageSize)
-            .Take(PageSize);
-
-        public bool HasSelectedItems => FilterAndSortItems().Any(i => i.IsSelected);
-
-        public void LoadData()
-        {
-            // Load initial data if needed
         }
 
         public void ClearSearch()
         {
             SearchQuery = string.Empty;
-            CurrentPage = 1; // Reset to the first page when clearing the search
+            CurrentPage = 1;
         }
+
+        //Sorting
+        public string SortColumn { get; private set; } = "Name";
+        public bool Ascending { get; private set; } = true;
 
         public void SortByName() => SortByColumn("Name");
 
@@ -60,10 +48,87 @@ namespace SEP3_T1_BlazorUI.Presentation.Managers
 
         public void SortByQuantityInStore() => SortByColumn("QuantityInStore");
 
+        public void SortByColumn(string columnName)
+        {
+            if (SortColumn == columnName)
+            {
+                Ascending = !Ascending;
+            }
+            else
+            {
+                SortColumn = columnName;
+                Ascending = true;
+            }
+        }
+        public string GetSortIcon(string columnName) => SortColumn == columnName
+    ? (Ascending ? "fas fa-sort-up" : "fas fa-sort-down")
+    : "fas fa-sort";
+
+        //Pagination
+        public bool IsFirstPage => CurrentPage == 1;
+        public bool IsLastPage => CurrentPage >= TotalPages;
+
+        public int TotalPages => Math.Max(1, (int)Math.Ceiling(FilterAndSortItems().Count() / (double)PageSize));
+
+        public int CurrentPage { get; private set; } = 1;
+        public int PageSize { get; private set; } = 12;
+
+        public void PreviousPage()
+        {
+            if (!IsFirstPage)
+                CurrentPage--;
+
+            if (CurrentPage > TotalPages)
+                CurrentPage = TotalPages;
+        }
+
+        public void NextPage()
+        {
+            if (!IsLastPage)
+                CurrentPage++;
+
+            if (CurrentPage > TotalPages)
+                CurrentPage = TotalPages;
+        }
+
+
+        public IEnumerable<Item> FilterAndSortItems()
+        {
+            var items = _itemUseCases.GetAllItems().AsQueryable();
+
+            if (!string.IsNullOrWhiteSpace(SearchQuery))
+            {
+                items = items.Where(i =>
+                    i.Name.Contains(SearchQuery, StringComparison.OrdinalIgnoreCase) ||
+                    i.Description.Contains(SearchQuery, StringComparison.OrdinalIgnoreCase));
+            }
+
+            items = SortColumn switch
+            {
+                "Name" => Ascending ? items.OrderBy(i => i.Name) : items.OrderByDescending(i => i.Name),
+                "Description" => Ascending ? items.OrderBy(i => i.Description) : items.OrderByDescending(i => i.Description),
+                "QuantityInStore" => Ascending ? items.OrderBy(i => i.QuantityInStore) : items.OrderByDescending(i => i.QuantityInStore),
+                _ => items
+            };
+
+            return items;
+        }
+
+        public IEnumerable<Item> PagedItems => FilterAndSortItems()
+    .Skip((CurrentPage - 1) * PageSize)
+    .Take(PageSize);
+
+        public void UpdateItem(Item item)
+        {
+            _itemUseCases.UpdateItem(item);
+        }
+
         public void DeleteItem(Item item)
         {
             _itemUseCases.DeleteItem(item);
         }
+
+        public bool HasSelectedItems => FilterAndSortItems().Any(i => i.IsSelected);
 
         public async Task PlaceOrder()
         {
@@ -90,7 +155,7 @@ namespace SEP3_T1_BlazorUI.Presentation.Managers
                 OrderDate = DateTime.Now,
                 Status = "Pending",
                 TotalQuantity = selectedItems.Sum(i => i.OrderQuantity),
-                EmployeeId = employeeId, // Attach EmployeeId from claim
+                EmployeeId = employeeId, 
                 OrderItems = selectedItems.Select(i => new OrderItem
                 {
                     ItemId = i.Id,
@@ -99,95 +164,18 @@ namespace SEP3_T1_BlazorUI.Presentation.Managers
                 }).ToList()
             };
 
-            // Log the order details to the console
-            Console.WriteLine("New Order Details:");
             Console.WriteLine(Newtonsoft.Json.JsonConvert.SerializeObject(newOrder, Newtonsoft.Json.Formatting.Indented));
 
-            // Place the order
-             _orderUseCases.AddOrder(newOrder);
+            _orderUseCases.AddOrder(newOrder);
 
-            // Update the QuantityInStore for each item and clear selection
             foreach (var item in selectedItems)
             {
-                item.QuantityInStore -= item.OrderQuantity; // Reduce quantity in store
-                if (item.QuantityInStore < 0) item.QuantityInStore = 0; // Ensure it doesn't go below zero
-                item.OrderQuantity = 0; // Clear the order quantity
-                item.IsSelected = false; // Deselect the item
-                UpdateItem(item); // Call UpdateItem to persist the changes
+                item.QuantityInStore -= item.OrderQuantity; 
+                if (item.QuantityInStore < 0) item.QuantityInStore = 0; 
+                item.OrderQuantity = 0; 
+                item.IsSelected = false; 
+                UpdateItem(item); 
             }
-        }
-
-
-        public void PreviousPage()
-        {
-            if (!IsFirstPage)
-                CurrentPage--;
-
-            if (CurrentPage > TotalPages)
-                CurrentPage = TotalPages;
-        }
-
-        public void NextPage()
-        {
-            if (!IsLastPage)
-                CurrentPage++;
-
-            if (CurrentPage > TotalPages)
-                CurrentPage = TotalPages;
-        }
-
-        public bool IsFirstPage => CurrentPage == 1;
-        public bool IsLastPage => CurrentPage >= TotalPages;
-
-        public int TotalPages => Math.Max(1, (int)Math.Ceiling(FilterAndSortItems().Count() / (double)PageSize));
-
-        public void ToggleSelection(Item item)
-        {
-            item.IsSelected = !item.IsSelected;
-        }
-
-        public string GetSortIcon(string columnName) => SortColumn == columnName
-            ? (Ascending ? "fas fa-sort-up" : "fas fa-sort-down")
-            : "fas fa-sort";
-
-        public void SortByColumn(string columnName)
-        {
-            if (SortColumn == columnName)
-            {
-                Ascending = !Ascending;
-            }
-            else
-            {
-                SortColumn = columnName;
-                Ascending = true;
-            }
-        }
-
-        public IEnumerable<Item> FilterAndSortItems()
-        {
-            var items = _itemUseCases.GetAllItems().AsQueryable();
-
-            if (!string.IsNullOrWhiteSpace(SearchQuery))
-            {
-                items = items.Where(i =>
-                    i.Name.Contains(SearchQuery, StringComparison.OrdinalIgnoreCase) ||
-                    i.Description.Contains(SearchQuery, StringComparison.OrdinalIgnoreCase));
-            }
-
-            items = SortColumn switch
-            {
-                "Name" => Ascending ? items.OrderBy(i => i.Name) : items.OrderByDescending(i => i.Name),
-                "Description" => Ascending ? items.OrderBy(i => i.Description) : items.OrderByDescending(i => i.Description),
-                "QuantityInStore" => Ascending ? items.OrderBy(i => i.QuantityInStore) : items.OrderByDescending(i => i.QuantityInStore),
-                _ => items
-            };
-
-            return items;
-        }
-
-        public void UpdateItem(Item item)
-        {
-            _itemUseCases.UpdateItem(item);
         }
     }
 }

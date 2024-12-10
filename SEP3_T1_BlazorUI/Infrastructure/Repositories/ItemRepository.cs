@@ -62,6 +62,11 @@ namespace SEP3_T1_BlazorUI.Infrastructure.Repositories
                 new Item { Id = 30, Name = "Ice Cream", Description = "Vanilla Ice Cream, 1 Gallon", QuantityInStore = 20 },
             };
 
+            foreach (var item in items)
+            {
+                item.OrderQuantity = item.QuantityInStore > 0 ? 1 : 0;
+            }
+
             _items.AddRange(items);
             Console.WriteLine("Mock data initialized in ItemRepository.");
         }

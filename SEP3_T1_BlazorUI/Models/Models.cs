@@ -8,11 +8,8 @@ namespace SEP3_T1_BlazorUI.Models
         [Required(AllowEmptyStrings = false, ErrorMessage = "Item name is required and cannot be an empty string.")]
 
         public string Name { get; set; } = string.Empty;
-        public string TempName { get; set; } = string.Empty; // Temporary state for input value
         public string Description { get; set; } = string.Empty;
-        public string TempDescription { get; set; } = string.Empty; // Temporary state for input value
         public int QuantityInStore { get; set; }
-        public string TempQuantityInStore { get; set; } = "0"; // Temporary state for input value
         public int OrderQuantity { get; set; }
         public bool IsSelected { get; set; }
     }

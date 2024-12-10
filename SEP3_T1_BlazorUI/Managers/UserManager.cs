@@ -1,10 +1,5 @@
 ﻿using SEP3_T1_BlazorUI.Application.UseCases;
 using SEP3_T1_BlazorUI.Models;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Newtonsoft.Json;
-using System;
 using Microsoft.AspNetCore.Components.Forms;
 using Blazored.Toast.Services;
 
@@ -41,6 +36,7 @@ namespace SEP3_T1_BlazorUI.Presentation.Managers
             EditContext = new EditContext(NewUser);
         }
 
+        //Add new user
         public async Task HandleAddUser()
         {
             if (!EditContext.Validate())
@@ -82,25 +78,7 @@ namespace SEP3_T1_BlazorUI.Presentation.Managers
             EditContext = new EditContext(NewUser);
         }
 
-        public string ValidationClass(object model, string fieldName)
-        {
-            if (model == null) return string.Empty;
-
-            var fieldIdentifier = new FieldIdentifier(model, fieldName);
-            var isValid = !EditContext.GetValidationMessages(fieldIdentifier).Any();
-            return isValid ? "" : "is-invalid";
-        }
-
-        public string HumanizeRole(Role role)
-        {
-            if (role == Role.InventoryManager)
-                return "Inventory Manager";
-            else if (role == Role.WarehouseWorker)
-                return "Warehouse Worker";
-            else
-                return role.ToString();
-        }
-
+        //Update existing user
         public void ClearSearch()
         {
             SearchQuery = string.Empty;
@@ -122,6 +100,19 @@ namespace SEP3_T1_BlazorUI.Presentation.Managers
                 WorkingNumber = user.WorkingNumber,
                 Role = user.Role
             };
+        }
+
+        public void DeleteUser(User user)
+        {
+            try
+            {
+                _userUseCases.DeleteUser(user);
+                _toastService.ShowInfo($"User '{user.Username}' was deleted successfully.");
+            }
+            catch (Exception)
+            {
+                _toastService.ShowError("An error occurred while deleting the user.");
+            }
         }
 
         public void SaveUser()
@@ -153,21 +144,28 @@ namespace SEP3_T1_BlazorUI.Presentation.Managers
 
         public void CancelEdit()
         {
-            EditingUser = null; // Only clear the edit state when explicitly clicking "Cancel"
+            EditingUser = null;
         }
 
-
-        public void DeleteUser(User user)
+        //Both edit and create util
+        public string HumanizeRole(Role role)
         {
-            try
-            {
-                _userUseCases.DeleteUser(user);
-                _toastService.ShowInfo($"User '{user.Username}' was deleted successfully.");
-            }
-            catch (Exception)
-            {
-                _toastService.ShowError("An error occurred while deleting the user.");
-            }
+            if (role == Role.InventoryManager)
+                return "Inventory Manager";
+            else if (role == Role.WarehouseWorker)
+                return "Warehouse Worker";
+            else
+                return role.ToString();
         }
+
+        public string ValidationClass(object model, string fieldName)
+        {
+            if (model == null) return string.Empty;
+
+            var fieldIdentifier = new FieldIdentifier(model, fieldName);
+            var isValid = !EditContext.GetValidationMessages(fieldIdentifier).Any();
+            return isValid ? "" : "is-invalid";
+        }
+
     }
 }
