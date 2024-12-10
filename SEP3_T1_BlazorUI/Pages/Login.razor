@@ -18,9 +18,7 @@
                 </div>
             }
 
-            <EditForm Model="@loginManager.UserDTO" OnValidSubmit="@HandleValidSubmit">
-                <DataAnnotationsValidator />
-                <ValidationSummary />
+            <EditForm Model="@loginManager.UserDTO" OnSubmit="@HandleValidSubmit">
 
                 <div class="form-group mb-3">
                     <label for="username">Username</label>
