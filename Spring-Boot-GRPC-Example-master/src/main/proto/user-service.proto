@@ -4,12 +4,12 @@ option java_multiple_files = true;
 option java_package = "com.javainuse.user";
 
 service UserService {
-  rpc editUser(UserDTO) returns (DeleteResponse);
+  rpc editUser(UserRequest) returns (DeleteResponse);
 
-  rpc deleteUser(UserDTO) returns (DeleteResponse);
+  rpc deleteUser(UserRequest) returns (DeleteResponse);
 }
 
-message UserDTO {
+message UserRequest {
   string userid = 1;
   string username = 2;
   string role = 3;
