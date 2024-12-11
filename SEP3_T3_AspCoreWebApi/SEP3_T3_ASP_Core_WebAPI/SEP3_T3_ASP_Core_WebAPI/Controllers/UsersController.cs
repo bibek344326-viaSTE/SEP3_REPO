@@ -2,6 +2,7 @@
 
 using Entities;
 using Microsoft.AspNetCore.Mvc;
+using SEP3_T3_ASP_Core_WebAPI.ApiContracts.AuthDtos;
 using SEP3_T3_ASP_Core_WebAPI.ApiContracts.UserDto;
 using SEP3_T3_ASP_Core_WebAPI.RepositoryContracts;
 
@@ -21,7 +22,7 @@ public class UsersController: ControllerBase
     // Create Endpoints
     // POST: /Users
     [HttpPost]
-    public async Task<ActionResult<UserDto>> AddUser([FromBody] CreateUserDto request)
+    public async Task<ActionResult<UserDto>> AddUser([FromBody] RegisterRequest request)
     {
         await VerifyUserNameIsAvailableAsync(request.UserName);
 

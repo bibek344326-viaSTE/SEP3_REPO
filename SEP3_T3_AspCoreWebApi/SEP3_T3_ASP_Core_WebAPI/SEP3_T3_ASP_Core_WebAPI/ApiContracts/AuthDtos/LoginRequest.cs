@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace SEP3_T3_ASP_Core_WebAPI.ApiContracts.LoginDto;
+namespace SEP3_T3_ASP_Core_WebAPI.ApiContracts.AuthDtos;
 
 public class LoginRequest
 {

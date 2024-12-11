@@ -23,6 +23,8 @@ builder.Services.AddScoped<IOrderItemRepository, EfcOrderItemRepository>();
 builder.Services.AddScoped<IOrderRepository, EfcOrderRepository>();
 builder.Services.AddScoped<IItemRepository, EfcItemRepository>();
 builder.Services.AddScoped<IUserRepository, EfcUserRepository>();
+builder.Services.AddScoped<IAuthRepository, EfcAuthRepository>();
+
 builder.Services.AddDbContext<AppDbContext>();
 
 
