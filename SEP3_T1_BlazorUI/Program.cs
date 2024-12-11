@@ -9,7 +9,6 @@ using SEP3_T1_BlazorUI.Infrastructure.Repositories;
 using SEP3_T1_BlazorUI.Infrastructure;
 using SEP3_T1_BlazorUI.Presentation.Managers;
 using Blazored.Toast;
-using SEP3_T1_BlazorUI.Infrastructure.GrpcClients;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.RootComponents.Add<App>("#app");
@@ -32,7 +31,11 @@ builder.Services.AddScoped<UserManager>();
 builder.Services.AddScoped<IItemRepository, ItemRepository>();
 builder.Services.AddScoped<IOrderRepository, OrderRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
-builder.Services.AddScoped<IAuthRepository, AuthRepository>();
+
+builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
+builder.Services.AddScoped<AuthRepository>(sp =>
+    new AuthRepository(sp.GetRequiredService<HttpClient>(), "https://localhost:8090"));
+
 
 // Add use cases
 builder.Services.AddScoped<ItemUseCases>();
@@ -40,7 +43,6 @@ builder.Services.AddScoped<OrderUseCases>();
 builder.Services.AddScoped<UserUseCases>();
 builder.Services.AddScoped<AuthUseCases>();
 
-builder.Services.AddSingleton<AuthServiceClient>(provider => new AuthServiceClient("https://localhost:5001"));
 
 
 await builder.Build().RunAsync();
