@@ -10,3 +10,8 @@ enum Type {
   AUTOBIOGRAPHY = 1;
   HISTORY = 2;
 }
+
+enum Role {
+  InventoryManager = 0;
+  WarehouseWorker = 1;
+}
