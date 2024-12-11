@@ -9,6 +9,7 @@ using SEP3_T1_BlazorUI.Infrastructure.Repositories;
 using SEP3_T1_BlazorUI.Infrastructure;
 using SEP3_T1_BlazorUI.Presentation.Managers;
 using Blazored.Toast;
+using SEP3_T1_BlazorUI.Infrastructure.GrpcClients;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.RootComponents.Add<App>("#app");
@@ -38,6 +39,8 @@ builder.Services.AddScoped<ItemUseCases>();
 builder.Services.AddScoped<OrderUseCases>();
 builder.Services.AddScoped<UserUseCases>();
 builder.Services.AddScoped<AuthUseCases>();
+
+builder.Services.AddSingleton<AuthServiceClient>(provider => new AuthServiceClient("https://localhost:5001"));
 
 
 await builder.Build().RunAsync();
