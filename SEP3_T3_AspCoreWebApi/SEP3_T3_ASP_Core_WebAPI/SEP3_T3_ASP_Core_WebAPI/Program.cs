@@ -1,4 +1,6 @@
 using EfcRepositories.Repositories;
+using Entities;
+using Microsoft.AspNetCore.Identity;
 using SEP3_T3_ASP_Core_WebAPI;
 using SEP3_T3_ASP_Core_WebAPI.RepositoryContracts;
 
@@ -24,6 +26,7 @@ builder.Services.AddScoped<IOrderRepository, EfcOrderRepository>();
 builder.Services.AddScoped<IItemRepository, EfcItemRepository>();
 builder.Services.AddScoped<IUserRepository, EfcUserRepository>();
 builder.Services.AddScoped<IAuthRepository, EfcAuthRepository>();
+builder.Services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
 
 builder.Services.AddDbContext<AppDbContext>();
 

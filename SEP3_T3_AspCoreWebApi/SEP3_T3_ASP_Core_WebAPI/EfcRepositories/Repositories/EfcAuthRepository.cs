@@ -9,10 +9,14 @@ namespace EfcRepositories.Repositories
     public class EfcAuthRepository : IAuthRepository
     {
         private readonly AppDbContext _ctx;
+        private readonly IPasswordHasher<User> _passwordHasher;
 
-        public EfcAuthRepository(AppDbContext ctx)
+
+        public EfcAuthRepository(AppDbContext ctx, IPasswordHasher<User> passwordHasher)
         {
             this._ctx = ctx;
+            _passwordHasher = passwordHasher;
+
         }
 
         public async Task<User> LoginAsync(string username, string password)
@@ -35,8 +39,7 @@ namespace EfcRepositories.Repositories
             }
 
             // Verify the password using the PasswordHasher
-            var hasher = new PasswordHasher<User>();
-            var result = hasher.VerifyHashedPassword(user, user.Password, password);
+            var result = _passwordHasher.VerifyHashedPassword(user, user.Password, password);
             if (result != PasswordVerificationResult.Success)
             {
                 return null; // Password does not match
@@ -46,9 +49,28 @@ namespace EfcRepositories.Repositories
             return user;
         }
 
-        public Task<User> RegisterAsync(string username, string password, string role)
+        public async Task<User> RegisterAsync(string username, string password, string role)
         {
-            throw new NotImplementedException();
+            var user = new User
+            {
+                UserName = username,
+                Password = password,
+                UserRole = role
+            };
+
+            user.Password = _passwordHasher.HashPassword(user, password);
+
+            try
+            {
+                _ctx.Users.Add(user);
+                await _ctx.SaveChangesAsync();
+                return user;
+            }
+            catch (Exception ex)
+            {
+                // Handle exceptions, e.g., logging
+                throw new Exception("An error occurred while saving the user.", ex);
+            }
         }
     }
 }
