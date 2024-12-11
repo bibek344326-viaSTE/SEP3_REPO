@@ -92,3 +92,5 @@ TestResults/
 # IDE files
 .idea/
 .vs/
+
+target/
