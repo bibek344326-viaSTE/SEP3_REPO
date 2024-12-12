@@ -15,7 +15,7 @@ namespace SEP3_T1_BlazorUI.Application.UseCases
 
         public Task<string> Login(LoginRequest loginRequest)
         {
-            return _authRepository.Login(loginRequest);
+            return _authRepository.LoginAsync(loginRequest);
         }
     }
 }

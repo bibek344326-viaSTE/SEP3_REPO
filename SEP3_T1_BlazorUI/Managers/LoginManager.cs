@@ -4,6 +4,7 @@ using SEP3_T1_BlazorUI.Application.UseCases;
 using Microsoft.AspNetCore.Components.Authorization;
 using SEP3_T1_BlazorUI.Infrastructure;
 using System.Security.Claims;
+using SEP3T1BlazorUI.Infrastructure;
 
 namespace SEP3_T1_BlazorUI.Presentation.Managers
 {
@@ -18,7 +19,7 @@ namespace SEP3_T1_BlazorUI.Presentation.Managers
             _authenticationStateProvider = authenticationStateProvider;
         }
 
-        public UserDTO UserDTO { get; set; } = new UserDTO();
+        public LoginRequest LoginRequest { get; set; } = new LoginRequest();
         public string ErrorMessage { get; set; } = string.Empty;
 
         public async Task<bool> AttemptLoginAsync()
@@ -27,7 +28,7 @@ namespace SEP3_T1_BlazorUI.Presentation.Managers
 
             try
             {
-                string token = await _authUseCases.Login(UserDTO);
+                string token = await _authUseCases.Login(LoginRequest);
 
                 if (!string.IsNullOrWhiteSpace(token))
                 {

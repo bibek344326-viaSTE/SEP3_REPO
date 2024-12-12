@@ -18,16 +18,16 @@
                 </div>
             }
 
-            <EditForm Model="@loginManager.UserDTO" OnSubmit="@HandleValidSubmit">
+            <EditForm Model="@loginManager.LoginRequest" OnSubmit="@HandleValidSubmit">
 
                 <div class="form-group mb-3">
                     <label for="username">Username</label>
-                    <InputText @bind-Value="loginManager.UserDTO.Username" class="form-control" id="username" required />
+                    <InputText @bind-Value="loginManager.LoginRequest.Username" class="form-control" id="username" required />
                 </div>
 
                 <div class="form-group mb-3">
                     <label for="password">Password</label>
-                    <InputText @bind-Value="loginManager.UserDTO.Password" type="password" class="form-control" id="password" required />
+                    <InputText @bind-Value="loginManager.LoginRequest.Password" type="password" class="form-control" id="password" required />
                 </div>
 
                 <button type="submit" class="btn btn-primary w-100">Login</button>

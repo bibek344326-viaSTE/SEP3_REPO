@@ -7,8 +7,8 @@ namespace SEP3_T1_BlazorUI.Infrastructure.Repositories
     public class AuthRepository : IAuthRepository
     {
         private readonly AuthService.AuthServiceClient _client;
-
-        public AuthRepository(HttpClient httpClient, string grpcServiceEndpoint)
+        string grpcServiceEndpoint = "https://localhost:8090";
+        public AuthRepository(HttpClient httpClient)
         {
             var channel = GrpcChannel.ForAddress(grpcServiceEndpoint, new GrpcChannelOptions { HttpClient = httpClient });
             _client = new AuthService.AuthServiceClient(channel);
