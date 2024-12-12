@@ -1,5 +1,6 @@
 ﻿using SEP3_T1_BlazorUI.Models;
 using SEP3_T1_BlazorUI.Application.Interfaces;
+using SEP3T1BlazorUI.Infrastructure;
 
 namespace SEP3_T1_BlazorUI.Application.UseCases
 {
@@ -12,9 +13,9 @@ namespace SEP3_T1_BlazorUI.Application.UseCases
             _authRepository = authRepository;
         }
 
-        public Task<string> Login(UserDTO userDTO)
+        public Task<string> Login(LoginRequest loginRequest)
         {
-            return _authRepository.Login(userDTO);
+            return _authRepository.LoginAsync(loginRequest);
         }
     }
 }

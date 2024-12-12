@@ -18,6 +18,12 @@ builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.
 builder.Services.AddBlazoredLocalStorage();
 builder.Services.AddBlazoredToast();
 
+builder.Services.AddScoped<AuthRepository>(sp =>
+    new AuthRepository(sp.GetRequiredService<HttpClient>()));
+builder.Services.AddScoped<IAuthRepository, AuthRepository>();
+
+
+
 // Add the authentication state provider as a scoped service
 builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthenticationStateProvider>();
 builder.Services.AddAuthorizationCore(); 
@@ -31,13 +37,14 @@ builder.Services.AddScoped<UserManager>();
 builder.Services.AddScoped<IItemRepository, ItemRepository>();
 builder.Services.AddScoped<IOrderRepository, OrderRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
-builder.Services.AddScoped<IAuthRepository, AuthRepository>();
+
 
 // Add use cases
 builder.Services.AddScoped<ItemUseCases>();
 builder.Services.AddScoped<OrderUseCases>();
 builder.Services.AddScoped<UserUseCases>();
 builder.Services.AddScoped<AuthUseCases>();
+
 
 
 await builder.Build().RunAsync();
