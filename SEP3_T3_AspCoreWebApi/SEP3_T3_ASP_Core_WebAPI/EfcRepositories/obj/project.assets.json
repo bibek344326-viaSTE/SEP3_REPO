@@ -2992,25 +2992,24 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\AminAouina\\.nuget\\packages\\": {},
-    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {},
-    "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
+    "C:\\Users\\Bibek\\.nuget\\packages\\": {},
+    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\AminAouina\\source\\SEP3_REPO\\SEP3_T3_AspCoreWebApi\\SEP3_T3_ASP_Core_WebAPI\\EfcRepositories\\EfcRepositories.csproj",
+      "projectUniqueName": "C:\\Users\\Bibek\\OneDrive\\Desktop\\ThirdSemester\\SEP3\\SEP3GitRepo\\SEP3_T3_AspCoreWebApi\\SEP3_T3_ASP_Core_WebAPI\\EfcRepositories\\EfcRepositories.csproj",
       "projectName": "EfcRepositories",
-      "projectPath": "C:\\Users\\AminAouina\\source\\SEP3_REPO\\SEP3_T3_AspCoreWebApi\\SEP3_T3_ASP_Core_WebAPI\\EfcRepositories\\EfcRepositories.csproj",
-      "packagesPath": "C:\\Users\\AminAouina\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\AminAouina\\source\\SEP3_REPO\\SEP3_T3_AspCoreWebApi\\SEP3_T3_ASP_Core_WebAPI\\EfcRepositories\\obj\\",
+      "projectPath": "C:\\Users\\Bibek\\OneDrive\\Desktop\\ThirdSemester\\SEP3\\SEP3GitRepo\\SEP3_T3_AspCoreWebApi\\SEP3_T3_ASP_Core_WebAPI\\EfcRepositories\\EfcRepositories.csproj",
+      "packagesPath": "C:\\Users\\Bibek\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\Bibek\\OneDrive\\Desktop\\ThirdSemester\\SEP3\\SEP3GitRepo\\SEP3_T3_AspCoreWebApi\\SEP3_T3_ASP_Core_WebAPI\\EfcRepositories\\obj\\",
       "projectStyle": "PackageReference",
+      "UsingMicrosoftNETSdk": false,
       "fallbackFolders": [
-        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",
-        "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
       ],
       "configFilePaths": [
-        "C:\\Users\\AminAouina\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\Bibek\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
@@ -3019,19 +3018,17 @@
       ],
       "sources": {
         "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-        "C:\\Program Files\\dotnet\\library-packs": {},
-        "https://api.nuget.org/v3/index.json": {},
-        "https://pkgs.dev.azure.com/techsoftdk/_packaging/MesBaseFeed/nuget/v3/index.json": {}
+        "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
         "net9.0": {
           "targetAlias": "net9.0",
           "projectReferences": {
-            "C:\\Users\\AminAouina\\source\\SEP3_REPO\\SEP3_T3_AspCoreWebApi\\SEP3_T3_ASP_Core_WebAPI\\Entities\\Entities.csproj": {
-              "projectPath": "C:\\Users\\AminAouina\\source\\SEP3_REPO\\SEP3_T3_AspCoreWebApi\\SEP3_T3_ASP_Core_WebAPI\\Entities\\Entities.csproj"
+            "C:\\Users\\Bibek\\OneDrive\\Desktop\\ThirdSemester\\SEP3\\SEP3GitRepo\\SEP3_T3_AspCoreWebApi\\SEP3_T3_ASP_Core_WebAPI\\Entities\\Entities.csproj": {
+              "projectPath": "C:\\Users\\Bibek\\OneDrive\\Desktop\\ThirdSemester\\SEP3\\SEP3GitRepo\\SEP3_T3_AspCoreWebApi\\SEP3_T3_ASP_Core_WebAPI\\Entities\\Entities.csproj"
             },
-            "C:\\Users\\AminAouina\\source\\SEP3_REPO\\SEP3_T3_AspCoreWebApi\\SEP3_T3_ASP_Core_WebAPI\\RepositoryContracts\\RepositoryContracts.csproj": {
-              "projectPath": "C:\\Users\\AminAouina\\source\\SEP3_REPO\\SEP3_T3_AspCoreWebApi\\SEP3_T3_ASP_Core_WebAPI\\RepositoryContracts\\RepositoryContracts.csproj"
+            "C:\\Users\\Bibek\\OneDrive\\Desktop\\ThirdSemester\\SEP3\\SEP3GitRepo\\SEP3_T3_AspCoreWebApi\\SEP3_T3_ASP_Core_WebAPI\\RepositoryContracts\\RepositoryContracts.csproj": {
+              "projectPath": "C:\\Users\\Bibek\\OneDrive\\Desktop\\ThirdSemester\\SEP3\\SEP3GitRepo\\SEP3_T3_AspCoreWebApi\\SEP3_T3_ASP_Core_WebAPI\\RepositoryContracts\\RepositoryContracts.csproj"
             }
           }
         }
@@ -3045,8 +3042,7 @@
         "enableAudit": "true",
         "auditLevel": "low",
         "auditMode": "direct"
-      },
-      "SdkAnalysisLevel": "9.0.100"
+      }
     },
     "frameworks": {
       "net9.0": {
@@ -3090,13 +3086,5 @@
         "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.101/PortableRuntimeIdentifierGraph.json"
       }
     }
-  },
-  "logs": [
-    {
-      "code": "NU1900",
-      "level": "Warning",
-      "warningLevel": 1,
-      "message": "Error occurred while getting package vulnerability data: Unable to load the service index for source https://pkgs.dev.azure.com/techsoftdk/_packaging/MesBaseFeed/nuget/v3/index.json."
-    }
-  ]
+  }
 }

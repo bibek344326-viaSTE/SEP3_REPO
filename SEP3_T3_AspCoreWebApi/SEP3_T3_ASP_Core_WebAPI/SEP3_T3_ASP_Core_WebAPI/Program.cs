@@ -3,10 +3,13 @@ using Entities;
 using Microsoft.AspNetCore.Identity;
 using SEP3_T3_ASP_Core_WebAPI;
 using SEP3_T3_ASP_Core_WebAPI.RepositoryContracts;
+using SEP3_T3_ASP_Core_WebAPI.SignalR_Helpers;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+
+builder.Services.AddScoped<StockService>();
 
 // Add services to the container.
 builder.Services.AddControllers(); // Adds support for MVC controllers
@@ -28,6 +31,8 @@ builder.Services.AddScoped<IUserRepository, EfcUserRepository>();
 builder.Services.AddScoped<IAuthRepository, EfcAuthRepository>();
 builder.Services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
 
+
+
 builder.Services.AddDbContext<AppDbContext>();
 
 
@@ -47,5 +52,7 @@ app.UseAuthorization();
 app.UseAuthentication();
 
 app.MapControllers();
+
+app.MapHub<StockHub>("/stockHub");
 
 app.Run();

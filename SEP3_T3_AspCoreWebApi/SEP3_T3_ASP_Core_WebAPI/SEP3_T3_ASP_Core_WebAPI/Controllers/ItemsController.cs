@@ -1,7 +1,9 @@
 ﻿using Entities;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 using SEP3_T3_ASP_Core_WebAPI.ApiContracts.ItemDto;
 using SEP3_T3_ASP_Core_WebAPI.RepositoryContracts;
+using SEP3_T3_ASP_Core_WebAPI.SignalR_Helpers;
 
 
 namespace SEP3_T3_ASP_Core_WebAPI.Controllers;
@@ -10,11 +12,13 @@ namespace SEP3_T3_ASP_Core_WebAPI.Controllers;
 [Route("[controller]")]
 public class ItemsController: ControllerBase
 {
-    private readonly IItemRepository itemRepository;
+    private readonly IItemRepository _itemRepository;
+    private readonly IHubContext<StockHub> _hubContext;
     
-    public ItemsController(IItemRepository itemRepository)
+    public ItemsController(IItemRepository itemRepository, IHubContext<StockHub> hubContext)
     {
-        this.itemRepository = itemRepository;
+        _itemRepository = itemRepository;
+        _hubContext = hubContext;
     }
     
     // Create Endpoints
@@ -23,7 +27,7 @@ public class ItemsController: ControllerBase
     public async Task<ActionResult<ItemDto>> AddItem([FromBody] CreateItemDto request)
     {
         Item item = Entities.Item.Create(request.ItemName, request.Description, request.QuantityInStore);
-        Item created = await itemRepository.AddItemAsync(item);
+        Item created = await _itemRepository.AddItemAsync(item);
         ItemDto dto = new()
         {
             ItemId = created.ItemId,
@@ -40,12 +44,12 @@ public class ItemsController: ControllerBase
     {
         try
         {
-            Item itemToUpdate = await itemRepository.GetItemById(id);
+            Item itemToUpdate = await _itemRepository.GetItemById(id);
             itemToUpdate.ItemName = request.ItemName;
             itemToUpdate.Description = request.Description;
             itemToUpdate.QuantityInStore = request.QuantityInStore;
             
-            await itemRepository.UpdateItemAsync(itemToUpdate);
+            await _itemRepository.UpdateItemAsync(itemToUpdate);
             return NoContent();
         }
         catch (InvalidOperationException)
@@ -63,7 +67,7 @@ public class ItemsController: ControllerBase
     [HttpGet]
     public async Task<ActionResult<IEnumerable<ItemDto>>> GetAllItems()
     {
-        IQueryable<Item> items = itemRepository.GetAllItems();
+        IQueryable<Item> items = _itemRepository.GetAllItems();
         List<ItemDto> dtos = items.Select(item => new ItemDto
         {
             ItemId = item.ItemId,
@@ -80,7 +84,7 @@ public class ItemsController: ControllerBase
     {
         try
         {
-            Item item = await itemRepository.GetItemById(id);
+            Item item = await _itemRepository.GetItemById(id);
             ItemDto dto = new()
             {
                 ItemId = item.ItemId,
@@ -107,7 +111,7 @@ public class ItemsController: ControllerBase
     {
         try
         {
-            await itemRepository.DeleteItemAsync(id);
+            await _itemRepository.DeleteItemAsync(id);
             return NoContent();
         }
         catch (InvalidOperationException)
@@ -127,10 +131,18 @@ public class ItemsController: ControllerBase
     {
         try
         {
-            Item itemToUpdate = await itemRepository.GetItemById(id);
+            Item itemToUpdate = await _itemRepository.GetItemById(id);
             itemToUpdate.QuantityInStore = request.QuantityInStore;
-            
-            await itemRepository.UpdateItemAsync(itemToUpdate);
+
+            await _itemRepository.UpdateItemAsync(itemToUpdate);
+
+            // Check for low stock and send a SignalR notification
+            if (itemToUpdate.QuantityInStore < 10) // Threshold for low stock
+            {
+                string message = $"Low stock alert: Item '{itemToUpdate.ItemName}' has only {itemToUpdate.QuantityInStore} units left.";
+                await _hubContext.Clients.All.SendAsync("ReceiveLowStockAlert", itemToUpdate.ItemId, itemToUpdate.ItemName, itemToUpdate.QuantityInStore);
+            }
+
             return NoContent();
         }
         catch (InvalidOperationException)
@@ -150,10 +162,10 @@ public class ItemsController: ControllerBase
     {
         try
         {
-            Item itemToUpdate = await itemRepository.GetItemById(id);
+            Item itemToUpdate = await _itemRepository.GetItemById(id);
             itemToUpdate.Description = request.Description;
             
-            await itemRepository.UpdateItemAsync(itemToUpdate);
+            await _itemRepository.UpdateItemAsync(itemToUpdate);
             return NoContent();
         }
         catch (InvalidOperationException)
@@ -173,10 +185,10 @@ public class ItemsController: ControllerBase
     {
         try
         {
-            Item itemToUpdate = await itemRepository.GetItemById(id);
+            Item itemToUpdate = await _itemRepository.GetItemById(id);
             itemToUpdate.ItemName = request.ItemName;
             
-            await itemRepository.UpdateItemAsync(itemToUpdate);
+            await _itemRepository.UpdateItemAsync(itemToUpdate);
             return NoContent();
         }
         catch (InvalidOperationException)
