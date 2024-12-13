@@ -1,26 +1,53 @@
-﻿using Grpc.Net.Client;
-using SEP3_T1_BlazorUI.Application.Interfaces;
-using SEP3T1BlazorUI.Infrastructure;
+﻿using SEP3T1BlazorUI.Infrastructure;
+using System.Threading.Tasks;
 
-namespace SEP3_T1_BlazorUI.Infrastructure.Repositories
+namespace BlazorServerApp.Data
 {
-    public class AuthRepository : IAuthRepository
+    public class AuthRepository
     {
         private readonly AuthService.AuthServiceClient _client;
-        string grpcServiceEndpoint = "https://localhost:8090";
-        public AuthRepository(HttpClient httpClient)
+
+        public AuthRepository(AuthService.AuthServiceClient client)
         {
-            var channel = GrpcChannel.ForAddress(grpcServiceEndpoint, new GrpcChannelOptions { HttpClient = httpClient });
-            _client = new AuthService.AuthServiceClient(channel);
+            _client = client;
         }
 
-        public async Task<string> LoginAsync(LoginRequest loginRequest)
+        public async Task<string> LoginAsync(string username, string password)
         {
-            var response = await _client.loginAsync(loginRequest);
-            return response.Token;
+            try
+            {
+                var request = new LoginRequest
+                {
+                    Username = username,
+                    Password = password
+                };
+
+                var response = await _client.loginAsync(request);
+                return response.Token;
+            }
+            catch (Exception ex)
+            {
+                return $"Login failed: {ex.Message}";
+            }
+        }
+
+        public async Task<string> RegisterAsync(string username, string password, string role)
+        {
+            try
+            {
+                var request = new RegisterRequest
+                {
+                    Username = username,
+                    Password = password
+                };
+
+                var response = await _client.registerAsync(request);
+                return $"User registered: {response.Username}";
+            }
+            catch (Exception ex)
+            {
+                return $"Registration failed: {ex.Message}";
+            }
         }
     }
-
 }
-
-

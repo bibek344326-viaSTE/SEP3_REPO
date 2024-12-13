@@ -20,6 +20,8 @@ public class AuthService extends AuthServiceGrpc.AuthServiceImplBase {
 
     @Override
     public void login(LoginRequest request, StreamObserver<LoginResponse> responseObserver) {
+        System.out.println("Login attempt: Username - " + request.getUsername());
+
         try {
             HttpPost httpPost = new HttpPost("http://localhost:5000/api/auth/login");
             String json = "{\"UserName\":\"" + request.getUsername() + "\", \"Password\":\"" + request.getPassword() + "\"}";

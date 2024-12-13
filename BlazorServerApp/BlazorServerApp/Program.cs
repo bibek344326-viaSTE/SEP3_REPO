@@ -9,6 +9,8 @@ builder.Services.AddGrpcClient<AuthService.AuthServiceClient>(options =>
 {
     options.Address = new Uri("http://localhost:8090"); // Use the correct URL for your Spring Boot gRPC server
 });
+builder.Services.AddScoped<AuthRepository>();
+
 
 var app = builder.Build();
 

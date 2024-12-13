@@ -18,14 +18,14 @@ builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.
 builder.Services.AddBlazoredLocalStorage();
 builder.Services.AddBlazoredToast();
 
-builder.Services.AddScoped<AuthRepository>(sp =>
-    new AuthRepository(sp.GetRequiredService<HttpClient>()));
-builder.Services.AddScoped<IAuthRepository, AuthRepository>();
+builder.Services.AddScoped(sp => new HttpClient
+{
+    BaseAddress = new Uri("https://localhost:7203/") // URL of Blazor Server app
+});
 
 
 
 // Add the authentication state provider as a scoped service
-builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthenticationStateProvider>();
 builder.Services.AddAuthorizationCore(); 
 
 builder.Services.AddScoped<InventoryManager>();

@@ -5,18 +5,24 @@ using Microsoft.AspNetCore.Components.Authorization;
 using SEP3_T1_BlazorUI.Infrastructure;
 using System.Security.Claims;
 using SEP3T1BlazorUI.Infrastructure;
+using System.Net.Http;
+using System.Net.Http;
+using System.Net.Http.Json;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Components;
+
 
 namespace SEP3_T1_BlazorUI.Presentation.Managers
 {
     public class LoginManager
     {
-        private readonly AuthUseCases _authUseCases;
-        private readonly AuthenticationStateProvider _authenticationStateProvider;
+        private readonly HttpClient _httpClient;
 
-        public LoginManager(AuthUseCases authUseCases, AuthenticationStateProvider authenticationStateProvider)
+
+        public LoginManager(AuthUseCases authUseCases, AuthenticationStateProvider authenticationStateProvider, HttpClient httpClient)
         {
-            _authUseCases = authUseCases;
-            _authenticationStateProvider = authenticationStateProvider;
+            _httpClient = httpClient;
+
         }
 
         public LoginRequest LoginRequest { get; set; } = new LoginRequest();
@@ -24,54 +30,40 @@ namespace SEP3_T1_BlazorUI.Presentation.Managers
 
         public async Task<bool> AttemptLoginAsync()
         {
-            ErrorMessage = string.Empty;
-
             try
             {
-                string token = await _authUseCases.Login(LoginRequest);
+                var response = await _httpClient.PostAsJsonAsync("https://localhost:5001/api/auth/login", LoginRequest); // URL of Blazor Server app
 
-                if (!string.IsNullOrWhiteSpace(token))
+                if (response.IsSuccessStatusCode)
                 {
-                    // Use CustomAuthenticationStateProvider to set user as authenticated
-                    if (_authenticationStateProvider is CustomAuthenticationStateProvider customAuthProvider)
+                    var result = await response.Content.ReadFromJsonAsync<LoginResponse>();
+
+                    // Store token (could be in local storage, session storage, or in-memory variable)
+                    if (result != null && !string.IsNullOrEmpty(result.Token))
                     {
-                        await customAuthProvider.MarkUserAsAuthenticated(token);
+                        // Assuming you're using localStorage (can also use sessionStorage)
+                        return true;
                     }
-                    return true;
+                }
+                else if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+                {
+                    ErrorMessage = "Invalid username or password.";
                 }
                 else
                 {
-                    ErrorMessage = "Login failed. Invalid token received.";
-                    return false;
+                    ErrorMessage = "Login failed. Please try again later.";
                 }
             }
             catch (Exception ex)
             {
-                ErrorMessage = $"An error occurred: {ex.Message}";
-                return false;
+                ErrorMessage = $"An error occurred while logging in: {ex.Message}";
             }
-        }
 
+            return false;
+        }
         public async Task<string> GetUserRole()
         {
-            var authState = await _authenticationStateProvider.GetAuthenticationStateAsync();
-            var roleClaim = authState.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role);
-            return roleClaim?.Value ?? string.Empty;
-        }
-
-        public async Task LogoutAsync()
-        {
-            try
-            {
-                if (_authenticationStateProvider is CustomAuthenticationStateProvider customAuthProvider)
-                {
-                    await customAuthProvider.MarkUserAsLoggedOut();
-                }
-            }
-            catch (Exception ex)
-            {
-                ErrorMessage = $"An error occurred while logging out: {ex.Message}";
-            }
+            return "test";
         }
     }
 }
