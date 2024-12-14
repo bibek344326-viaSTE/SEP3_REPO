@@ -92,7 +92,7 @@ public class ItemsController: ControllerBase
             itemToUpdate.QuantityInStore = request.QuantityInStore;
             
             await itemRepository.UpdateItemAsync(itemToUpdate);
-            return NoContent();
+            return Ok(itemToUpdate);
         }
         catch (InvalidOperationException)
         {
@@ -115,7 +115,7 @@ public class ItemsController: ControllerBase
             itemToUpdate.QuantityInStore = request.QuantityInStore;
             
             await itemRepository.UpdateItemAsync(itemToUpdate);
-            return NoContent();
+            return Ok(itemToUpdate);
         }
         catch (InvalidOperationException)
         {
@@ -138,7 +138,7 @@ public class ItemsController: ControllerBase
             itemToUpdate.Description = request.Description;
             
             await itemRepository.UpdateItemAsync(itemToUpdate);
-            return NoContent();
+            return Ok(itemToUpdate);
         }
         catch (InvalidOperationException)
         {
@@ -161,7 +161,7 @@ public class ItemsController: ControllerBase
             itemToUpdate.ItemName = request.ItemName;
             
             await itemRepository.UpdateItemAsync(itemToUpdate);
-            return NoContent();
+            return Ok(itemToUpdate);
         }
         catch (InvalidOperationException)
         {
@@ -181,7 +181,7 @@ public class ItemsController: ControllerBase
         try
         {
             await itemRepository.DeleteItemAsync(id);
-            return NoContent();
+            return Ok(true);
         }
         catch (InvalidOperationException)
         {
