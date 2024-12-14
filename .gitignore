@@ -94,3 +94,199 @@ TestResults/
 .vs/
 
 target/
+
+
+# ================================================
+# .NET
+# ================================================
+
+# Build Folders
+bin/
+obj/
+out/
+
+# User-specific files
+*.user
+*.userosscache
+*.suo
+*.sln.docstates
+
+# Mono
+mono_crash.*
+
+# ASP.NET Scaffolding
+ScaffoldingReadMe.txt
+
+# StyleCop
+StyleCopReport.xml
+
+# Files built by Visual Studio
+*_i.c
+*_p.c
+*_h.h
+*.ilk
+*.meta
+*.obj
+*.iobj
+*.pch
+*.pdb
+*.ipdb
+*.pgc
+*.pgd
+*.rsp
+*.sbr
+*.tlb
+*.tli
+*.tlh
+*.tmp
+*.tmp_proj
+*.log
+*.vspscc
+*.vssscc
+
+# Visual Studio 2015/2017 cache/options directory
+.vs/
+# Uncomment if you have tasks that create the project's static files in wwwroot
+#wwwroot/
+
+# ASP.NET Core
+project.lock.json
+project.fragment.lock.json
+artifacts/
+
+# npm
+node_modules/
+npm-debug.log
+yarn-error.log
+yarn-debug.log
+
+# Yarn
+.yarn-integrity
+
+# IDE-specific folders
+.idea/
+.vscode/
+*.suo
+*.ntvs_analysis.dat
+*.njsproj
+*.sln.docstates
+
+# User-specific files
+*.rsuser
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Others
+*.dbmdl
+*.bak
+*.backup
+*.BLOB
+*.vscode/
+*.vs/
+*.orig
+*.tmp
+*.temp
+*.cache
+*.DS_Store
+*.pem
+*.key
+
+# Rider
+.idea/
+*.sln.iml
+
+# Recycle Bin used by VS
+RecycleBin/
+
+# ================================================
+# Rider
+# ================================================
+.idea/
+*.sln.iml
+
+# ================================================
+# Node.js
+# ================================================
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Dependency directories
+node_modules/
+jspm_packages/
+
+# Optional npm cache directory
+.npm/
+
+# Optional eslint cache
+.eslintcache
+
+# Optional REPL history
+.node_repl_history
+
+# dotenv environment variables file
+.env
+.env.test
+.env.production
+
+# Parcel-bundler cache (https://parceljs.org/)
+.cache/
+
+# Next.js build output
+.next/
+out/
+
+# Nuxt.js build / generate output
+.nuxt/
+dist/
+
+# Gatsby files
+.cache/
+public/
+
+# vuepress build output
+.vuepress/dist
+
+# Serverless directories
+.serverless/
+
+# FuseBox cache
+.fusebox/
+
+# DynamoDB Local files
+.dynamodb/
+
+# TernJS port file
+.tern-port
+
+# ================================================
+# Visual Studio Code
+# ================================================
+.vscode/
+.history/
+
+# ================================================
+# ASP.NET Scaffolding
+# ================================================
+ScaffoldingReadMe.txt
+
+# ================================================
+# OS generated files
+# ================================================
+.DS_Store
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# ================================================
+# JetBrains Rider
+# ================================================
+.idea/
+*.sln.iml
+
