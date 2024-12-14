@@ -38,7 +38,7 @@ public class OrderItemsController: ControllerBase
             orderItemToUpdate.QuantityToPick = orderItem.QuantityToPick;
             
             await orderItemRepository.UpdateOrderItemAsync(orderItemToUpdate);
-            return NoContent();
+            return Ok(orderItemToUpdate);
         }
         catch (InvalidOperationException)
         {
@@ -59,7 +59,7 @@ public class OrderItemsController: ControllerBase
         try
         {
             await orderItemRepository.DeleteOrderItemAsync(id);
-            return NoContent();
+            return Ok(true);
         }
         catch (InvalidOperationException)
         {

@@ -38,7 +38,7 @@ namespace SEP3_T3_ASP_Core_WebAPI.Controllers
                 orderToUpdate.DeliveryDate = order.DeliveryDate;
 
                 await orderRepository.UpdateOrderAsync(orderToUpdate);
-                return NoContent();
+                return Ok(orderToUpdate);
             }
             catch (InvalidOperationException)
             {
@@ -59,7 +59,7 @@ namespace SEP3_T3_ASP_Core_WebAPI.Controllers
                 var orderToUpdate = await orderRepository.GetOrderById(id);
                 orderToUpdate.OrderStatus = orderStatus;
                 await orderRepository.UpdateOrderAsync(orderToUpdate);
-                return NoContent();
+                return Ok(orderToUpdate);
             }
             catch (InvalidOperationException)
             {
@@ -79,7 +79,7 @@ namespace SEP3_T3_ASP_Core_WebAPI.Controllers
             try
             {
                 await orderRepository.DeleteOrderAsync(id);
-                return NoContent();
+                return Ok(true);
             }
             catch (InvalidOperationException)
             {
