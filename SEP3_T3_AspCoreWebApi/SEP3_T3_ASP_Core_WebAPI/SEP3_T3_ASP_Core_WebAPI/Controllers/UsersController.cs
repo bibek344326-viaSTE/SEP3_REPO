@@ -1,9 +1,6 @@
-﻿// Purpose: Contains the UsersController class which is responsible for handling requests related to users.
-
-using Entities;
+﻿using Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using SEP3_T3_ASP_Core_WebAPI.ApiContracts.AuthDtos;
 using SEP3_T3_ASP_Core_WebAPI.ApiContracts.UserDto;
 using SEP3_T3_ASP_Core_WebAPI.RepositoryContracts;
 
