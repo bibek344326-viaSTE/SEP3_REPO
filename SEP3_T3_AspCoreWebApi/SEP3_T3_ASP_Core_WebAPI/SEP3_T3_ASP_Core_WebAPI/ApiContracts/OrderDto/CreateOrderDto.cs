@@ -6,6 +6,6 @@ public class CreateOrderDto
 {
     public int UserId { get; set; }
     public required string OrderStatus { get; set; }
-    public List<OrderItem>? OrderList { get; set; }
+    public List<OrderItemDto.OrderItemDto>? OrderList { get; set; }
     public DateTime DeliveryDate { get; set; }
 }
