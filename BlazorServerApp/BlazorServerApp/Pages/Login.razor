@@ -1,6 +1,4 @@
 ﻿@page "/login"
-@using Microsoft.AspNetCore.Components.Forms
-@using Microsoft.JSInterop
 @inject NavigationManager NavigationManager
 @inject LoginManager LoginManager
 @inject Blazored.Toast.Services.IToastService ToastService
@@ -17,8 +15,7 @@
                 </div>
             }
 
-            <EditForm Model="@LoginManager.LoginRequest" OnValidSubmit="@HandleValidSubmit">
-
+            <EditForm Model="@LoginManager.LoginRequest" OnValidSubmit="HandleValidSubmit">
                 <div class="form-group mb-3">
                     <label for="username">Username</label>
                     <InputText @bind-Value="LoginManager.LoginRequest.Username" class="form-control" id="username" required />
@@ -29,8 +26,8 @@
                     <InputText @bind-Value="LoginManager.LoginRequest.Password" type="password" class="form-control" id="password" required />
                 </div>
 
-                <button type="submit" class="btn btn-primary w-100" disabled="@isLoading">
-                    @if (isLoading)
+                <button type="submit" class="btn btn-primary w-100" disabled="@LoginManager.IsLoading">
+                    @if (LoginManager.IsLoading)
                     {
                         <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
                         <span>Loading...</span>
@@ -46,11 +43,8 @@
 </div>
 
 @code {
-    private bool isLoading = false;
-
     private async Task HandleValidSubmit()
     {
-        isLoading = true;
         try
         {
             bool loginSuccess = await LoginManager.AttemptLoginAsync();
@@ -58,13 +52,11 @@
             {
                 ToastService.ShowSuccess("Login successful! Welcome back.", settings =>
                 {
-                    settings.Timeout = 5000; // 5-second timeout
+                    settings.Timeout = 5000;
                 });
 
-                // Get user role from authentication state
                 var role = await LoginManager.GetUserRoleAsync();
 
-                // Navigate based on the role
                 if (role == "InventoryManager")
                 {
                     NavigationManager.NavigateTo("/inventory-dashboard");
@@ -77,7 +69,7 @@
                 {
                     ToastService.ShowError("User role is not recognized.", settings =>
                     {
-                        settings.Timeout = 7000; // 7-second timeout for error
+                        settings.Timeout = 7000;
                     });
                 }
             }
@@ -85,7 +77,7 @@
             {
                 ToastService.ShowError(LoginManager.ErrorMessage, settings =>
                 {
-                    settings.Timeout = 7000; // 7-second timeout for error
+                    settings.Timeout = 7000;
                 });
             }
         }
@@ -93,12 +85,8 @@
         {
             ToastService.ShowError("An unexpected error occurred: " + ex.Message, settings =>
             {
-                settings.Timeout = 7000; // 7-second timeout for error
+                settings.Timeout = 7000;
             });
-        }
-        finally
-        {
-            isLoading = false;
         }
     }
 }

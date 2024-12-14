@@ -15,10 +15,5 @@ namespace BlazorServerApp.Application.UseCases
         {
             return _authRepository.LoginAsync(loginRequest);
         }
-
-        internal async Task<string> GetUserRole(string username)
-        {
-            throw new NotImplementedException();
-        }
     }
 }
