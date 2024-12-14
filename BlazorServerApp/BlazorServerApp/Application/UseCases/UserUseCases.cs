@@ -27,14 +27,13 @@ namespace BlazorServerApp.Application.UseCases
             }
         }
 
-        public async Task<UserDeleteResponse> DeleteUserAsync(User user)
+        public async Task DeleteUserAsync(User user)
         {
             if (user == null) throw new ArgumentNullException(nameof(user));
 
             try
             {
-                var response = await _userRepository.DeleteUserAsync(user);
-                return response;
+                await _userRepository.DeleteUserAsync(user);
             }
             catch (Exception ex)
             {
@@ -43,14 +42,13 @@ namespace BlazorServerApp.Application.UseCases
             }
         }
 
-        public async Task<UserResponse> EditUserAsync(User user)
+        public async Task EditUserAsync(User user)
         {
             if (user == null) throw new ArgumentNullException(nameof(user));
 
             try
             {
-                var response = await _userRepository.EditUserAsync(user);
-                return response;
+                await _userRepository.EditUserAsync(user);
             }
             catch (Exception ex)
             {

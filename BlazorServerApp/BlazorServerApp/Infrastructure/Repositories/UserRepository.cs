@@ -26,12 +26,11 @@ namespace BlazorServerApp.Infrastructure.Repositories
             }
         }
 
-        public async Task<UserDeleteResponse> DeleteUserAsync(User user)
+        public async Task DeleteUserAsync(User user)
         {
             try
             {
-                var response = await _client.deleteUserAsync(user);
-                return response;
+                 await _client.deleteUserAsync(user);
             }
             catch (RpcException ex)
             {
@@ -40,12 +39,11 @@ namespace BlazorServerApp.Infrastructure.Repositories
             }
         }
 
-        public async Task<UserResponse> EditUserAsync(User user)
+        public async Task EditUserAsync(User user)
         {
             try
             {
-                var response = await _client.editUserAsync(user);
-                return response;
+                 await _client.editUserAsync(user);
             }
             catch (RpcException ex)
             {

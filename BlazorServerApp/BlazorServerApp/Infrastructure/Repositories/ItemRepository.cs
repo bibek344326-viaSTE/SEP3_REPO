@@ -26,12 +26,11 @@ namespace BlazorServerApp.Infrastructure.Repositories
             }
         }
 
-        public async Task<ItemDeleteResponse> DeleteItemAsync(Item item)
+        public async Task DeleteItemAsync(Item item)
         {
             try
             {
-                var response = await _client.deleteItemAsync(item);
-                return response;
+                await _client.deleteItemAsync(item);
             }
             catch (RpcException ex)
             {
@@ -40,12 +39,11 @@ namespace BlazorServerApp.Infrastructure.Repositories
             }
         }
 
-        public async Task<Item> EditItemAsync(Item item)
+        public async Task EditItemAsync(Item item)
         {
             try
             {
                 var response = await _client.editItemAsync(item);
-                return response;
             }
             catch (RpcException ex)
             {

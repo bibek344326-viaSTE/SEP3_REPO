@@ -3,8 +3,8 @@
     public interface IItemRepository
     {
         Task<Item> CreateItemAsync(ItemDTO itemDTO);
-        Task<Item> EditItemAsync(Item item);
-        Task<ItemDeleteResponse> DeleteItemAsync(Item item);
+        Task EditItemAsync(Item item);
+        Task DeleteItemAsync(Item item);
         Task<IEnumerable<Item>> GetAllItemsAsync();
     }
 }

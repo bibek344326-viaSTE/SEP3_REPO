@@ -4,7 +4,7 @@ import "google/protobuf/timestamp.proto";
 import "google/protobuf/empty.proto";
 
 service OrderService {
-  rpc CreateOrder(OrderRequest) returns (OrderResponse);
+  rpc CreateOrder(OrderRequest) returns (Order);
   
   rpc GetAllOrders(google.protobuf.Empty) returns (OrderList);
 }
@@ -21,7 +21,7 @@ message OrderItem {
   int32 quantity_to_pick = 3; 
 }
 
-message OrderResponse {
+message Order {
   int32 order_id = 1; 
   repeated OrderItem order_items = 2; 
   int32 user_id = 3; 

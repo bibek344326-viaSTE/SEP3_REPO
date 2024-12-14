@@ -3,7 +3,7 @@
     public interface IOrderRepository
     {
         Task<IEnumerable<Order>> GetAllOrdersAsync();
-        Task<OrderResponse> AddOrderAsync(OrderRequest order);
+        Task<Order> AddOrderAsync(OrderRequest order);
     }
 
 

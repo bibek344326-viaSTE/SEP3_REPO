@@ -14,10 +14,6 @@ message Item {
   int32 quantity_in_store = 4;
 }
 
-message ItemDeleteResponse {
-  bool success = 1;
-}
-
 message ItemList {
   repeated Item items = 1;
 }
@@ -25,9 +21,9 @@ message ItemList {
 service ItemService {
   rpc createItem(ItemDTO) returns (Item);
 
-  rpc editItem(Item) returns (Item);
+  rpc editItem(Item) returns (google.protobuf.Empty);
 
-  rpc deleteItem(Item) returns (ItemDeleteResponse);
+  rpc deleteItem(Item) returns (google.protobuf.Empty);
 
    rpc getAllItems(google.protobuf.Empty) returns (ItemList);
 

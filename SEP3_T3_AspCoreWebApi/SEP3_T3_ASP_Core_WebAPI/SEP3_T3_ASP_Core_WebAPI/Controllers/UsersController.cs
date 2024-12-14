@@ -58,7 +58,7 @@ public class UsersController: ControllerBase
             userToUpdate.UserRole = request.UserRole;
 
             await userRepo.UpdateUserAsync(userToUpdate);
-            return Ok(userToUpdate);
+            return NoContent();
         }
         catch (InvalidOperationException)
         {
@@ -80,7 +80,7 @@ public class UsersController: ControllerBase
         {
             User userToDelete = await userRepo.GetUserById(id);
             await userRepo.DeleteUserAsync(id);
-            return Ok(true);
+            return NoContent();
         }
         catch (InvalidOperationException)
         {

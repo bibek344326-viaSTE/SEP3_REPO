@@ -12,7 +12,7 @@ namespace BlazorServerApp.Infrastructure.Repositories
             _client = client ?? throw new ArgumentNullException(nameof(client));
         }
 
-        public async Task<OrderResponse> AddOrderAsync(OrderRequest order)
+        public async Task<Order> AddOrderAsync(OrderRequest order)
         {
             try
             {

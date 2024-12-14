@@ -27,14 +27,13 @@ namespace BlazorServerApp.Application.UseCases
             }
         }
 
-        public async Task<Item> EditItemAsync(Item item)
+        public async Task EditItemAsync(Item item)
         {
             if (item == null) throw new ArgumentNullException(nameof(item));
 
             try
             {
-                var updatedItem = await _itemRepository.EditItemAsync(item);
-                return updatedItem;
+                await _itemRepository.EditItemAsync(item);
             }
             catch (Exception ex)
             {
@@ -43,14 +42,13 @@ namespace BlazorServerApp.Application.UseCases
             }
         }
 
-        public async Task<ItemDeleteResponse> DeleteItemAsync(Item item)
+        public async Task DeleteItemAsync(Item item)
         {
             if (item == null) throw new ArgumentNullException(nameof(item));
 
             try
             {
-                var response = await _itemRepository.DeleteItemAsync(item);
-                return response;
+                await _itemRepository.DeleteItemAsync(item);
             }
             catch (Exception ex)
             {

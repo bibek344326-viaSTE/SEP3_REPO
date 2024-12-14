@@ -4,10 +4,10 @@ import "google/protobuf/empty.proto";
 
 service UserService {
   rpc addUser(UserDTO) returns (UserResponse);
-  rpc editUser(User) returns (UserResponse);
-  rpc editPassword(User) returns (UserResponse);
-  rpc deleteUser(User) returns (UserDeleteResponse);
-  rpc getAllUsers(google.protobuf.Empty) returns (UserList); // New method
+  rpc editUser(User) returns (google.protobuf.Empty);
+  rpc editPassword(User) returns (google.protobuf.Empty);
+  rpc deleteUser(User) returns (google.protobuf.Empty);
+  rpc getAllUsers(google.protobuf.Empty) returns (UserList);
 }
 
 message User {
