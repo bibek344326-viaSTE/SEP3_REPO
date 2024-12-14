@@ -19,7 +19,6 @@ public class ItemsController: ControllerBase
     }
 
     // ********** GET Endpoints **********
-
     // GET: /Items
     [HttpGet]
     public async Task<ActionResult<IEnumerable<ItemDto>>> GetAllItems()
