@@ -56,7 +56,7 @@ namespace SEP3_T3_ASP_Core_WebAPI.Controllers
             {
                 new Claim(JwtRegisteredClaimNames.Sub, user.UserId.ToString()),
                 new Claim(JwtRegisteredClaimNames.UniqueName, user.UserName),
-                new Claim(ClaimTypes.Role, user.UserRole),
+                new Claim(ClaimTypes.Role, user.UserRole.ToString()),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
             };
 

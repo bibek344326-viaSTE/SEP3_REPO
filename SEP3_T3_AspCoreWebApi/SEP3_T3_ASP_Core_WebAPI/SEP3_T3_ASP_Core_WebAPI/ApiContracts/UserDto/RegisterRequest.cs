@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Entities;
+using System.ComponentModel.DataAnnotations;
 
 public class RegisterRequest
 {
@@ -6,5 +7,5 @@ public class RegisterRequest
 
     public string Password { get; set; }
 
-    public string UserRole { get; set; }
+    public UserRole UserRole { get; set; }
 }

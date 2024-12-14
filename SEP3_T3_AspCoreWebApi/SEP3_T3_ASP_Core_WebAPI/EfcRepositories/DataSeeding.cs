@@ -33,14 +33,14 @@ namespace SEP3_T3_ASP_Core_WebAPI.Data
                     var user1 = new User
                     {
                         UserName = "admin",
-                        UserRole = "INVENTORY_MANAGER",
+                        UserRole = UserRole.INVENTORY_MANAGER,
                         Password = passwordHasher.HashPassword(null, "admin")
                     };
 
                     var user2 = new User
                     {
                         UserName = "worker",
-                        UserRole = "WAREHOUSE_WORKER",
+                        UserRole = UserRole.INVENTORY_MANAGER,
                         Password = passwordHasher.HashPassword(null, "worker")
                     };
 
