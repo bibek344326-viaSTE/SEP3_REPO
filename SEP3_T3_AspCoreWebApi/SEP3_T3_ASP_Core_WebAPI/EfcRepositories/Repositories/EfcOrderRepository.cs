@@ -21,6 +21,7 @@ public class EfcOrderRepository: IOrderRepository
 
     public async Task<Order> AddOrderAsync(Order order)
     {
+        order.CreatedAt = DateTime.Now;
         EntityEntry<Order> entityEntry = await ctx.Orders.AddAsync(order);
         await ctx.SaveChangesAsync();
         return entityEntry.Entity;
