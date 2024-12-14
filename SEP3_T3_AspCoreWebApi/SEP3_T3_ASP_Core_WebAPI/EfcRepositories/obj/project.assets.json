@@ -2992,23 +2992,25 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\amine\\.nuget\\packages\\": {},
-    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
+    "C:\\Users\\AminAouina\\.nuget\\packages\\": {},
+    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {},
+    "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\amine\\Repos\\SEP3_REPO\\SEP3_T3_AspCoreWebApi\\SEP3_T3_ASP_Core_WebAPI\\EfcRepositories\\EfcRepositories.csproj",
+      "projectUniqueName": "C:\\Users\\AminAouina\\source\\SEP3_REPO\\SEP3_T3_AspCoreWebApi\\SEP3_T3_ASP_Core_WebAPI\\EfcRepositories\\EfcRepositories.csproj",
       "projectName": "EfcRepositories",
-      "projectPath": "C:\\Users\\amine\\Repos\\SEP3_REPO\\SEP3_T3_AspCoreWebApi\\SEP3_T3_ASP_Core_WebAPI\\EfcRepositories\\EfcRepositories.csproj",
-      "packagesPath": "C:\\Users\\amine\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\amine\\Repos\\SEP3_REPO\\SEP3_T3_AspCoreWebApi\\SEP3_T3_ASP_Core_WebAPI\\EfcRepositories\\obj\\",
+      "projectPath": "C:\\Users\\AminAouina\\source\\SEP3_REPO\\SEP3_T3_AspCoreWebApi\\SEP3_T3_ASP_Core_WebAPI\\EfcRepositories\\EfcRepositories.csproj",
+      "packagesPath": "C:\\Users\\AminAouina\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\AminAouina\\source\\SEP3_REPO\\SEP3_T3_AspCoreWebApi\\SEP3_T3_ASP_Core_WebAPI\\EfcRepositories\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
-        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",
+        "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
       ],
       "configFilePaths": [
-        "C:\\Users\\amine\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\AminAouina\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
@@ -3018,17 +3020,18 @@
       "sources": {
         "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
         "C:\\Program Files\\dotnet\\library-packs": {},
-        "https://api.nuget.org/v3/index.json": {}
+        "https://api.nuget.org/v3/index.json": {},
+        "https://pkgs.dev.azure.com/techsoftdk/_packaging/MesBaseFeed%40Local/nuget/v3/index.json": {}
       },
       "frameworks": {
         "net9.0": {
           "targetAlias": "net9.0",
           "projectReferences": {
-            "C:\\Users\\amine\\Repos\\SEP3_REPO\\SEP3_T3_AspCoreWebApi\\SEP3_T3_ASP_Core_WebAPI\\Entities\\Entities.csproj": {
-              "projectPath": "C:\\Users\\amine\\Repos\\SEP3_REPO\\SEP3_T3_AspCoreWebApi\\SEP3_T3_ASP_Core_WebAPI\\Entities\\Entities.csproj"
+            "C:\\Users\\AminAouina\\source\\SEP3_REPO\\SEP3_T3_AspCoreWebApi\\SEP3_T3_ASP_Core_WebAPI\\Entities\\Entities.csproj": {
+              "projectPath": "C:\\Users\\AminAouina\\source\\SEP3_REPO\\SEP3_T3_AspCoreWebApi\\SEP3_T3_ASP_Core_WebAPI\\Entities\\Entities.csproj"
             },
-            "C:\\Users\\amine\\Repos\\SEP3_REPO\\SEP3_T3_AspCoreWebApi\\SEP3_T3_ASP_Core_WebAPI\\RepositoryContracts\\RepositoryContracts.csproj": {
-              "projectPath": "C:\\Users\\amine\\Repos\\SEP3_REPO\\SEP3_T3_AspCoreWebApi\\SEP3_T3_ASP_Core_WebAPI\\RepositoryContracts\\RepositoryContracts.csproj"
+            "C:\\Users\\AminAouina\\source\\SEP3_REPO\\SEP3_T3_AspCoreWebApi\\SEP3_T3_ASP_Core_WebAPI\\RepositoryContracts\\RepositoryContracts.csproj": {
+              "projectPath": "C:\\Users\\AminAouina\\source\\SEP3_REPO\\SEP3_T3_AspCoreWebApi\\SEP3_T3_ASP_Core_WebAPI\\RepositoryContracts\\RepositoryContracts.csproj"
             }
           }
         }
@@ -3041,9 +3044,8 @@
       "restoreAuditProperties": {
         "enableAudit": "true",
         "auditLevel": "low",
-        "auditMode": "direct"
-      },
-      "SdkAnalysisLevel": "9.0.100"
+        "auditMode": "all"
+      }
     },
     "frameworks": {
       "net9.0": {
@@ -3079,6 +3081,12 @@
         ],
         "assetTargetFallback": true,
         "warn": true,
+        "downloadDependencies": [
+          {
+            "name": "Microsoft.Net.Sdk.Compilers.Toolset",
+            "version": "[9.0.101, 9.0.101]"
+          }
+        ],
         "frameworkReferences": {
           "Microsoft.NETCore.App": {
             "privateAssets": "all"

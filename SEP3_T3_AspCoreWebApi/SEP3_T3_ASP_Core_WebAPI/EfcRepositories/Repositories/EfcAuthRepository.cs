@@ -48,29 +48,5 @@ namespace EfcRepositories.Repositories
             // Return the user if the username and password are correct
             return user;
         }
-
-        public async Task<User> RegisterAsync(string username, string password, string role)
-        {
-            var user = new User
-            {
-                UserName = username,
-                Password = password,
-                UserRole = role
-            };
-
-            user.Password = _passwordHasher.HashPassword(user, password);
-
-            try
-            {
-                _ctx.Users.Add(user);
-                await _ctx.SaveChangesAsync();
-                return user;
-            }
-            catch (Exception ex)
-            {
-                // Handle exceptions, e.g., logging
-                throw new Exception("An error occurred while saving the user.", ex);
-            }
-        }
     }
 }

@@ -47,38 +47,6 @@ namespace SEP3_T3_ASP_Core_WebAPI.Controllers
             return Ok(new { Token = token });
         }
 
-        [HttpPost("register")]
-        public async Task<ActionResult> Register([FromBody] RegisterRequest registerRequest)
-        {
-            if (!ModelState.IsValid)
-            {
-                // Create a dictionary to hold the error messages
-                var errorMessages = ModelState
-                    .Where(x => x.Value.Errors.Count > 0)
-                    .ToDictionary(
-                        kvp => kvp.Key,
-                        kvp => kvp.Value.Errors.Select(e => e.ErrorMessage).ToArray()
-                    );
-
-                // Return a bad request with the detailed error messages
-                return BadRequest(new { Message = "Invalid registration data", Errors = errorMessages });
-            }
-
-            var existingUser = await userRepository.GetUserByUsernameAsync(registerRequest.UserName);
-            if (existingUser != null)
-            {
-                return BadRequest("Username already exists");
-            }
-
-            var user = await authRepository.RegisterAsync(registerRequest.UserName, registerRequest.Password, registerRequest.UserRole);
-            if (user == null)
-            {
-                return BadRequest("Unable to create user");
-            }
-
-            return Ok("User registered successfully");
-        }
-
         private string GenerateJwtToken(User user)
         {
             var tokenHandler = new JwtSecurityTokenHandler();

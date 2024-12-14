@@ -1,5 +1,6 @@
 ﻿using Entities;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using SEP3_T3_ASP_Core_WebAPI.ApiContracts.ItemDto;
 using SEP3_T3_ASP_Core_WebAPI.RepositoryContracts;
 
@@ -16,64 +17,25 @@ public class ItemsController: ControllerBase
     {
         this.itemRepository = itemRepository;
     }
-    
-    // Create Endpoints
-    // POST: /Items
-    [HttpPost]
-    public async Task<ActionResult<ItemDto>> AddItem([FromBody] CreateItemDto request)
-    {
-        Item item = Entities.Item.Create(request.ItemName, request.Description, request.QuantityInStore);
-        Item created = await itemRepository.AddItemAsync(item);
-        ItemDto dto = new()
-        {
-            ItemId = created.ItemId,
-            ItemName = created.ItemName,
-            Description = created.Description,
-            QuantityInStore = created.QuantityInStore
-        };
-        return Created($"/Items/{dto.ItemId}", created);
-    }
-    
-    // PUT: /Items/{id}
-    [HttpPut("{id}")]
-    public async Task<ActionResult> UpdateItem([FromRoute] int id, [FromBody] UpdateItemDto request)
-    {
-        try
-        {
-            Item itemToUpdate = await itemRepository.GetItemById(id);
-            itemToUpdate.ItemName = request.ItemName;
-            itemToUpdate.Description = request.Description;
-            itemToUpdate.QuantityInStore = request.QuantityInStore;
-            
-            await itemRepository.UpdateItemAsync(itemToUpdate);
-            return NoContent();
-        }
-        catch (InvalidOperationException)
-        {
-            return NotFound($"Item with ID {id} not found.");
-        }
-        catch (Exception e)
-        {
-            Console.WriteLine(e);
-            return StatusCode(500, $"An error occurred: {e.Message}");
-        }
-    }
-    
+
+    // ********** GET Endpoints **********
+
     // GET: /Items
     [HttpGet]
     public async Task<ActionResult<IEnumerable<ItemDto>>> GetAllItems()
     {
-        IQueryable<Item> items = itemRepository.GetAllItems();
-        List<ItemDto> dtos = items.Select(item => new ItemDto
-        {
-            ItemId = item.ItemId,
-            ItemName = item.ItemName,
-            Description = item.Description,
-            QuantityInStore = item.QuantityInStore
-        }).ToList();
+        List<ItemDto> dtos = await itemRepository.GetAllItems()
+            .Select(item => new ItemDto
+            {
+                ItemId = item.ItemId,
+                ItemName = item.ItemName,
+                Description = item.Description,
+                QuantityInStore = item.QuantityInStore
+            })
+            .ToListAsync();
         return Ok(dtos);
     }
-    
+
     // GET: /Items/{id}
     [HttpGet("{id}")]
     public async Task<ActionResult<ItemDto>> GetSingleItem([FromRoute] int id)
@@ -100,14 +62,37 @@ public class ItemsController: ControllerBase
             return StatusCode(500, $"An error occurred: {e.Message}");
         }
     }
-    
-    // DELETE: /Items/{id}
-    [HttpDelete("{id}")]
-    public async Task<ActionResult> DeleteItem([FromRoute] int id)
+
+    // ********** CREATE Endpoints **********
+    // POST: /Items
+    [HttpPost]
+    public async Task<ActionResult<ItemDto>> AddItem([FromBody] CreateItemDto request)
+    {
+        Item item = Entities.Item.Create(request.ItemName, request.Description, request.QuantityInStore);
+        Item created = await itemRepository.AddItemAsync(item);
+        ItemDto dto = new()
+        {
+            ItemId = created.ItemId,
+            ItemName = created.ItemName,
+            Description = created.Description,
+            QuantityInStore = created.QuantityInStore
+        };
+        return Created($"/Items/{dto.ItemId}", created);
+    }
+
+    // ********** UPDATE Endpoints **********
+    // PUT: /Items/{id}
+    [HttpPut("{id}")]
+    public async Task<ActionResult> UpdateItem([FromRoute] int id, [FromBody] UpdateItemDto request)
     {
         try
         {
-            await itemRepository.DeleteItemAsync(id);
+            Item itemToUpdate = await itemRepository.GetItemById(id);
+            itemToUpdate.ItemName = request.ItemName;
+            itemToUpdate.Description = request.Description;
+            itemToUpdate.QuantityInStore = request.QuantityInStore;
+            
+            await itemRepository.UpdateItemAsync(itemToUpdate);
             return NoContent();
         }
         catch (InvalidOperationException)
@@ -177,6 +162,26 @@ public class ItemsController: ControllerBase
             itemToUpdate.ItemName = request.ItemName;
             
             await itemRepository.UpdateItemAsync(itemToUpdate);
+            return NoContent();
+        }
+        catch (InvalidOperationException)
+        {
+            return NotFound($"Item with ID {id} not found.");
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            return StatusCode(500, $"An error occurred: {e.Message}");
+        }
+    }
+
+    // DELETE: /Items/{id}
+    [HttpDelete("{id}")]
+    public async Task<ActionResult> DeleteItem([FromRoute] int id)
+    {
+        try
+        {
+            await itemRepository.DeleteItemAsync(id);
             return NoContent();
         }
         catch (InvalidOperationException)

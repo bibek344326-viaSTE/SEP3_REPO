@@ -16,7 +16,7 @@ namespace SEP3_T3_ASP_Core_WebAPI.Controllers
             this.orderRepository = orderRepository;
         }
 
-        // Create Endpoints
+        // ********** CREATE Endpoints **********
         // POST: /Orders
         [HttpPost]
         public async Task<ActionResult<Order>> AddOrder([FromBody] Order order)
@@ -25,6 +25,7 @@ namespace SEP3_T3_ASP_Core_WebAPI.Controllers
             return Created($"/Orders/{created.OrderId}", created);
         }
 
+        // ********** UPDATE Endpoints **********
         // PUT: /Orders/{id}
         [HttpPut("{id}")]
         public async Task<ActionResult> UpdateOrder([FromRoute] int id, [FromBody] Order order)
@@ -36,6 +37,27 @@ namespace SEP3_T3_ASP_Core_WebAPI.Controllers
                 orderToUpdate.OrderStatus = order.OrderStatus;
                 orderToUpdate.DeliveryDate = order.DeliveryDate;
 
+                await orderRepository.UpdateOrderAsync(orderToUpdate);
+                return NoContent();
+            }
+            catch (InvalidOperationException)
+            {
+                return NotFound($"Order with ID {id} not found.");
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return StatusCode(500, $"An error occurred: {e.Message}");
+            }
+        }
+
+        [HttpPut("{id}/status")]
+        public async Task<ActionResult> UpdateOrderStatus([FromRoute] int id, [FromBody] string orderStatus)
+        {
+            try
+            {
+                var orderToUpdate = await orderRepository.GetOrderById(id);
+                orderToUpdate.OrderStatus = orderStatus;
                 await orderRepository.UpdateOrderAsync(orderToUpdate);
                 return NoContent();
             }
@@ -70,6 +92,7 @@ namespace SEP3_T3_ASP_Core_WebAPI.Controllers
             }
         }
 
+        // ********** GET Endpoints **********
         // GET: /Orders/{id}
         [HttpGet("{id}")]
         public async Task<ActionResult<Order>> GetSingleOrder([FromRoute] int id)
@@ -97,28 +120,6 @@ namespace SEP3_T3_ASP_Core_WebAPI.Controllers
             IQueryable<Order> orders = await orderRepository.GetAllOrders();
             List<Order> dtos = orders.ToList();
             return Ok(dtos);
-        }
-        
-        //Update order status
-        [HttpPut("{id}/status")]
-        public async Task<ActionResult> UpdateOrderStatus([FromRoute] int id, [FromBody] string orderStatus)
-        {
-            try
-            {
-                var orderToUpdate = await orderRepository.GetOrderById(id);
-                orderToUpdate.OrderStatus = orderStatus;
-                await orderRepository.UpdateOrderAsync(orderToUpdate);
-                return NoContent();
-            }
-            catch (InvalidOperationException)
-            {
-                return NotFound($"Order with ID {id} not found.");
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-                return StatusCode(500, $"An error occurred: {e.Message}");
-            }
         }
     }
 }
