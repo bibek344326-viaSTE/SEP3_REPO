@@ -48,8 +48,11 @@ StyleCopReport.xml
 # Visual Studio
 # ================================================
 
-# Visual Studio cache/options directory
-.vs/
+# Ignore entire .vs folder at any level
+**/.vs/
+
+# Ignore specific bin files in .vs folder
+**/.vs/*.bin
 
 # User-specific files
 *.suo
@@ -180,6 +183,12 @@ BlazorWebAppT1/bin/
 SEP3_T3_ASP_Core_WebAPI/obj/
 SEP3_T3_ASP_Core_WebAPI/bin/
 SEP3_T3_ASP_Core_WebAPI/.vs/
+
+# Ignore any .bin files in .vs
+SEP3_T3_ASP_Core_WebAPI/.vs/**/*.bin
+
+# Ignore everything in .vs folder at any level
+**/.vs/
 
 # ================================================
 # Ignore Specific Files or Directories (Optional)
