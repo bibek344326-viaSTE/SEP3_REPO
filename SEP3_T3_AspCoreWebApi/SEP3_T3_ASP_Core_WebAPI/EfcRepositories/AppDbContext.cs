@@ -33,6 +33,19 @@ namespace SEP3_T3_ASP_Core_WebAPI
                 .HasOne(oi => oi.Item)
                 .WithMany(i => i.OrderItems)
                 .HasForeignKey(oi => oi.ItemId);
+
+            modelBuilder.Entity<Order>()
+    .HasOne(o => o.AssignedUser)
+    .WithMany()
+    .HasForeignKey(o => o.UserId)
+    .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Order>()
+                .HasOne(o => o.CreatedBy)
+                .WithMany()
+                .HasForeignKey(o => o.CreatedById)
+                .OnDelete(DeleteBehavior.Restrict);
+
         }
     }
 }

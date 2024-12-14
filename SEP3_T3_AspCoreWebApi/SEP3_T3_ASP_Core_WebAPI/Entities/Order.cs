@@ -11,9 +11,12 @@
 
         // Navigation property to User for one-to-many relationship
         public User? AssignedUser { get; set; } // User assigned to the order
-        public User CreatedBy { get; set; }
-        public DateTimeOffset CreatedAt { get; set; } // Timestamp for order creation
+        public int UserId { get; set; } // Foreign key to AssignedUser
 
-        public int UserId { get; set; } // Foreign key to User
+        // Navigation property to User for created by relationship
+        public User CreatedBy { get; set; } // Navigation property to the user who created the order
+        public int CreatedById { get; set; } // Foreign key to the User who created the order
+
+        public DateTimeOffset CreatedAt { get; set; } // Timestamp for order creation
     }
 }
