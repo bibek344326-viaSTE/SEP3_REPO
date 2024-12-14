@@ -1,16 +1,26 @@
+using Blazored.Toast;
 using BlazorServerApp.Infrastructure.Repositories;
+using BlazorServerApp.Presentation.Managers;
+using BlazorServerApp.Application.UseCases;
+using BlazorServerApp.Application.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorPages();
+builder.Services.AddBlazoredToast();
 builder.Services.AddServerSideBlazor();
+
+// Register the gRPC client for AuthService
 builder.Services.AddGrpcClient<AuthService.AuthServiceClient>(options =>
 {
-    options.Address = new Uri("http://localhost:8090"); // Use the correct URL for your Spring Boot gRPC server
+    options.Address = new Uri("http://localhost:8090"); // Replace with your Spring Boot gRPC server URL
 });
-builder.Services.AddScoped<AuthRepository>();
 
+// Register Repositories, UseCases, and Managers using Dependency Injection
+builder.Services.AddScoped<IAuthRepository, AuthRepository>(); // Register IAuthRepository
+builder.Services.AddScoped<AuthUseCases>(); // Register Use Case
+builder.Services.AddScoped<LoginManager>(); // Register LoginManager
 
 var app = builder.Build();
 
@@ -18,14 +28,11 @@ var app = builder.Build();
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
 
 app.UseHttpsRedirection();
-
 app.UseStaticFiles();
-
 app.UseRouting();
 
 app.MapBlazorHub();
