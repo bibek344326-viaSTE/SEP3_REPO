@@ -1,19 +1,65 @@
 ﻿@inherits LayoutComponentBase
+@using Microsoft.AspNetCore.Components.Authorization
+@inject AuthenticationStateProvider AuthenticationStateProvider
 
-<PageTitle>BlazorServerApp</PageTitle>
+<CascadingAuthenticationState>
+    <div class="page">
+        @if (IsInventoryManager)
+        {
+            <div class="sidebar">
+                <NavMenu />
+            </div>
+        }
 
-<div class="page">
-    <div class="sidebar">
-        <NavMenu />
+        <main>
+            <article class="content px-4">
+                @Body
+            </article>
+        </main>
     </div>
+</CascadingAuthenticationState>
+<BlazoredToasts />
 
-    <main>
-        <div class="top-row px-4">
-            <a href="https://docs.microsoft.com/aspnet/" target="_blank">About</a>
-        </div>
 
-        <article class="content px-4">
-            @Body
-        </article>
-    </main>
-</div>
+@code {
+    private bool IsInventoryManager = false;
+
+    protected override async Task OnInitializedAsync()
+    {
+        // Subscribe to AuthenticationState changes
+        AuthenticationStateProvider.AuthenticationStateChanged += OnAuthenticationStateChanged;
+
+        // Initial check for user's role
+        await CheckUserRole();
+    }
+
+    private async void OnAuthenticationStateChanged(Task<AuthenticationState> task)
+    {
+        await CheckUserRole();
+    }
+
+    private async Task CheckUserRole()
+    {
+        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        var user = authState.User;
+
+        if (user.Identity != null && user.Identity.IsAuthenticated)
+        {
+            // Check if the user is an Inventory Manager
+            IsInventoryManager = user.IsInRole("InventoryManager");
+        }
+        else
+        {
+            IsInventoryManager = false; // User is not authenticated, hide sidebar
+        }
+
+        // Force Blazor to re-render the component
+        StateHasChanged();
+    }
+
+    public void Dispose()
+    {
+        AuthenticationStateProvider.AuthenticationStateChanged -= OnAuthenticationStateChanged;
+    }
+}
+

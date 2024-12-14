@@ -1,62 +1,55 @@
 ﻿using BlazorServerApp.Application.UseCases;
-using System;
-using System.Threading.Tasks;
+using Microsoft.AspNetCore.Components.Authorization;
+using System.Security.Claims;
 
-namespace BlazorServerApp.Presentation.Managers
+public class LoginManager
 {
-    public class LoginManager
+    private readonly AuthUseCases _authUseCases;
+    private readonly AuthenticationStateProvider _authenticationStateProvider;
+
+    public LoginRequest LoginRequest { get; set; } = new();
+    public string ErrorMessage { get; private set; }
+
+    public LoginManager(AuthUseCases authUseCases, AuthenticationStateProvider authenticationStateProvider)
     {
-        private readonly AuthUseCases _authUseCases;
-        public LoginRequest LoginRequest { get; private set; } = new LoginRequest();
-        public string ErrorMessage { get; private set; } = string.Empty;
+        _authUseCases = authUseCases;
+        _authenticationStateProvider = authenticationStateProvider;
+    }
 
-        public LoginManager(AuthUseCases authUseCases)
+    public async Task<bool> AttemptLoginAsync()
+    {
+        try
         {
-            _authUseCases = authUseCases ?? throw new ArgumentNullException(nameof(authUseCases));
-        }
-
-        public async Task<bool> AttemptLoginAsync()
-        {
-            try
+            var token = await _authUseCases.Login(LoginRequest);
+            if (!string.IsNullOrEmpty(token))
             {
-                ErrorMessage = string.Empty;
-
-                if (string.IsNullOrEmpty(LoginRequest.Username) || string.IsNullOrEmpty(LoginRequest.Password))
-                {
-                    ErrorMessage = "Username and Password are required.";
-                    return false;
-                }
-
-                var token = await _authUseCases.Login(LoginRequest);
-
-                if (!string.IsNullOrEmpty(token))
-                {
-                    // Here you could save the token in local storage, cookies, or session state.
-                    return true;
-                }
-
+                // Store token in AuthenticationStateProvider (for Blazor authentication)
+                ((CustomAuthenticationStateProvider)_authenticationStateProvider).MarkUserAsAuthenticated(token);
+                return true;
+            }
+            else
+            {
                 ErrorMessage = "Invalid username or password.";
                 return false;
             }
-            catch (Exception ex)
-            {
-                ErrorMessage = $"An error occurred while attempting to login: {ex.Message}";
-                return false;
-            }
+        }
+        catch (Exception ex)
+        {
+            ErrorMessage = "An error occurred during login: " + ex.Message;
+            return false;
+        }
+    }
+
+    public async Task<string> GetUserRoleAsync()
+    {
+        var authState = await _authenticationStateProvider.GetAuthenticationStateAsync();
+        var user = authState.User;
+
+        if (user.Identity?.IsAuthenticated == true)
+        {
+            return user.FindFirst(ClaimTypes.Role)?.Value ?? string.Empty;
         }
 
-        public async Task<string> GetUserRoleAsync()
-        {
-            try
-            {
-                var role = await _authUseCases.GetUserRole(LoginRequest.Username);
-                return role;
-            }
-            catch (Exception ex)
-            {
-                ErrorMessage = $"An error occurred while retrieving user role: {ex.Message}";
-                return string.Empty;
-            }
-        }
+        return string.Empty;
     }
 }

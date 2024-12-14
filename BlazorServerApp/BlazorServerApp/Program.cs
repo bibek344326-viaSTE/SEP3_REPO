@@ -1,8 +1,8 @@
 using Blazored.Toast;
 using BlazorServerApp.Infrastructure.Repositories;
-using BlazorServerApp.Presentation.Managers;
 using BlazorServerApp.Application.UseCases;
 using BlazorServerApp.Application.Interfaces;
+using Microsoft.AspNetCore.Components.Authorization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,6 +10,9 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorPages();
 builder.Services.AddBlazoredToast();
 builder.Services.AddServerSideBlazor();
+
+builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthenticationStateProvider>();
+builder.Services.AddAuthorizationCore();
 
 // Register the gRPC client for AuthService
 builder.Services.AddGrpcClient<AuthService.AuthServiceClient>(options =>
