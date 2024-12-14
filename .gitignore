@@ -51,8 +51,11 @@ StyleCopReport.xml
 # Ignore entire .vs folder at any level
 **/.vs/
 
-# Ignore specific bin files in .vs folder
-**/.vs/*.bin
+# Ignore specific file types in .vs directory at any depth
+**/.vs/**/*.bin
+**/.vs/**/*.metadata*
+**/.vs/**/*.v9.bin
+**/.vs/**/*.v9.metadata
 
 # User-specific files
 *.suo
@@ -61,7 +64,7 @@ StyleCopReport.xml
 *.sln.docstates
 *.rsuser
 
-# Recycle Bin used by VS
+# Recycle Bin used by Visual Studio
 RecycleBin/
 
 # ================================================
@@ -182,17 +185,26 @@ BlazorWebAppT1/bin/
 # Specific to ASP.NET Core Projects
 SEP3_T3_ASP_Core_WebAPI/obj/
 SEP3_T3_ASP_Core_WebAPI/bin/
+
+# Ignore the entire .vs folder and its contents
 SEP3_T3_ASP_Core_WebAPI/.vs/
 
-# Ignore any .bin files in .vs
+# Ignore specific file types in .vs directory at any depth
 SEP3_T3_ASP_Core_WebAPI/.vs/**/*.bin
+SEP3_T3_ASP_Core_WebAPI/.vs/**/*.metadata*
+SEP3_T3_ASP_Core_WebAPI/.vs/**/*.v9.bin
+SEP3_T3_ASP_Core_WebAPI/.vs/**/*.v9.metadata
 
-# Ignore everything in .vs folder at any level
+# Ignore any .vs folder at any depth and all its contents
 **/.vs/
+
+# Ignore specific files like .bin and .metadata inside .vs at any depth
+**/.vs/**/*.bin
+**/.vs/**/*.metadata*
 
 # ================================================
 # Ignore Specific Files or Directories (Optional)
 # ================================================
 
 # Uncomment if you have tasks that create the project's static files in wwwroot
-#wwwroot/
+# wwwroot/
