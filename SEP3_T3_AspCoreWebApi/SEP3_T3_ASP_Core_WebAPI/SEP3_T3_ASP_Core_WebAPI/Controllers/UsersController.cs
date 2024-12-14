@@ -23,16 +23,17 @@ public class UsersController: ControllerBase
     // ********** CREATE Endpoints **********
     // POST: /Users
     [HttpPost]
-    public async Task<ActionResult<UserDto>> AddUser([FromBody] RegisterRequest request)
+    public async Task<ActionResult<UserResponse>> AddUser([FromBody] RegisterRequest request)
     {
         await VerifyUserNameIsAvailableAsync(request.UserName);
 
         User user = Entities.User.Create(request.UserName, request.Password, request.UserRole);
         User created = await userRepo.AddUserAsync(user);
-        UserDto dto = new()
+        UserResponse dto = new()
         {
             UserId = created.UserId,
-            UserName = created.UserName
+            UserName = created.UserName,
+            UserRole = created.UserRole
         };
         return Created($"/Users/{dto.UserId}", created);
     }
@@ -60,7 +61,7 @@ public class UsersController: ControllerBase
             userToUpdate.UserRole = request.UserRole;
 
             await userRepo.UpdateUserAsync(userToUpdate);
-            return NoContent();
+            return Ok(userToUpdate);
         }
         catch (InvalidOperationException)
         {
@@ -82,7 +83,7 @@ public class UsersController: ControllerBase
         {
             User userToDelete = await userRepo.GetUserById(id);
             await userRepo.DeleteUserAsync(id);
-            return NoContent();
+            return Ok(true);
         }
         catch (InvalidOperationException)
         {
@@ -98,15 +99,16 @@ public class UsersController: ControllerBase
     // ********** GET Endpoints **********
     // GET: /Users/{id}
     [HttpGet("{id}")]
-    public async Task<ActionResult<UserDto>> GetSingleUser([FromRoute] int id)
+    public async Task<ActionResult<UserResponse>> GetSingleUser([FromRoute] int id)
     {
         try
         {
             User user = await userRepo.GetUserById(id);
-            UserDto dto = new()
+            UserResponse dto = new()
             {
                 UserId = user.UserId,
-                UserName = user.UserName
+                UserName = user.UserName,
+                UserRole = user.UserRole
             };
             return Ok(dto);
         }
@@ -123,15 +125,16 @@ public class UsersController: ControllerBase
 
     // GET: /Users
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<UserDto>>> GetAllUsers()
+    public async Task<ActionResult<IEnumerable<UserResponse>>> GetAllUsers()
     {
         try
         {
-            List<UserDto> dtos = await userRepo.GetAllUsers()
-                .Select(u => new UserDto()
+            List<UserResponse> dtos = await userRepo.GetAllUsers()
+                .Select(u => new UserResponse()
                 {
                     UserId = u.UserId,
-                    UserName = u.UserName
+                    UserName = u.UserName,
+                    UserRole = u.UserRole
                 })
                 .ToListAsync(); // Ensure asynchronous operation
             return Ok(dtos);
@@ -146,17 +149,18 @@ public class UsersController: ControllerBase
 
     // Line 145: Update GetAllUsersByType method
     [HttpGet("Type/{type}")]
-    public async Task<ActionResult<IEnumerable<UserDto>>> GetAllUsersByType([FromRoute] string type)
+    public async Task<ActionResult<IEnumerable<UserResponse>>> GetAllUsersByType([FromRoute] string type)
     {
         try
         {
-            List<UserDto> dtos = await userRepo.GetAllUsersByType(type)
-                .Select(u => new UserDto()
+            List<UserResponse> dtos = await userRepo.GetAllUsersByRole(type)
+                .Select(u => new UserResponse()
                 {
                     UserId = u.UserId,
-                    UserName = u.UserName
+                    UserName = u.UserName,
+                    UserRole = u.UserRole
                 })
-                .ToListAsync(); // Ensure asynchronous operation
+                .ToListAsync();
             return Ok(dtos);
         }
         catch (Exception e)
@@ -169,7 +173,7 @@ public class UsersController: ControllerBase
 
     // GET: /Users/Username/{username} 
     [HttpGet("Username/{username}")]
-    public async Task<ActionResult<UserDto>> GetUserByUsername([FromRoute] string username)
+    public async Task<ActionResult<UserResponse>> GetUserByUsername([FromRoute] string username)
     {
         try
         {
@@ -178,10 +182,11 @@ public class UsersController: ControllerBase
             {
                 return NotFound($"User with username {username} not found.");
             }
-            UserDto dto = new()
+            UserResponse dto = new()
             {
                 UserId = user.UserId,
-                UserName = user.UserName
+                UserName = user.UserName,
+                UserRole = user.UserRole
             };
             return Ok(dto);
         }

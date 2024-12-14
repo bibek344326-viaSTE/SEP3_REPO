@@ -22,3 +22,15 @@ C:\Users\amine\Repos\SEP3_REPO\SEP3_T3_AspCoreWebApi\SEP3_T3_ASP_Core_WebAPI\Ent
 C:\Users\amine\Repos\SEP3_REPO\SEP3_T3_AspCoreWebApi\SEP3_T3_ASP_Core_WebAPI\Entities\obj\Debug\net9.0\refint\Entities.dll
 C:\Users\amine\Repos\SEP3_REPO\SEP3_T3_AspCoreWebApi\SEP3_T3_ASP_Core_WebAPI\Entities\obj\Debug\net9.0\Entities.pdb
 C:\Users\amine\Repos\SEP3_REPO\SEP3_T3_AspCoreWebApi\SEP3_T3_ASP_Core_WebAPI\Entities\obj\Debug\net9.0\ref\Entities.dll
+C:\Users\AminAouina\source\SEP3_REPO\SEP3_T3_AspCoreWebApi\SEP3_T3_ASP_Core_WebAPI\Entities\bin\Debug\net9.0\Entities.deps.json
+C:\Users\AminAouina\source\SEP3_REPO\SEP3_T3_AspCoreWebApi\SEP3_T3_ASP_Core_WebAPI\Entities\bin\Debug\net9.0\Entities.dll
+C:\Users\AminAouina\source\SEP3_REPO\SEP3_T3_AspCoreWebApi\SEP3_T3_ASP_Core_WebAPI\Entities\bin\Debug\net9.0\Entities.pdb
+C:\Users\AminAouina\source\SEP3_REPO\SEP3_T3_AspCoreWebApi\SEP3_T3_ASP_Core_WebAPI\Entities\obj\Debug\net9.0\Entities.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\AminAouina\source\SEP3_REPO\SEP3_T3_AspCoreWebApi\SEP3_T3_ASP_Core_WebAPI\Entities\obj\Debug\net9.0\Entities.AssemblyInfoInputs.cache
+C:\Users\AminAouina\source\SEP3_REPO\SEP3_T3_AspCoreWebApi\SEP3_T3_ASP_Core_WebAPI\Entities\obj\Debug\net9.0\Entities.AssemblyInfo.cs
+C:\Users\AminAouina\source\SEP3_REPO\SEP3_T3_AspCoreWebApi\SEP3_T3_ASP_Core_WebAPI\Entities\obj\Debug\net9.0\Entities.csproj.CoreCompileInputs.cache
+C:\Users\AminAouina\source\SEP3_REPO\SEP3_T3_AspCoreWebApi\SEP3_T3_ASP_Core_WebAPI\Entities\obj\Debug\net9.0\Entities.sourcelink.json
+C:\Users\AminAouina\source\SEP3_REPO\SEP3_T3_AspCoreWebApi\SEP3_T3_ASP_Core_WebAPI\Entities\obj\Debug\net9.0\Entities.dll
+C:\Users\AminAouina\source\SEP3_REPO\SEP3_T3_AspCoreWebApi\SEP3_T3_ASP_Core_WebAPI\Entities\obj\Debug\net9.0\refint\Entities.dll
+C:\Users\AminAouina\source\SEP3_REPO\SEP3_T3_AspCoreWebApi\SEP3_T3_ASP_Core_WebAPI\Entities\obj\Debug\net9.0\Entities.pdb
+C:\Users\AminAouina\source\SEP3_REPO\SEP3_T3_AspCoreWebApi\SEP3_T3_ASP_Core_WebAPI\Entities\obj\Debug\net9.0\ref\Entities.dll

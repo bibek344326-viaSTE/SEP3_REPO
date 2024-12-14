@@ -21,10 +21,10 @@ public class ItemsController: ControllerBase
     // ********** GET Endpoints **********
     // GET: /Items
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<ItemDto>>> GetAllItems()
+    public async Task<ActionResult<IEnumerable<Item>>> GetAllItems()
     {
-        List<ItemDto> dtos = await itemRepository.GetAllItems()
-            .Select(item => new ItemDto
+        List<Item> dtos = await itemRepository.GetAllItems()
+            .Select(item => new Item
             {
                 ItemId = item.ItemId,
                 ItemName = item.ItemName,
@@ -37,12 +37,12 @@ public class ItemsController: ControllerBase
 
     // GET: /Items/{id}
     [HttpGet("{id}")]
-    public async Task<ActionResult<ItemDto>> GetSingleItem([FromRoute] int id)
+    public async Task<ActionResult<Item>> GetSingleItem([FromRoute] int id)
     {
         try
         {
             Item item = await itemRepository.GetItemById(id);
-            ItemDto dto = new()
+            Item dto = new()
             {
                 ItemId = item.ItemId,
                 ItemName = item.ItemName,
@@ -65,11 +65,11 @@ public class ItemsController: ControllerBase
     // ********** CREATE Endpoints **********
     // POST: /Items
     [HttpPost]
-    public async Task<ActionResult<ItemDto>> AddItem([FromBody] CreateItemDto request)
+    public async Task<ActionResult<Item>> AddItem([FromBody] ItemDto request)
     {
         Item item = Entities.Item.Create(request.ItemName, request.Description, request.QuantityInStore);
         Item created = await itemRepository.AddItemAsync(item);
-        ItemDto dto = new()
+        Item dto = new()
         {
             ItemId = created.ItemId,
             ItemName = created.ItemName,
@@ -82,7 +82,7 @@ public class ItemsController: ControllerBase
     // ********** UPDATE Endpoints **********
     // PUT: /Items/{id}
     [HttpPut("{id}")]
-    public async Task<ActionResult> UpdateItem([FromRoute] int id, [FromBody] UpdateItemDto request)
+    public async Task<ActionResult> UpdateItem([FromRoute] int id, [FromBody] Item request)
     {
         try
         {
@@ -107,7 +107,7 @@ public class ItemsController: ControllerBase
     
     //update the quantity of an item
     [HttpPut("{id}/quantity")]
-    public async Task<ActionResult> UpdateItemQuantity([FromRoute] int id, [FromBody] UpdateItemDto request)
+    public async Task<ActionResult> UpdateItemQuantity([FromRoute] int id, [FromBody] Item request)
     {
         try
         {
@@ -130,7 +130,7 @@ public class ItemsController: ControllerBase
     
     //update the description of an item
     [HttpPut("{id}/description")]
-    public async Task<ActionResult> UpdateItemDescription([FromRoute] int id, [FromBody] UpdateItemDto request)
+    public async Task<ActionResult> UpdateItemDescription([FromRoute] int id, [FromBody] Item request)
     {
         try
         {
@@ -153,7 +153,7 @@ public class ItemsController: ControllerBase
     
     //update the name of an item
     [HttpPut("{id}/name")]
-    public async Task<ActionResult> UpdateItemName([FromRoute] int id, [FromBody] UpdateItemDto request)
+    public async Task<ActionResult> UpdateItemName([FromRoute] int id, [FromBody] Item request)
     {
         try
         {
