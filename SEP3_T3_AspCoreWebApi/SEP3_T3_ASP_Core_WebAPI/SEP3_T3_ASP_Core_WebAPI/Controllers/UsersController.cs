@@ -50,7 +50,7 @@ public class UsersController: ControllerBase
     // ********** UPDATE Endpoints **********
     // PUT: /Users/{id}
     [HttpPut("{id}")]
-    public async Task<ActionResult> UpdateUser([FromRoute] int id, [FromBody] UpdateUserDto request)
+    public async Task<ActionResult> UpdateUser([FromRoute] int id, [FromBody] User request)
     {
         try
         {
