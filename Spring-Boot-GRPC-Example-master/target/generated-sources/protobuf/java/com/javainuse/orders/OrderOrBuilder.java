@@ -13,54 +13,49 @@ public interface OrderOrBuilder extends
   int getOrderId();
 
   /**
-   * <code>string order_status = 2;</code>
-   */
-  java.lang.String getOrderStatus();
-  /**
-   * <code>string order_status = 2;</code>
-   */
-  com.google.protobuf.ByteString
-      getOrderStatusBytes();
-
-  /**
-   * <code>.google.protobuf.Timestamp delivery_date = 3;</code>
-   */
-  boolean hasDeliveryDate();
-  /**
-   * <code>.google.protobuf.Timestamp delivery_date = 3;</code>
-   */
-  com.google.protobuf.Timestamp getDeliveryDate();
-  /**
-   * <code>.google.protobuf.Timestamp delivery_date = 3;</code>
-   */
-  com.google.protobuf.TimestampOrBuilder getDeliveryDateOrBuilder();
-
-  /**
-   * <code>repeated .OrderItem order_items = 4;</code>
+   * <code>repeated .OrderItem order_items = 2;</code>
    */
   java.util.List<com.javainuse.orders.OrderItem> 
       getOrderItemsList();
   /**
-   * <code>repeated .OrderItem order_items = 4;</code>
+   * <code>repeated .OrderItem order_items = 2;</code>
    */
   com.javainuse.orders.OrderItem getOrderItems(int index);
   /**
-   * <code>repeated .OrderItem order_items = 4;</code>
+   * <code>repeated .OrderItem order_items = 2;</code>
    */
   int getOrderItemsCount();
   /**
-   * <code>repeated .OrderItem order_items = 4;</code>
+   * <code>repeated .OrderItem order_items = 2;</code>
    */
   java.util.List<? extends com.javainuse.orders.OrderItemOrBuilder> 
       getOrderItemsOrBuilderList();
   /**
-   * <code>repeated .OrderItem order_items = 4;</code>
+   * <code>repeated .OrderItem order_items = 2;</code>
    */
   com.javainuse.orders.OrderItemOrBuilder getOrderItemsOrBuilder(
       int index);
 
   /**
-   * <code>int32 user_id = 5;</code>
+   * <code>int32 user_id = 3;</code>
    */
   int getUserId();
+
+  /**
+   * <code>int32 created_by = 4;</code>
+   */
+  int getCreatedBy();
+
+  /**
+   * <code>.google.protobuf.Timestamp created_at = 5;</code>
+   */
+  boolean hasCreatedAt();
+  /**
+   * <code>.google.protobuf.Timestamp created_at = 5;</code>
+   */
+  com.google.protobuf.Timestamp getCreatedAt();
+  /**
+   * <code>.google.protobuf.Timestamp created_at = 5;</code>
+   */
+  com.google.protobuf.TimestampOrBuilder getCreatedAtOrBuilder();
 }

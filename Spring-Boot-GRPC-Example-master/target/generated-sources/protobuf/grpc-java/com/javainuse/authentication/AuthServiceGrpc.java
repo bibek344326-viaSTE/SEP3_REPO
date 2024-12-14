@@ -59,38 +59,6 @@ public final class AuthServiceGrpc {
      return getLoginMethod;
   }
 
-  private static volatile io.grpc.MethodDescriptor<com.javainuse.authentication.RegisterRequest,
-      com.javainuse.authentication.UserDTO> getRegisterMethod;
-
-  @io.grpc.stub.annotations.RpcMethod(
-      fullMethodName = SERVICE_NAME + '/' + "register",
-      requestType = com.javainuse.authentication.RegisterRequest.class,
-      responseType = com.javainuse.authentication.UserDTO.class,
-      methodType = io.grpc.MethodDescriptor.MethodType.UNARY)
-  public static io.grpc.MethodDescriptor<com.javainuse.authentication.RegisterRequest,
-      com.javainuse.authentication.UserDTO> getRegisterMethod() {
-    io.grpc.MethodDescriptor<com.javainuse.authentication.RegisterRequest, com.javainuse.authentication.UserDTO> getRegisterMethod;
-    if ((getRegisterMethod = AuthServiceGrpc.getRegisterMethod) == null) {
-      synchronized (AuthServiceGrpc.class) {
-        if ((getRegisterMethod = AuthServiceGrpc.getRegisterMethod) == null) {
-          AuthServiceGrpc.getRegisterMethod = getRegisterMethod = 
-              io.grpc.MethodDescriptor.<com.javainuse.authentication.RegisterRequest, com.javainuse.authentication.UserDTO>newBuilder()
-              .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
-              .setFullMethodName(generateFullMethodName(
-                  "AuthService", "register"))
-              .setSampledToLocalTracing(true)
-              .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  com.javainuse.authentication.RegisterRequest.getDefaultInstance()))
-              .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  com.javainuse.authentication.UserDTO.getDefaultInstance()))
-                  .setSchemaDescriptor(new AuthServiceMethodDescriptorSupplier("register"))
-                  .build();
-          }
-        }
-     }
-     return getRegisterMethod;
-  }
-
   /**
    * Creates a new async stub that supports all call types for the service
    */
@@ -125,13 +93,6 @@ public final class AuthServiceGrpc {
       asyncUnimplementedUnaryCall(getLoginMethod(), responseObserver);
     }
 
-    /**
-     */
-    public void register(com.javainuse.authentication.RegisterRequest request,
-        io.grpc.stub.StreamObserver<com.javainuse.authentication.UserDTO> responseObserver) {
-      asyncUnimplementedUnaryCall(getRegisterMethod(), responseObserver);
-    }
-
     @java.lang.Override public final io.grpc.ServerServiceDefinition bindService() {
       return io.grpc.ServerServiceDefinition.builder(getServiceDescriptor())
           .addMethod(
@@ -141,13 +102,6 @@ public final class AuthServiceGrpc {
                 com.javainuse.authentication.LoginRequest,
                 com.javainuse.authentication.LoginResponse>(
                   this, METHODID_LOGIN)))
-          .addMethod(
-            getRegisterMethod(),
-            asyncUnaryCall(
-              new MethodHandlers<
-                com.javainuse.authentication.RegisterRequest,
-                com.javainuse.authentication.UserDTO>(
-                  this, METHODID_REGISTER)))
           .build();
     }
   }
@@ -177,14 +131,6 @@ public final class AuthServiceGrpc {
       asyncUnaryCall(
           getChannel().newCall(getLoginMethod(), getCallOptions()), request, responseObserver);
     }
-
-    /**
-     */
-    public void register(com.javainuse.authentication.RegisterRequest request,
-        io.grpc.stub.StreamObserver<com.javainuse.authentication.UserDTO> responseObserver) {
-      asyncUnaryCall(
-          getChannel().newCall(getRegisterMethod(), getCallOptions()), request, responseObserver);
-    }
   }
 
   /**
@@ -210,13 +156,6 @@ public final class AuthServiceGrpc {
     public com.javainuse.authentication.LoginResponse login(com.javainuse.authentication.LoginRequest request) {
       return blockingUnaryCall(
           getChannel(), getLoginMethod(), getCallOptions(), request);
-    }
-
-    /**
-     */
-    public com.javainuse.authentication.UserDTO register(com.javainuse.authentication.RegisterRequest request) {
-      return blockingUnaryCall(
-          getChannel(), getRegisterMethod(), getCallOptions(), request);
     }
   }
 
@@ -245,18 +184,9 @@ public final class AuthServiceGrpc {
       return futureUnaryCall(
           getChannel().newCall(getLoginMethod(), getCallOptions()), request);
     }
-
-    /**
-     */
-    public com.google.common.util.concurrent.ListenableFuture<com.javainuse.authentication.UserDTO> register(
-        com.javainuse.authentication.RegisterRequest request) {
-      return futureUnaryCall(
-          getChannel().newCall(getRegisterMethod(), getCallOptions()), request);
-    }
   }
 
   private static final int METHODID_LOGIN = 0;
-  private static final int METHODID_REGISTER = 1;
 
   private static final class MethodHandlers<Req, Resp> implements
       io.grpc.stub.ServerCalls.UnaryMethod<Req, Resp>,
@@ -278,10 +208,6 @@ public final class AuthServiceGrpc {
         case METHODID_LOGIN:
           serviceImpl.login((com.javainuse.authentication.LoginRequest) request,
               (io.grpc.stub.StreamObserver<com.javainuse.authentication.LoginResponse>) responseObserver);
-          break;
-        case METHODID_REGISTER:
-          serviceImpl.register((com.javainuse.authentication.RegisterRequest) request,
-              (io.grpc.stub.StreamObserver<com.javainuse.authentication.UserDTO>) responseObserver);
           break;
         default:
           throw new AssertionError();
@@ -345,7 +271,6 @@ public final class AuthServiceGrpc {
           serviceDescriptor = result = io.grpc.ServiceDescriptor.newBuilder(SERVICE_NAME)
               .setSchemaDescriptor(new AuthServiceFileDescriptorSupplier())
               .addMethod(getLoginMethod())
-              .addMethod(getRegisterMethod())
               .build();
         }
       }

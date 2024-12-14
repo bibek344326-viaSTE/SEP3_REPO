@@ -1,4 +1,5 @@
 syntax = "proto3";
+import "google/protobuf/empty.proto";
 
 option java_multiple_files = true;
 option java_package = "com.javainuse.item";
@@ -16,14 +17,17 @@ message Item {
   int32 quantity_in_store = 4;
 }
 
-message ItemResponse {
-  string id = 1;
+message ItemList {
+  repeated Item items = 1;
 }
 
 service ItemService {
-  rpc createItem(ItemDTO) returns (ItemResponse);
+  rpc createItem(ItemDTO) returns (Item);
 
-  rpc editItem(Item) returns (ItemResponse);
+  rpc editItem(Item) returns (google.protobuf.Empty);
 
-  rpc deleteItem(Item) returns (ItemResponse);
+  rpc deleteItem(Item) returns (google.protobuf.Empty);
+
+  rpc getAllItems(google.protobuf.Empty) returns (ItemList);
+
 }

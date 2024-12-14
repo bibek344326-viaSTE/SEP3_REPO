@@ -24,16 +24,6 @@ public final class AuthServiceOuterClass {
   static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_LoginResponse_fieldAccessorTable;
-  static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_RegisterRequest_descriptor;
-  static final 
-    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_RegisterRequest_fieldAccessorTable;
-  static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_UserDTO_descriptor;
-  static final 
-    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_UserDTO_fieldAccessorTable;
 
   public static com.google.protobuf.Descriptors.FileDescriptor
       getDescriptor() {
@@ -43,17 +33,12 @@ public final class AuthServiceOuterClass {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\022auth-service.proto\032\024constants/util.pro" +
-      "to\"2\n\014LoginRequest\022\020\n\010username\030\001 \001(\t\022\020\n\010" +
-      "password\030\002 \001(\t\"\036\n\rLoginResponse\022\r\n\005token" +
-      "\030\001 \001(\t\"T\n\017RegisterRequest\022\020\n\010username\030\001 " +
-      "\001(\t\022\020\n\010password\030\002 \001(\t\022\035\n\004role\030\003 \001(\0162\017.co" +
-      "nstants.Role\"J\n\007UserDTO\022\020\n\010username\030\001 \001(" +
-      "\t\022\016\n\006userid\030\002 \001(\t\022\035\n\004role\030\003 \001(\0162\017.consta" +
-      "nts.Role2a\n\013AuthService\022(\n\005login\022\r.Login" +
-      "Request\032\016.LoginResponse\"\000\022(\n\010register\022\020." +
-      "RegisterRequest\032\010.UserDTO\"\000B \n\034com.javai" +
-      "nuse.authenticationP\001b\006proto3"
+      "\n\022auth-service.proto\"2\n\014LoginRequest\022\020\n\010" +
+      "username\030\001 \001(\t\022\020\n\010password\030\002 \001(\t\"\036\n\rLogi" +
+      "nResponse\022\r\n\005token\030\001 \001(\t27\n\013AuthService\022" +
+      "(\n\005login\022\r.LoginRequest\032\016.LoginResponse\"" +
+      "\000B \n\034com.javainuse.authenticationP\001b\006pro" +
+      "to3"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -66,7 +51,6 @@ public final class AuthServiceOuterClass {
     com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
         new com.google.protobuf.Descriptors.FileDescriptor[] {
-          com.javainuse.constants.Util.getDescriptor(),
         }, assigner);
     internal_static_LoginRequest_descriptor =
       getDescriptor().getMessageTypes().get(0);
@@ -80,19 +64,6 @@ public final class AuthServiceOuterClass {
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_LoginResponse_descriptor,
         new java.lang.String[] { "Token", });
-    internal_static_RegisterRequest_descriptor =
-      getDescriptor().getMessageTypes().get(2);
-    internal_static_RegisterRequest_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_RegisterRequest_descriptor,
-        new java.lang.String[] { "Username", "Password", "Role", });
-    internal_static_UserDTO_descriptor =
-      getDescriptor().getMessageTypes().get(3);
-    internal_static_UserDTO_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_UserDTO_descriptor,
-        new java.lang.String[] { "Username", "Userid", "Role", });
-    com.javainuse.constants.Util.getDescriptor();
   }
 
   // @@protoc_insertion_point(outer_class_scope)
