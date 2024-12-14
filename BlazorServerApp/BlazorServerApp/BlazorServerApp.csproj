@@ -15,7 +15,12 @@
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="9.0.0" />
-	  <Protobuf Include="Protos\auth-service.proto" GrpcServices="Client" />
+	  <Protobuf Include="Protos\**\*.proto" GrpcServices="Client" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Managers\" />
+    <Folder Include="Infrastructure\" />
   </ItemGroup>
 
 </Project>

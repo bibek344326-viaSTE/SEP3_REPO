@@ -1,5 +1,5 @@
 ﻿@page "/"
-@using BlazorServerApp.Data
+@using BlazorServerApp.Infrastructure.Repositories
 
 
 <PageTitle>Index</PageTitle>
@@ -67,13 +67,11 @@ Welcome to your new app.
     private async Task HandleLogin()
     {
         loginMessage = "Logging in...";
-        loginMessage = await AuthRepository.LoginAsync(loginModel.Username, loginModel.Password);
     }
 
     private async Task HandleRegister()
     {
         registerMessage = "Registering user...";
-        registerMessage = await AuthRepository.RegisterAsync(registerModel.Username, registerModel.Password, registerModel.Role);
     }
 
     public class LoginModel

@@ -1,0 +1,46 @@
+syntax = "proto3";
+
+import "google/protobuf/empty.proto";
+
+service UserService {
+  rpc addUser(UserDTO) returns (UserResponse);
+  rpc editUser(User) returns (UserResponse);
+  rpc deleteUser(User) returns (UserDeleteResponse);
+  rpc getAllUsers(google.protobuf.Empty) returns (UserList); // New method
+}
+
+message User {
+  string userid = 1;
+  string username = 2;
+  string password = 3;
+  Role role = 4; // Role is now an enum
+}
+
+message UserResponse {
+  string userid = 1;
+  string username = 2;
+  Role role = 4; // Role is now an enum
+}
+
+message UserDTO {
+  string username = 2;
+  string password = 3;
+  Role role = 4; // Role is now an enum
+}
+
+message EditResponse {
+  bool success = 1;
+}
+
+message UserDeleteResponse {
+  bool success = 1;
+}
+
+message UserList {
+  repeated User users = 1; // Contains a list of User objects
+}
+
+enum Role {
+  INVENTORY_MANAGER = 0;
+  WAREHOUSE_WORKER = 1;
+}

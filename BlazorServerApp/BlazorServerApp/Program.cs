@@ -1,4 +1,4 @@
-using BlazorServerApp.Data;
+using BlazorServerApp.Infrastructure.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
