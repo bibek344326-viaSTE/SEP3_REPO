@@ -33,15 +33,15 @@ namespace SEP3_T3_ASP_Core_WebAPI.Data
                     var user1 = new User
                     {
                         UserName = "admin",
-                        UserRole = "Administrator",
-                        Password = passwordHasher.HashPassword(null, "Admin@123") // Hashing the password
+                        UserRole = "INVENTORY_MANAGER",
+                        Password = passwordHasher.HashPassword(null, "admin")
                     };
 
                     var user2 = new User
                     {
-                        UserName = "john_doe",
-                        UserRole = "User",
-                        Password = passwordHasher.HashPassword(null, "Password@123")
+                        UserName = "worker",
+                        UserRole = "WAREHOUSE_WORKER",
+                        Password = passwordHasher.HashPassword(null, "worker")
                     };
 
                     context.Users.AddRange(user1, user2);
@@ -129,15 +129,12 @@ namespace SEP3_T3_ASP_Core_WebAPI.Data
                                 new OrderItem { ItemId = items[5].ItemId, QuantityToPick = 5 }, // Cheese
                             }
                         },
-                        // Add more orders as needed up to 20 or 30
                     };
 
                     context.Orders.AddRange(orders);
                     context.SaveChanges();
 
                     // ----- Step 4: Insert Additional Orders and OrderItems -----
-                    // Assuming you want to add more orders similar to the ones above
-                    // Here's how you can add multiple orders programmatically
 
                     for (int i = 3; i < 20; i++) // Creating orders #4 to #20
                     {
