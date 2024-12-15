@@ -4,7 +4,7 @@
 package com.javainuse.user;
 
 public interface EditResponseOrBuilder extends
-    // @@protoc_insertion_point(interface_extends:EditResponse)
+    // @@protoc_insertion_point(interface_extends:users.EditResponse)
     com.google.protobuf.MessageOrBuilder {
 
   /**

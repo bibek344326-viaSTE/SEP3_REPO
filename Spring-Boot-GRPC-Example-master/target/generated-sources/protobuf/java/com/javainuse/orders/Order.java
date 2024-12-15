@@ -260,7 +260,7 @@ private static final long serialVersionUID = 0L;
    * Assigned user information, must not be null, must conform to the User message format
    * </pre>
    *
-   * <code>.User assigned_user = 4;</code>
+   * <code>.users.User assigned_user = 4;</code>
    */
   public boolean hasAssignedUser() {
     return assignedUser_ != null;
@@ -270,7 +270,7 @@ private static final long serialVersionUID = 0L;
    * Assigned user information, must not be null, must conform to the User message format
    * </pre>
    *
-   * <code>.User assigned_user = 4;</code>
+   * <code>.users.User assigned_user = 4;</code>
    */
   public com.javainuse.user.User getAssignedUser() {
     return assignedUser_ == null ? com.javainuse.user.User.getDefaultInstance() : assignedUser_;
@@ -280,7 +280,7 @@ private static final long serialVersionUID = 0L;
    * Assigned user information, must not be null, must conform to the User message format
    * </pre>
    *
-   * <code>.User assigned_user = 4;</code>
+   * <code>.users.User assigned_user = 4;</code>
    */
   public com.javainuse.user.UserOrBuilder getAssignedUserOrBuilder() {
     return getAssignedUser();
@@ -293,7 +293,7 @@ private static final long serialVersionUID = 0L;
    * Created by user information, must not be null, must conform to the User message format
    * </pre>
    *
-   * <code>.User created_by_user = 5;</code>
+   * <code>.users.User created_by_user = 5;</code>
    */
   public boolean hasCreatedByUser() {
     return createdByUser_ != null;
@@ -303,7 +303,7 @@ private static final long serialVersionUID = 0L;
    * Created by user information, must not be null, must conform to the User message format
    * </pre>
    *
-   * <code>.User created_by_user = 5;</code>
+   * <code>.users.User created_by_user = 5;</code>
    */
   public com.javainuse.user.User getCreatedByUser() {
     return createdByUser_ == null ? com.javainuse.user.User.getDefaultInstance() : createdByUser_;
@@ -313,7 +313,7 @@ private static final long serialVersionUID = 0L;
    * Created by user information, must not be null, must conform to the User message format
    * </pre>
    *
-   * <code>.User created_by_user = 5;</code>
+   * <code>.users.User created_by_user = 5;</code>
    */
   public com.javainuse.user.UserOrBuilder getCreatedByUserOrBuilder() {
     return getCreatedByUser();
@@ -1375,7 +1375,7 @@ private static final long serialVersionUID = 0L;
      * Assigned user information, must not be null, must conform to the User message format
      * </pre>
      *
-     * <code>.User assigned_user = 4;</code>
+     * <code>.users.User assigned_user = 4;</code>
      */
     public boolean hasAssignedUser() {
       return assignedUserBuilder_ != null || assignedUser_ != null;
@@ -1385,7 +1385,7 @@ private static final long serialVersionUID = 0L;
      * Assigned user information, must not be null, must conform to the User message format
      * </pre>
      *
-     * <code>.User assigned_user = 4;</code>
+     * <code>.users.User assigned_user = 4;</code>
      */
     public com.javainuse.user.User getAssignedUser() {
       if (assignedUserBuilder_ == null) {
@@ -1399,7 +1399,7 @@ private static final long serialVersionUID = 0L;
      * Assigned user information, must not be null, must conform to the User message format
      * </pre>
      *
-     * <code>.User assigned_user = 4;</code>
+     * <code>.users.User assigned_user = 4;</code>
      */
     public Builder setAssignedUser(com.javainuse.user.User value) {
       if (assignedUserBuilder_ == null) {
@@ -1419,7 +1419,7 @@ private static final long serialVersionUID = 0L;
      * Assigned user information, must not be null, must conform to the User message format
      * </pre>
      *
-     * <code>.User assigned_user = 4;</code>
+     * <code>.users.User assigned_user = 4;</code>
      */
     public Builder setAssignedUser(
         com.javainuse.user.User.Builder builderForValue) {
@@ -1437,7 +1437,7 @@ private static final long serialVersionUID = 0L;
      * Assigned user information, must not be null, must conform to the User message format
      * </pre>
      *
-     * <code>.User assigned_user = 4;</code>
+     * <code>.users.User assigned_user = 4;</code>
      */
     public Builder mergeAssignedUser(com.javainuse.user.User value) {
       if (assignedUserBuilder_ == null) {
@@ -1459,7 +1459,7 @@ private static final long serialVersionUID = 0L;
      * Assigned user information, must not be null, must conform to the User message format
      * </pre>
      *
-     * <code>.User assigned_user = 4;</code>
+     * <code>.users.User assigned_user = 4;</code>
      */
     public Builder clearAssignedUser() {
       if (assignedUserBuilder_ == null) {
@@ -1477,7 +1477,7 @@ private static final long serialVersionUID = 0L;
      * Assigned user information, must not be null, must conform to the User message format
      * </pre>
      *
-     * <code>.User assigned_user = 4;</code>
+     * <code>.users.User assigned_user = 4;</code>
      */
     public com.javainuse.user.User.Builder getAssignedUserBuilder() {
       
@@ -1489,7 +1489,7 @@ private static final long serialVersionUID = 0L;
      * Assigned user information, must not be null, must conform to the User message format
      * </pre>
      *
-     * <code>.User assigned_user = 4;</code>
+     * <code>.users.User assigned_user = 4;</code>
      */
     public com.javainuse.user.UserOrBuilder getAssignedUserOrBuilder() {
       if (assignedUserBuilder_ != null) {
@@ -1504,7 +1504,7 @@ private static final long serialVersionUID = 0L;
      * Assigned user information, must not be null, must conform to the User message format
      * </pre>
      *
-     * <code>.User assigned_user = 4;</code>
+     * <code>.users.User assigned_user = 4;</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.javainuse.user.User, com.javainuse.user.User.Builder, com.javainuse.user.UserOrBuilder> 
@@ -1528,7 +1528,7 @@ private static final long serialVersionUID = 0L;
      * Created by user information, must not be null, must conform to the User message format
      * </pre>
      *
-     * <code>.User created_by_user = 5;</code>
+     * <code>.users.User created_by_user = 5;</code>
      */
     public boolean hasCreatedByUser() {
       return createdByUserBuilder_ != null || createdByUser_ != null;
@@ -1538,7 +1538,7 @@ private static final long serialVersionUID = 0L;
      * Created by user information, must not be null, must conform to the User message format
      * </pre>
      *
-     * <code>.User created_by_user = 5;</code>
+     * <code>.users.User created_by_user = 5;</code>
      */
     public com.javainuse.user.User getCreatedByUser() {
       if (createdByUserBuilder_ == null) {
@@ -1552,7 +1552,7 @@ private static final long serialVersionUID = 0L;
      * Created by user information, must not be null, must conform to the User message format
      * </pre>
      *
-     * <code>.User created_by_user = 5;</code>
+     * <code>.users.User created_by_user = 5;</code>
      */
     public Builder setCreatedByUser(com.javainuse.user.User value) {
       if (createdByUserBuilder_ == null) {
@@ -1572,7 +1572,7 @@ private static final long serialVersionUID = 0L;
      * Created by user information, must not be null, must conform to the User message format
      * </pre>
      *
-     * <code>.User created_by_user = 5;</code>
+     * <code>.users.User created_by_user = 5;</code>
      */
     public Builder setCreatedByUser(
         com.javainuse.user.User.Builder builderForValue) {
@@ -1590,7 +1590,7 @@ private static final long serialVersionUID = 0L;
      * Created by user information, must not be null, must conform to the User message format
      * </pre>
      *
-     * <code>.User created_by_user = 5;</code>
+     * <code>.users.User created_by_user = 5;</code>
      */
     public Builder mergeCreatedByUser(com.javainuse.user.User value) {
       if (createdByUserBuilder_ == null) {
@@ -1612,7 +1612,7 @@ private static final long serialVersionUID = 0L;
      * Created by user information, must not be null, must conform to the User message format
      * </pre>
      *
-     * <code>.User created_by_user = 5;</code>
+     * <code>.users.User created_by_user = 5;</code>
      */
     public Builder clearCreatedByUser() {
       if (createdByUserBuilder_ == null) {
@@ -1630,7 +1630,7 @@ private static final long serialVersionUID = 0L;
      * Created by user information, must not be null, must conform to the User message format
      * </pre>
      *
-     * <code>.User created_by_user = 5;</code>
+     * <code>.users.User created_by_user = 5;</code>
      */
     public com.javainuse.user.User.Builder getCreatedByUserBuilder() {
       
@@ -1642,7 +1642,7 @@ private static final long serialVersionUID = 0L;
      * Created by user information, must not be null, must conform to the User message format
      * </pre>
      *
-     * <code>.User created_by_user = 5;</code>
+     * <code>.users.User created_by_user = 5;</code>
      */
     public com.javainuse.user.UserOrBuilder getCreatedByUserOrBuilder() {
       if (createdByUserBuilder_ != null) {
@@ -1657,7 +1657,7 @@ private static final long serialVersionUID = 0L;
      * Created by user information, must not be null, must conform to the User message format
      * </pre>
      *
-     * <code>.User created_by_user = 5;</code>
+     * <code>.users.User created_by_user = 5;</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.javainuse.user.User, com.javainuse.user.User.Builder, com.javainuse.user.UserOrBuilder> 

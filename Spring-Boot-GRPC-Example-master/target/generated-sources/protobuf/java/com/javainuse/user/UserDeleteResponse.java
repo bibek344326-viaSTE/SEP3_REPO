@@ -4,11 +4,11 @@
 package com.javainuse.user;
 
 /**
- * Protobuf type {@code UserDeleteResponse}
+ * Protobuf type {@code users.UserDeleteResponse}
  */
 public  final class UserDeleteResponse extends
     com.google.protobuf.GeneratedMessageV3 implements
-    // @@protoc_insertion_point(message_implements:UserDeleteResponse)
+    // @@protoc_insertion_point(message_implements:users.UserDeleteResponse)
     UserDeleteResponseOrBuilder {
 private static final long serialVersionUID = 0L;
   // Use UserDeleteResponse.newBuilder() to construct.
@@ -69,13 +69,13 @@ private static final long serialVersionUID = 0L;
   }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
-    return com.javainuse.user.UserServiceOuterClass.internal_static_UserDeleteResponse_descriptor;
+    return com.javainuse.user.UserServiceOuterClass.internal_static_users_UserDeleteResponse_descriptor;
   }
 
   @java.lang.Override
   protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internalGetFieldAccessorTable() {
-    return com.javainuse.user.UserServiceOuterClass.internal_static_UserDeleteResponse_fieldAccessorTable
+    return com.javainuse.user.UserServiceOuterClass.internal_static_users_UserDeleteResponse_fieldAccessorTable
         .ensureFieldAccessorsInitialized(
             com.javainuse.user.UserDeleteResponse.class, com.javainuse.user.UserDeleteResponse.Builder.class);
   }
@@ -247,21 +247,21 @@ private static final long serialVersionUID = 0L;
     return builder;
   }
   /**
-   * Protobuf type {@code UserDeleteResponse}
+   * Protobuf type {@code users.UserDeleteResponse}
    */
   public static final class Builder extends
       com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
-      // @@protoc_insertion_point(builder_implements:UserDeleteResponse)
+      // @@protoc_insertion_point(builder_implements:users.UserDeleteResponse)
       com.javainuse.user.UserDeleteResponseOrBuilder {
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.javainuse.user.UserServiceOuterClass.internal_static_UserDeleteResponse_descriptor;
+      return com.javainuse.user.UserServiceOuterClass.internal_static_users_UserDeleteResponse_descriptor;
     }
 
     @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.javainuse.user.UserServiceOuterClass.internal_static_UserDeleteResponse_fieldAccessorTable
+      return com.javainuse.user.UserServiceOuterClass.internal_static_users_UserDeleteResponse_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
               com.javainuse.user.UserDeleteResponse.class, com.javainuse.user.UserDeleteResponse.Builder.class);
     }
@@ -292,7 +292,7 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.google.protobuf.Descriptors.Descriptor
         getDescriptorForType() {
-      return com.javainuse.user.UserServiceOuterClass.internal_static_UserDeleteResponse_descriptor;
+      return com.javainuse.user.UserServiceOuterClass.internal_static_users_UserDeleteResponse_descriptor;
     }
 
     @java.lang.Override
@@ -431,10 +431,10 @@ private static final long serialVersionUID = 0L;
     }
 
 
-    // @@protoc_insertion_point(builder_scope:UserDeleteResponse)
+    // @@protoc_insertion_point(builder_scope:users.UserDeleteResponse)
   }
 
-  // @@protoc_insertion_point(class_scope:UserDeleteResponse)
+  // @@protoc_insertion_point(class_scope:users.UserDeleteResponse)
   private static final com.javainuse.user.UserDeleteResponse DEFAULT_INSTANCE;
   static {
     DEFAULT_INSTANCE = new com.javainuse.user.UserDeleteResponse();

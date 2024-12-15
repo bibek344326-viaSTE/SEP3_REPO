@@ -4,7 +4,7 @@
 package com.javainuse.user;
 
 public interface UserOrBuilder extends
-    // @@protoc_insertion_point(interface_extends:User)
+    // @@protoc_insertion_point(interface_extends:users.User)
     com.google.protobuf.MessageOrBuilder {
 
   /**
@@ -42,7 +42,7 @@ public interface UserOrBuilder extends
    * Role is now an enum
    * </pre>
    *
-   * <code>.Role role = 4;</code>
+   * <code>.users.Role role = 4;</code>
    */
   int getRoleValue();
   /**
@@ -50,7 +50,7 @@ public interface UserOrBuilder extends
    * Role is now an enum
    * </pre>
    *
-   * <code>.Role role = 4;</code>
+   * <code>.users.Role role = 4;</code>
    */
   com.javainuse.user.Role getRole();
 }

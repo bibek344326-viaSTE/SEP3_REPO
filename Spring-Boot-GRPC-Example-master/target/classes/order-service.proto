@@ -3,11 +3,11 @@ syntax = "proto3";
 import "google/protobuf/timestamp.proto";
 import "google/protobuf/empty.proto";
 import "user-service.proto"; // Import the user.proto that contains the User message and Role enum
+package orders;
 
 option java_multiple_files = true;
 option java_package = "com.javainuse.orders";
 
-package orders;
 
 service OrderService {
   rpc createOrder(OrderRequest) returns (Order);
@@ -34,10 +34,10 @@ message Order {
   google.protobuf.Timestamp created_at = 3; // MUST be a valid timestamp format
 
   // Assigned user information, must not be null, must conform to the User message format
-  User assigned_user = 4;
+  users.User assigned_user = 4;  // Fully qualified reference to User
 
   // Created by user information, must not be null, must conform to the User message format
-  User created_by_user = 5;
+  users.User created_by_user = 5; // Fully qualified reference to User
 
   // Order status, ensure this is always set (could be 0, 1, 2, etc.)
   int32 order_status = 6;

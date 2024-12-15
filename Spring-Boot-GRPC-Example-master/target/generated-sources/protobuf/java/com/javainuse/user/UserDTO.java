@@ -4,11 +4,11 @@
 package com.javainuse.user;
 
 /**
- * Protobuf type {@code UserDTO}
+ * Protobuf type {@code users.UserDTO}
  */
 public  final class UserDTO extends
     com.google.protobuf.GeneratedMessageV3 implements
-    // @@protoc_insertion_point(message_implements:UserDTO)
+    // @@protoc_insertion_point(message_implements:users.UserDTO)
     UserDTOOrBuilder {
 private static final long serialVersionUID = 0L;
   // Use UserDTO.newBuilder() to construct.
@@ -84,13 +84,13 @@ private static final long serialVersionUID = 0L;
   }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
-    return com.javainuse.user.UserServiceOuterClass.internal_static_UserDTO_descriptor;
+    return com.javainuse.user.UserServiceOuterClass.internal_static_users_UserDTO_descriptor;
   }
 
   @java.lang.Override
   protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internalGetFieldAccessorTable() {
-    return com.javainuse.user.UserServiceOuterClass.internal_static_UserDTO_fieldAccessorTable
+    return com.javainuse.user.UserServiceOuterClass.internal_static_users_UserDTO_fieldAccessorTable
         .ensureFieldAccessorsInitialized(
             com.javainuse.user.UserDTO.class, com.javainuse.user.UserDTO.Builder.class);
   }
@@ -170,7 +170,7 @@ private static final long serialVersionUID = 0L;
    * Role is now an enum
    * </pre>
    *
-   * <code>.Role role = 4;</code>
+   * <code>.users.Role role = 4;</code>
    */
   public int getRoleValue() {
     return role_;
@@ -180,7 +180,7 @@ private static final long serialVersionUID = 0L;
    * Role is now an enum
    * </pre>
    *
-   * <code>.Role role = 4;</code>
+   * <code>.users.Role role = 4;</code>
    */
   public com.javainuse.user.Role getRole() {
     @SuppressWarnings("deprecation")
@@ -364,21 +364,21 @@ private static final long serialVersionUID = 0L;
     return builder;
   }
   /**
-   * Protobuf type {@code UserDTO}
+   * Protobuf type {@code users.UserDTO}
    */
   public static final class Builder extends
       com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
-      // @@protoc_insertion_point(builder_implements:UserDTO)
+      // @@protoc_insertion_point(builder_implements:users.UserDTO)
       com.javainuse.user.UserDTOOrBuilder {
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.javainuse.user.UserServiceOuterClass.internal_static_UserDTO_descriptor;
+      return com.javainuse.user.UserServiceOuterClass.internal_static_users_UserDTO_descriptor;
     }
 
     @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.javainuse.user.UserServiceOuterClass.internal_static_UserDTO_fieldAccessorTable
+      return com.javainuse.user.UserServiceOuterClass.internal_static_users_UserDTO_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
               com.javainuse.user.UserDTO.class, com.javainuse.user.UserDTO.Builder.class);
     }
@@ -413,7 +413,7 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.google.protobuf.Descriptors.Descriptor
         getDescriptorForType() {
-      return com.javainuse.user.UserServiceOuterClass.internal_static_UserDTO_descriptor;
+      return com.javainuse.user.UserServiceOuterClass.internal_static_users_UserDTO_descriptor;
     }
 
     @java.lang.Override
@@ -668,7 +668,7 @@ private static final long serialVersionUID = 0L;
      * Role is now an enum
      * </pre>
      *
-     * <code>.Role role = 4;</code>
+     * <code>.users.Role role = 4;</code>
      */
     public int getRoleValue() {
       return role_;
@@ -678,7 +678,7 @@ private static final long serialVersionUID = 0L;
      * Role is now an enum
      * </pre>
      *
-     * <code>.Role role = 4;</code>
+     * <code>.users.Role role = 4;</code>
      */
     public Builder setRoleValue(int value) {
       role_ = value;
@@ -690,7 +690,7 @@ private static final long serialVersionUID = 0L;
      * Role is now an enum
      * </pre>
      *
-     * <code>.Role role = 4;</code>
+     * <code>.users.Role role = 4;</code>
      */
     public com.javainuse.user.Role getRole() {
       @SuppressWarnings("deprecation")
@@ -702,7 +702,7 @@ private static final long serialVersionUID = 0L;
      * Role is now an enum
      * </pre>
      *
-     * <code>.Role role = 4;</code>
+     * <code>.users.Role role = 4;</code>
      */
     public Builder setRole(com.javainuse.user.Role value) {
       if (value == null) {
@@ -718,7 +718,7 @@ private static final long serialVersionUID = 0L;
      * Role is now an enum
      * </pre>
      *
-     * <code>.Role role = 4;</code>
+     * <code>.users.Role role = 4;</code>
      */
     public Builder clearRole() {
       
@@ -739,10 +739,10 @@ private static final long serialVersionUID = 0L;
     }
 
 
-    // @@protoc_insertion_point(builder_scope:UserDTO)
+    // @@protoc_insertion_point(builder_scope:users.UserDTO)
   }
 
-  // @@protoc_insertion_point(class_scope:UserDTO)
+  // @@protoc_insertion_point(class_scope:users.UserDTO)
   private static final com.javainuse.user.UserDTO DEFAULT_INSTANCE;
   static {
     DEFAULT_INSTANCE = new com.javainuse.user.UserDTO();

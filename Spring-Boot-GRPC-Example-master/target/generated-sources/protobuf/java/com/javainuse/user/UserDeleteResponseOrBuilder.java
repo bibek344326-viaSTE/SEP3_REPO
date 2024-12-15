@@ -4,7 +4,7 @@
 package com.javainuse.user;
 
 public interface UserDeleteResponseOrBuilder extends
-    // @@protoc_insertion_point(interface_extends:UserDeleteResponse)
+    // @@protoc_insertion_point(interface_extends:users.UserDeleteResponse)
     com.google.protobuf.MessageOrBuilder {
 
   /**

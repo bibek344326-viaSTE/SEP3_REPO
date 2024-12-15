@@ -1,4 +1,6 @@
-﻿namespace BlazorServerApp.Application.Interfaces
+﻿using Users;
+
+namespace BlazorServerApp.Application.Interfaces
 {
     public interface IUserRepository
     {

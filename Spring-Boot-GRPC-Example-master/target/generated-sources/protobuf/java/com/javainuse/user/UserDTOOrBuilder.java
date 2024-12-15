@@ -4,7 +4,7 @@
 package com.javainuse.user;
 
 public interface UserDTOOrBuilder extends
-    // @@protoc_insertion_point(interface_extends:UserDTO)
+    // @@protoc_insertion_point(interface_extends:users.UserDTO)
     com.google.protobuf.MessageOrBuilder {
 
   /**
@@ -32,7 +32,7 @@ public interface UserDTOOrBuilder extends
    * Role is now an enum
    * </pre>
    *
-   * <code>.Role role = 4;</code>
+   * <code>.users.Role role = 4;</code>
    */
   int getRoleValue();
   /**
@@ -40,7 +40,7 @@ public interface UserDTOOrBuilder extends
    * Role is now an enum
    * </pre>
    *
-   * <code>.Role role = 4;</code>
+   * <code>.users.Role role = 4;</code>
    */
   com.javainuse.user.Role getRole();
 }

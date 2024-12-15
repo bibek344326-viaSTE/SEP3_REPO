@@ -10,5 +10,6 @@ message LoginResponse {
 }
 
 service AuthService {
-  rpc login(LoginRequest) returns (LoginResponse);
+  rpc login(LoginRequest) returns (LoginResponse) {};
+
 }

@@ -4,7 +4,7 @@
 package com.javainuse.user;
 
 public interface UserResponseOrBuilder extends
-    // @@protoc_insertion_point(interface_extends:UserResponse)
+    // @@protoc_insertion_point(interface_extends:users.UserResponse)
     com.google.protobuf.MessageOrBuilder {
 
   /**
@@ -32,7 +32,7 @@ public interface UserResponseOrBuilder extends
    * Role is now an enum
    * </pre>
    *
-   * <code>.Role role = 4;</code>
+   * <code>.users.Role role = 4;</code>
    */
   int getRoleValue();
   /**
@@ -40,7 +40,7 @@ public interface UserResponseOrBuilder extends
    * Role is now an enum
    * </pre>
    *
-   * <code>.Role role = 4;</code>
+   * <code>.users.Role role = 4;</code>
    */
   com.javainuse.user.Role getRole();
 }

@@ -4,7 +4,7 @@
 package com.javainuse.user;
 
 public interface UserListOrBuilder extends
-    // @@protoc_insertion_point(interface_extends:UserList)
+    // @@protoc_insertion_point(interface_extends:users.UserList)
     com.google.protobuf.MessageOrBuilder {
 
   /**
@@ -12,7 +12,7 @@ public interface UserListOrBuilder extends
    * Contains a list of User objects
    * </pre>
    *
-   * <code>repeated .User users = 1;</code>
+   * <code>repeated .users.User users = 1;</code>
    */
   java.util.List<com.javainuse.user.User> 
       getUsersList();
@@ -21,7 +21,7 @@ public interface UserListOrBuilder extends
    * Contains a list of User objects
    * </pre>
    *
-   * <code>repeated .User users = 1;</code>
+   * <code>repeated .users.User users = 1;</code>
    */
   com.javainuse.user.User getUsers(int index);
   /**
@@ -29,7 +29,7 @@ public interface UserListOrBuilder extends
    * Contains a list of User objects
    * </pre>
    *
-   * <code>repeated .User users = 1;</code>
+   * <code>repeated .users.User users = 1;</code>
    */
   int getUsersCount();
   /**
@@ -37,7 +37,7 @@ public interface UserListOrBuilder extends
    * Contains a list of User objects
    * </pre>
    *
-   * <code>repeated .User users = 1;</code>
+   * <code>repeated .users.User users = 1;</code>
    */
   java.util.List<? extends com.javainuse.user.UserOrBuilder> 
       getUsersOrBuilderList();
@@ -46,7 +46,7 @@ public interface UserListOrBuilder extends
    * Contains a list of User objects
    * </pre>
    *
-   * <code>repeated .User users = 1;</code>
+   * <code>repeated .users.User users = 1;</code>
    */
   com.javainuse.user.UserOrBuilder getUsersOrBuilder(
       int index);

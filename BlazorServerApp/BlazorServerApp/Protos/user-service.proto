@@ -2,6 +2,8 @@ syntax = "proto3";
 
 import "google/protobuf/empty.proto";
 
+package users;
+
 service UserService {
   rpc addUser(UserDTO) returns (UserResponse);
   rpc editUser(User) returns (google.protobuf.Empty);

@@ -1,5 +1,6 @@
 ﻿using BlazorServerApp.Application.UseCases;
 using Microsoft.AspNetCore.Components.Authorization;
+using Orders;
 
 namespace BlazorServerApp.Managers
 {

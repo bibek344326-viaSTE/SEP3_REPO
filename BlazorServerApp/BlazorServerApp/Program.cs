@@ -4,6 +4,7 @@ using BlazorServerApp.Application.UseCases;
 using BlazorServerApp.Application.Interfaces;
 using BlazorServerApp.Managers;
 using Microsoft.AspNetCore.Components.Authorization;
+using Orders;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -43,6 +44,9 @@ builder.Services.AddScoped<OrderUseCases>(); // Register OrderUseCases
 
 builder.Services.AddScoped<InventoryManager>(); // Register InventoryManager
 builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthenticationStateProvider>();
+
+// Register OrderHistoryManager
+builder.Services.AddScoped<OrderHistoryManager>(); // Register OrderHistoryManager
 
 var app = builder.Build();
 

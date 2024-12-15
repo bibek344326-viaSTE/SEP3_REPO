@@ -1,4 +1,6 @@
-﻿namespace BlazorServerApp.Application.Interfaces
+﻿using Orders;
+
+namespace BlazorServerApp.Application.Interfaces
 {
     public interface IOrderRepository
     {

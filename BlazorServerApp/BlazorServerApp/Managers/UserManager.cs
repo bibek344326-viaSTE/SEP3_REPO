@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Components.Forms;
 using Blazored.Toast.Services;
 using BlazorServerApp.Application.UseCases;
+using Users;
 
 namespace BlazorServerApp.Managers
 {

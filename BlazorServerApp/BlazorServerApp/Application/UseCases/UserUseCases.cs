@@ -1,4 +1,5 @@
 ﻿using BlazorServerApp.Application.Interfaces;
+using Users;
 
 namespace BlazorServerApp.Application.UseCases
 {

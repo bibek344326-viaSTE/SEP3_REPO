@@ -4,7 +4,7 @@ import "google/protobuf/empty.proto";
 message ItemDTO {
   string name = 1;
   string description = 2;
-  int32 quantityInStore = 3;
+  int32 quantity_in_store = 3;
 }
 
 message Item {
@@ -25,6 +25,6 @@ service ItemService {
 
   rpc deleteItem(Item) returns (google.protobuf.Empty);
 
-   rpc getAllItems(google.protobuf.Empty) returns (ItemList);
+  rpc getAllItems(google.protobuf.Empty) returns (ItemList);
 
 }

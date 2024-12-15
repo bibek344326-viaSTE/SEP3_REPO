@@ -90,7 +90,7 @@ public interface OrderOrBuilder extends
    * Assigned user information, must not be null, must conform to the User message format
    * </pre>
    *
-   * <code>.User assigned_user = 4;</code>
+   * <code>.users.User assigned_user = 4;</code>
    */
   boolean hasAssignedUser();
   /**
@@ -98,7 +98,7 @@ public interface OrderOrBuilder extends
    * Assigned user information, must not be null, must conform to the User message format
    * </pre>
    *
-   * <code>.User assigned_user = 4;</code>
+   * <code>.users.User assigned_user = 4;</code>
    */
   com.javainuse.user.User getAssignedUser();
   /**
@@ -106,7 +106,7 @@ public interface OrderOrBuilder extends
    * Assigned user information, must not be null, must conform to the User message format
    * </pre>
    *
-   * <code>.User assigned_user = 4;</code>
+   * <code>.users.User assigned_user = 4;</code>
    */
   com.javainuse.user.UserOrBuilder getAssignedUserOrBuilder();
 
@@ -115,7 +115,7 @@ public interface OrderOrBuilder extends
    * Created by user information, must not be null, must conform to the User message format
    * </pre>
    *
-   * <code>.User created_by_user = 5;</code>
+   * <code>.users.User created_by_user = 5;</code>
    */
   boolean hasCreatedByUser();
   /**
@@ -123,7 +123,7 @@ public interface OrderOrBuilder extends
    * Created by user information, must not be null, must conform to the User message format
    * </pre>
    *
-   * <code>.User created_by_user = 5;</code>
+   * <code>.users.User created_by_user = 5;</code>
    */
   com.javainuse.user.User getCreatedByUser();
   /**
@@ -131,7 +131,7 @@ public interface OrderOrBuilder extends
    * Created by user information, must not be null, must conform to the User message format
    * </pre>
    *
-   * <code>.User created_by_user = 5;</code>
+   * <code>.users.User created_by_user = 5;</code>
    */
   com.javainuse.user.UserOrBuilder getCreatedByUserOrBuilder();
 

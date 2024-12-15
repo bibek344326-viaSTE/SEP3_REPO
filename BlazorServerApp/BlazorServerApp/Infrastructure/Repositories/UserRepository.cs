@@ -1,5 +1,6 @@
 ﻿using BlazorServerApp.Application.Interfaces;
 using Grpc.Core;
+using Users;
 
 namespace BlazorServerApp.Infrastructure.Repositories
 {

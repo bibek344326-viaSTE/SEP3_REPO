@@ -1,4 +1,5 @@
 ﻿using BlazorServerApp.Application.Interfaces;
+using Orders;
 
 namespace BlazorServerApp.Application.UseCases
 {

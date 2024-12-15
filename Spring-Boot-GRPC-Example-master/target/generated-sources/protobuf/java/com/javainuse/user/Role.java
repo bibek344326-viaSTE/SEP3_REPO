@@ -4,7 +4,7 @@
 package com.javainuse.user;
 
 /**
- * Protobuf enum {@code Role}
+ * Protobuf enum {@code users.Role}
  */
 public enum Role
     implements com.google.protobuf.ProtocolMessageEnum {
@@ -98,6 +98,6 @@ public enum Role
     this.value = value;
   }
 
-  // @@protoc_insertion_point(enum_scope:Role)
+  // @@protoc_insertion_point(enum_scope:users.Role)
 }
 

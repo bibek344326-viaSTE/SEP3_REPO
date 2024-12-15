@@ -24,7 +24,7 @@ public final class UserServiceGrpc {
 
   private UserServiceGrpc() {}
 
-  public static final String SERVICE_NAME = "UserService";
+  public static final String SERVICE_NAME = "users.UserService";
 
   // Static method descriptors that strictly reflect the proto.
   private static volatile io.grpc.MethodDescriptor<com.javainuse.user.UserDTO,
@@ -45,7 +45,7 @@ public final class UserServiceGrpc {
               io.grpc.MethodDescriptor.<com.javainuse.user.UserDTO, com.javainuse.user.UserResponse>newBuilder()
               .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
               .setFullMethodName(generateFullMethodName(
-                  "UserService", "addUser"))
+                  "users.UserService", "addUser"))
               .setSampledToLocalTracing(true)
               .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
                   com.javainuse.user.UserDTO.getDefaultInstance()))
@@ -77,7 +77,7 @@ public final class UserServiceGrpc {
               io.grpc.MethodDescriptor.<com.javainuse.user.User, com.google.protobuf.Empty>newBuilder()
               .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
               .setFullMethodName(generateFullMethodName(
-                  "UserService", "editUser"))
+                  "users.UserService", "editUser"))
               .setSampledToLocalTracing(true)
               .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
                   com.javainuse.user.User.getDefaultInstance()))
@@ -109,7 +109,7 @@ public final class UserServiceGrpc {
               io.grpc.MethodDescriptor.<com.javainuse.user.User, com.google.protobuf.Empty>newBuilder()
               .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
               .setFullMethodName(generateFullMethodName(
-                  "UserService", "editPassword"))
+                  "users.UserService", "editPassword"))
               .setSampledToLocalTracing(true)
               .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
                   com.javainuse.user.User.getDefaultInstance()))
@@ -141,7 +141,7 @@ public final class UserServiceGrpc {
               io.grpc.MethodDescriptor.<com.javainuse.user.User, com.google.protobuf.Empty>newBuilder()
               .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
               .setFullMethodName(generateFullMethodName(
-                  "UserService", "deleteUser"))
+                  "users.UserService", "deleteUser"))
               .setSampledToLocalTracing(true)
               .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
                   com.javainuse.user.User.getDefaultInstance()))
@@ -173,7 +173,7 @@ public final class UserServiceGrpc {
               io.grpc.MethodDescriptor.<com.google.protobuf.Empty, com.javainuse.user.UserList>newBuilder()
               .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
               .setFullMethodName(generateFullMethodName(
-                  "UserService", "getAllUsers"))
+                  "users.UserService", "getAllUsers"))
               .setSampledToLocalTracing(true)
               .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
                   com.google.protobuf.Empty.getDefaultInstance()))

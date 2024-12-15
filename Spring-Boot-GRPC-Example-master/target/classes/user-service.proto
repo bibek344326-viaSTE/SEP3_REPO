@@ -3,6 +3,7 @@ import "google/protobuf/empty.proto";
 
 option java_multiple_files = true;
 option java_package = "com.javainuse.user";
+package users;
 
 service UserService {
   rpc addUser(UserDTO) returns (UserResponse);
