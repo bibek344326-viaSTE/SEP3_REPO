@@ -37,7 +37,7 @@ import java.util.stream.Collectors;
 public class OrderService extends OrderServiceGrpc.OrderServiceImplBase {
 
     private final WebClient webClient;
-    private final String baseUrl = "http://localhost:5299/Orders"; // Adjust this to your actual OrdersController base URL
+    private final String baseUrl = "http://localhost:5203/Orders"; // Adjust this to your actual OrdersController base URL
 
     public OrderService() {
         this.webClient = WebClient.create(baseUrl);
@@ -99,7 +99,7 @@ public class OrderService extends OrderServiceGrpc.OrderServiceImplBase {
                             responseObserver.onNext(orderList);
                             responseObserver.onCompleted();
                         },
-                        throwable -> responseObserver.onError(throwable)
+                        responseObserver::onError
                 );
     }
 
