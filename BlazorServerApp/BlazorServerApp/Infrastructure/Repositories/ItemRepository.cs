@@ -75,38 +75,27 @@ namespace BlazorServerApp.Infrastructure.Repositories
                 throw new ApplicationException("Error editing item", ex);
             }
         }
-
-        public async Task<IEnumerable<Item>> GetAllItemsAsync()
+        public Task<IEnumerable<Item>> GetAllItemsAsync()
         {
             try
             {
                 Console.WriteLine("Sending GetAllItems request...");
 
                 // Call the gRPC service
-                var response = await _client.getAllItemsAsync(new Google.Protobuf.WellKnownTypes.Empty());
+                var response = _client.getAllItems(new Google.Protobuf.WellKnownTypes.Empty());
 
-                // 🔥 Log the entire response (use Newtonsoft.Json to properly serialize it)
-                var jsonResponse = System.Text.Json.JsonSerializer.Serialize(response);
-                Console.WriteLine("Full gRPC Response (Serialized): " + jsonResponse);
+                // Convert RepeatedField<Item> to IEnumerable<Item>
+                var items = response.Items.ToList();
 
-                if (response == null)
+                // Log each item
+                Console.WriteLine($"Received {items.Count} items from GetAllItems request.");
+                foreach (var item in items)
                 {
-                    Console.WriteLine("Response is NULL!");
+                    Console.WriteLine($"ItemId: {item.ItemId}, ItemName: {item.ItemName}, Description: {item.Description}, QuantityInStore: {item.QuantityInStore}");
                 }
 
-                if (response.Items == null || !response.Items.Any())
-                {
-                    Console.WriteLine("Response.Items is NULL or EMPTY!");
-                }
-
-                // 🔥 Log each item separately
-                Console.WriteLine("Items received from gRPC:");
-                foreach (var item in response.Items)
-                {
-                    Console.WriteLine($"Item - Id: {item.ItemId}, Name: {item.ItemName}, Description: {item.Description}, QuantityInStore: {item.QuantityInStore}");
-                }
-
-                return response.Items;
+                // Return the task-wrapped result
+                return Task.FromResult<IEnumerable<Item>>(items);
             }
             catch (RpcException ex)
             {
@@ -114,6 +103,7 @@ namespace BlazorServerApp.Infrastructure.Repositories
                 throw new ApplicationException("Error retrieving all items", ex);
             }
         }
+
 
 
     }
