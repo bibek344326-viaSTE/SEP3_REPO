@@ -55,23 +55,9 @@
                     settings.Timeout = 5000;
                 });
 
-                var role = await LoginManager.GetUserRoleAsync();
+                //var role = await LoginManager.GetUserRoleAsync();
+                NavigationManager.NavigateTo("/inventory-dashboard");
 
-                if (role == "InventoryManager")
-                {
-                    NavigationManager.NavigateTo("/inventory-dashboard");
-                }
-                else if (role == "WarehouseWorker")
-                {
-                    NavigationManager.NavigateTo("/warehouse-worker");
-                }
-                else
-                {
-                    ToastService.ShowError("User role is not recognized.", settings =>
-                    {
-                        settings.Timeout = 7000;
-                    });
-                }
             }
             else
             {

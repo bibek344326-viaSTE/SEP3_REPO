@@ -4,14 +4,14 @@ import "google/protobuf/empty.proto";
 message ItemDTO {
   string name = 1;
   string description = 2;
-  int32 quantity_in_store = 3;
+  int32 quantityInStore = 3;
 }
 
 message Item {
-  string id = 1;
-  string name = 2;
+  string itemId = 1;
+  string itemName = 2;
   string description = 3;
-  int32 quantity_in_store = 4;
+  int32 quantityInStore = 4;
 }
 
 message ItemList {

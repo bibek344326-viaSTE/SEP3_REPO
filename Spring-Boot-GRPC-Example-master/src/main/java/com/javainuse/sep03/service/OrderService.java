@@ -21,7 +21,7 @@ import java.nio.charset.StandardCharsets;
 public class OrderService extends OrderServiceGrpc.OrderServiceImplBase {
     private final HttpClient client = HttpClients.createDefault();
 
-    private final String baseUrl = "http://localhost:5000/api/orders";
+    private final String baseUrl = "http://localhost:5203/api/orders";
 
     @Override
     public void createOrder(OrderRequest request, StreamObserver<Order> responseObserver) {

@@ -22,7 +22,7 @@ import java.nio.charset.StandardCharsets;
 public class UserService extends UserServiceGrpc.UserServiceImplBase {
     private final HttpClient client = HttpClients.createDefault();
 
-    private final String baseUrl = "http://localhost:5000/api/users";
+    private final String baseUrl = "http://localhost:5203/api/users";
 
     @Override
     public void addUser(UserDTO request, StreamObserver<UserResponse> responseObserver) {

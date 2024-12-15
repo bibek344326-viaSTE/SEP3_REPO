@@ -8,24 +8,24 @@ public interface ItemOrBuilder extends
     com.google.protobuf.MessageOrBuilder {
 
   /**
-   * <code>string id = 1;</code>
+   * <code>string itemId = 1;</code>
    */
-  java.lang.String getId();
+  java.lang.String getItemId();
   /**
-   * <code>string id = 1;</code>
+   * <code>string itemId = 1;</code>
    */
   com.google.protobuf.ByteString
-      getIdBytes();
+      getItemIdBytes();
 
   /**
-   * <code>string name = 2;</code>
+   * <code>string itemName = 2;</code>
    */
-  java.lang.String getName();
+  java.lang.String getItemName();
   /**
-   * <code>string name = 2;</code>
+   * <code>string itemName = 2;</code>
    */
   com.google.protobuf.ByteString
-      getNameBytes();
+      getItemNameBytes();
 
   /**
    * <code>string description = 3;</code>
@@ -38,7 +38,7 @@ public interface ItemOrBuilder extends
       getDescriptionBytes();
 
   /**
-   * <code>int32 quantity_in_store = 4;</code>
+   * <code>int32 quantityInStore = 4;</code>
    */
   int getQuantityInStore();
 }

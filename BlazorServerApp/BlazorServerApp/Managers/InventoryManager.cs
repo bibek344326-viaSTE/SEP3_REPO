@@ -69,8 +69,8 @@ namespace BlazorServerApp.Managers
             var items = _itemUseCases.GetAllItemsAsync().Result
                 .Select(item => new ItemViewModel
                 {
-                    Id = item.Id,
-                    Name = item.Name,
+                    Id = item.ItemId,
+                    Name = item.ItemName,
                     Description = item.Description,
                     QuantityInStore = item.QuantityInStore
                 });
@@ -126,8 +126,8 @@ namespace BlazorServerApp.Managers
         {
             var updatedItem = new Item
             {
-                Id = item.Id,
-                Name = item.Name,
+                ItemId = item.Id,
+                ItemName = item.Name,
                 Description = item.Description,
                 QuantityInStore = item.QuantityInStore
             };
@@ -139,7 +139,7 @@ namespace BlazorServerApp.Managers
         {
             var itemToDelete = new Item
             {
-                Id = item.Id
+                ItemId = item.Id
             };
 
             _itemUseCases.DeleteItemAsync(itemToDelete).Wait();

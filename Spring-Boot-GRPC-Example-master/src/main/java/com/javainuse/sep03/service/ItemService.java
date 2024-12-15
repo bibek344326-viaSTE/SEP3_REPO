@@ -1,6 +1,10 @@
 package com.javainuse.sep03.service;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.protobuf.Empty;
+import com.hubspot.jackson.datatype.protobuf.ProtobufModule;
 import com.javainuse.item.ItemDTO;
 import com.javainuse.item.Item;
 import com.javainuse.item.ItemList;
@@ -15,58 +19,123 @@ import org.apache.hc.client5.http.classic.methods.HttpPut;
 import org.apache.hc.client5.http.impl.classic.HttpClients;
 import org.apache.hc.core5.http.io.entity.StringEntity;
 
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @GrpcService
 public class ItemService extends ItemServiceGrpc.ItemServiceImplBase {
     private final HttpClient client = HttpClients.createDefault();
+    private final String baseUrl = "http://localhost:5203/Items";
+    private final ObjectMapper objectMapper = new ObjectMapper();
 
-    private final String baseUrl = "http://localhost:5000/api/items";
-
+    /**
+     * Create a new item
+     */
     @Override
     public void createItem(ItemDTO request, StreamObserver<Item> responseObserver) {
         try {
+            String json = objectMapper.writeValueAsString(new SimpleItem(
+                    request.getName(),
+                    request.getDescription(),
+                    request.getQuantityInStore()
+            ));
+
             HttpPost httpPost = new HttpPost(baseUrl);
-            String json = "{" +
-                    "\"ItemName\":\"" + request.getName() + "\", " +
-                    "\"Description\":\"" + request.getDescription() + "\", " +
-                    "\"QuantityInStore\": " + request.getQuantityInStore() +
-                    "}";
             httpPost.setHeader("Content-type", "application/json");
             httpPost.setEntity(new StringEntity(json, StandardCharsets.UTF_8));
 
             Item response = client.execute(httpPost, httpResponse -> {
                 if (httpResponse.getCode() == 201) {
-                    byte[] responseBytes = httpResponse.getEntity().getContent().readAllBytes();
-                    String responseString = new String(responseBytes, StandardCharsets.UTF_8);
-                    // Extract item details from the response
-                    return Item.newBuilder()
-                            .setId("extracted-id-here")
-                            .setName(request.getName())
-                            .setDescription(request.getDescription())
-                            .setQuantityInStore(request.getQuantityInStore())
-                            .build();
+                    String responseString = null;
+                    try {
+                        responseString = getResponseString(httpResponse.getEntity().getContent());
+                    } catch (Exception e) {
+                        throw new RuntimeException(e);
+                    }
+                    System.out.println("Response body from REST API: " + responseString);
+
+                    SimpleItem simpleItem = objectMapper.readValue(responseString, SimpleItem.class);
+                    return toGrpcItem(simpleItem);
                 } else {
-                    throw new RuntimeException("Failed to create item: " + httpResponse.getCode());
+                    throw new RuntimeException("Failed to create item. Status code: " + httpResponse.getCode());
                 }
             });
 
             responseObserver.onNext(response);
             responseObserver.onCompleted();
         } catch (Exception e) {
+            logError("createItem", e);
             responseObserver.onError(e);
         }
     }
 
+    /**
+     * Get all items from the API
+     */
+
+    @Override
+    public void getAllItems(Empty request, StreamObserver<ItemList> responseObserver) {
+        try {
+            System.out.println("Sending GET request to URL: " + baseUrl);
+            HttpGet httpGet = new HttpGet(baseUrl);
+
+            client.execute(httpGet, httpResponse -> {
+                if (httpResponse.getCode() == 200) {
+                    String responseString = null;
+                    try {
+                        responseString = getResponseString(httpResponse.getEntity().getContent());
+                    } catch (Exception e) {
+                        throw new RuntimeException(e);
+                    }
+                    System.out.println("Response body from REST API: " + responseString);
+
+                    // Initialize Jackson with Protobuf support
+                    ObjectMapper objectMapper = new ObjectMapper();
+                    objectMapper.registerModule(new ProtobufModule());
+
+                    // Deserialize JSON into List of Protobuf Items
+                    List<Item> itemList = objectMapper.readValue(responseString, new TypeReference<List<Item>>() {});
+
+                    System.out.println("Parsed items: " + itemList);
+
+                    // Add items to ItemList
+                    ItemList.Builder itemListBuilder = ItemList.newBuilder();
+                    itemListBuilder.addAllItems(itemList);
+
+                    responseObserver.onNext(itemListBuilder.build());
+                    responseObserver.onCompleted();
+                } else {
+                    throw new RuntimeException("Failed to get items. Status code: " + httpResponse.getCode());
+                }
+                return null;
+            });
+
+        } catch (Exception e) {
+            logError("getAllItems", e);
+            responseObserver.onError(e);
+        }
+    }
+
+
+    /**
+     * Edit an item
+     */
     @Override
     public void editItem(Item request, StreamObserver<Empty> responseObserver) {
         try {
-            HttpPut httpPut = new HttpPut(baseUrl + "/" + request.getId());
-            String json = "{" +
-                    "\"ItemName\":\"" + request.getName() + "\", " +
-                    "\"Description\":\"" + request.getDescription() + "\", " +
-                    "\"QuantityInStore\": " + request.getQuantityInStore() +
-                    "}";
+            String json = objectMapper.writeValueAsString(new SimpleItem(
+                    request.getItemId(),
+                    request.getItemName(),
+                    request.getDescription(),
+                    request.getQuantityInStore()
+            ));
+
+            HttpPut httpPut = new HttpPut(baseUrl + "/" + request.getItemId());
             httpPut.setHeader("Content-type", "application/json");
             httpPut.setEntity(new StringEntity(json, StandardCharsets.UTF_8));
 
@@ -76,18 +145,22 @@ public class ItemService extends ItemServiceGrpc.ItemServiceImplBase {
                     responseObserver.onCompleted();
                     return null;
                 } else {
-                    throw new RuntimeException("Failed to edit item: " + httpResponse.getCode());
+                    throw new RuntimeException("Failed to edit item. Status code: " + httpResponse.getCode());
                 }
             });
         } catch (Exception e) {
+            logError("editItem", e);
             responseObserver.onError(e);
         }
     }
 
+    /**
+     * Delete an item
+     */
     @Override
     public void deleteItem(Item request, StreamObserver<Empty> responseObserver) {
         try {
-            HttpDelete httpDelete = new HttpDelete(baseUrl + "/" + request.getId());
+            HttpDelete httpDelete = new HttpDelete(baseUrl + "/" + request.getItemId());
 
             client.execute(httpDelete, httpResponse -> {
                 if (httpResponse.getCode() == 204) {
@@ -95,36 +168,76 @@ public class ItemService extends ItemServiceGrpc.ItemServiceImplBase {
                     responseObserver.onCompleted();
                     return null;
                 } else {
-                    throw new RuntimeException("Failed to delete item: " + httpResponse.getCode());
+                    throw new RuntimeException("Failed to delete item. Status code: " + httpResponse.getCode());
                 }
             });
         } catch (Exception e) {
+            logError("deleteItem", e);
             responseObserver.onError(e);
         }
     }
 
-    @Override
-    public void getAllItems(Empty request, StreamObserver<ItemList> responseObserver) {
-        try {
-            HttpGet httpGet = new HttpGet(baseUrl);
+    /**
+     * Converts a SimpleItem (POJO) to gRPC Item (generated proto class)
+     */
+    private Item toGrpcItem(SimpleItem simpleItem) {
+        return Item.newBuilder()
+                .setItemId(simpleItem.itemId)
+                .setItemName(simpleItem.itemName)
+                .setDescription(simpleItem.description)
+                .setQuantityInStore(simpleItem.quantityInStore)
+                .build();
+    }
 
-            ItemList response = client.execute(httpGet, httpResponse -> {
-                if (httpResponse.getCode() == 200) {
-                    byte[] responseBytes = httpResponse.getEntity().getContent().readAllBytes();
-                    String responseString = new String(responseBytes, StandardCharsets.UTF_8);
-                    // Extract item list from responseString
-                    ItemList.Builder itemListBuilder = ItemList.newBuilder();
-                    // Populate the itemListBuilder with items extracted from the response
-                    return itemListBuilder.build();
-                } else {
-                    throw new RuntimeException("Failed to get items: " + httpResponse.getCode());
-                }
-            });
+    /**
+     * Helper method to log errors
+     */
+    private void logError(String methodName, Exception e) {
+        System.out.println("Error during " + methodName + " request: " + e.getMessage());
+        e.printStackTrace();
+    }
 
-            responseObserver.onNext(response);
-            responseObserver.onCompleted();
-        } catch (Exception e) {
-            responseObserver.onError(e);
+    /**
+     * Helper method to convert InputStream to String
+     */
+    private String getResponseString(InputStream responseStream) throws Exception {
+        return new BufferedReader(new InputStreamReader(responseStream))
+                .lines().collect(Collectors.joining("\n"));
+    }
+
+    /**
+     * Helper class for constructing request payloads
+     */
+    @JsonIgnoreProperties(ignoreUnknown = true) // This will ignore unknown properties like "orderItems"
+    public static class SimpleItem {
+        public String itemId;
+        public String itemName;
+        public String description;
+        public int quantityInStore;
+
+        public SimpleItem() {}
+
+        public SimpleItem(String itemName, String description, int quantityInStore) {
+            this.itemName = itemName;
+            this.description = description;
+            this.quantityInStore = quantityInStore;
+        }
+
+        public SimpleItem(String itemId, String itemName, String description, int quantityInStore) {
+            this.itemId = itemId;
+            this.itemName = itemName;
+            this.description = description;
+            this.quantityInStore = quantityInStore;
+        }
+
+        @Override
+        public String toString() {
+            return "SimpleItem{" +
+                    "itemId='" + itemId + '\'' +
+                    ", itemName='" + itemName + '\'' +
+                    ", description='" + description + '\'' +
+                    ", quantityInStore=" + quantityInStore +
+                    '}';
         }
     }
 }

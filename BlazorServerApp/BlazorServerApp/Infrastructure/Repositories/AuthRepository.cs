@@ -14,6 +14,9 @@ namespace BlazorServerApp.Infrastructure.Repositories
         public async Task<string> LoginAsync(LoginRequest loginRequest)
         {
             var response = await _client.loginAsync(loginRequest);
+            Console.WriteLine("Response from gRPC server:");
+            Console.WriteLine($"Token: {response.Token}");
+
             return response.Token;
         }
     }
