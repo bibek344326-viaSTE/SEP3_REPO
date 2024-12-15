@@ -4,11 +4,11 @@
 package com.javainuse.orders;
 
 /**
- * Protobuf type {@code OrderItem}
+ * Protobuf type {@code orders.OrderItem}
  */
 public  final class OrderItem extends
     com.google.protobuf.GeneratedMessageV3 implements
-    // @@protoc_insertion_point(message_implements:OrderItem)
+    // @@protoc_insertion_point(message_implements:orders.OrderItem)
     OrderItemOrBuilder {
 private static final long serialVersionUID = 0L;
   // Use OrderItem.newBuilder() to construct.
@@ -81,13 +81,13 @@ private static final long serialVersionUID = 0L;
   }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
-    return com.javainuse.orders.OrderServiceOuterClass.internal_static_OrderItem_descriptor;
+    return com.javainuse.orders.OrderServiceOuterClass.internal_static_orders_OrderItem_descriptor;
   }
 
   @java.lang.Override
   protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internalGetFieldAccessorTable() {
-    return com.javainuse.orders.OrderServiceOuterClass.internal_static_OrderItem_fieldAccessorTable
+    return com.javainuse.orders.OrderServiceOuterClass.internal_static_orders_OrderItem_fieldAccessorTable
         .ensureFieldAccessorsInitialized(
             com.javainuse.orders.OrderItem.class, com.javainuse.orders.OrderItem.Builder.class);
   }
@@ -298,21 +298,21 @@ private static final long serialVersionUID = 0L;
     return builder;
   }
   /**
-   * Protobuf type {@code OrderItem}
+   * Protobuf type {@code orders.OrderItem}
    */
   public static final class Builder extends
       com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
-      // @@protoc_insertion_point(builder_implements:OrderItem)
+      // @@protoc_insertion_point(builder_implements:orders.OrderItem)
       com.javainuse.orders.OrderItemOrBuilder {
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.javainuse.orders.OrderServiceOuterClass.internal_static_OrderItem_descriptor;
+      return com.javainuse.orders.OrderServiceOuterClass.internal_static_orders_OrderItem_descriptor;
     }
 
     @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.javainuse.orders.OrderServiceOuterClass.internal_static_OrderItem_fieldAccessorTable
+      return com.javainuse.orders.OrderServiceOuterClass.internal_static_orders_OrderItem_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
               com.javainuse.orders.OrderItem.class, com.javainuse.orders.OrderItem.Builder.class);
     }
@@ -347,7 +347,7 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.google.protobuf.Descriptors.Descriptor
         getDescriptorForType() {
-      return com.javainuse.orders.OrderServiceOuterClass.internal_static_OrderItem_descriptor;
+      return com.javainuse.orders.OrderServiceOuterClass.internal_static_orders_OrderItem_descriptor;
     }
 
     @java.lang.Override
@@ -546,10 +546,10 @@ private static final long serialVersionUID = 0L;
     }
 
 
-    // @@protoc_insertion_point(builder_scope:OrderItem)
+    // @@protoc_insertion_point(builder_scope:orders.OrderItem)
   }
 
-  // @@protoc_insertion_point(class_scope:OrderItem)
+  // @@protoc_insertion_point(class_scope:orders.OrderItem)
   private static final com.javainuse.orders.OrderItem DEFAULT_INSTANCE;
   static {
     DEFAULT_INSTANCE = new com.javainuse.orders.OrderItem();

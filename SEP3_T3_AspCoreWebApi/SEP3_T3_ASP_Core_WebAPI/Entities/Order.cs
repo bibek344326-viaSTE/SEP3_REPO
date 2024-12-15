@@ -11,7 +11,7 @@
 
         // Navigation property to User for one-to-many relationship
         public User? AssignedUser { get; set; } // User assigned to the order
-        public int UserId { get; set; } // Foreign key to AssignedUser
+        public int? UserId { get; set; } // Foreign key to AssignedUser (made nullable)
 
         // Navigation property to User for created by relationship
         public User CreatedBy { get; set; } // Navigation property to the user who created the order

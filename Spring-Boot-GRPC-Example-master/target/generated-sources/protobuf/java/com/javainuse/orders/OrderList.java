@@ -4,11 +4,11 @@
 package com.javainuse.orders;
 
 /**
- * Protobuf type {@code OrderList}
+ * Protobuf type {@code orders.OrderList}
  */
 public  final class OrderList extends
     com.google.protobuf.GeneratedMessageV3 implements
-    // @@protoc_insertion_point(message_implements:OrderList)
+    // @@protoc_insertion_point(message_implements:orders.OrderList)
     OrderListOrBuilder {
 private static final long serialVersionUID = 0L;
   // Use OrderList.newBuilder() to construct.
@@ -76,13 +76,13 @@ private static final long serialVersionUID = 0L;
   }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
-    return com.javainuse.orders.OrderServiceOuterClass.internal_static_OrderList_descriptor;
+    return com.javainuse.orders.OrderServiceOuterClass.internal_static_orders_OrderList_descriptor;
   }
 
   @java.lang.Override
   protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internalGetFieldAccessorTable() {
-    return com.javainuse.orders.OrderServiceOuterClass.internal_static_OrderList_fieldAccessorTable
+    return com.javainuse.orders.OrderServiceOuterClass.internal_static_orders_OrderList_fieldAccessorTable
         .ensureFieldAccessorsInitialized(
             com.javainuse.orders.OrderList.class, com.javainuse.orders.OrderList.Builder.class);
   }
@@ -90,32 +90,52 @@ private static final long serialVersionUID = 0L;
   public static final int ORDERS_FIELD_NUMBER = 1;
   private java.util.List<com.javainuse.orders.Order> orders_;
   /**
-   * <code>repeated .Order orders = 1;</code>
+   * <pre>
+   * Repeated cannot be null, only an empty list
+   * </pre>
+   *
+   * <code>repeated .orders.Order orders = 1;</code>
    */
   public java.util.List<com.javainuse.orders.Order> getOrdersList() {
     return orders_;
   }
   /**
-   * <code>repeated .Order orders = 1;</code>
+   * <pre>
+   * Repeated cannot be null, only an empty list
+   * </pre>
+   *
+   * <code>repeated .orders.Order orders = 1;</code>
    */
   public java.util.List<? extends com.javainuse.orders.OrderOrBuilder> 
       getOrdersOrBuilderList() {
     return orders_;
   }
   /**
-   * <code>repeated .Order orders = 1;</code>
+   * <pre>
+   * Repeated cannot be null, only an empty list
+   * </pre>
+   *
+   * <code>repeated .orders.Order orders = 1;</code>
    */
   public int getOrdersCount() {
     return orders_.size();
   }
   /**
-   * <code>repeated .Order orders = 1;</code>
+   * <pre>
+   * Repeated cannot be null, only an empty list
+   * </pre>
+   *
+   * <code>repeated .orders.Order orders = 1;</code>
    */
   public com.javainuse.orders.Order getOrders(int index) {
     return orders_.get(index);
   }
   /**
-   * <code>repeated .Order orders = 1;</code>
+   * <pre>
+   * Repeated cannot be null, only an empty list
+   * </pre>
+   *
+   * <code>repeated .orders.Order orders = 1;</code>
    */
   public com.javainuse.orders.OrderOrBuilder getOrdersOrBuilder(
       int index) {
@@ -281,21 +301,21 @@ private static final long serialVersionUID = 0L;
     return builder;
   }
   /**
-   * Protobuf type {@code OrderList}
+   * Protobuf type {@code orders.OrderList}
    */
   public static final class Builder extends
       com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
-      // @@protoc_insertion_point(builder_implements:OrderList)
+      // @@protoc_insertion_point(builder_implements:orders.OrderList)
       com.javainuse.orders.OrderListOrBuilder {
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.javainuse.orders.OrderServiceOuterClass.internal_static_OrderList_descriptor;
+      return com.javainuse.orders.OrderServiceOuterClass.internal_static_orders_OrderList_descriptor;
     }
 
     @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.javainuse.orders.OrderServiceOuterClass.internal_static_OrderList_fieldAccessorTable
+      return com.javainuse.orders.OrderServiceOuterClass.internal_static_orders_OrderList_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
               com.javainuse.orders.OrderList.class, com.javainuse.orders.OrderList.Builder.class);
     }
@@ -331,7 +351,7 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.google.protobuf.Descriptors.Descriptor
         getDescriptorForType() {
-      return com.javainuse.orders.OrderServiceOuterClass.internal_static_OrderList_descriptor;
+      return com.javainuse.orders.OrderServiceOuterClass.internal_static_orders_OrderList_descriptor;
     }
 
     @java.lang.Override
@@ -478,7 +498,11 @@ private static final long serialVersionUID = 0L;
         com.javainuse.orders.Order, com.javainuse.orders.Order.Builder, com.javainuse.orders.OrderOrBuilder> ordersBuilder_;
 
     /**
-     * <code>repeated .Order orders = 1;</code>
+     * <pre>
+     * Repeated cannot be null, only an empty list
+     * </pre>
+     *
+     * <code>repeated .orders.Order orders = 1;</code>
      */
     public java.util.List<com.javainuse.orders.Order> getOrdersList() {
       if (ordersBuilder_ == null) {
@@ -488,7 +512,11 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>repeated .Order orders = 1;</code>
+     * <pre>
+     * Repeated cannot be null, only an empty list
+     * </pre>
+     *
+     * <code>repeated .orders.Order orders = 1;</code>
      */
     public int getOrdersCount() {
       if (ordersBuilder_ == null) {
@@ -498,7 +526,11 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>repeated .Order orders = 1;</code>
+     * <pre>
+     * Repeated cannot be null, only an empty list
+     * </pre>
+     *
+     * <code>repeated .orders.Order orders = 1;</code>
      */
     public com.javainuse.orders.Order getOrders(int index) {
       if (ordersBuilder_ == null) {
@@ -508,7 +540,11 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>repeated .Order orders = 1;</code>
+     * <pre>
+     * Repeated cannot be null, only an empty list
+     * </pre>
+     *
+     * <code>repeated .orders.Order orders = 1;</code>
      */
     public Builder setOrders(
         int index, com.javainuse.orders.Order value) {
@@ -525,7 +561,11 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>repeated .Order orders = 1;</code>
+     * <pre>
+     * Repeated cannot be null, only an empty list
+     * </pre>
+     *
+     * <code>repeated .orders.Order orders = 1;</code>
      */
     public Builder setOrders(
         int index, com.javainuse.orders.Order.Builder builderForValue) {
@@ -539,7 +579,11 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>repeated .Order orders = 1;</code>
+     * <pre>
+     * Repeated cannot be null, only an empty list
+     * </pre>
+     *
+     * <code>repeated .orders.Order orders = 1;</code>
      */
     public Builder addOrders(com.javainuse.orders.Order value) {
       if (ordersBuilder_ == null) {
@@ -555,7 +599,11 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>repeated .Order orders = 1;</code>
+     * <pre>
+     * Repeated cannot be null, only an empty list
+     * </pre>
+     *
+     * <code>repeated .orders.Order orders = 1;</code>
      */
     public Builder addOrders(
         int index, com.javainuse.orders.Order value) {
@@ -572,7 +620,11 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>repeated .Order orders = 1;</code>
+     * <pre>
+     * Repeated cannot be null, only an empty list
+     * </pre>
+     *
+     * <code>repeated .orders.Order orders = 1;</code>
      */
     public Builder addOrders(
         com.javainuse.orders.Order.Builder builderForValue) {
@@ -586,7 +638,11 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>repeated .Order orders = 1;</code>
+     * <pre>
+     * Repeated cannot be null, only an empty list
+     * </pre>
+     *
+     * <code>repeated .orders.Order orders = 1;</code>
      */
     public Builder addOrders(
         int index, com.javainuse.orders.Order.Builder builderForValue) {
@@ -600,7 +656,11 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>repeated .Order orders = 1;</code>
+     * <pre>
+     * Repeated cannot be null, only an empty list
+     * </pre>
+     *
+     * <code>repeated .orders.Order orders = 1;</code>
      */
     public Builder addAllOrders(
         java.lang.Iterable<? extends com.javainuse.orders.Order> values) {
@@ -615,7 +675,11 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>repeated .Order orders = 1;</code>
+     * <pre>
+     * Repeated cannot be null, only an empty list
+     * </pre>
+     *
+     * <code>repeated .orders.Order orders = 1;</code>
      */
     public Builder clearOrders() {
       if (ordersBuilder_ == null) {
@@ -628,7 +692,11 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>repeated .Order orders = 1;</code>
+     * <pre>
+     * Repeated cannot be null, only an empty list
+     * </pre>
+     *
+     * <code>repeated .orders.Order orders = 1;</code>
      */
     public Builder removeOrders(int index) {
       if (ordersBuilder_ == null) {
@@ -641,14 +709,22 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>repeated .Order orders = 1;</code>
+     * <pre>
+     * Repeated cannot be null, only an empty list
+     * </pre>
+     *
+     * <code>repeated .orders.Order orders = 1;</code>
      */
     public com.javainuse.orders.Order.Builder getOrdersBuilder(
         int index) {
       return getOrdersFieldBuilder().getBuilder(index);
     }
     /**
-     * <code>repeated .Order orders = 1;</code>
+     * <pre>
+     * Repeated cannot be null, only an empty list
+     * </pre>
+     *
+     * <code>repeated .orders.Order orders = 1;</code>
      */
     public com.javainuse.orders.OrderOrBuilder getOrdersOrBuilder(
         int index) {
@@ -658,7 +734,11 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>repeated .Order orders = 1;</code>
+     * <pre>
+     * Repeated cannot be null, only an empty list
+     * </pre>
+     *
+     * <code>repeated .orders.Order orders = 1;</code>
      */
     public java.util.List<? extends com.javainuse.orders.OrderOrBuilder> 
          getOrdersOrBuilderList() {
@@ -669,14 +749,22 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>repeated .Order orders = 1;</code>
+     * <pre>
+     * Repeated cannot be null, only an empty list
+     * </pre>
+     *
+     * <code>repeated .orders.Order orders = 1;</code>
      */
     public com.javainuse.orders.Order.Builder addOrdersBuilder() {
       return getOrdersFieldBuilder().addBuilder(
           com.javainuse.orders.Order.getDefaultInstance());
     }
     /**
-     * <code>repeated .Order orders = 1;</code>
+     * <pre>
+     * Repeated cannot be null, only an empty list
+     * </pre>
+     *
+     * <code>repeated .orders.Order orders = 1;</code>
      */
     public com.javainuse.orders.Order.Builder addOrdersBuilder(
         int index) {
@@ -684,7 +772,11 @@ private static final long serialVersionUID = 0L;
           index, com.javainuse.orders.Order.getDefaultInstance());
     }
     /**
-     * <code>repeated .Order orders = 1;</code>
+     * <pre>
+     * Repeated cannot be null, only an empty list
+     * </pre>
+     *
+     * <code>repeated .orders.Order orders = 1;</code>
      */
     public java.util.List<com.javainuse.orders.Order.Builder> 
          getOrdersBuilderList() {
@@ -717,10 +809,10 @@ private static final long serialVersionUID = 0L;
     }
 
 
-    // @@protoc_insertion_point(builder_scope:OrderList)
+    // @@protoc_insertion_point(builder_scope:orders.OrderList)
   }
 
-  // @@protoc_insertion_point(class_scope:OrderList)
+  // @@protoc_insertion_point(class_scope:orders.OrderList)
   private static final com.javainuse.orders.OrderList DEFAULT_INSTANCE;
   static {
     DEFAULT_INSTANCE = new com.javainuse.orders.OrderList();

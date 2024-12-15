@@ -10,7 +10,7 @@
         "projectUniqueName": "C:\\Users\\AminAouina\\source\\SEP3_REPO\\SEP3_T3_AspCoreWebApi\\SEP3_T3_ASP_Core_WebAPI\\EfcRepositories\\EfcRepositories.csproj",
         "projectName": "EfcRepositories",
         "projectPath": "C:\\Users\\AminAouina\\source\\SEP3_REPO\\SEP3_T3_AspCoreWebApi\\SEP3_T3_ASP_Core_WebAPI\\EfcRepositories\\EfcRepositories.csproj",
-        "packagesPath": "C:\\Users\\AminAouina\\.nuget\\packages\\",
+        "packagesPath": "C:\\Users\\adminAMA\\.nuget\\packages\\",
         "outputPath": "C:\\Users\\AminAouina\\source\\SEP3_REPO\\SEP3_T3_AspCoreWebApi\\SEP3_T3_ASP_Core_WebAPI\\EfcRepositories\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
@@ -18,7 +18,7 @@
           "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
         ],
         "configFilePaths": [
-          "C:\\Users\\AminAouina\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\adminAMA\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
@@ -28,8 +28,7 @@
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "C:\\Program Files\\dotnet\\library-packs": {},
-          "https://api.nuget.org/v3/index.json": {},
-          "https://pkgs.dev.azure.com/techsoftdk/_packaging/MesBaseFeed%40Local/nuget/v3/index.json": {}
+          "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
           "net9.0": {
@@ -105,7 +104,7 @@
         "projectUniqueName": "C:\\Users\\AminAouina\\source\\SEP3_REPO\\SEP3_T3_AspCoreWebApi\\SEP3_T3_ASP_Core_WebAPI\\Entities\\Entities.csproj",
         "projectName": "Entities",
         "projectPath": "C:\\Users\\AminAouina\\source\\SEP3_REPO\\SEP3_T3_AspCoreWebApi\\SEP3_T3_ASP_Core_WebAPI\\Entities\\Entities.csproj",
-        "packagesPath": "C:\\Users\\AminAouina\\.nuget\\packages\\",
+        "packagesPath": "C:\\Users\\adminAMA\\.nuget\\packages\\",
         "outputPath": "C:\\Users\\AminAouina\\source\\SEP3_REPO\\SEP3_T3_AspCoreWebApi\\SEP3_T3_ASP_Core_WebAPI\\Entities\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
@@ -113,7 +112,7 @@
           "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
         ],
         "configFilePaths": [
-          "C:\\Users\\AminAouina\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\adminAMA\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
@@ -123,8 +122,7 @@
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "C:\\Program Files\\dotnet\\library-packs": {},
-          "https://api.nuget.org/v3/index.json": {},
-          "https://pkgs.dev.azure.com/techsoftdk/_packaging/MesBaseFeed%40Local/nuget/v3/index.json": {}
+          "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
           "net9.0": {
@@ -173,7 +171,7 @@
         "projectUniqueName": "C:\\Users\\AminAouina\\source\\SEP3_REPO\\SEP3_T3_AspCoreWebApi\\SEP3_T3_ASP_Core_WebAPI\\RepositoryContracts\\RepositoryContracts.csproj",
         "projectName": "RepositoryContracts",
         "projectPath": "C:\\Users\\AminAouina\\source\\SEP3_REPO\\SEP3_T3_AspCoreWebApi\\SEP3_T3_ASP_Core_WebAPI\\RepositoryContracts\\RepositoryContracts.csproj",
-        "packagesPath": "C:\\Users\\AminAouina\\.nuget\\packages\\",
+        "packagesPath": "C:\\Users\\adminAMA\\.nuget\\packages\\",
         "outputPath": "C:\\Users\\AminAouina\\source\\SEP3_REPO\\SEP3_T3_AspCoreWebApi\\SEP3_T3_ASP_Core_WebAPI\\RepositoryContracts\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
@@ -181,7 +179,7 @@
           "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
         ],
         "configFilePaths": [
-          "C:\\Users\\AminAouina\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\adminAMA\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
@@ -191,8 +189,7 @@
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "C:\\Program Files\\dotnet\\library-packs": {},
-          "https://api.nuget.org/v3/index.json": {},
-          "https://pkgs.dev.azure.com/techsoftdk/_packaging/MesBaseFeed%40Local/nuget/v3/index.json": {}
+          "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
           "net9.0": {

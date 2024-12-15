@@ -99,10 +99,37 @@ public class EfcOrderRepository: IOrderRepository
 
     public async Task<IQueryable<Order>> GetAllOrders()
     {
-        return ctx.Orders.AsQueryable();
+        return ctx.Orders
+            .Select(o => new Order
+            {
+                OrderId = o.OrderId,
+                OrderStatus = o.OrderStatus,
+                DeliveryDate = o.DeliveryDate,
+                CreatedBy = new User
+                {
+                    UserId = o.CreatedBy.UserId,
+                    UserName = o.CreatedBy.UserName,
+                    Password = "",
+                    UserRole = o.CreatedBy.UserRole
+                },
+
+                AssignedUser = o.AssignedUser != null
+                ? new User
+                {
+                    UserId = o.AssignedUser.UserId,
+                    UserName = o.AssignedUser.UserName,
+                    Password = "",
+                    UserRole = o.AssignedUser.UserRole
+                }
+                : null,
+                CreatedAt = o.CreatedAt
+            })
+            .AsQueryable();
     }
 
-    public  Task<IQueryable<Order>> GetAllOrdersByType(string type)
+
+
+    public Task<IQueryable<Order>> GetAllOrdersByType(string type)
     {
         return null;
     }

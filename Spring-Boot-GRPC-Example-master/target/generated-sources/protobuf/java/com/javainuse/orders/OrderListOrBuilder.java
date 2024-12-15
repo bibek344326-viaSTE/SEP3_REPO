@@ -4,29 +4,49 @@
 package com.javainuse.orders;
 
 public interface OrderListOrBuilder extends
-    // @@protoc_insertion_point(interface_extends:OrderList)
+    // @@protoc_insertion_point(interface_extends:orders.OrderList)
     com.google.protobuf.MessageOrBuilder {
 
   /**
-   * <code>repeated .Order orders = 1;</code>
+   * <pre>
+   * Repeated cannot be null, only an empty list
+   * </pre>
+   *
+   * <code>repeated .orders.Order orders = 1;</code>
    */
   java.util.List<com.javainuse.orders.Order> 
       getOrdersList();
   /**
-   * <code>repeated .Order orders = 1;</code>
+   * <pre>
+   * Repeated cannot be null, only an empty list
+   * </pre>
+   *
+   * <code>repeated .orders.Order orders = 1;</code>
    */
   com.javainuse.orders.Order getOrders(int index);
   /**
-   * <code>repeated .Order orders = 1;</code>
+   * <pre>
+   * Repeated cannot be null, only an empty list
+   * </pre>
+   *
+   * <code>repeated .orders.Order orders = 1;</code>
    */
   int getOrdersCount();
   /**
-   * <code>repeated .Order orders = 1;</code>
+   * <pre>
+   * Repeated cannot be null, only an empty list
+   * </pre>
+   *
+   * <code>repeated .orders.Order orders = 1;</code>
    */
   java.util.List<? extends com.javainuse.orders.OrderOrBuilder> 
       getOrdersOrBuilderList();
   /**
-   * <code>repeated .Order orders = 1;</code>
+   * <pre>
+   * Repeated cannot be null, only an empty list
+   * </pre>
+   *
+   * <code>repeated .orders.Order orders = 1;</code>
    */
   com.javainuse.orders.OrderOrBuilder getOrdersOrBuilder(
       int index);

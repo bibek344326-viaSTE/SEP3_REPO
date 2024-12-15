@@ -91,7 +91,9 @@ namespace SEP3_T3_ASP_Core_WebAPI.Data
                             OrderStatus = OrderStatus.IN_PROGRESS,
                             DeliveryDate = DateTime.UtcNow.AddDays(5),
                             CreatedById = user2.UserId,
-                            UserId = user2.UserId,
+                            CreatedBy = user2,
+                            UserId= null,
+                            AssignedUser = null,
                             CreatedAt = DateTimeOffset.UtcNow,
                             OrderItems = new List<OrderItem>
                             {
@@ -104,7 +106,9 @@ namespace SEP3_T3_ASP_Core_WebAPI.Data
                             OrderStatus = OrderStatus.IN_PROGRESS,
                             DeliveryDate = DateTime.UtcNow.AddDays(3),
                             CreatedById = user1.UserId,
+                            CreatedBy= user1,
                             UserId = user1.UserId,
+                            AssignedUser = user1,
                             CreatedAt = DateTimeOffset.UtcNow,
                             OrderItems = new List<OrderItem>
                             {

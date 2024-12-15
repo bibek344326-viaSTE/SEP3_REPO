@@ -2,21 +2,22 @@ syntax = "proto3";
 
 import "google/protobuf/timestamp.proto";
 import "google/protobuf/empty.proto";
+import "user-service.proto"; // Import the user.proto that contains the User message and Role enum
 
 option java_multiple_files = true;
 option java_package = "com.javainuse.orders";
 
+package orders;
 
 service OrderService {
-  rpc CreateOrder(OrderRequest) returns (Order);
-
-  rpc GetAllOrders(google.protobuf.Empty) returns (OrderList);
+  rpc createOrder(OrderRequest) returns (Order);
+  rpc getAllOrders(google.protobuf.Empty) returns (OrderList);
 }
 
 message OrderRequest {
-  repeated OrderItem order_items = 1;
-  int32 user_id = 2;
-  int32 createdBy = 3;
+  repeated OrderItem order_items = 1; // Repeated should never be null, only empty lists
+  int32 user_id = 2;      // The user who will be assigned to handle the order
+  int32 createdBy = 3;    // The user who creates the order
 }
 
 message OrderItem {
@@ -26,13 +27,25 @@ message OrderItem {
 }
 
 message Order {
-  int32 order_id = 1;
-  repeated OrderItem order_items = 2;
-  int32 user_id = 3;
-  int32 created_by = 4;
-  google.protobuf.Timestamp created_at = 5;
+  int32 order_id = 1; // REQUIRED int32, this must always be set
+  repeated OrderItem order_items = 2; // Should never be null, only empty list if no items
+
+  // Reflecting the JSON:
+  google.protobuf.Timestamp created_at = 3; // MUST be a valid timestamp format
+
+  // Assigned user information, must not be null, must conform to the User message format
+  User assigned_user = 4;
+
+  // Created by user information, must not be null, must conform to the User message format
+  User created_by_user = 5;
+
+  // Order status, ensure this is always set (could be 0, 1, 2, etc.)
+  int32 order_status = 6;
+
+  // Delivery date as timestamp, must be valid ISO-8601 date-time string
+  google.protobuf.Timestamp delivery_date = 7;
 }
 
 message OrderList {
-  repeated Order orders = 1;
+  repeated Order orders = 1; // Repeated cannot be null, only an empty list
 }

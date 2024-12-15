@@ -4,7 +4,7 @@
 package com.javainuse.orders;
 
 public interface OrderItemOrBuilder extends
-    // @@protoc_insertion_point(interface_extends:OrderItem)
+    // @@protoc_insertion_point(interface_extends:orders.OrderItem)
     com.google.protobuf.MessageOrBuilder {
 
   /**

@@ -118,8 +118,7 @@ namespace SEP3_T3_ASP_Core_WebAPI.Controllers
         public async Task<ActionResult<IEnumerable<Order>>> GetAllOrders()
         {
             IQueryable<Order> orders = await orderRepository.GetAllOrders();
-            List<Order> dtos = orders.ToList();
-            return Ok(dtos);
+            return Ok(orders);
         }
     }
 }

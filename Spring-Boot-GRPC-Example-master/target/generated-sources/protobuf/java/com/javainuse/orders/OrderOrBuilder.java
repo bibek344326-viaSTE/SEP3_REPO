@@ -4,58 +4,168 @@
 package com.javainuse.orders;
 
 public interface OrderOrBuilder extends
-    // @@protoc_insertion_point(interface_extends:Order)
+    // @@protoc_insertion_point(interface_extends:orders.Order)
     com.google.protobuf.MessageOrBuilder {
 
   /**
+   * <pre>
+   * REQUIRED int32, this must always be set
+   * </pre>
+   *
    * <code>int32 order_id = 1;</code>
    */
   int getOrderId();
 
   /**
-   * <code>repeated .OrderItem order_items = 2;</code>
+   * <pre>
+   * Should never be null, only empty list if no items
+   * </pre>
+   *
+   * <code>repeated .orders.OrderItem order_items = 2;</code>
    */
   java.util.List<com.javainuse.orders.OrderItem> 
       getOrderItemsList();
   /**
-   * <code>repeated .OrderItem order_items = 2;</code>
+   * <pre>
+   * Should never be null, only empty list if no items
+   * </pre>
+   *
+   * <code>repeated .orders.OrderItem order_items = 2;</code>
    */
   com.javainuse.orders.OrderItem getOrderItems(int index);
   /**
-   * <code>repeated .OrderItem order_items = 2;</code>
+   * <pre>
+   * Should never be null, only empty list if no items
+   * </pre>
+   *
+   * <code>repeated .orders.OrderItem order_items = 2;</code>
    */
   int getOrderItemsCount();
   /**
-   * <code>repeated .OrderItem order_items = 2;</code>
+   * <pre>
+   * Should never be null, only empty list if no items
+   * </pre>
+   *
+   * <code>repeated .orders.OrderItem order_items = 2;</code>
    */
   java.util.List<? extends com.javainuse.orders.OrderItemOrBuilder> 
       getOrderItemsOrBuilderList();
   /**
-   * <code>repeated .OrderItem order_items = 2;</code>
+   * <pre>
+   * Should never be null, only empty list if no items
+   * </pre>
+   *
+   * <code>repeated .orders.OrderItem order_items = 2;</code>
    */
   com.javainuse.orders.OrderItemOrBuilder getOrderItemsOrBuilder(
       int index);
 
   /**
-   * <code>int32 user_id = 3;</code>
-   */
-  int getUserId();
-
-  /**
-   * <code>int32 created_by = 4;</code>
-   */
-  int getCreatedBy();
-
-  /**
-   * <code>.google.protobuf.Timestamp created_at = 5;</code>
+   * <pre>
+   * Reflecting the JSON:
+   * </pre>
+   *
+   * <code>.google.protobuf.Timestamp created_at = 3;</code>
    */
   boolean hasCreatedAt();
   /**
-   * <code>.google.protobuf.Timestamp created_at = 5;</code>
+   * <pre>
+   * Reflecting the JSON:
+   * </pre>
+   *
+   * <code>.google.protobuf.Timestamp created_at = 3;</code>
    */
   com.google.protobuf.Timestamp getCreatedAt();
   /**
-   * <code>.google.protobuf.Timestamp created_at = 5;</code>
+   * <pre>
+   * Reflecting the JSON:
+   * </pre>
+   *
+   * <code>.google.protobuf.Timestamp created_at = 3;</code>
    */
   com.google.protobuf.TimestampOrBuilder getCreatedAtOrBuilder();
+
+  /**
+   * <pre>
+   * Assigned user information, must not be null, must conform to the User message format
+   * </pre>
+   *
+   * <code>.User assigned_user = 4;</code>
+   */
+  boolean hasAssignedUser();
+  /**
+   * <pre>
+   * Assigned user information, must not be null, must conform to the User message format
+   * </pre>
+   *
+   * <code>.User assigned_user = 4;</code>
+   */
+  com.javainuse.user.User getAssignedUser();
+  /**
+   * <pre>
+   * Assigned user information, must not be null, must conform to the User message format
+   * </pre>
+   *
+   * <code>.User assigned_user = 4;</code>
+   */
+  com.javainuse.user.UserOrBuilder getAssignedUserOrBuilder();
+
+  /**
+   * <pre>
+   * Created by user information, must not be null, must conform to the User message format
+   * </pre>
+   *
+   * <code>.User created_by_user = 5;</code>
+   */
+  boolean hasCreatedByUser();
+  /**
+   * <pre>
+   * Created by user information, must not be null, must conform to the User message format
+   * </pre>
+   *
+   * <code>.User created_by_user = 5;</code>
+   */
+  com.javainuse.user.User getCreatedByUser();
+  /**
+   * <pre>
+   * Created by user information, must not be null, must conform to the User message format
+   * </pre>
+   *
+   * <code>.User created_by_user = 5;</code>
+   */
+  com.javainuse.user.UserOrBuilder getCreatedByUserOrBuilder();
+
+  /**
+   * <pre>
+   * Order status, ensure this is always set (could be 0, 1, 2, etc.)
+   * </pre>
+   *
+   * <code>int32 order_status = 6;</code>
+   */
+  int getOrderStatus();
+
+  /**
+   * <pre>
+   * Delivery date as timestamp, must be valid ISO-8601 date-time string
+   * </pre>
+   *
+   * <code>.google.protobuf.Timestamp delivery_date = 7;</code>
+   */
+  boolean hasDeliveryDate();
+  /**
+   * <pre>
+   * Delivery date as timestamp, must be valid ISO-8601 date-time string
+   * </pre>
+   *
+   * <code>.google.protobuf.Timestamp delivery_date = 7;</code>
+   */
+  com.google.protobuf.Timestamp getDeliveryDate();
+  /**
+   * <pre>
+   * Delivery date as timestamp, must be valid ISO-8601 date-time string
+   * </pre>
+   *
+   * <code>.google.protobuf.Timestamp delivery_date = 7;</code>
+   */
+  com.google.protobuf.TimestampOrBuilder getDeliveryDateOrBuilder();
 }

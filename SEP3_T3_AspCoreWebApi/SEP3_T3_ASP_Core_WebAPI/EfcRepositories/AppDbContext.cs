@@ -19,7 +19,7 @@ namespace SEP3_T3_ASP_Core_WebAPI
         {
             if (!optionsBuilder.IsConfigured) // Avoid configuring twice
             {
-                optionsBuilder.UseNpgsql("Host=127.0.0.1;Port=5432;Database=sep3db;Username=postgres;Password=P@ssw0rd;Timeout=10;SSL Mode=Prefer");
+                optionsBuilder.UseNpgsql("Host=localhost;Port=5432;Database=sep3db;Username=postgres;Password=P@ssw0rd;Timeout=10;SSL Mode=Prefer");
             }
         }
 

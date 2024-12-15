@@ -24,14 +24,14 @@ public final class OrderServiceGrpc {
 
   private OrderServiceGrpc() {}
 
-  public static final String SERVICE_NAME = "OrderService";
+  public static final String SERVICE_NAME = "orders.OrderService";
 
   // Static method descriptors that strictly reflect the proto.
   private static volatile io.grpc.MethodDescriptor<com.javainuse.orders.OrderRequest,
       com.javainuse.orders.Order> getCreateOrderMethod;
 
   @io.grpc.stub.annotations.RpcMethod(
-      fullMethodName = SERVICE_NAME + '/' + "CreateOrder",
+      fullMethodName = SERVICE_NAME + '/' + "createOrder",
       requestType = com.javainuse.orders.OrderRequest.class,
       responseType = com.javainuse.orders.Order.class,
       methodType = io.grpc.MethodDescriptor.MethodType.UNARY)
@@ -45,13 +45,13 @@ public final class OrderServiceGrpc {
               io.grpc.MethodDescriptor.<com.javainuse.orders.OrderRequest, com.javainuse.orders.Order>newBuilder()
               .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
               .setFullMethodName(generateFullMethodName(
-                  "OrderService", "CreateOrder"))
+                  "orders.OrderService", "createOrder"))
               .setSampledToLocalTracing(true)
               .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
                   com.javainuse.orders.OrderRequest.getDefaultInstance()))
               .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
                   com.javainuse.orders.Order.getDefaultInstance()))
-                  .setSchemaDescriptor(new OrderServiceMethodDescriptorSupplier("CreateOrder"))
+                  .setSchemaDescriptor(new OrderServiceMethodDescriptorSupplier("createOrder"))
                   .build();
           }
         }
@@ -63,7 +63,7 @@ public final class OrderServiceGrpc {
       com.javainuse.orders.OrderList> getGetAllOrdersMethod;
 
   @io.grpc.stub.annotations.RpcMethod(
-      fullMethodName = SERVICE_NAME + '/' + "GetAllOrders",
+      fullMethodName = SERVICE_NAME + '/' + "getAllOrders",
       requestType = com.google.protobuf.Empty.class,
       responseType = com.javainuse.orders.OrderList.class,
       methodType = io.grpc.MethodDescriptor.MethodType.UNARY)
@@ -77,13 +77,13 @@ public final class OrderServiceGrpc {
               io.grpc.MethodDescriptor.<com.google.protobuf.Empty, com.javainuse.orders.OrderList>newBuilder()
               .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
               .setFullMethodName(generateFullMethodName(
-                  "OrderService", "GetAllOrders"))
+                  "orders.OrderService", "getAllOrders"))
               .setSampledToLocalTracing(true)
               .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
                   com.google.protobuf.Empty.getDefaultInstance()))
               .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
                   com.javainuse.orders.OrderList.getDefaultInstance()))
-                  .setSchemaDescriptor(new OrderServiceMethodDescriptorSupplier("GetAllOrders"))
+                  .setSchemaDescriptor(new OrderServiceMethodDescriptorSupplier("getAllOrders"))
                   .build();
           }
         }
