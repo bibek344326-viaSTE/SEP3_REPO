@@ -6,9 +6,8 @@ option java_package = "com.javainuse.user";
 package users;
 
 service UserService {
-  rpc addUser(UserDTO) returns (UserResponse);
+  rpc addUser(UserDTO) returns (User);
   rpc editUser(User) returns (google.protobuf.Empty);
-  rpc editPassword(User) returns (google.protobuf.Empty);
   rpc deleteUser(User) returns (google.protobuf.Empty);
   rpc getAllUsers(google.protobuf.Empty) returns (UserList);
 }
@@ -17,12 +16,6 @@ message User {
   string userid = 1;
   string username = 2;
   string password = 3;
-  Role role = 4; // Role is now an enum
-}
-
-message UserResponse {
-  string userid = 1;
-  string username = 2;
   Role role = 4; // Role is now an enum
 }
 

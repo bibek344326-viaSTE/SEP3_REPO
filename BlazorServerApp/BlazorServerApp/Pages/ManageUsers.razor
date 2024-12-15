@@ -1,10 +1,9 @@
 ﻿@page "/manage-users"
-@attribute [Authorize(Roles = "InventoryManager")]
 
 @using Microsoft.AspNetCore.Components.Forms
 @using Microsoft.AspNetCore.Components.Web
 @using BlazorServerApp.Managers
-
+@using Users <!-- ✅ Added this to import the User and Role types -->
 @inject UserManager Manager
 
 <PageTitle>Manage Users</PageTitle>
@@ -13,17 +12,30 @@
 
 <p>Here you can view and manage users by their roles.</p>
 
-<!-- Search and Filter Section -->
-<div class="input-group mb-4">
-    <input class="form-control" type="text" placeholder="Search by username or User ID..." @bind="Manager.SearchQuery" />
-    <button class="btn btn-outline-secondary" type="button" @onclick="Manager.ClearSearch">
-        <i class="fas fa-times"></i> Clear
-    </button>
-</div>
-
-@if (Manager.GroupedUsers.Any())
+<!-- Loading State -->
+@if (Manager.IsLoading)
 {
-    @foreach (var roleGroup in Manager.GroupedUsers)
+    <div class="text-center my-4">
+        <div class="spinner-border" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+        <p>Loading users, please wait...</p>
+    </div>
+}
+else if (!string.IsNullOrEmpty(Manager.ErrorMessage))
+{
+    <div class="alert alert-danger">@Manager.ErrorMessage</div>
+}
+else if (GroupedUsers != null && GroupedUsers.Any())
+{
+    <div class="input-group mb-4">
+        <input class="form-control" type="text" placeholder="Search by username or User ID..." @bind="Manager.SearchQuery" />
+        <button class="btn btn-outline-secondary" type="button" @onclick="Manager.ClearSearch">
+            <i class="fas fa-times"></i> Clear
+        </button>
+    </div>
+
+    @foreach (var roleGroup in GroupedUsers)
     {
         <h4 class="mt-4">Role: @Manager.HumanizeRole(roleGroup.Key)</h4>
         <div class="table-responsive">
@@ -54,52 +66,6 @@
                                 </button>
                             </td>
                         </tr>
-
-                        @if (Manager.EditingUser?.Userid == user.Userid)
-                        {
-                            <tr>
-                                <td colspan="5">
-                                    <EditForm Model="Manager.EditingUser" OnValidSubmit="Manager.SaveUserAsync">
-                                        <DataAnnotationsValidator />
-                                        <div class="row">
-                                            <div class="col-md-3">
-                                                <label>Username</label>
-                                                <InputText class="form-control mb-2" @bind-Value="Manager.EditingUser.Username" />
-                                                <ValidationMessage For="@(() => Manager.EditingUser.Username)" />
-                                            </div>
-
-                                            <div class="col-md-3">
-                                                <label>Password</label>
-                                                <InputText class="form-control mb-2" type="password" @bind-Value="Manager.EditingUser.Password" />
-                                                <ValidationMessage For="@(() => Manager.EditingUser.Password)" />
-                                            </div>
-
-                                            <div class="col-md-2">
-                                                <label>User ID</label>
-                                                <InputText class="form-control mb-2" @bind-Value="Manager.EditingUser.Userid" disabled />
-                                            </div>
-
-                                            <div class="col-md-3">
-                                                <label>Role</label>
-                                                <select class="form-control mb-2" @bind="Manager.EditingUser.Role">
-                                                    <option value="INVENTORY_MANAGER">Inventory Manager</option>
-                                                    <option value="WAREHOUSE_WORKER">Warehouse Worker</option>
-                                                </select>
-                                            </div>
-
-                                            <div class="col-md-12 text-end">
-                                                <button type="submit" class="btn btn-success me-2">
-                                                    <i class="fas fa-save"></i> Save
-                                                </button>
-                                                <button type="button" class="btn btn-secondary" @onclick="Manager.CancelEdit">
-                                                    <i class="fas fa-times"></i> Cancel
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </EditForm>
-                                </td>
-                            </tr>
-                        }
                     }
                 </tbody>
             </table>
@@ -109,4 +75,23 @@
 else
 {
     <p>No users found.</p>
+}
+
+@code {
+    private IEnumerable<IGrouping<Role, User>> GroupedUsers;
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            Console.WriteLine(" [ManageUsers] Calling Manager.GetGroupedUsersAsync()");
+            GroupedUsers = await Manager.GetGroupedUsersAsync();
+            Console.WriteLine($" [ManageUsers] Successfully loaded {GroupedUsers.Count()} role groups.");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($" [ManageUsers] Error: {ex.Message}");
+            Console.WriteLine(ex.StackTrace);
+        }
+    }
 }

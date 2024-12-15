@@ -10,51 +10,28 @@ namespace BlazorServerApp.Infrastructure.Repositories
 
         public UserRepository(UserService.UserServiceClient client)
         {
-            _client = client ?? throw new ArgumentNullException(nameof(client));
+            _client = client;
         }
 
-        public async Task<UserResponse> AddUserAsync(UserDTO user)
+        public Task<User> AddUserAsync(UserDTO user)
         {
-            try
-            {
-                var response = await _client.addUserAsync(user);
-                return response;
-            }
-            catch (RpcException ex)
-            {
-                // Handle gRPC exception appropriately (logging, rethrow, etc.)
-                throw new ApplicationException("Error adding user", ex);
-            }
+            throw new NotImplementedException();
         }
 
-        public async Task DeleteUserAsync(User user)
+        public Task DeleteUserAsync(User user)
         {
-            try
-            {
-                 await _client.deleteUserAsync(user);
-            }
-            catch (RpcException ex)
-            {
-                // Handle gRPC exception appropriately (logging, rethrow, etc.)
-                throw new ApplicationException("Error deleting user", ex);
-            }
+            throw new NotImplementedException();
         }
 
-        public async Task EditUserAsync(User user)
+        public Task EditUserAsync(User user)
         {
-            try
-            {
-                 await _client.editUserAsync(user);
-            }
-            catch (RpcException ex)
-            {
-                // Handle gRPC exception appropriately (logging, rethrow, etc.)
-                throw new ApplicationException("Error editing user", ex);
-            }
+            throw new NotImplementedException();
         }
 
         public async Task<IEnumerable<User>> GetAllUsersAsync()
         {
+            Console.WriteLine("[UserRepository] GetAllUsersAsync started...");
+
             try
             {
                 var response = await _client.getAllUsersAsync(new Google.Protobuf.WellKnownTypes.Empty());
@@ -62,7 +39,6 @@ namespace BlazorServerApp.Infrastructure.Repositories
             }
             catch (RpcException ex)
             {
-                // Handle gRPC exception appropriately (logging, rethrow, etc.)
                 throw new ApplicationException("Error retrieving all users", ex);
             }
         }

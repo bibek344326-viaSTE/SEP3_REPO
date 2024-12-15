@@ -10,48 +10,68 @@ namespace BlazorServerApp.Managers
         private readonly UserUseCases _userUseCases;
         private readonly IToastService _toastService;
 
-        public UserDTO NewUser { get; private set; }
-        public EditContext EditContext { get; private set; }
-        public bool IsLoading { get; private set; }
+        public bool IsLoading { get; private set; } = true;
+        public string ErrorMessage { get; private set; } = string.Empty;
+        public List<User> Users { get; private set; } = new();
         public string SearchQuery { get; set; } = string.Empty;
+
         public User? EditingUser { get; private set; }
 
-        public List<Role> Roles => Enum.GetValues(typeof(Role)).Cast<Role>().ToList();
+        public async Task<IEnumerable<IGrouping<Role, User>>> GetGroupedUsersAsync()
+        {
+            try
+            {
+                // Call the RefreshUsersAsync method to ensure users are up-to-date
+                await RefreshUsersAsync();
 
-        public IEnumerable<IGrouping<Role, User>> GroupedUsers =>
-            _userUseCases.GetAllUsersAsync().Result // Await for async operation
-                .Where(u => string.IsNullOrEmpty(SearchQuery) ||
-                            u.Username.Contains(SearchQuery, StringComparison.OrdinalIgnoreCase))
-                .GroupBy(u => u.Role);
+                Console.WriteLine($"[UserManager] Users loaded: {Users.Count}");
+
+                // Filter and group users
+                var groupedUsers = Users
+                    .Where(u => string.IsNullOrEmpty(SearchQuery) ||
+                                u.Username.Contains(SearchQuery, StringComparison.OrdinalIgnoreCase))
+                    .GroupBy(u => u.Role);
+
+                Console.WriteLine($"[UserManager] Number of groups: {groupedUsers.Count()}");
+
+                return groupedUsers;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($" [UserManager] Error occurred while grouping users: {ex.Message}");
+                Console.WriteLine(ex.StackTrace);
+                return Enumerable.Empty<IGrouping<Role, User>>(); // Return an empty result on failure
+            }
+        }
 
         public UserManager(UserUseCases userUseCases, IToastService toastService)
         {
             _userUseCases = userUseCases;
             _toastService = toastService;
-            NewUser = new UserDTO
-            {
-                Role = Role.WarehouseWorker
-            };
-            EditContext = new EditContext(NewUser);
         }
 
-        // Add new user
-        public async Task HandleAddUser()
+        /// <summary>
+        /// Loads users on initialization
+        /// </summary>
+        public async Task InitializeAsync()
         {
-            if (!EditContext.Validate())
-                return;
+            await RefreshUsersAsync();
+        }
 
-            IsLoading = true;
-
+        /// <summary>
+        /// Refreshes the user list from the backend
+        /// </summary>
+        public async Task RefreshUsersAsync()
+        {
             try
             {
-                await _userUseCases.AddUserAsync(NewUser);
-                _toastService.ShowSuccess($"User '{NewUser.Username}' added successfully!");
-                ResetForm();
+                IsLoading = true;
+                ErrorMessage = string.Empty;
+                Users = (await _userUseCases.GetAllUsersAsync()).ToList();
             }
             catch (Exception ex)
             {
-                _toastService.ShowError("An error occurred while adding the user: " + ex.Message);
+                ErrorMessage = "An error occurred while fetching users: " + ex.Message;
             }
             finally
             {
@@ -59,72 +79,14 @@ namespace BlazorServerApp.Managers
             }
         }
 
-        private void ResetForm()
-        {
-            NewUser = new UserDTO
-            {
-                Role = Role.WarehouseWorker
-            };
-            EditContext = new EditContext(NewUser);
-        }
+        /// <summary>
+        /// Clears the search query
+        /// </summary>
+        public void ClearSearch() => SearchQuery = string.Empty;
 
-        // Update existing user
-        public void ClearSearch()
-        {
-            SearchQuery = string.Empty;
-        }
-
-        public void ToggleEditUser(User user)
-        {
-            if (EditingUser?.Userid == user.Userid)
-            {
-                EditingUser = null;
-                return;
-            }
-
-            EditingUser = new User
-            {
-                Username = user.Username,
-                Password = string.Empty,
-                Userid = user.Userid,
-                Role = user.Role
-            };
-        }
-
-        public async Task DeleteUserAsync(User user)
-        {
-            try
-            {
-                await _userUseCases.DeleteUserAsync(user);
-                _toastService.ShowInfo($"User '{user.Username}' was deleted successfully.");
-            }
-            catch (Exception ex)
-            {
-                _toastService.ShowError("An error occurred while deleting the user: " + ex.Message);
-            }
-        }
-
-        public async Task SaveUserAsync()
-        {
-            if (EditingUser == null) return;
-
-            try
-            {
-                await _userUseCases.EditUserAsync(EditingUser);
-                _toastService.ShowSuccess("User details updated successfully.");
-                EditingUser = null;
-            }
-            catch (Exception ex)
-            {
-                _toastService.ShowError("An error occurred while updating the user: " + ex.Message);
-            }
-        }
-
-        public void CancelEdit()
-        {
-            EditingUser = null;
-        }
-
+        /// <summary>
+        /// Converts the Role Enum to a human-readable string
+        /// </summary>
         public string HumanizeRole(Role role)
         {
             return role switch
@@ -135,13 +97,75 @@ namespace BlazorServerApp.Managers
             };
         }
 
-        public string ValidationClass(object model, string fieldName)
+        /// <summary>
+        /// Toggles edit mode for the selected user
+        /// </summary>
+        public void ToggleEditUser(User user)
         {
-            if (model == null) return string.Empty;
+            // If we're already editing this user, exit edit mode
+            if (EditingUser?.Userid == user.Userid)
+            {
+                EditingUser = null;
+                return;
+            }
 
-            var fieldIdentifier = new FieldIdentifier(model, fieldName);
-            var isValid = !EditContext.GetValidationMessages(fieldIdentifier).Any();
-            return isValid ? "" : "is-invalid";
+            // Otherwise, set this user as the current editing user
+            EditingUser = new User
+            {
+                Username = user.Username,
+                Password = string.Empty, // Don't pre-populate passwords for security
+                Userid = user.Userid,
+                Role = user.Role
+            };
+        }
+
+        /// <summary>
+        /// Deletes a user and updates the user list
+        /// </summary>
+        public async Task DeleteUserAsync(User user)
+        {
+            try
+            {
+                await _userUseCases.DeleteUserAsync(user);
+                Users.Remove(user); // Remove the user from the local list
+                _toastService.ShowSuccess($"User '{user.Username}' was deleted successfully.");
+            }
+            catch (Exception ex)
+            {
+                _toastService.ShowError("An error occurred while deleting the user: " + ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// Saves the updated user and exits edit mode
+        /// </summary>
+        public async Task SaveUserAsync()
+        {
+            if (EditingUser == null) return;
+
+            try
+            {
+                await _userUseCases.EditUserAsync(EditingUser);
+                var userIndex = Users.FindIndex(u => u.Userid == EditingUser.Userid);
+                if (userIndex != -1)
+                {
+                    Users[userIndex] = EditingUser; // Update the user in the local list
+                }
+                _toastService.ShowSuccess("User details updated successfully.");
+                EditingUser = null; // Exit edit mode
+            }
+            catch (Exception ex)
+            {
+                _toastService.ShowError("An error occurred while updating the user: " + ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// Cancels edit mode without saving changes
+        /// </summary>
+        public void CancelEdit()
+        {
+            EditingUser = null;
         }
     }
 }

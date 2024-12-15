@@ -5,6 +5,7 @@ using BlazorServerApp.Application.Interfaces;
 using BlazorServerApp.Managers;
 using Microsoft.AspNetCore.Components.Authorization;
 using Orders;
+using Users;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -31,6 +32,11 @@ builder.Services.AddGrpcClient<OrderService.OrderServiceClient>(options =>
     options.Address = new Uri("http://localhost:8090"); // Replace with your Spring Boot gRPC server URL
 });
 
+builder.Services.AddGrpcClient<UserService.UserServiceClient>(options =>
+{
+    options.Address = new Uri("http://localhost:8090"); // Ensure this is the correct URL
+});
+
 // Register Repositories, UseCases, and Managers using Dependency Injection
 builder.Services.AddScoped<IAuthRepository, AuthRepository>(); // Register IAuthRepository
 builder.Services.AddScoped<AuthUseCases>(); // Register Auth Use Case
@@ -47,6 +53,10 @@ builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthenticationStat
 
 // Register OrderHistoryManager
 builder.Services.AddScoped<OrderHistoryManager>(); // Register OrderHistoryManager
+
+builder.Services.AddScoped<IUserRepository, UserRepository>(); // Register IUserRepository with UserRepository
+builder.Services.AddScoped<UserUseCases>(); // Register UserUseCases
+builder.Services.AddScoped<UserManager>(); // Register UserManager
 
 var app = builder.Build();
 

@@ -17,7 +17,7 @@ import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
-class RestUser {
+class RestUserOrder {
     public int userId;
     public String userName;
     public String password; // Might be empty as per the C# code
@@ -37,8 +37,8 @@ class RestOrder {
     public String deliveryDate; // ISO-8601 or string representation
     public List<RestOrderItem> orderItems;
 
-    public RestUser createdBy;      // Detailed user who created the order
-    public RestUser assignedUser;   // Detailed user to whom the order is assigned, can be null
+    public RestUserOrder createdBy;      // Detailed user who created the order
+    public RestUserOrder assignedUser;   // Detailed user to whom the order is assigned, can be null
     public String createdAt;        // ISO-8601 string, parseable as OffsetDateTime
 }
 
@@ -61,10 +61,10 @@ public class OrderService extends OrderServiceGrpc.OrderServiceImplBase {
         // We map:
         // - createdBy to restOrder.createdBy.userId
         // - user_id to restOrder.assignedUser.userId (the user who will handle this order)
-        restOrder.createdBy = new RestUser();
+        restOrder.createdBy = new RestUserOrder();
         restOrder.createdBy.userId = request.getCreatedBy();
 
-        restOrder.assignedUser = new RestUser();
+        restOrder.assignedUser = new RestUserOrder();
         restOrder.assignedUser.userId = request.getUserId();
 
         // Set the order status and delivery date - as per your logic
@@ -169,10 +169,10 @@ public class OrderService extends OrderServiceGrpc.OrderServiceImplBase {
             // Handle null assignedUser and createdBy
             if (ro.assignedUser != null) {
                 User assignedUserProto = convertRestUserToProto(ro.assignedUser);
-                builder.setAssignedUser(assignedUserProto); // Only set if assignedUser is not null
+                builder.setAssignedUser(assignedUserProto);
             } else {
                 System.out.println("Warning: assignedUser is null for order " + ro.orderId);
-                // Do not set assignedUser at all, let protobuf handle it as "not set"
+                builder.setAssignedUser(User.newBuilder().build()); // Default to empty User
             }
 
             if (ro.createdBy != null) {
@@ -180,7 +180,7 @@ public class OrderService extends OrderServiceGrpc.OrderServiceImplBase {
                 builder.setCreatedByUser(createdByProto);
             } else {
                 System.out.println("Warning: createdBy is null for order " + ro.orderId);
-                builder.setCreatedByUser(User.newBuilder().build()); // Set default empty User
+                builder.setCreatedByUser(User.newBuilder().build()); // Default to empty User
             }
 
             if (ro.orderItems != null) {
@@ -217,8 +217,7 @@ public class OrderService extends OrderServiceGrpc.OrderServiceImplBase {
     }
 
 
-
-    private User convertRestUserToProto(RestUser restUser) {
+    private User convertRestUserToProto(RestUserOrder restUser) {
         if (restUser == null) {
             System.out.println("Warning: RestUser is null.");
             return User.newBuilder().build();

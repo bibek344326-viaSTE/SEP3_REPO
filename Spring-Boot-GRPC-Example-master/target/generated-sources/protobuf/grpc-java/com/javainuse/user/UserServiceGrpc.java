@@ -28,21 +28,21 @@ public final class UserServiceGrpc {
 
   // Static method descriptors that strictly reflect the proto.
   private static volatile io.grpc.MethodDescriptor<com.javainuse.user.UserDTO,
-      com.javainuse.user.UserResponse> getAddUserMethod;
+      com.javainuse.user.User> getAddUserMethod;
 
   @io.grpc.stub.annotations.RpcMethod(
       fullMethodName = SERVICE_NAME + '/' + "addUser",
       requestType = com.javainuse.user.UserDTO.class,
-      responseType = com.javainuse.user.UserResponse.class,
+      responseType = com.javainuse.user.User.class,
       methodType = io.grpc.MethodDescriptor.MethodType.UNARY)
   public static io.grpc.MethodDescriptor<com.javainuse.user.UserDTO,
-      com.javainuse.user.UserResponse> getAddUserMethod() {
-    io.grpc.MethodDescriptor<com.javainuse.user.UserDTO, com.javainuse.user.UserResponse> getAddUserMethod;
+      com.javainuse.user.User> getAddUserMethod() {
+    io.grpc.MethodDescriptor<com.javainuse.user.UserDTO, com.javainuse.user.User> getAddUserMethod;
     if ((getAddUserMethod = UserServiceGrpc.getAddUserMethod) == null) {
       synchronized (UserServiceGrpc.class) {
         if ((getAddUserMethod = UserServiceGrpc.getAddUserMethod) == null) {
           UserServiceGrpc.getAddUserMethod = getAddUserMethod = 
-              io.grpc.MethodDescriptor.<com.javainuse.user.UserDTO, com.javainuse.user.UserResponse>newBuilder()
+              io.grpc.MethodDescriptor.<com.javainuse.user.UserDTO, com.javainuse.user.User>newBuilder()
               .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
               .setFullMethodName(generateFullMethodName(
                   "users.UserService", "addUser"))
@@ -50,7 +50,7 @@ public final class UserServiceGrpc {
               .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
                   com.javainuse.user.UserDTO.getDefaultInstance()))
               .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  com.javainuse.user.UserResponse.getDefaultInstance()))
+                  com.javainuse.user.User.getDefaultInstance()))
                   .setSchemaDescriptor(new UserServiceMethodDescriptorSupplier("addUser"))
                   .build();
           }
@@ -89,38 +89,6 @@ public final class UserServiceGrpc {
         }
      }
      return getEditUserMethod;
-  }
-
-  private static volatile io.grpc.MethodDescriptor<com.javainuse.user.User,
-      com.google.protobuf.Empty> getEditPasswordMethod;
-
-  @io.grpc.stub.annotations.RpcMethod(
-      fullMethodName = SERVICE_NAME + '/' + "editPassword",
-      requestType = com.javainuse.user.User.class,
-      responseType = com.google.protobuf.Empty.class,
-      methodType = io.grpc.MethodDescriptor.MethodType.UNARY)
-  public static io.grpc.MethodDescriptor<com.javainuse.user.User,
-      com.google.protobuf.Empty> getEditPasswordMethod() {
-    io.grpc.MethodDescriptor<com.javainuse.user.User, com.google.protobuf.Empty> getEditPasswordMethod;
-    if ((getEditPasswordMethod = UserServiceGrpc.getEditPasswordMethod) == null) {
-      synchronized (UserServiceGrpc.class) {
-        if ((getEditPasswordMethod = UserServiceGrpc.getEditPasswordMethod) == null) {
-          UserServiceGrpc.getEditPasswordMethod = getEditPasswordMethod = 
-              io.grpc.MethodDescriptor.<com.javainuse.user.User, com.google.protobuf.Empty>newBuilder()
-              .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
-              .setFullMethodName(generateFullMethodName(
-                  "users.UserService", "editPassword"))
-              .setSampledToLocalTracing(true)
-              .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  com.javainuse.user.User.getDefaultInstance()))
-              .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  com.google.protobuf.Empty.getDefaultInstance()))
-                  .setSchemaDescriptor(new UserServiceMethodDescriptorSupplier("editPassword"))
-                  .build();
-          }
-        }
-     }
-     return getEditPasswordMethod;
   }
 
   private static volatile io.grpc.MethodDescriptor<com.javainuse.user.User,
@@ -217,7 +185,7 @@ public final class UserServiceGrpc {
     /**
      */
     public void addUser(com.javainuse.user.UserDTO request,
-        io.grpc.stub.StreamObserver<com.javainuse.user.UserResponse> responseObserver) {
+        io.grpc.stub.StreamObserver<com.javainuse.user.User> responseObserver) {
       asyncUnimplementedUnaryCall(getAddUserMethod(), responseObserver);
     }
 
@@ -226,13 +194,6 @@ public final class UserServiceGrpc {
     public void editUser(com.javainuse.user.User request,
         io.grpc.stub.StreamObserver<com.google.protobuf.Empty> responseObserver) {
       asyncUnimplementedUnaryCall(getEditUserMethod(), responseObserver);
-    }
-
-    /**
-     */
-    public void editPassword(com.javainuse.user.User request,
-        io.grpc.stub.StreamObserver<com.google.protobuf.Empty> responseObserver) {
-      asyncUnimplementedUnaryCall(getEditPasswordMethod(), responseObserver);
     }
 
     /**
@@ -256,7 +217,7 @@ public final class UserServiceGrpc {
             asyncUnaryCall(
               new MethodHandlers<
                 com.javainuse.user.UserDTO,
-                com.javainuse.user.UserResponse>(
+                com.javainuse.user.User>(
                   this, METHODID_ADD_USER)))
           .addMethod(
             getEditUserMethod(),
@@ -265,13 +226,6 @@ public final class UserServiceGrpc {
                 com.javainuse.user.User,
                 com.google.protobuf.Empty>(
                   this, METHODID_EDIT_USER)))
-          .addMethod(
-            getEditPasswordMethod(),
-            asyncUnaryCall(
-              new MethodHandlers<
-                com.javainuse.user.User,
-                com.google.protobuf.Empty>(
-                  this, METHODID_EDIT_PASSWORD)))
           .addMethod(
             getDeleteUserMethod(),
             asyncUnaryCall(
@@ -311,7 +265,7 @@ public final class UserServiceGrpc {
     /**
      */
     public void addUser(com.javainuse.user.UserDTO request,
-        io.grpc.stub.StreamObserver<com.javainuse.user.UserResponse> responseObserver) {
+        io.grpc.stub.StreamObserver<com.javainuse.user.User> responseObserver) {
       asyncUnaryCall(
           getChannel().newCall(getAddUserMethod(), getCallOptions()), request, responseObserver);
     }
@@ -322,14 +276,6 @@ public final class UserServiceGrpc {
         io.grpc.stub.StreamObserver<com.google.protobuf.Empty> responseObserver) {
       asyncUnaryCall(
           getChannel().newCall(getEditUserMethod(), getCallOptions()), request, responseObserver);
-    }
-
-    /**
-     */
-    public void editPassword(com.javainuse.user.User request,
-        io.grpc.stub.StreamObserver<com.google.protobuf.Empty> responseObserver) {
-      asyncUnaryCall(
-          getChannel().newCall(getEditPasswordMethod(), getCallOptions()), request, responseObserver);
     }
 
     /**
@@ -369,7 +315,7 @@ public final class UserServiceGrpc {
 
     /**
      */
-    public com.javainuse.user.UserResponse addUser(com.javainuse.user.UserDTO request) {
+    public com.javainuse.user.User addUser(com.javainuse.user.UserDTO request) {
       return blockingUnaryCall(
           getChannel(), getAddUserMethod(), getCallOptions(), request);
     }
@@ -379,13 +325,6 @@ public final class UserServiceGrpc {
     public com.google.protobuf.Empty editUser(com.javainuse.user.User request) {
       return blockingUnaryCall(
           getChannel(), getEditUserMethod(), getCallOptions(), request);
-    }
-
-    /**
-     */
-    public com.google.protobuf.Empty editPassword(com.javainuse.user.User request) {
-      return blockingUnaryCall(
-          getChannel(), getEditPasswordMethod(), getCallOptions(), request);
     }
 
     /**
@@ -423,7 +362,7 @@ public final class UserServiceGrpc {
 
     /**
      */
-    public com.google.common.util.concurrent.ListenableFuture<com.javainuse.user.UserResponse> addUser(
+    public com.google.common.util.concurrent.ListenableFuture<com.javainuse.user.User> addUser(
         com.javainuse.user.UserDTO request) {
       return futureUnaryCall(
           getChannel().newCall(getAddUserMethod(), getCallOptions()), request);
@@ -435,14 +374,6 @@ public final class UserServiceGrpc {
         com.javainuse.user.User request) {
       return futureUnaryCall(
           getChannel().newCall(getEditUserMethod(), getCallOptions()), request);
-    }
-
-    /**
-     */
-    public com.google.common.util.concurrent.ListenableFuture<com.google.protobuf.Empty> editPassword(
-        com.javainuse.user.User request) {
-      return futureUnaryCall(
-          getChannel().newCall(getEditPasswordMethod(), getCallOptions()), request);
     }
 
     /**
@@ -464,9 +395,8 @@ public final class UserServiceGrpc {
 
   private static final int METHODID_ADD_USER = 0;
   private static final int METHODID_EDIT_USER = 1;
-  private static final int METHODID_EDIT_PASSWORD = 2;
-  private static final int METHODID_DELETE_USER = 3;
-  private static final int METHODID_GET_ALL_USERS = 4;
+  private static final int METHODID_DELETE_USER = 2;
+  private static final int METHODID_GET_ALL_USERS = 3;
 
   private static final class MethodHandlers<Req, Resp> implements
       io.grpc.stub.ServerCalls.UnaryMethod<Req, Resp>,
@@ -487,14 +417,10 @@ public final class UserServiceGrpc {
       switch (methodId) {
         case METHODID_ADD_USER:
           serviceImpl.addUser((com.javainuse.user.UserDTO) request,
-              (io.grpc.stub.StreamObserver<com.javainuse.user.UserResponse>) responseObserver);
+              (io.grpc.stub.StreamObserver<com.javainuse.user.User>) responseObserver);
           break;
         case METHODID_EDIT_USER:
           serviceImpl.editUser((com.javainuse.user.User) request,
-              (io.grpc.stub.StreamObserver<com.google.protobuf.Empty>) responseObserver);
-          break;
-        case METHODID_EDIT_PASSWORD:
-          serviceImpl.editPassword((com.javainuse.user.User) request,
               (io.grpc.stub.StreamObserver<com.google.protobuf.Empty>) responseObserver);
           break;
         case METHODID_DELETE_USER:
@@ -568,7 +494,6 @@ public final class UserServiceGrpc {
               .setSchemaDescriptor(new UserServiceFileDescriptorSupplier())
               .addMethod(getAddUserMethod())
               .addMethod(getEditUserMethod())
-              .addMethod(getEditPasswordMethod())
               .addMethod(getDeleteUserMethod())
               .addMethod(getGetAllUsersMethod())
               .build();

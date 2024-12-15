@@ -20,20 +20,21 @@ public class UsersController: ControllerBase
     // ********** CREATE Endpoints **********
     // POST: /Users
     [HttpPost]
-    public async Task<ActionResult<UserResponse>> AddUser([FromBody] RegisterRequest request)
+    public async Task<ActionResult<User>> AddUser([FromBody] UerDTO request)
     {
+        // Verify that the username is available
         await VerifyUserNameIsAvailableAsync(request.UserName);
 
+        // Create a new User instance
         User user = Entities.User.Create(request.UserName, request.Password, request.UserRole);
+
+        // Save the user to the repository
         User created = await userRepo.AddUserAsync(user);
-        UserResponse dto = new()
-        {
-            UserId = created.UserId,
-            UserName = created.UserName,
-            UserRole = created.UserRole
-        };
-        return Created($"/Users/{dto.UserId}", created);
+
+        // Return the created user with status 201 (Created)
+        return CreatedAtAction(nameof(AddUser), new { id = created.UserId }, created);
     }
+
 
     private async Task VerifyUserNameIsAvailableAsync(string requestUserName)
     {
@@ -96,15 +97,16 @@ public class UsersController: ControllerBase
     // ********** GET Endpoints **********
     // GET: /Users/{id}
     [HttpGet("{id}")]
-    public async Task<ActionResult<UserResponse>> GetSingleUser([FromRoute] int id)
+    public async Task<ActionResult<User>> GetSingleUser([FromRoute] int id)
     {
         try
         {
             User user = await userRepo.GetUserById(id);
-            UserResponse dto = new()
+            User dto = new User()
             {
                 UserId = user.UserId,
                 UserName = user.UserName,
+                Password = user.Password,
                 UserRole = user.UserRole
             };
             return Ok(dto);
@@ -122,17 +124,11 @@ public class UsersController: ControllerBase
 
     // GET: /Users
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<UserResponse>>> GetAllUsers()
+    public async Task<ActionResult<IEnumerable<User>>> GetAllUsers()
     {
         try
         {
-            List<UserResponse> dtos = await userRepo.GetAllUsers()
-                .Select(u => new UserResponse()
-                {
-                    UserId = u.UserId,
-                    UserName = u.UserName,
-                    UserRole = u.UserRole
-                })
+            List<User> dtos = await userRepo.GetAllUsers()
                 .ToListAsync(); // Ensure asynchronous operation
             return Ok(dtos);
         }
@@ -146,17 +142,11 @@ public class UsersController: ControllerBase
 
     // Line 145: Update GetAllUsersByType method
     [HttpGet("Type/{type}")]
-    public async Task<ActionResult<IEnumerable<UserResponse>>> GetAllUsersByType([FromRoute] UserRole type)
+    public async Task<ActionResult<IEnumerable<User>>> GetAllUsersByType([FromRoute] UserRole type)
     {
         try
         {
-            List<UserResponse> dtos = await userRepo.GetAllUsersByRole(type)
-                .Select(u => new UserResponse()
-                {
-                    UserId = u.UserId,
-                    UserName = u.UserName,
-                    UserRole = u.UserRole
-                })
+            List<User> dtos = await userRepo.GetAllUsersByRole(type)
                 .ToListAsync();
             return Ok(dtos);
         }
@@ -170,7 +160,7 @@ public class UsersController: ControllerBase
 
     // GET: /Users/Username/{username} 
     [HttpGet("Username/{username}")]
-    public async Task<ActionResult<UserResponse>> GetUserByUsername([FromRoute] string username)
+    public async Task<ActionResult<User>> GetUserByUsername([FromRoute] string username)
     {
         try
         {
@@ -179,13 +169,7 @@ public class UsersController: ControllerBase
             {
                 return NotFound($"User with username {username} not found.");
             }
-            UserResponse dto = new()
-            {
-                UserId = user.UserId,
-                UserName = user.UserName,
-                UserRole = user.UserRole
-            };
-            return Ok(dto);
+            return Ok(user);
         }
         catch (Exception e)
         {

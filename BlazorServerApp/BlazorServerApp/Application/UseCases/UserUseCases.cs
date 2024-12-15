@@ -9,67 +9,29 @@ namespace BlazorServerApp.Application.UseCases
 
         public UserUseCases(IUserRepository userRepository)
         {
-            _userRepository = userRepository ?? throw new ArgumentNullException(nameof(userRepository));
-        }
-
-        public async Task<UserResponse> AddUserAsync(UserDTO userDTO)
-        {
-            if (userDTO == null) throw new ArgumentNullException(nameof(userDTO));
-
-            try
-            {
-                var response = await _userRepository.AddUserAsync(userDTO);
-                return response;
-            }
-            catch (Exception ex)
-            {
-                // Handle exception appropriately (logging, rethrow, etc.)
-                throw new ApplicationException("Error adding user", ex);
-            }
-        }
-
-        public async Task DeleteUserAsync(User user)
-        {
-            if (user == null) throw new ArgumentNullException(nameof(user));
-
-            try
-            {
-                await _userRepository.DeleteUserAsync(user);
-            }
-            catch (Exception ex)
-            {
-                // Handle exception appropriately (logging, rethrow, etc.)
-                throw new ApplicationException("Error deleting user", ex);
-            }
-        }
-
-        public async Task EditUserAsync(User user)
-        {
-            if (user == null) throw new ArgumentNullException(nameof(user));
-
-            try
-            {
-                await _userRepository.EditUserAsync(user);
-            }
-            catch (Exception ex)
-            {
-                // Handle exception appropriately (logging, rethrow, etc.)
-                throw new ApplicationException("Error editing user", ex);
-            }
+            _userRepository = userRepository;
         }
 
         public async Task<IEnumerable<User>> GetAllUsersAsync()
         {
             try
             {
-                var users = await _userRepository.GetAllUsersAsync();
-                return users;
+                return await _userRepository.GetAllUsersAsync();
             }
             catch (Exception ex)
             {
-                // Handle exception appropriately (logging, rethrow, etc.)
                 throw new ApplicationException("Error retrieving users", ex);
             }
+        }
+
+        internal async Task DeleteUserAsync(User user)
+        {
+            throw new NotImplementedException();
+        }
+
+        internal async Task EditUserAsync(User editingUser)
+        {
+            throw new NotImplementedException();
         }
     }
 }

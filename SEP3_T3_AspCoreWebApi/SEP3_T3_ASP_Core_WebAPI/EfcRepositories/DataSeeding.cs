@@ -39,7 +39,7 @@ namespace SEP3_T3_ASP_Core_WebAPI.Data
                     var user2 = new User
                     {
                         UserName = "worker",
-                        UserRole = UserRole.INVENTORY_MANAGER,
+                        UserRole = UserRole.WAREHOUSE_WORKER,
                         Password = passwordHasher.HashPassword(null, "worker")
                     };
 
