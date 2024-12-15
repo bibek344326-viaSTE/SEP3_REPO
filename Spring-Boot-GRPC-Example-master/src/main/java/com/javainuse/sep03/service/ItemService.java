@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.protobuf.Empty;
-import com.hubspot.jackson.datatype.protobuf.ProtobufModule;
 import com.javainuse.item.ItemDTO;
 import com.javainuse.item.Item;
 import com.javainuse.item.ItemList;
@@ -77,7 +76,6 @@ public class ItemService extends ItemServiceGrpc.ItemServiceImplBase {
     /**
      * Get all items from the API
      */
-
     @Override
     public void getAllItems(Empty request, StreamObserver<ItemList> responseObserver) {
         try {
@@ -94,18 +92,13 @@ public class ItemService extends ItemServiceGrpc.ItemServiceImplBase {
                     }
                     System.out.println("Response body from REST API: " + responseString);
 
-                    // Initialize Jackson with Protobuf support
-                    ObjectMapper objectMapper = new ObjectMapper();
-                    objectMapper.registerModule(new ProtobufModule());
+                    List<Item> simpleItems = objectMapper.readValue(responseString, new TypeReference<List<Item>>() {});
 
-                    // Deserialize JSON into List of Protobuf Items
-                    List<Item> itemList = objectMapper.readValue(responseString, new TypeReference<List<Item>>() {});
+                    System.out.println("Parsed simple items: " + simpleItems);
 
-                    System.out.println("Parsed items: " + itemList);
-
-                    // Add items to ItemList
                     ItemList.Builder itemListBuilder = ItemList.newBuilder();
-                    itemListBuilder.addAllItems(itemList);
+                    itemListBuilder.addAllItems(simpleItems);
+
 
                     responseObserver.onNext(itemListBuilder.build());
                     responseObserver.onCompleted();
@@ -120,7 +113,6 @@ public class ItemService extends ItemServiceGrpc.ItemServiceImplBase {
             responseObserver.onError(e);
         }
     }
-
 
     /**
      * Edit an item
