@@ -5,57 +5,50 @@ import com.javainuse.authentication.LoginRequest;
 import com.javainuse.authentication.LoginResponse;
 import io.grpc.stub.StreamObserver;
 import net.devh.boot.grpc.server.service.GrpcService;
-import org.apache.hc.client5.http.classic.HttpClient;
-import org.apache.hc.client5.http.classic.methods.HttpPost;
-import org.apache.hc.client5.http.impl.classic.HttpClients;
-import org.apache.hc.core5.http.Header;
-import org.apache.hc.core5.http.io.entity.StringEntity;
+import org.springframework.web.reactive.function.client.WebClient;
 
-import java.nio.charset.StandardCharsets;
+import java.util.Map;
 
 @GrpcService
 public class AuthService extends AuthServiceGrpc.AuthServiceImplBase {
-    private final HttpClient client = HttpClients.createDefault();
+
+    private final String baseUrl = "http://localhost:5203/api/auth";
+    private final WebClient webClient = WebClient.create(baseUrl);
 
     @Override
     public void login(LoginRequest request, StreamObserver<LoginResponse> responseObserver) {
         System.out.println("Login attempt: Username - " + request.getUsername() + " Password - " + request.getPassword());
 
+        Map<String, String> requestBody = Map.of(
+                "UserName", request.getUsername(),
+                "Password", request.getPassword()
+        );
+
         try {
-            HttpPost httpPost = new HttpPost("http://localhost:5203/api/auth/login");
-            String json = "{\"UserName\":\"" + request.getUsername() + "\", \"Password\":\"" + request.getPassword() + "\"}";
-            httpPost.setHeader("Content-type", "application/json");
-            httpPost.setEntity(new StringEntity(json, StandardCharsets.UTF_8));
+            webClient.post()
+                    .uri("/login")
+                    .bodyValue(requestBody)
+                    .retrieve()
+                    .bodyToMono(String.class) // Assuming the response is a String JSON response
+                    .doOnNext(responseString -> {
+                        System.out.println("Response body from REST API: " + responseString);
+                    })
+                    .map(this::extractTokenFromResponse) // Extract the token from the response
+                    .doOnNext(token -> {
+                        System.out.println("Extracted Token: " + token);
+                    })
+                    .doOnError(throwable -> {
+                        System.err.println("Error during login request: " + throwable.getMessage());
+                        responseObserver.onError(throwable);
+                    })
+                    .subscribe(token -> {
+                        LoginResponse response = LoginResponse.newBuilder()
+                                .setToken(token)
+                                .build();
 
-            LoginResponse response = client.execute(httpPost, httpResponse -> {
-                System.out.println("Status line from REST API: " + httpResponse.getReasonPhrase());
-                System.out.println("Status code from REST API: " + httpResponse.getCode());
-
-                System.out.println("Headers from REST API:");
-                for (Header header : httpResponse.getHeaders()) {
-                    System.out.println(header.getName() + ": " + header.getValue());
-                }
-
-                byte[] responseBytes = httpResponse.getEntity().getContent().readAllBytes();
-                String responseString = new String(responseBytes, StandardCharsets.UTF_8);
-                System.out.println("Response body from REST API: " + responseString);
-
-                if (httpResponse.getCode() == 200) {
-                    // Extract the token from the response string
-                    String token = extractTokenFromResponse(responseString);
-
-                    System.out.println("Extracted Token: " + token);
-
-                    return LoginResponse.newBuilder()
-                            .setToken(token)
-                            .build();
-                } else {
-                    throw new RuntimeException("Failed to log in: " + httpResponse.getCode());
-                }
-            });
-
-            responseObserver.onNext(response);
-            responseObserver.onCompleted();
+                        responseObserver.onNext(response);
+                        responseObserver.onCompleted();
+                    });
         } catch (Exception e) {
             e.printStackTrace();
             responseObserver.onError(e);
