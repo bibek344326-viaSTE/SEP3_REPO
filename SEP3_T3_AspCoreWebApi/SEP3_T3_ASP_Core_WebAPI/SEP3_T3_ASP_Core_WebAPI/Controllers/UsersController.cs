@@ -146,7 +146,7 @@ public class UsersController: ControllerBase
 
     // Line 145: Update GetAllUsersByType method
     [HttpGet("Type/{type}")]
-    public async Task<ActionResult<IEnumerable<UserResponse>>> GetAllUsersByType([FromRoute] string type)
+    public async Task<ActionResult<IEnumerable<UserResponse>>> GetAllUsersByType([FromRoute] UserRole type)
     {
         try
         {
