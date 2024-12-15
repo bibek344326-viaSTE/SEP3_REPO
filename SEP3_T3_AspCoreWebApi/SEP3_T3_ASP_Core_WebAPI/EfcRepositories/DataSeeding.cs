@@ -18,7 +18,6 @@ namespace SEP3_T3_ASP_Core_WebAPI.Data
                 // Clear existing data if ClearDatabase is true
                 if (clearDatabase)
                 {
-                    // Remove data in the correct order to respect foreign key constraints
                     context.OrderItems.RemoveRange(context.OrderItems);
                     context.Orders.RemoveRange(context.Orders);
                     context.Items.RemoveRange(context.Items);
@@ -45,6 +44,7 @@ namespace SEP3_T3_ASP_Core_WebAPI.Data
                     };
 
                     context.Users.AddRange(user1, user2);
+
                     context.SaveChanges();
 
                     // ----- Step 2: Insert Items -----
@@ -62,27 +62,11 @@ namespace SEP3_T3_ASP_Core_WebAPI.Data
                         new Item { ItemName = "Orange Juice", Description = "1 Gallon of Orange Juice", QuantityInStore = 14 },
                         new Item { ItemName = "Cereal", Description = "Oat Cereal, 500g", QuantityInStore = 16 },
                         new Item { ItemName = "Yogurt", Description = "Greek Yogurt, 1 lb", QuantityInStore = 20 },
-                        new Item { ItemName = "Honey", Description = "Organic Honey, 12 oz", QuantityInStore = 8 },
-                        new Item { ItemName = "Tea", Description = "Green Tea Bags, 20 count", QuantityInStore = 25 },
-                        new Item { ItemName = "Sugar", Description = "Granulated Sugar, 2 lb", QuantityInStore = 30 },
-                        new Item { ItemName = "Rice", Description = "Basmati Rice, 1 kg", QuantityInStore = 50 },
-                        new Item { ItemName = "Pasta", Description = "Italian Spaghetti, 500g", QuantityInStore = 40 },
-                        new Item { ItemName = "Tomato Sauce", Description = "Tomato Sauce, 16 oz", QuantityInStore = 25 },
-                        new Item { ItemName = "Salt", Description = "Table Salt, 1 lb", QuantityInStore = 100 },
-                        new Item { ItemName = "Pepper", Description = "Ground Black Pepper, 4 oz", QuantityInStore = 35 },
-                        new Item { ItemName = "Olive Oil", Description = "Extra Virgin Olive Oil, 1L", QuantityInStore = 12 },
-                        new Item { ItemName = "Vinegar", Description = "Apple Cider Vinegar, 16 oz", QuantityInStore = 20 },
-                        new Item { ItemName = "Onions", Description = "Yellow Onions, 1 lb", QuantityInStore = 60 },
-                        new Item { ItemName = "Potatoes", Description = "Russet Potatoes, 1 lb", QuantityInStore = 70 },
-                        new Item { ItemName = "Carrots", Description = "Fresh Carrots, 1 lb", QuantityInStore = 50 },
-                        new Item { ItemName = "Chicken Breast", Description = "Boneless Chicken Breast, 1 lb", QuantityInStore = 25 },
-                        new Item { ItemName = "Beef", Description = "Ground Beef, 1 lb", QuantityInStore = 30 },
-                        new Item { ItemName = "Fish", Description = "Frozen Fish Fillet, 1 lb", QuantityInStore = 15 },
-                        new Item { ItemName = "Shrimp", Description = "Frozen Shrimp, 1 lb", QuantityInStore = 10 },
-                        new Item { ItemName = "Ice Cream", Description = "Vanilla Ice Cream, 1 Gallon", QuantityInStore = 20 },
+                        new Item { ItemName = "Honey", Description = "Organic Honey, 12 oz", QuantityInStore = 8 }
                     };
 
                     context.Items.AddRange(items);
+
                     context.SaveChanges();
 
                     // ----- Step 3: Insert Orders -----
@@ -92,79 +76,77 @@ namespace SEP3_T3_ASP_Core_WebAPI.Data
                         {
                             OrderStatus = "Completed",
                             DeliveryDate = DateTime.UtcNow.AddDays(-1),
+                            CreatedById = user1.UserId,
                             UserId = user1.UserId,
+                            CreatedAt = DateTimeOffset.UtcNow,
                             OrderItems = new List<OrderItem>
                             {
                                 new OrderItem { ItemId = items[1].ItemId, QuantityToPick = 8 }, // Coffee
                                 new OrderItem { ItemId = items[3].ItemId, QuantityToPick = 6 }, // Bread
-                                new OrderItem { ItemId = items[2].ItemId, QuantityToPick = 4 }, // Chocolate
-                                new OrderItem { ItemId = items[4].ItemId, QuantityToPick = 4 }, // Butter
-                                new OrderItem { ItemId = items[6].ItemId, QuantityToPick = 5 }, // Eggs
-                                new OrderItem { ItemId = items[5].ItemId, QuantityToPick = 3 }, // Cheese
+                                new OrderItem { ItemId = items[2].ItemId, QuantityToPick = 4 }  // Chocolate
                             }
                         },
                         new Order
                         {
                             OrderStatus = "InProgress",
                             DeliveryDate = DateTime.UtcNow.AddDays(5),
+                            CreatedById = user2.UserId,
                             UserId = user2.UserId,
+                            CreatedAt = DateTimeOffset.UtcNow,
                             OrderItems = new List<OrderItem>
                             {
-                                new OrderItem { ItemId = items[9].ItemId, QuantityToPick = 4 }, // Orange Juice
-                                new OrderItem { ItemId = items[11].ItemId, QuantityToPick = 6 }, // Yogurt
                                 new OrderItem { ItemId = items[8].ItemId, QuantityToPick = 5 }, // Bananas
-                                new OrderItem { ItemId = items[0].ItemId, QuantityToPick = 7 }, // Milk
+                                new OrderItem { ItemId = items[0].ItemId, QuantityToPick = 7 }  // Milk
                             }
                         },
                         new Order
                         {
-                            OrderStatus = "InProgress",
-                            DeliveryDate = DateTime.UtcNow.AddDays(-3),
+                            OrderStatus = "Pending",
+                            DeliveryDate = DateTime.UtcNow.AddDays(3),
+                            CreatedById = user1.UserId,
                             UserId = user1.UserId,
+                            CreatedAt = DateTimeOffset.UtcNow,
                             OrderItems = new List<OrderItem>
                             {
-                                new OrderItem { ItemId = items[3].ItemId, QuantityToPick = 6 }, // Bread
-                                new OrderItem { ItemId = items[6].ItemId, QuantityToPick = 4 }, // Eggs
-                                new OrderItem { ItemId = items[2].ItemId, QuantityToPick = 5 }, // Chocolate
-                                new OrderItem { ItemId = items[5].ItemId, QuantityToPick = 5 }, // Cheese
+                                new OrderItem { ItemId = items[5].ItemId, QuantityToPick = 3 }, // Cheese
+                                new OrderItem { ItemId = items[4].ItemId, QuantityToPick = 2 }  // Butter
                             }
-                        },
+                        }
                     };
 
                     context.Orders.AddRange(orders);
                     context.SaveChanges();
 
                     // ----- Step 4: Insert Additional Orders and OrderItems -----
-
+                    var random = new Random(); // Ensuring a single Random instance for unique randomness
                     for (int i = 3; i < 20; i++) // Creating orders #4 to #20
                     {
                         var order = new Order
                         {
                             OrderStatus = i % 3 == 0 ? "Completed" : "InProgress",
                             DeliveryDate = DateTime.UtcNow.AddDays(-i),
-                            UserId = (i % 2 == 0) ? user1.UserId : user2.UserId,
+                            CreatedById = (i % 2 == 0) ? user1.UserId : user2.UserId, // Assign a CreatedById from user1 or user2
+                            UserId = (i % 2 == 0) ? user1.UserId : user2.UserId, // Assign a UserId from user1 or user2
+                            CreatedAt = DateTimeOffset.UtcNow, // Timestamp for order creation
                             OrderItems = new List<OrderItem>()
                         };
 
-                        // Randomly assign some items to the order
-                        var random = new Random();
                         int numberOfItems = random.Next(3, 7); // Each order has between 3 to 6 items
 
                         for (int j = 0; j < numberOfItems; j++)
                         {
-                            var randomItem = items[random.Next(items.Count)];
+                            var randomItem = items[random.Next(items.Count)]; // Pick a random item from the items list
                             int quantity = random.Next(1, 11); // Quantity between 1 to 10
 
                             // Avoid duplicate items in the same order
                             if (!order.OrderItems.Any(oi => oi.ItemId == randomItem.ItemId))
-{
-    order.OrderItems.Add(new OrderItem
-    {
-        ItemId = randomItem.ItemId,
-        QuantityToPick = quantity
-    });
-}
-
+                            {
+                                order.OrderItems.Add(new OrderItem
+                                {
+                                    ItemId = randomItem.ItemId,
+                                    QuantityToPick = quantity
+                                });
+                            }
                         }
 
                         orders.Add(order);
@@ -172,6 +154,7 @@ namespace SEP3_T3_ASP_Core_WebAPI.Data
 
                     context.Orders.AddRange(orders.GetRange(3, orders.Count - 3));
                     context.SaveChanges();
+
                 }
 
                 // Commit the transaction
