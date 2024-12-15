@@ -5,6 +5,6 @@
         Task<Item> CreateItemAsync(ItemDTO itemDTO);
         Task EditItemAsync(Item item);
         Task DeleteItemAsync(Item item);
-        Task<IEnumerable<Item>> GetAllItemsAsync();
+        IEnumerable<Item> GetAllItems();
     }
 }

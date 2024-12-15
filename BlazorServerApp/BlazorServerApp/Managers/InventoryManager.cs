@@ -66,7 +66,7 @@ namespace BlazorServerApp.Managers
 
         public IEnumerable<ItemViewModel> FilterAndSortItems()
         {
-            var items = _itemUseCases.GetAllItemsAsync().Result
+            var items = _itemUseCases.GetAllItems()
                 .Select(item => new ItemViewModel
                 {
                     Id = item.ItemId,

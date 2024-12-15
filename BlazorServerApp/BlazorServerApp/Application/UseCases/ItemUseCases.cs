@@ -57,11 +57,11 @@ namespace BlazorServerApp.Application.UseCases
             }
         }
 
-        public async Task<IEnumerable<Item>> GetAllItemsAsync()
+        public IEnumerable<Item> GetAllItems()
         {
             try
             {
-                var items = await _itemRepository.GetAllItemsAsync();
+                var items = _itemRepository.GetAllItems();
                 return items;
             }
             catch (Exception ex)
@@ -70,5 +70,6 @@ namespace BlazorServerApp.Application.UseCases
                 throw new ApplicationException("Error retrieving items", ex);
             }
         }
+
     }
 }

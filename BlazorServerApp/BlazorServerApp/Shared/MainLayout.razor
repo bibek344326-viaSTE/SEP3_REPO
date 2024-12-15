@@ -4,7 +4,7 @@
 
 <CascadingAuthenticationState>
     <div class="page">
-        @if (IsInventoryManager)
+        @if (IsAuthenticated)
         {
             <div class="sidebar">
                 <NavMenu />
@@ -18,43 +18,36 @@
         </main>
     </div>
 </CascadingAuthenticationState>
+
 <BlazoredToasts />
 
-
 @code {
-    private bool IsInventoryManager = false;
+    private bool IsAuthenticated = false;
 
     protected override async Task OnInitializedAsync()
     {
         // Subscribe to AuthenticationState changes
         AuthenticationStateProvider.AuthenticationStateChanged += OnAuthenticationStateChanged;
 
-        // Initial check for user's role
-        await CheckUserRole();
+        // Initial check for user's authenticated state
+        await CheckAuthentication();
     }
 
     private async void OnAuthenticationStateChanged(Task<AuthenticationState> task)
     {
-        await CheckUserRole();
+        await CheckAuthentication();
+        await InvokeAsync(StateHasChanged);
     }
 
-    private async Task CheckUserRole()
+    private async Task CheckAuthentication()
     {
         var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
         var user = authState.User;
 
-        if (user.Identity != null && user.Identity.IsAuthenticated)
-        {
-            // Check if the user is an Inventory Manager
-            IsInventoryManager = user.IsInRole("InventoryManager");
-        }
-        else
-        {
-            IsInventoryManager = false; // User is not authenticated, hide sidebar
-        }
+        IsAuthenticated = user.Identity != null && user.Identity.IsAuthenticated;
 
-        // Force Blazor to re-render the component
-        StateHasChanged();
+        // Update Blazor's state to reflect the new UI
+        await InvokeAsync(StateHasChanged);
     }
 
     public void Dispose()
@@ -62,4 +55,3 @@
         AuthenticationStateProvider.AuthenticationStateChanged -= OnAuthenticationStateChanged;
     }
 }
-

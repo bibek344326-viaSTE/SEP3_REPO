@@ -75,13 +75,13 @@ namespace BlazorServerApp.Infrastructure.Repositories
                 throw new ApplicationException("Error editing item", ex);
             }
         }
-        public Task<IEnumerable<Item>> GetAllItemsAsync()
+        public IEnumerable<Item> GetAllItems()
         {
             try
             {
                 Console.WriteLine("Sending GetAllItems request...");
 
-                // Call the gRPC service
+                // Call the gRPC service synchronously
                 var response = _client.getAllItems(new Google.Protobuf.WellKnownTypes.Empty());
 
                 // Convert RepeatedField<Item> to IEnumerable<Item>
@@ -94,8 +94,8 @@ namespace BlazorServerApp.Infrastructure.Repositories
                     Console.WriteLine($"ItemId: {item.ItemId}, ItemName: {item.ItemName}, Description: {item.Description}, QuantityInStore: {item.QuantityInStore}");
                 }
 
-                // Return the task-wrapped result
-                return Task.FromResult<IEnumerable<Item>>(items);
+                // Return the list of items (since it's already an IEnumerable)
+                return items;
             }
             catch (RpcException ex)
             {
@@ -103,6 +103,7 @@ namespace BlazorServerApp.Infrastructure.Repositories
                 throw new ApplicationException("Error retrieving all items", ex);
             }
         }
+
 
 
 

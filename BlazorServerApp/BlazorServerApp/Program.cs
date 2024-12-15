@@ -12,7 +12,6 @@ builder.Services.AddRazorPages();
 builder.Services.AddBlazoredToast();
 builder.Services.AddServerSideBlazor();
 
-builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthenticationStateProvider>();
 builder.Services.AddAuthorizationCore();
 
 // Register the gRPC client for AuthService
@@ -43,6 +42,7 @@ builder.Services.AddScoped<ItemUseCases>(); // Register ItemUseCases
 builder.Services.AddScoped<OrderUseCases>(); // Register OrderUseCases
 
 builder.Services.AddScoped<InventoryManager>(); // Register InventoryManager
+builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthenticationStateProvider>();
 
 var app = builder.Build();
 
