@@ -52,7 +52,7 @@ namespace SEP3_T3_ASP_Core_WebAPI.Controllers
         }
 
         [HttpPut("{id}/status")]
-        public async Task<ActionResult> UpdateOrderStatus([FromRoute] int id, [FromBody] string orderStatus)
+        public async Task<ActionResult> UpdateOrderStatus([FromRoute] int id, [FromBody] OrderStatus orderStatus)
         {
             try
             {

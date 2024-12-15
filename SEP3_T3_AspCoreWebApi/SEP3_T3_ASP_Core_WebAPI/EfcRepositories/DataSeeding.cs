@@ -74,7 +74,7 @@ namespace SEP3_T3_ASP_Core_WebAPI.Data
                     {
                         new Order
                         {
-                            OrderStatus = "Completed",
+                            OrderStatus = OrderStatus.COMPLETED,
                             DeliveryDate = DateTime.UtcNow.AddDays(-1),
                             CreatedById = user1.UserId,
                             UserId = user1.UserId,
@@ -88,7 +88,7 @@ namespace SEP3_T3_ASP_Core_WebAPI.Data
                         },
                         new Order
                         {
-                            OrderStatus = "InProgress",
+                            OrderStatus = OrderStatus.IN_PROGRESS,
                             DeliveryDate = DateTime.UtcNow.AddDays(5),
                             CreatedById = user2.UserId,
                             UserId = user2.UserId,
@@ -101,7 +101,7 @@ namespace SEP3_T3_ASP_Core_WebAPI.Data
                         },
                         new Order
                         {
-                            OrderStatus = "Pending",
+                            OrderStatus = OrderStatus.IN_PROGRESS,
                             DeliveryDate = DateTime.UtcNow.AddDays(3),
                             CreatedById = user1.UserId,
                             UserId = user1.UserId,
@@ -123,7 +123,7 @@ namespace SEP3_T3_ASP_Core_WebAPI.Data
                     {
                         var order = new Order
                         {
-                            OrderStatus = i % 3 == 0 ? "Completed" : "InProgress",
+                            OrderStatus = i % 3 == 0 ? OrderStatus.COMPLETED : OrderStatus.IN_PROGRESS,
                             DeliveryDate = DateTime.UtcNow.AddDays(-i),
                             CreatedById = (i % 2 == 0) ? user1.UserId : user2.UserId, // Assign a CreatedById from user1 or user2
                             UserId = (i % 2 == 0) ? user1.UserId : user2.UserId, // Assign a UserId from user1 or user2
