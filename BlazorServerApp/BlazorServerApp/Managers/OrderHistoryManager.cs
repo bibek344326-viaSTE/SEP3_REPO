@@ -18,7 +18,21 @@ namespace BlazorServerApp.Managers
 
         // Filters
         public OrderStatus? SelectedStatus { get; set; } = null;
-        public string SearchQuery { get; set; } = string.Empty;
+
+        private string _searchQuery = string.Empty;
+        public string SearchQuery
+        {
+            get => _searchQuery;
+            set
+            {
+                if (_searchQuery != value)
+                {
+                    _searchQuery = value;
+                    ApplyFilters(); // Apply filters whenever SearchQuery changes
+                }
+            }
+        }
+
         public DateTime? StartDate { get; set; }
         public DateTime? EndDate { get; set; }
 
@@ -50,8 +64,10 @@ namespace BlazorServerApp.Managers
             if (SelectedStatus.HasValue)
                 orders = orders.Where(o => o.OrderStatus == SelectedStatus.Value);
 
-            if (!string.IsNullOrWhiteSpace(SearchQuery) && int.TryParse(SearchQuery, out var orderId))
-                orders = orders.Where(o => o.OrderId == orderId);
+            if (!string.IsNullOrWhiteSpace(SearchQuery))
+            {
+                orders = orders.Where(o => o.OrderId.ToString().Contains(SearchQuery));
+            }
 
             if (StartDate.HasValue)
                 orders = orders.Where(o => o.CreatedAt.ToDateTime() >= StartDate.Value);

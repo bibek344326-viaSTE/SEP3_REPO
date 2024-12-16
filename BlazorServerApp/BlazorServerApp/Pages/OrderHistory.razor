@@ -12,7 +12,10 @@
 <div class="d-flex align-items-center justify-content-center mb-3 w-100">
     <!-- Filter by Status -->
     <div class="me-4">
-        <select class="form-select" @bind="OrderHistoryManager.SelectedStatus" @bind:after="ApplyFilter">
+        <select class="form-select"
+                style="display:inline-block; width:fit-content; white-space:nowrap;"
+                @bind="OrderHistoryManager.SelectedStatus"
+                @bind:after="ApplyFilter">
             <option value="">All Statuses</option>
             @foreach (OrderStatus status in Enum.GetValues(typeof(OrderStatus)))
             {
@@ -20,6 +23,8 @@
             }
         </select>
     </div>
+
+
 
     <!-- Filter by Start Date -->
     <div class="me-3">
@@ -33,7 +38,11 @@
 
     <!-- Search by Order ID -->
     <div class="input-group">
-        <input type="text" class="form-control" placeholder="Search by Order ID" @bind="OrderHistoryManager.SearchQuery" @bind:after="ApplyFilter" />
+        <!-- Notice we've added @bind:after="ApplyFilter" here as well -->
+        <input type="text" class="form-control" placeholder="Search by Order ID"
+               @bind="OrderHistoryManager.SearchQuery"
+               @bind:event="oninput"
+               @bind:after="ApplyFilter" />
         <button class="btn btn-outline-secondary" @onclick="ClearFilters" type="button">Clear</button>
     </div>
 </div>
