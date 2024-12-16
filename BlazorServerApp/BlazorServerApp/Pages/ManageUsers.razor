@@ -122,6 +122,9 @@ else
     private async void SaveUser()
     {
         await Manager.SaveUserAsync();
+        // Re-fetch the grouped users after save
+        GroupedUsers = await Manager.GetGroupedUsersAsync();
         StateHasChanged();
     }
+
 }

@@ -138,9 +138,6 @@ namespace BlazorServerApp.Managers
         }
 
 
-        /// <summary>
-        /// Saves the updated user and exits edit mode
-        /// </summary>
         public async Task SaveUserAsync()
         {
             if (EditingUser == null) return;
@@ -163,8 +160,8 @@ namespace BlazorServerApp.Managers
                     };
                 }
 
-                // Update the GroupedUsers manually
-                UpdateGroupedUsers();
+                // Re-group users after the edit
+                await GetGroupedUsersAsync();
 
                 _toastService.ShowSuccess("User details updated successfully.");
                 EditingUser = null; // Exit edit mode
@@ -174,21 +171,6 @@ namespace BlazorServerApp.Managers
                 _toastService.ShowError("An error occurred while updating the user: " + ex.Message);
             }
         }
-
-        /// <summary>
-        /// Updates the grouped users after an edit
-        /// </summary>
-        private void UpdateGroupedUsers()
-        {
-            var groupedUsers = Users
-                .Where(u => u.IsActive)
-                .Where(u => string.IsNullOrEmpty(SearchQuery) ||
-                            u.Username.Contains(SearchQuery, StringComparison.OrdinalIgnoreCase))
-                .GroupBy(u => u.UserRole);
-
-            GroupedUsers = groupedUsers.ToList(); // Update the GroupedUsers list
-        }
-
 
 
         /// <summary>
