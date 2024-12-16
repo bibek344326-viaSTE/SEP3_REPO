@@ -9,6 +9,7 @@
 
 <h1 class="text-center">Order History</h1>
 
+<!-- Filters Section -->
 <div class="d-flex align-items-center justify-content-center mb-3 w-100">
     <!-- Filter by Status -->
     <div class="me-4">
@@ -24,21 +25,22 @@
         </select>
     </div>
 
-
-
     <!-- Filter by Start Date -->
     <div class="me-3">
-        <input type="date" class="form-control" @bind="OrderHistoryManager.StartDate" @bind:after="ApplyFilter" />
+        <input type="date" class="form-control"
+               @bind="OrderHistoryManager.StartDate"
+               @bind:after="ApplyFilter" />
     </div>
 
     <!-- Filter by End Date -->
     <div class="me-3">
-        <input type="date" class="form-control" @bind="OrderHistoryManager.EndDate" @bind:after="ApplyFilter" />
+        <input type="date" class="form-control"
+               @bind="OrderHistoryManager.EndDate"
+               @bind:after="ApplyFilter" />
     </div>
 
     <!-- Search by Order ID -->
     <div class="input-group">
-        <!-- Notice we've added @bind:after="ApplyFilter" here as well -->
         <input type="text" class="form-control" placeholder="Search by Order ID"
                @bind="OrderHistoryManager.SearchQuery"
                @bind:event="oninput"
@@ -47,7 +49,8 @@
     </div>
 </div>
 
-@if (PaginatedOrders != null && PaginatedOrders.Any())
+<!-- Orders Table -->
+@if (PaginatedOrders?.Any() == true)
 {
     <table class="table">
         <thead>
@@ -78,7 +81,7 @@ else
     <p>No orders found for the selected filters.</p>
 }
 
-<!-- Pagination -->
+<!-- Pagination Controls -->
 <div class="d-flex justify-content-between align-items-center mt-3">
     <button class="btn btn-secondary" @onclick="PreviousPage" disabled="@OrderHistoryManager.IsFirstPage">Previous</button>
     <span>Page @OrderHistoryManager.CurrentPage of @OrderHistoryManager.TotalPages</span>
@@ -91,36 +94,43 @@ else
     protected override async Task OnInitializedAsync()
     {
         await OrderHistoryManager.LoadAllOrdersAsync();
-        LoadOrders();
+        RefreshOrdersView();
     }
 
-    private void LoadOrders()
+    /// <summary>
+    /// RefreshOrdersView updates the visible orders after filters/pagination changes.
+    /// </summary>
+    private void RefreshOrdersView()
     {
         PaginatedOrders = OrderHistoryManager.PagedItems.ToList();
         StateHasChanged();
     }
 
+    /// <summary>
+    /// ApplyFilter resets pagination (handled inside manager) and refreshes the view.
+    /// Call this whenever a filter input changes.
+    /// </summary>
     private void ApplyFilter()
     {
-        OrderHistoryManager.ApplyFilters();
-        LoadOrders();
+        OrderHistoryManager.ResetPagination();
+        RefreshOrdersView();
     }
 
     private void ClearFilters()
     {
         OrderHistoryManager.ClearFilters();
-        LoadOrders();
+        RefreshOrdersView();
     }
 
     private void PreviousPage()
     {
         OrderHistoryManager.PreviousPage();
-        LoadOrders();
+        RefreshOrdersView();
     }
 
     private void NextPage()
     {
         OrderHistoryManager.NextPage();
-        LoadOrders();
+        RefreshOrdersView();
     }
 }

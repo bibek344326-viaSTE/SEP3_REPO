@@ -23,14 +23,7 @@ namespace BlazorServerApp.Managers
         public string SearchQuery
         {
             get => _searchQuery;
-            set
-            {
-                if (_searchQuery != value)
-                {
-                    _searchQuery = value;
-                    ApplyFilters(); // Apply filters whenever SearchQuery changes
-                }
-            }
+            set => _searchQuery = value;
         }
 
         public DateTime? StartDate { get; set; }
@@ -41,10 +34,11 @@ namespace BlazorServerApp.Managers
         public int PageSize { get; set; } = 17;
 
         // Sorting
+        // If sorting is needed, we can use these. For now, defaults are fine.
         public string SortColumn { get; private set; } = "OrderDate";
         public bool Ascending { get; private set; } = true;
 
-        // Cached Orders (fetched from API)
+        // Cached Orders
         private List<Order> AllOrders = new();
 
         public async Task LoadAllOrdersAsync()
@@ -52,12 +46,19 @@ namespace BlazorServerApp.Managers
             AllOrders = (await _orderUseCases.GetAllOrdersAsync()).ToList();
         }
 
-        public void ApplyFilters()
+        /// <summary>
+        /// ResetPagination sets the current page back to 1. 
+        /// This is intended to be called after filters change.
+        /// </summary>
+        public void ResetPagination()
         {
             CurrentPage = 1;
         }
 
-        public IEnumerable<Order> FilterAndSortOrders()
+        /// <summary>
+        /// Applies filtering and sorting to the entire order list.
+        /// </summary>
+        private IEnumerable<Order> FilterAndSortOrders()
         {
             var orders = AllOrders.AsQueryable();
 
@@ -65,9 +66,7 @@ namespace BlazorServerApp.Managers
                 orders = orders.Where(o => o.OrderStatus == SelectedStatus.Value);
 
             if (!string.IsNullOrWhiteSpace(SearchQuery))
-            {
-                orders = orders.Where(o => o.OrderId.ToString().Contains(SearchQuery));
-            }
+                orders = orders.Where(o => o.OrderId.ToString().Contains(SearchQuery, StringComparison.OrdinalIgnoreCase));
 
             if (StartDate.HasValue)
                 orders = orders.Where(o => o.CreatedAt.ToDateTime() >= StartDate.Value);
@@ -75,12 +74,14 @@ namespace BlazorServerApp.Managers
             if (EndDate.HasValue)
                 orders = orders.Where(o => o.CreatedAt.ToDateTime() <= EndDate.Value);
 
+            // Sorting - if needed, add logic for different columns
+            // Default is by OrderDate ascending/descending if desired
             return SortColumn switch
             {
                 "OrderId" => Ascending ? orders.OrderBy(o => o.OrderId) : orders.OrderByDescending(o => o.OrderId),
                 "CreatedAt" => Ascending ? orders.OrderBy(o => o.CreatedAt) : orders.OrderByDescending(o => o.CreatedAt),
                 "Status" => Ascending ? orders.OrderBy(o => o.OrderStatus) : orders.OrderByDescending(o => o.OrderStatus),
-                _ => orders
+                _ => orders // Default (no specific sorting)
             };
         }
 
@@ -117,10 +118,6 @@ namespace BlazorServerApp.Managers
                 Ascending = true;
             }
         }
-
-        public string GetSortIcon(string columnName) => SortColumn == columnName
-            ? (Ascending ? "fas fa-sort-up" : "fas fa-sort-down")
-            : "fas fa-sort";
 
         public string GetStatusClass(OrderStatus status)
         {
