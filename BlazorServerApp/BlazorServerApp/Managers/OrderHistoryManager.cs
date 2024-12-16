@@ -1,5 +1,9 @@
 ﻿using BlazorServerApp.Application.UseCases;
 using Orders;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace BlazorServerApp.Managers
 {
@@ -13,7 +17,7 @@ namespace BlazorServerApp.Managers
         }
 
         // Filters
-        public string SelectedStatus { get; set; } = string.Empty;
+        public OrderStatus? SelectedStatus { get; set; } = null;
         public string SearchQuery { get; set; } = string.Empty;
         public DateTime? StartDate { get; set; }
         public DateTime? EndDate { get; set; }
@@ -26,18 +30,25 @@ namespace BlazorServerApp.Managers
         public string SortColumn { get; private set; } = "OrderDate";
         public bool Ascending { get; private set; } = true;
 
-        // Sorting methods
-        public void SortByOrderId() => SortByColumn("OrderId");
-        public void SortByOrderDate() => SortByColumn("CreatedAt");
-        public void SortByStatus() => SortByColumn("Status");
-        public void SortByEmployeeId() => SortByColumn("UserId");
+        // Cached Orders (fetched from API)
+        private List<Order> AllOrders = new();
 
-        public async Task<IEnumerable<Order>> GetFilteredOrdersAsync()
+        public async Task LoadAllOrdersAsync()
         {
-            var orders = (await _orderUseCases.GetAllOrdersAsync()).AsQueryable();
+            AllOrders = (await _orderUseCases.GetAllOrdersAsync()).ToList();
+        }
 
-            if (!string.IsNullOrWhiteSpace(SelectedStatus))
-                orders = orders.Where(o => o.OrderStatus.ToString().Equals(SelectedStatus, StringComparison.OrdinalIgnoreCase));
+        public void ApplyFilters()
+        {
+            CurrentPage = 1;
+        }
+
+        public IEnumerable<Order> FilterAndSortOrders()
+        {
+            var orders = AllOrders.AsQueryable();
+
+            if (SelectedStatus.HasValue)
+                orders = orders.Where(o => o.OrderStatus == SelectedStatus.Value);
 
             if (!string.IsNullOrWhiteSpace(SearchQuery) && int.TryParse(SearchQuery, out var orderId))
                 orders = orders.Where(o => o.OrderId == orderId);
@@ -48,48 +59,33 @@ namespace BlazorServerApp.Managers
             if (EndDate.HasValue)
                 orders = orders.Where(o => o.CreatedAt.ToDateTime() <= EndDate.Value);
 
-            orders = SortColumn switch
+            return SortColumn switch
             {
                 "OrderId" => Ascending ? orders.OrderBy(o => o.OrderId) : orders.OrderByDescending(o => o.OrderId),
                 "CreatedAt" => Ascending ? orders.OrderBy(o => o.CreatedAt) : orders.OrderByDescending(o => o.CreatedAt),
-                "Status" => Ascending ? orders.OrderBy(o => o.OrderStatus.ToString()) : orders.OrderByDescending(o => o.OrderStatus.ToString()),
-                "UserId" => Ascending ? orders.OrderBy(o => o.CreatedByUser.Username) : orders.OrderByDescending(o => o.CreatedByUser.Username),
+                "Status" => Ascending ? orders.OrderBy(o => o.OrderStatus) : orders.OrderByDescending(o => o.OrderStatus),
                 _ => orders
             };
-
-            return orders.ToList();
         }
 
-        public async Task<IEnumerable<Order>> GetPaginatedOrdersAsync()
-        {
-            var filteredOrders = await GetFilteredOrdersAsync();
-            return filteredOrders.Skip((CurrentPage - 1) * PageSize).Take(PageSize);
-        }
+        public IEnumerable<Order> PagedItems => FilterAndSortOrders()
+            .Skip((CurrentPage - 1) * PageSize)
+            .Take(PageSize);
 
-        public async Task<int> GetTotalPagesAsync()
-        {
-            var filteredOrders = await GetFilteredOrdersAsync();
-            return (int)Math.Ceiling(filteredOrders.Count() / (double)PageSize);
-        }
+        public bool IsFirstPage => CurrentPage == 1;
+        public bool IsLastPage => CurrentPage >= TotalPages;
 
-        public Task<bool> IsFirstPageAsync() => Task.FromResult(CurrentPage == 1);
-
-        public async Task<bool> IsLastPageAsync()
-        {
-            var totalPages = await GetTotalPagesAsync();
-            return CurrentPage >= totalPages;
-        }
+        public int TotalPages => Math.Max(1, (int)Math.Ceiling(FilterAndSortOrders().Count() / (double)PageSize));
 
         public void PreviousPage()
         {
-            if (CurrentPage > 1)
+            if (!IsFirstPage)
                 CurrentPage--;
         }
 
-        public async Task NextPageAsync()
+        public void NextPage()
         {
-            var totalPages = await GetTotalPagesAsync();
-            if (CurrentPage < totalPages)
+            if (!IsLastPage)
                 CurrentPage++;
         }
 
@@ -106,26 +102,26 @@ namespace BlazorServerApp.Managers
             }
         }
 
-        public string GetSortIcon(string columnName)
-        {
-            return SortColumn == columnName
-                ? (Ascending ? "fas fa-sort-up" : "fas fa-sort-down")
-                : "fas fa-sort";
-        }
+        public string GetSortIcon(string columnName) => SortColumn == columnName
+            ? (Ascending ? "fas fa-sort-up" : "fas fa-sort-down")
+            : "fas fa-sort";
 
-        public string GetStatusClass(string status)
+        public string GetStatusClass(OrderStatus status)
         {
             return status switch
             {
-                "Completed" => "text-success fw-bold",
-                "Rejected" => "text-danger fw-bold",
+                OrderStatus.Completed => "text-success fw-bold",
+                OrderStatus.InProgress => "text-warning fw-bold",
                 _ => string.Empty
             };
         }
 
-        public void ClearSearch()
+        public void ClearFilters()
         {
+            SelectedStatus = null;
             SearchQuery = string.Empty;
+            StartDate = null;
+            EndDate = null;
             CurrentPage = 1;
         }
     }
