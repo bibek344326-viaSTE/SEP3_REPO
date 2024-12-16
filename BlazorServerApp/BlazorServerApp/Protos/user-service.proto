@@ -20,9 +20,9 @@ message User {
 }
 
 message UserDTO {
-  string username = 2;
-  string password = 3;
-  UserRole userRole = 4;
+  string userName = 1;
+  string password = 2;
+  UserRole userRole = 3;
 }
 
 message EditResponse {
@@ -41,3 +41,4 @@ enum UserRole {
   INVENTORY_MANAGER = 0;
   WAREHOUSE_WORKER = 1;
 }
+

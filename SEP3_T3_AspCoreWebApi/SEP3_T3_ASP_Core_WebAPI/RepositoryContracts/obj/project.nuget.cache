@@ -1,8 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "xcYv78iow9k=",
+  "dgSpecHash": "eZdOAH4kXcg=",
   "success": true,
   "projectFilePath": "C:\\Users\\AminAouina\\source\\SEP3_REPO\\SEP3_T3_AspCoreWebApi\\SEP3_T3_ASP_Core_WebAPI\\RepositoryContracts\\RepositoryContracts.csproj",
-  "expectedPackageFiles": [],
+  "expectedPackageFiles": [
+    "C:\\Users\\AminAouina\\.nuget\\packages\\microsoft.net.sdk.compilers.toolset\\9.0.101\\microsoft.net.sdk.compilers.toolset.9.0.101.nupkg.sha512"
+  ],
   "logs": []
 }
