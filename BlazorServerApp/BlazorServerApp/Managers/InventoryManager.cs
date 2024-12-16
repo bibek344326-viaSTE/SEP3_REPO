@@ -9,13 +9,37 @@ namespace BlazorServerApp.Managers
         private readonly ItemUseCases _itemUseCases;
         private readonly OrderUseCases _orderUseCases;
         private readonly AuthenticationStateProvider _authenticationStateProvider;
+
         private string _searchQuery = string.Empty;
+
+        // This will hold the currently loaded items as a snapshot of data
+        private List<ItemViewModel> _allItems = new List<ItemViewModel>();
 
         public InventoryManager(ItemUseCases itemUseCases, OrderUseCases orderUseCases, AuthenticationStateProvider authenticationStateProvider)
         {
             _itemUseCases = itemUseCases;
             _orderUseCases = orderUseCases;
             _authenticationStateProvider = authenticationStateProvider;
+        }
+
+        // Initial load method; call this once on page load (e.g., OnInitializedAsync in the component)
+        public void LoadData()
+        {
+            var items = _itemUseCases.GetAllItems();
+            _allItems = items.Select(item => new ItemViewModel
+            {
+                Id = item.ItemId,
+                Name = item.ItemName,
+                Description = item.Description,
+                QuantityInStore = item.QuantityInStore
+            }).ToList();
+        }
+
+        // Refresh data to simulate a fresh navigation to this page
+        public void RefreshData()
+        {
+            // Re-load all items from the use case to get the freshest data
+            LoadData();
         }
 
         // Search filter
@@ -43,9 +67,7 @@ namespace BlazorServerApp.Managers
         public bool Ascending { get; private set; } = true;
 
         public void SortByName() => SortByColumn("Name");
-
         public void SortByDescription() => SortByColumn("Description");
-
         public void SortByQuantityInStore() => SortByColumn("QuantityInStore");
 
         public void SortByColumn(string columnName)
@@ -67,14 +89,7 @@ namespace BlazorServerApp.Managers
 
         public IEnumerable<ItemViewModel> FilterAndSortItems()
         {
-            var items = _itemUseCases.GetAllItems()
-                .Select(item => new ItemViewModel
-                {
-                    Id = item.ItemId,
-                    Name = item.ItemName,
-                    Description = item.Description,
-                    QuantityInStore = item.QuantityInStore
-                });
+            var items = _allItems.AsEnumerable();
 
             if (!string.IsNullOrWhiteSpace(SearchQuery))
             {
@@ -91,7 +106,7 @@ namespace BlazorServerApp.Managers
             };
         }
 
-        // Pagination properties and methods
+        // Pagination
         public int CurrentPage { get; private set; } = 1;
         public int PageSize { get; private set; } = 12;
 
@@ -133,7 +148,7 @@ namespace BlazorServerApp.Managers
                 QuantityInStore = item.QuantityInStore
             };
 
-           await _itemUseCases.EditItemAsync(updatedItem);
+            await _itemUseCases.EditItemAsync(updatedItem);
         }
 
         public async Task DeleteItemAsync(ItemViewModel item)
@@ -167,6 +182,7 @@ namespace BlazorServerApp.Managers
             await _orderUseCases.AddOrderAsync(orderRequest);
         }
     }
+
 }
 
 
