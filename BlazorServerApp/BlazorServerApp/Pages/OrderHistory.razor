@@ -96,9 +96,13 @@ else
 
 <!-- Pagination Controls -->
 <div class="d-flex justify-content-between align-items-center mt-3">
-    <button class="btn btn-secondary" @onclick="PreviousPage" disabled="@OrderHistoryManager.IsFirstPage">Previous</button>
+    <button class="btn btn-secondary" @onclick="PreviousPage" disabled="@OrderHistoryManager.IsFirstPage">
+        <i class="fas fa-arrow-left"></i> Previous
+        </button>
     <span>Page @OrderHistoryManager.CurrentPage of @OrderHistoryManager.TotalPages</span>
-    <button class="btn btn-secondary" @onclick="NextPage" disabled="@OrderHistoryManager.IsLastPage">Next</button>
+        <button class="btn btn-secondary" @onclick="NextPage" disabled="@OrderHistoryManager.IsLastPage">
+            Next <i class="fas fa-arrow-right"></i>
+        </button>
 </div>
 
 @code {
