@@ -17,7 +17,7 @@ namespace BlazorServerApp.Managers
 
         public User? EditingUser { get; private set; }
 
-        public async Task<IEnumerable<IGrouping<Role, User>>> GetGroupedUsersAsync()
+        public async Task<IEnumerable<IGrouping<UserRole, User>>> GetGroupedUsersAsync()
         {
             try
             {
@@ -28,9 +28,10 @@ namespace BlazorServerApp.Managers
 
                 // Filter and group users
                 var groupedUsers = Users
+                    .Where(u => u.IsActive) 
                     .Where(u => string.IsNullOrEmpty(SearchQuery) ||
                                 u.Username.Contains(SearchQuery, StringComparison.OrdinalIgnoreCase))
-                    .GroupBy(u => u.Role);
+                    .GroupBy(u => u.UserRole);
 
                 Console.WriteLine($"[UserManager] Number of groups: {groupedUsers.Count()}");
 
@@ -40,7 +41,7 @@ namespace BlazorServerApp.Managers
             {
                 Console.WriteLine($" [UserManager] Error occurred while grouping users: {ex.Message}");
                 Console.WriteLine(ex.StackTrace);
-                return Enumerable.Empty<IGrouping<Role, User>>(); // Return an empty result on failure
+                return Enumerable.Empty<IGrouping<UserRole, User>>(); // Return an empty result on failure
             }
         }
 
@@ -67,7 +68,7 @@ namespace BlazorServerApp.Managers
             {
                 IsLoading = true;
                 ErrorMessage = string.Empty;
-                Users = (await _userUseCases.GetAllUsersAsync()).ToList();
+                Users = (await _userUseCases.GetAllUsersAsync()).Where(u => u.IsActive).ToList(); 
             }
             catch (Exception ex)
             {
@@ -87,12 +88,12 @@ namespace BlazorServerApp.Managers
         /// <summary>
         /// Converts the Role Enum to a human-readable string
         /// </summary>
-        public string HumanizeRole(Role role)
+        public string HumanizeRole(UserRole role)
         {
             return role switch
             {
-                Role.InventoryManager => "Inventory Manager",
-                Role.WarehouseWorker => "Warehouse Worker",
+                UserRole.InventoryManager => "Inventory Manager",
+                UserRole.WarehouseWorker => "Warehouse Worker",
                 _ => role.ToString()
             };
         }
@@ -115,7 +116,7 @@ namespace BlazorServerApp.Managers
                 Username = user.Username,
                 Password = string.Empty, // Don't pre-populate passwords for security
                 Userid = user.Userid,
-                Role = user.Role
+                UserRole = user.UserRole
             };
         }
 
@@ -136,6 +137,7 @@ namespace BlazorServerApp.Managers
             }
         }
 
+
         /// <summary>
         /// Saves the updated user and exits edit mode
         /// </summary>
@@ -146,11 +148,24 @@ namespace BlazorServerApp.Managers
             try
             {
                 await _userUseCases.EditUserAsync(EditingUser);
+
+                // Update the user in the Users list
                 var userIndex = Users.FindIndex(u => u.Userid == EditingUser.Userid);
                 if (userIndex != -1)
                 {
-                    Users[userIndex] = EditingUser; // Update the user in the local list
+                    Users[userIndex] = new User
+                    {
+                        Username = EditingUser.Username,
+                        Password = EditingUser.Password,
+                        Userid = EditingUser.Userid,
+                        UserRole = EditingUser.UserRole,
+                        IsActive = EditingUser.IsActive
+                    };
                 }
+
+                // Update the GroupedUsers manually
+                UpdateGroupedUsers();
+
                 _toastService.ShowSuccess("User details updated successfully.");
                 EditingUser = null; // Exit edit mode
             }
@@ -159,6 +174,22 @@ namespace BlazorServerApp.Managers
                 _toastService.ShowError("An error occurred while updating the user: " + ex.Message);
             }
         }
+
+        /// <summary>
+        /// Updates the grouped users after an edit
+        /// </summary>
+        private void UpdateGroupedUsers()
+        {
+            var groupedUsers = Users
+                .Where(u => u.IsActive)
+                .Where(u => string.IsNullOrEmpty(SearchQuery) ||
+                            u.Username.Contains(SearchQuery, StringComparison.OrdinalIgnoreCase))
+                .GroupBy(u => u.UserRole);
+
+            GroupedUsers = groupedUsers.ToList(); // Update the GroupedUsers list
+        }
+
+
 
         /// <summary>
         /// Cancels edit mode without saving changes

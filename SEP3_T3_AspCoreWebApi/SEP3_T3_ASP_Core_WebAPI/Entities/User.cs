@@ -1,4 +1,6 @@
-﻿namespace Entities
+﻿using System.Text.Json.Serialization;
+
+namespace Entities
 {
     public enum UserRole
     {
@@ -10,7 +12,10 @@
         public int UserId { get; set; }
         public required string UserName { get; set; }
         public required string Password { get; set; }
+        [JsonConverter(typeof(JsonStringEnumConverter))]
         public required UserRole UserRole { get; set; }
+        public required bool IsActive { get; set; }
+
 
         public static User Create(string requestUserName, string requestPassword, UserRole requestUserRole)
         {
@@ -18,7 +23,8 @@
             {
                 UserName = requestUserName,
                 Password = requestPassword,
-                UserRole = requestUserRole
+                UserRole = requestUserRole,
+                IsActive = true
             };
         }
 

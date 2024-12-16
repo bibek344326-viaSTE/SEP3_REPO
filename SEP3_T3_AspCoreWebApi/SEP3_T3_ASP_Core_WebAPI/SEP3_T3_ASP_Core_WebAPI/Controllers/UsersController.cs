@@ -53,12 +53,8 @@ public class UsersController: ControllerBase
     {
         try
         {
-            User userToUpdate = await userRepo.GetUserById(id);
-            userToUpdate.UserName = request.UserName;
-            userToUpdate.Password = request.Password;
-            userToUpdate.UserRole = request.UserRole;
 
-            await userRepo.UpdateUserAsync(userToUpdate);
+            await userRepo.UpdateUserAsync(id, request);
             return NoContent();
         }
         catch (InvalidOperationException)
@@ -107,7 +103,8 @@ public class UsersController: ControllerBase
                 UserId = user.UserId,
                 UserName = user.UserName,
                 Password = user.Password,
-                UserRole = user.UserRole
+                UserRole = user.UserRole,
+                IsActive = user.IsActive,
             };
             return Ok(dto);
         }

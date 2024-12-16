@@ -18,14 +18,29 @@ namespace BlazorServerApp.Infrastructure.Repositories
             throw new NotImplementedException();
         }
 
-        public Task DeleteUserAsync(User user)
+        public async Task DeleteUserAsync(User user)
         {
-            throw new NotImplementedException();
+            try
+            {
+                await _client.deleteUserAsync(user);
+            }
+            catch (RpcException ex)
+            {
+                throw new ApplicationException("Error deleting User", ex);
+            }
         }
 
-        public Task EditUserAsync(User user)
+
+        public async Task EditUserAsync(User user)
         {
-            throw new NotImplementedException();
+            try
+            {
+                await _client.editUserAsync(user);
+            }
+            catch (RpcException ex)
+            {
+                throw new ApplicationException("Error deleting User", ex);
+            }
         }
 
         public async Task<IEnumerable<User>> GetAllUsersAsync()

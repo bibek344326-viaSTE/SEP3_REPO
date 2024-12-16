@@ -2,6 +2,7 @@
 
 @inject BlazorServerApp.Application.UseCases.ItemUseCases  ItemUseCases
 @inject Blazored.Toast.Services.IToastService ToastService
+@inject NavigationManager NavigationManager
 
 <PageTitle>Add New Item</PageTitle>
 
@@ -61,6 +62,7 @@
         {
             await ItemUseCases.CreateItemAsync(newItem);
             ToastService.ShowSuccess($"Item '{newItem.Name}' added successfully!");
+            NavigationManager.NavigateTo("/inventory-dashboard");
         }
         catch (Exception ex)
         {

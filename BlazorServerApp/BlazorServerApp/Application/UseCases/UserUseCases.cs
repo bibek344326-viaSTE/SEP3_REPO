@@ -26,12 +26,26 @@ namespace BlazorServerApp.Application.UseCases
 
         internal async Task DeleteUserAsync(User user)
         {
-            throw new NotImplementedException();
+            try
+            {
+                 await _userRepository.DeleteUserAsync(user);
+            }
+            catch (Exception ex)
+            {
+                throw new ApplicationException("Error retrieving users", ex);
+            }
         }
 
         internal async Task EditUserAsync(User editingUser)
         {
-            throw new NotImplementedException();
+            try
+            {
+                await _userRepository.EditUserAsync(editingUser);
+            }
+            catch (Exception ex)
+            {
+                throw new ApplicationException("Error retrieving users", ex);
+            }
         }
     }
 }

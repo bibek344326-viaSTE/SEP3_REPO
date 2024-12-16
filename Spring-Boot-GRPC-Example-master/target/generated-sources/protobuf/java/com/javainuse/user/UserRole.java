@@ -4,9 +4,9 @@
 package com.javainuse.user;
 
 /**
- * Protobuf enum {@code users.Role}
+ * Protobuf enum {@code users.UserRole}
  */
-public enum Role
+public enum UserRole
     implements com.google.protobuf.ProtocolMessageEnum {
   /**
    * <code>INVENTORY_MANAGER = 0;</code>
@@ -41,11 +41,11 @@ public enum Role
    * @deprecated Use {@link #forNumber(int)} instead.
    */
   @java.lang.Deprecated
-  public static Role valueOf(int value) {
+  public static UserRole valueOf(int value) {
     return forNumber(value);
   }
 
-  public static Role forNumber(int value) {
+  public static UserRole forNumber(int value) {
     switch (value) {
       case 0: return INVENTORY_MANAGER;
       case 1: return WAREHOUSE_WORKER;
@@ -53,15 +53,15 @@ public enum Role
     }
   }
 
-  public static com.google.protobuf.Internal.EnumLiteMap<Role>
+  public static com.google.protobuf.Internal.EnumLiteMap<UserRole>
       internalGetValueMap() {
     return internalValueMap;
   }
   private static final com.google.protobuf.Internal.EnumLiteMap<
-      Role> internalValueMap =
-        new com.google.protobuf.Internal.EnumLiteMap<Role>() {
-          public Role findValueByNumber(int number) {
-            return Role.forNumber(number);
+      UserRole> internalValueMap =
+        new com.google.protobuf.Internal.EnumLiteMap<UserRole>() {
+          public UserRole findValueByNumber(int number) {
+            return UserRole.forNumber(number);
           }
         };
 
@@ -78,9 +78,9 @@ public enum Role
     return com.javainuse.user.UserServiceOuterClass.getDescriptor().getEnumTypes().get(0);
   }
 
-  private static final Role[] VALUES = values();
+  private static final UserRole[] VALUES = values();
 
-  public static Role valueOf(
+  public static UserRole valueOf(
       com.google.protobuf.Descriptors.EnumValueDescriptor desc) {
     if (desc.getType() != getDescriptor()) {
       throw new java.lang.IllegalArgumentException(
@@ -94,10 +94,10 @@ public enum Role
 
   private final int value;
 
-  private Role(int value) {
+  private UserRole(int value) {
     this.value = value;
   }
 
-  // @@protoc_insertion_point(enum_scope:users.Role)
+  // @@protoc_insertion_point(enum_scope:users.UserRole)
 }
 

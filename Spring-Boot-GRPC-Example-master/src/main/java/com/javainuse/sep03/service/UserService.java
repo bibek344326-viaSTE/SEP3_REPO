@@ -1,15 +1,13 @@
 package com.javainuse.sep03.service;
 
 import com.google.protobuf.Empty;
-import com.javainuse.user.UserServiceGrpc;
-import com.javainuse.user.User;
-import com.javainuse.user.UserDTO;
-import com.javainuse.user.UserList;
-import com.javainuse.user.Role;
+import com.javainuse.user.*;
 import io.grpc.stub.StreamObserver;
 import net.devh.boot.grpc.server.service.GrpcService;
 import org.springframework.http.MediaType;
 import org.springframework.web.reactive.function.client.WebClient;
+
+import java.util.Objects;
 
 // REST DTO classes need to match your REST API
 class UerDTO {
@@ -27,16 +25,12 @@ class UerDTO {
     public void setUserRole(UserRole userRole) { this.userRole = userRole; }
 }
 
-enum UserRole {
-    INVENTORY_MANAGER,
-    WAREHOUSE_WORKER
-}
-
 class RestUser {
     private int userId;
     private String userName;
     private String password;
     private UserRole userRole;
+    private boolean isActive;
 
     public int getUserId() { return userId; }
     public void setUserId(int userId) { this.userId = userId; }
@@ -49,6 +43,20 @@ class RestUser {
 
     public UserRole getUserRole() { return userRole; }
     public void setUserRole(UserRole userRole) { this.userRole = userRole; }
+
+    public boolean getIsActive() { return isActive; }
+    public void setIsActive(boolean isActive) { this.isActive = isActive; }
+
+    @Override
+    public String toString() {
+        return "RestUser{" +
+                "userId=" + userId +
+                ", userName='" + userName + '\'' +
+                ", password='" + password + '\'' +
+                ", userRole=" + userRole +
+                ", isActive=" + isActive +
+                '}';
+    }
 }
 
 @GrpcService
@@ -62,7 +70,9 @@ public class UserService extends UserServiceGrpc.UserServiceImplBase {
         UerDTO dto = new UerDTO();
         dto.setUserName(request.getUsername());
         dto.setPassword(request.getPassword());
-        dto.setUserRole(convertRole(request.getRole()));
+        dto.setUserRole(request.getUserRole()); // Fixed incorrect method
+
+        System.out.println("Adding new user: " + dto);
 
         webClient.post()
                 .contentType(MediaType.APPLICATION_JSON)
@@ -75,19 +85,25 @@ public class UserService extends UserServiceGrpc.UserServiceImplBase {
                             responseObserver.onNext(response);
                             responseObserver.onCompleted();
                         },
-                        throwable -> responseObserver.onError(throwable)
+                        throwable -> {
+                            System.err.println("Error while adding user: " + throwable.getMessage());
+                            throwable.printStackTrace();
+                            responseObserver.onError(throwable);
+                        }
                 );
     }
 
     @Override
     public void editUser(User request, StreamObserver<Empty> responseObserver) {
-        // We assume the userId is a numeric value stored as string
         int userId = Integer.parseInt(request.getUserid());
         RestUser restUser = new RestUser();
         restUser.setUserId(userId);
         restUser.setUserName(request.getUsername());
         restUser.setPassword(request.getPassword());
-        restUser.setUserRole(convertRole(request.getRole()));
+        restUser.setUserRole(request.getUserRole());
+        restUser.setIsActive(request.getIsActive());
+
+        System.out.println("Editing user with ID: " + userId + ", Data: " + restUser);
 
         webClient.put()
                 .uri("/{id}", userId)
@@ -97,33 +113,42 @@ public class UserService extends UserServiceGrpc.UserServiceImplBase {
                 .toBodilessEntity()
                 .subscribe(
                         emptyResponse -> {
+                            System.out.println("User with ID " + userId + " edited successfully.");
                             responseObserver.onNext(Empty.getDefaultInstance());
                             responseObserver.onCompleted();
                         },
-                        throwable -> responseObserver.onError(throwable)
+                        throwable -> {
+                            System.err.println("Error while editing user: " + throwable.getMessage());
+                            throwable.printStackTrace();
+                            responseObserver.onError(throwable);
+                        }
                 );
     }
 
     @Override
     public void deleteUser(User request, StreamObserver<Empty> responseObserver) {
-        int userId = Integer.parseInt(request.getUserid());
-        webClient.delete()
-                .uri("/{id}", userId)
-                .retrieve()
-                .toBodilessEntity()
-                .subscribe(
-                        emptyResponse -> {
-                            responseObserver.onNext(Empty.getDefaultInstance());
-                            responseObserver.onCompleted();
-                        },
-                        throwable -> responseObserver.onError(throwable)
-                );
+        try {
+            int userId = Integer.parseInt(request.getUserid());
+            webClient.delete()
+                    .uri("/{id}", userId)
+                    .retrieve()
+                    .toBodilessEntity()
+                    .subscribe(
+                            emptyResponse -> {
+                                responseObserver.onNext(Empty.getDefaultInstance());
+                                responseObserver.onCompleted();
+                            },
+                            error -> {
+                                responseObserver.onError(error);
+                            }
+                    );
+        } catch (Exception ex) {
+            responseObserver.onError(ex);
+        }
     }
 
     @Override
-    public void getAllUsers(com.google.protobuf.Empty request, StreamObserver<UserList> responseObserver) {
-        System.out.println("Starting getAllUsers request...");
-
+    public void getAllUsers(Empty request, StreamObserver<UserList> responseObserver) {
         webClient.get()
                 .retrieve()
                 .bodyToFlux(RestUser.class)
@@ -131,135 +156,35 @@ public class UserService extends UserServiceGrpc.UserServiceImplBase {
                 .subscribe(
                         restUsers -> {
                             try {
-                                if (restUsers == null) {
-                                    System.err.println("REST API returned a null user list");
-                                    responseObserver.onError(new NullPointerException("REST API returned null user list"));
-                                    return;
-                                }
-
-                                System.out.println("Successfully received REST response. Number of users: " + restUsers.size());
                                 UserList.Builder listBuilder = UserList.newBuilder();
                                 for (RestUser ru : restUsers) {
-                                    if (ru == null) {
-                                        System.err.println("Encountered null RestUser object in the list");
-                                        continue;
-                                    }
-                                    System.out.println("Converting RestUser: " + ru.toString());
-
-                                    // Check for null properties on RestUser before accessing them
-                                    if (ru.getUserName() == null) {
-                                        System.err.println("RestUser with userId " + ru.getUserId() + " has a null username");
-                                    }
-                                    if (ru.getPassword() == null) {
-                                        System.err.println("RestUser with userId " + ru.getUserId() + " has a null password");
-                                    }
-                                    if (ru.getUserRole() == null) {
-                                        System.err.println("RestUser with userId " + ru.getUserId() + " has a null userRole");
-                                    }
-
-                                    try {
-                                        User grpcUser = convertToGrpcUser(ru);
-                                        listBuilder.addUsers(grpcUser);
-                                    } catch (Exception e) {
-                                        System.err.println("Error converting RestUser to gRPC User: " + e.getMessage());
-                                        e.printStackTrace();
-                                    }
+                                    User grpcUser = convertToGrpcUser(ru);
+                                    listBuilder.addUsers(grpcUser);
                                 }
-                                UserList userList = listBuilder.build();
-                                System.out.println("Successfully built UserList with " + userList.getUsersCount() + " users.");
-                                responseObserver.onNext(userList);
+                                responseObserver.onNext(listBuilder.build());
                                 responseObserver.onCompleted();
                             } catch (Exception e) {
-                                System.err.println("Error during processing user list: " + e.getMessage());
-                                e.printStackTrace();
                                 responseObserver.onError(e);
                             }
                         },
-                        throwable -> {
-                            System.err.println("Error occurred while calling REST API: " + throwable.getMessage());
-                            throwable.printStackTrace(); // Log full error stack trace for debugging
-                            responseObserver.onError(throwable);
-                        }
+                        responseObserver::onError
                 );
     }
 
-
-    // Helper method to convert REST UserRole to gRPC Role
-    private Role convertRole(UserRole userRole) {
-        switch (userRole) {
-            case INVENTORY_MANAGER:
-                return Role.INVENTORY_MANAGER;
-            case WAREHOUSE_WORKER:
-                return Role.WAREHOUSE_WORKER;
-            default:
-                return Role.INVENTORY_MANAGER; // default fallback
-        }
-    }
-
-    // Helper method to convert gRPC Role to REST UserRole
-    private UserRole convertRole(Role role) {
-        switch (role) {
-            case INVENTORY_MANAGER:
-                return UserRole.INVENTORY_MANAGER;
-            case WAREHOUSE_WORKER:
-                return UserRole.WAREHOUSE_WORKER;
-            default:
-                return UserRole.INVENTORY_MANAGER; // default fallback
-        }
-    }
-
-    // Convert REST user to gRPC user
     private User convertToGrpcUser(RestUser ru) {
         if (ru == null) {
-            System.err.println("RestUser is null. Cannot convert to gRPC User.");
             throw new NullPointerException("RestUser is null.");
         }
 
-        System.out.println("Starting conversion of RestUser to gRPC User for RestUser with ID: " + ru.getUserId());
+        User user = User.newBuilder()
+                .setUserid(String.valueOf(ru.getUserId()))
+                .setUsername(ru.getUserName() != null ? ru.getUserName() : "UNKNOWN_USER_NAME")
+                .setPassword(ru.getPassword() != null ? ru.getPassword() : "UNKNOWN_PASSWORD")
+                .setUserRole(ru.getUserRole() != null ? ru.getUserRole() : UserRole.INVENTORY_MANAGER)
+                .setIsActive(ru.getIsActive())
+                .build();
 
-        String userId = String.valueOf(ru.getUserId());
-        if (userId == null) {
-            System.err.println("RestUser has a null userId");
-        } else {
-            System.out.println("UserId: " + userId);
-        }
-
-        String userName = ru.getUserName();
-        if (userName == null) {
-            System.err.println("RestUser has a null userName");
-        } else {
-            System.out.println("Username: " + userName);
-        }
-
-        String password = ru.getPassword();
-        if (password == null) {
-            System.err.println("RestUser has a null password");
-        } else {
-            System.out.println("Password: " + password);
-        }
-
-        UserRole userRole = ru.getUserRole();
-        if (userRole == null) {
-            System.err.println("RestUser has a null role");
-        } else {
-            System.out.println("UserRole: " + userRole);
-        }
-
-        try {
-            User user = User.newBuilder()
-                    .setUserid(userId != null ? userId : "UNKNOWN_USER_ID")
-                    .setUsername(userName != null ? userName : "UNKNOWN_USER_NAME")
-                    .setPassword(password != null ? password : "UNKNOWN_PASSWORD")
-                    .setRole(userRole != null ? convertRole(userRole) : Role.INVENTORY_MANAGER) // Default to INVENTORY_MANAGER
-                    .build();
-
-            System.out.println("Successfully converted RestUser to gRPC User: " + user);
-            return user;
-        } catch (Exception e) {
-            System.err.println("Exception occurred while building gRPC User: " + e.getMessage());
-            e.printStackTrace();
-            throw e;
-        }
+        System.out.println("Successfully converted RestUser to gRPC User: " + user);
+        return user;
     }
-
 }

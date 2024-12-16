@@ -18,7 +18,7 @@ private static final long serialVersionUID = 0L;
   private UserDTO() {
     username_ = "";
     password_ = "";
-    role_ = 0;
+    userRole_ = 0;
   }
 
   @java.lang.Override
@@ -60,7 +60,7 @@ private static final long serialVersionUID = 0L;
           case 32: {
             int rawValue = input.readEnum();
 
-            role_ = rawValue;
+            userRole_ = rawValue;
             break;
           }
           default: {
@@ -163,21 +163,21 @@ private static final long serialVersionUID = 0L;
     }
   }
 
-  public static final int ROLE_FIELD_NUMBER = 4;
-  private int role_;
+  public static final int USERROLE_FIELD_NUMBER = 4;
+  private int userRole_;
   /**
-   * <code>.users.Role role = 4;</code>
+   * <code>.users.UserRole userRole = 4;</code>
    */
-  public int getRoleValue() {
-    return role_;
+  public int getUserRoleValue() {
+    return userRole_;
   }
   /**
-   * <code>.users.Role role = 4;</code>
+   * <code>.users.UserRole userRole = 4;</code>
    */
-  public com.javainuse.user.Role getRole() {
+  public com.javainuse.user.UserRole getUserRole() {
     @SuppressWarnings("deprecation")
-    com.javainuse.user.Role result = com.javainuse.user.Role.valueOf(role_);
-    return result == null ? com.javainuse.user.Role.UNRECOGNIZED : result;
+    com.javainuse.user.UserRole result = com.javainuse.user.UserRole.valueOf(userRole_);
+    return result == null ? com.javainuse.user.UserRole.UNRECOGNIZED : result;
   }
 
   private byte memoizedIsInitialized = -1;
@@ -200,8 +200,8 @@ private static final long serialVersionUID = 0L;
     if (!getPasswordBytes().isEmpty()) {
       com.google.protobuf.GeneratedMessageV3.writeString(output, 3, password_);
     }
-    if (role_ != com.javainuse.user.Role.INVENTORY_MANAGER.getNumber()) {
-      output.writeEnum(4, role_);
+    if (userRole_ != com.javainuse.user.UserRole.INVENTORY_MANAGER.getNumber()) {
+      output.writeEnum(4, userRole_);
     }
     unknownFields.writeTo(output);
   }
@@ -218,9 +218,9 @@ private static final long serialVersionUID = 0L;
     if (!getPasswordBytes().isEmpty()) {
       size += com.google.protobuf.GeneratedMessageV3.computeStringSize(3, password_);
     }
-    if (role_ != com.javainuse.user.Role.INVENTORY_MANAGER.getNumber()) {
+    if (userRole_ != com.javainuse.user.UserRole.INVENTORY_MANAGER.getNumber()) {
       size += com.google.protobuf.CodedOutputStream
-        .computeEnumSize(4, role_);
+        .computeEnumSize(4, userRole_);
     }
     size += unknownFields.getSerializedSize();
     memoizedSize = size;
@@ -242,7 +242,7 @@ private static final long serialVersionUID = 0L;
         .equals(other.getUsername());
     result = result && getPassword()
         .equals(other.getPassword());
-    result = result && role_ == other.role_;
+    result = result && userRole_ == other.userRole_;
     result = result && unknownFields.equals(other.unknownFields);
     return result;
   }
@@ -258,8 +258,8 @@ private static final long serialVersionUID = 0L;
     hash = (53 * hash) + getUsername().hashCode();
     hash = (37 * hash) + PASSWORD_FIELD_NUMBER;
     hash = (53 * hash) + getPassword().hashCode();
-    hash = (37 * hash) + ROLE_FIELD_NUMBER;
-    hash = (53 * hash) + role_;
+    hash = (37 * hash) + USERROLE_FIELD_NUMBER;
+    hash = (53 * hash) + userRole_;
     hash = (29 * hash) + unknownFields.hashCode();
     memoizedHashCode = hash;
     return hash;
@@ -397,7 +397,7 @@ private static final long serialVersionUID = 0L;
 
       password_ = "";
 
-      role_ = 0;
+      userRole_ = 0;
 
       return this;
     }
@@ -427,7 +427,7 @@ private static final long serialVersionUID = 0L;
       com.javainuse.user.UserDTO result = new com.javainuse.user.UserDTO(this);
       result.username_ = username_;
       result.password_ = password_;
-      result.role_ = role_;
+      result.userRole_ = userRole_;
       onBuilt();
       return result;
     }
@@ -484,8 +484,8 @@ private static final long serialVersionUID = 0L;
         password_ = other.password_;
         onChanged();
       }
-      if (other.role_ != 0) {
-        setRoleValue(other.getRoleValue());
+      if (other.userRole_ != 0) {
+        setUserRoleValue(other.getUserRoleValue());
       }
       this.mergeUnknownFields(other.unknownFields);
       onChanged();
@@ -654,47 +654,47 @@ private static final long serialVersionUID = 0L;
       return this;
     }
 
-    private int role_ = 0;
+    private int userRole_ = 0;
     /**
-     * <code>.users.Role role = 4;</code>
+     * <code>.users.UserRole userRole = 4;</code>
      */
-    public int getRoleValue() {
-      return role_;
+    public int getUserRoleValue() {
+      return userRole_;
     }
     /**
-     * <code>.users.Role role = 4;</code>
+     * <code>.users.UserRole userRole = 4;</code>
      */
-    public Builder setRoleValue(int value) {
-      role_ = value;
+    public Builder setUserRoleValue(int value) {
+      userRole_ = value;
       onChanged();
       return this;
     }
     /**
-     * <code>.users.Role role = 4;</code>
+     * <code>.users.UserRole userRole = 4;</code>
      */
-    public com.javainuse.user.Role getRole() {
+    public com.javainuse.user.UserRole getUserRole() {
       @SuppressWarnings("deprecation")
-      com.javainuse.user.Role result = com.javainuse.user.Role.valueOf(role_);
-      return result == null ? com.javainuse.user.Role.UNRECOGNIZED : result;
+      com.javainuse.user.UserRole result = com.javainuse.user.UserRole.valueOf(userRole_);
+      return result == null ? com.javainuse.user.UserRole.UNRECOGNIZED : result;
     }
     /**
-     * <code>.users.Role role = 4;</code>
+     * <code>.users.UserRole userRole = 4;</code>
      */
-    public Builder setRole(com.javainuse.user.Role value) {
+    public Builder setUserRole(com.javainuse.user.UserRole value) {
       if (value == null) {
         throw new NullPointerException();
       }
       
-      role_ = value.getNumber();
+      userRole_ = value.getNumber();
       onChanged();
       return this;
     }
     /**
-     * <code>.users.Role role = 4;</code>
+     * <code>.users.UserRole userRole = 4;</code>
      */
-    public Builder clearRole() {
+    public Builder clearUserRole() {
       
-      role_ = 0;
+      userRole_ = 0;
       onChanged();
       return this;
     }

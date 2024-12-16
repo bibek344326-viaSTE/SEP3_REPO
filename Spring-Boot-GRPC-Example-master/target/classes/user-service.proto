@@ -16,13 +16,14 @@ message User {
   string userid = 1;
   string username = 2;
   string password = 3;
-  Role role = 4;
+  UserRole userRole = 4;
+  bool isActive = 5;
 }
 
 message UserDTO {
   string username = 2;
   string password = 3;
-  Role role = 4;
+  UserRole userRole = 4;
 }
 
 message EditResponse {
@@ -37,7 +38,7 @@ message UserList {
   repeated User users = 1;
 }
 
-enum Role {
+enum UserRole {
   INVENTORY_MANAGER = 0;
   WAREHOUSE_WORKER = 1;
 }

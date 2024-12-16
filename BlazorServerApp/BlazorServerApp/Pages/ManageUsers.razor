@@ -3,7 +3,7 @@
 @using Microsoft.AspNetCore.Components.Forms
 @using Microsoft.AspNetCore.Components.Web
 @using BlazorServerApp.Managers
-@using Users <!-- ✅ Added this to import the User and Role types -->
+@using Users
 @inject UserManager Manager
 
 <PageTitle>Manage Users</PageTitle>
@@ -12,7 +12,6 @@
 
 <p>Here you can view and manage users by their roles.</p>
 
-<!-- Loading State -->
 @if (Manager.IsLoading)
 {
     <div class="text-center my-4">
@@ -52,20 +51,49 @@ else if (GroupedUsers != null && GroupedUsers.Any())
                 <tbody>
                     @foreach (var user in roleGroup)
                     {
-                        <tr>
-                            <td>@user.Username</td>
-                            <td>******</td>
-                            <td>@user.Userid</td>
-                            <td>@Manager.HumanizeRole(user.Role)</td>
-                            <td class="text-center">
-                                <button class="btn btn-sm btn-warning me-2" @onclick="() => Manager.ToggleEditUser(user)">
-                                    <i class="fas fa-edit"></i> Edit
-                                </button>
-                                <button class="btn btn-sm btn-danger" @onclick="() => Manager.DeleteUserAsync(user)">
-                                    <i class="fas fa-trash-alt"></i> Delete
-                                </button>
-                            </td>
-                        </tr>
+                        @if (Manager.EditingUser?.Userid == user.Userid)
+                        {
+                            <!-- Edit mode -->
+                            <tr>
+                                <td><input class="form-control" @bind="Manager.EditingUser.Username" /></td>
+                                <td><input class="form-control" type="password" @bind="Manager.EditingUser.Password" /></td>
+                                <td>@user.Userid</td> <!-- Non-editable UserID -->
+                                <td>
+                                    <select class="form-select" @bind="Manager.EditingUser.UserRole">
+                                        @foreach (var role in Enum.GetValues(typeof(UserRole)))
+                                        {
+                                            <option value="@role">@Manager.HumanizeRole((UserRole)role)</option>
+                                        }
+                                    </select>
+                                </td>
+                                <td class="text-center">
+                                    <button class="btn btn-sm btn-success me-2" @onclick="SaveUser">
+                                        <i class="fas fa-check"></i> Save
+                                    </button>
+                                    <button class="btn btn-sm btn-secondary" @onclick="Manager.CancelEdit">
+                                        <i class="fas fa-times"></i> Cancel
+                                    </button>
+                                </td>
+                            </tr>
+                        }
+                        else
+                        {
+                            <!-- View mode -->
+                            <tr>
+                                <td>@user.Username</td>
+                                <td>******</td>
+                                <td>@user.Userid</td>
+                                <td>@Manager.HumanizeRole(user.UserRole)</td>
+                                <td class="text-center">
+                                    <button class="btn btn-sm btn-warning me-2" @onclick="() => Manager.ToggleEditUser(user)">
+                                        <i class="fas fa-edit"></i> Edit
+                                    </button>
+                                    <button class="btn btn-sm btn-danger" @onclick="() => Manager.DeleteUserAsync(user)">
+                                        <i class="fas fa-trash-alt"></i> Delete
+                                    </button>
+                                </td>
+                            </tr>
+                        }
                     }
                 </tbody>
             </table>
@@ -78,20 +106,22 @@ else
 }
 
 @code {
-    private IEnumerable<IGrouping<Role, User>> GroupedUsers;
+    private IEnumerable<IGrouping<UserRole, User>> GroupedUsers;
 
     protected override async Task OnInitializedAsync()
     {
         try
         {
-            Console.WriteLine(" [ManageUsers] Calling Manager.GetGroupedUsersAsync()");
             GroupedUsers = await Manager.GetGroupedUsersAsync();
-            Console.WriteLine($" [ManageUsers] Successfully loaded {GroupedUsers.Count()} role groups.");
         }
         catch (Exception ex)
         {
-            Console.WriteLine($" [ManageUsers] Error: {ex.Message}");
-            Console.WriteLine(ex.StackTrace);
+            Console.WriteLine($"[ManageUsers] Error: {ex.Message}");
         }
+    }
+    private async void SaveUser()
+    {
+        await Manager.SaveUserAsync();
+        StateHasChanged();
     }
 }

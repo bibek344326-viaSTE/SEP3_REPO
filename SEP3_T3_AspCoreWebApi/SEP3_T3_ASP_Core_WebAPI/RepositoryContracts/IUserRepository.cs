@@ -6,7 +6,7 @@ public interface IUserRepository
 {
     Task<User> GetUserById(int id); 
     Task<User> AddUserAsync(User user);
-    Task<User> UpdateUserAsync(User user);
+    Task<User> UpdateUserAsync(int userId, User user);
     Task<User> DeleteUserAsync(int id);
     IQueryable<User> GetAllUsers();
     IQueryable<User> GetAllUsersByRole(UserRole type);

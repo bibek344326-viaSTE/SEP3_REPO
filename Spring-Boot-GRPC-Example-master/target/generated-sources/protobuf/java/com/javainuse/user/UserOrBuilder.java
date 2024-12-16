@@ -38,11 +38,16 @@ public interface UserOrBuilder extends
       getPasswordBytes();
 
   /**
-   * <code>.users.Role role = 4;</code>
+   * <code>.users.UserRole userRole = 4;</code>
    */
-  int getRoleValue();
+  int getUserRoleValue();
   /**
-   * <code>.users.Role role = 4;</code>
+   * <code>.users.UserRole userRole = 4;</code>
    */
-  com.javainuse.user.Role getRole();
+  com.javainuse.user.UserRole getUserRole();
+
+  /**
+   * <code>bool isActive = 5;</code>
+   */
+  boolean getIsActive();
 }

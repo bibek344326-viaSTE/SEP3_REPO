@@ -110,7 +110,8 @@ public class EfcOrderRepository: IOrderRepository
                     UserId = o.CreatedBy.UserId,
                     UserName = o.CreatedBy.UserName,
                     Password = "",
-                    UserRole = o.CreatedBy.UserRole
+                    UserRole = o.CreatedBy.UserRole,
+                    IsActive = true
                 },
 
                 AssignedUser = o.AssignedUser != null
@@ -119,7 +120,8 @@ public class EfcOrderRepository: IOrderRepository
                     UserId = o.AssignedUser.UserId,
                     UserName = o.AssignedUser.UserName,
                     Password = "",
-                    UserRole = o.AssignedUser.UserRole
+                    UserRole = o.AssignedUser.UserRole,
+                    IsActive = true
                 }
                 : null,
                 CreatedAt = o.CreatedAt

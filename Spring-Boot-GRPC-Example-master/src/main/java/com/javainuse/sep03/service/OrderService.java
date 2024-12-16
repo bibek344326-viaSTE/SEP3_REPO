@@ -3,8 +3,8 @@ package com.javainuse.sep03.service;
 import com.google.protobuf.Empty;
 import com.google.protobuf.Timestamp;
 import com.javainuse.orders.*;
-import com.javainuse.user.Role;
 import com.javainuse.user.User; // Import the gRPC User type
+import com.javainuse.user.UserRole;
 import io.grpc.stub.StreamObserver;
 import net.devh.boot.grpc.server.service.GrpcService;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -223,7 +223,7 @@ public class OrderService extends OrderServiceGrpc.OrderServiceImplBase {
                 .setUserid(restUser.userId > 0 ? String.valueOf(restUser.userId) : "0")
                 .setUsername(restUser.userName != null ? restUser.userName : "unknown")
                 .setPassword(restUser.password != null ? restUser.password : "")
-                .setRole(Role.INVENTORY_MANAGER) // Default role
+                .setUserRole(UserRole.INVENTORY_MANAGER) // Default role
                 .build();
     }
 
