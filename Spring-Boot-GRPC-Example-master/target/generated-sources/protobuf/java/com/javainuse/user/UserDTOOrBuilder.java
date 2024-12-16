@@ -8,31 +8,31 @@ public interface UserDTOOrBuilder extends
     com.google.protobuf.MessageOrBuilder {
 
   /**
-   * <code>string username = 2;</code>
+   * <code>string userName = 1;</code>
    */
-  java.lang.String getUsername();
+  java.lang.String getUserName();
   /**
-   * <code>string username = 2;</code>
+   * <code>string userName = 1;</code>
    */
   com.google.protobuf.ByteString
-      getUsernameBytes();
+      getUserNameBytes();
 
   /**
-   * <code>string password = 3;</code>
+   * <code>string password = 2;</code>
    */
   java.lang.String getPassword();
   /**
-   * <code>string password = 3;</code>
+   * <code>string password = 2;</code>
    */
   com.google.protobuf.ByteString
       getPasswordBytes();
 
   /**
-   * <code>.users.UserRole userRole = 4;</code>
+   * <code>.users.UserRole userRole = 3;</code>
    */
   int getUserRoleValue();
   /**
-   * <code>.users.UserRole userRole = 4;</code>
+   * <code>.users.UserRole userRole = 3;</code>
    */
   com.javainuse.user.UserRole getUserRole();
 }

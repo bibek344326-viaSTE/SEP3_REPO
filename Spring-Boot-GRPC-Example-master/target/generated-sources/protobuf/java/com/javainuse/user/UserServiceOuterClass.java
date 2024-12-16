@@ -52,8 +52,8 @@ public final class UserServiceOuterClass {
       "obuf/empty.proto\"o\n\004User\022\016\n\006userid\030\001 \001(\t" +
       "\022\020\n\010username\030\002 \001(\t\022\020\n\010password\030\003 \001(\t\022!\n\010" +
       "userRole\030\004 \001(\0162\017.users.UserRole\022\020\n\010isAct" +
-      "ive\030\005 \001(\010\"P\n\007UserDTO\022\020\n\010username\030\002 \001(\t\022\020" +
-      "\n\010password\030\003 \001(\t\022!\n\010userRole\030\004 \001(\0162\017.use" +
+      "ive\030\005 \001(\010\"P\n\007UserDTO\022\020\n\010userName\030\001 \001(\t\022\020" +
+      "\n\010password\030\002 \001(\t\022!\n\010userRole\030\003 \001(\0162\017.use" +
       "rs.UserRole\"\037\n\014EditResponse\022\017\n\007success\030\001" +
       " \001(\010\"%\n\022UserDeleteResponse\022\017\n\007success\030\001 " +
       "\001(\010\"&\n\010UserList\022\032\n\005users\030\001 \003(\0132\013.users.U" +
@@ -90,7 +90,7 @@ public final class UserServiceOuterClass {
     internal_static_users_UserDTO_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_users_UserDTO_descriptor,
-        new java.lang.String[] { "Username", "Password", "UserRole", });
+        new java.lang.String[] { "UserName", "Password", "UserRole", });
     internal_static_users_EditResponse_descriptor =
       getDescriptor().getMessageTypes().get(2);
     internal_static_users_EditResponse_fieldAccessorTable = new

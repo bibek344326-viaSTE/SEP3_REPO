@@ -9,21 +9,54 @@ import org.springframework.web.reactive.function.client.WebClient;
 
 import java.util.Objects;
 
-// REST DTO classes need to match your REST API
-class UerDTO {
+ class UerDTO {
+
+    // The field names here must match the expected JSON structure
     private String userName;
+
     private String password;
-    private UserRole userRole;
 
-    public String getUserName() { return userName; }
-    public void setUserName(String userName) { this.userName = userName; }
+    private int userRole; // Assuming userRole is an integer (0, 1, 2, etc.)
 
-    public String getPassword() { return password; }
-    public void setPassword(String password) { this.password = password; }
+    // Constructor
+    public UerDTO() {}
 
-    public UserRole getUserRole() { return userRole; }
-    public void setUserRole(UserRole userRole) { this.userRole = userRole; }
+    // Getters and Setters
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public int getUserRole() {
+        return userRole;
+    }
+
+    public void setUserRole(int userRole) {
+        this.userRole = userRole;
+    }
+
+    // toString() for easy logging
+    @Override
+    public String toString() {
+        return "UerDTO{" +
+                "userName='" + userName + '\'' +
+                ", password='" + password + '\'' +
+                ", userRole=" + userRole +
+                '}';
+    }
 }
+
 
 class RestUser {
     private int userId;
@@ -67,30 +100,35 @@ public class UserService extends UserServiceGrpc.UserServiceImplBase {
 
     @Override
     public void addUser(UserDTO request, StreamObserver<User> responseObserver) {
+
         UerDTO dto = new UerDTO();
-        dto.setUserName(request.getUsername());
+        dto.setUserName(request.getUserName());
         dto.setPassword(request.getPassword());
-        dto.setUserRole(request.getUserRole()); // Fixed incorrect method
+        dto.setUserRole(request.getUserRoleValue());
 
-        System.out.println("Adding new user: " + dto);
-
-        webClient.post()
+        RestUser createdUser = webClient.post()
+                .uri("")
                 .contentType(MediaType.APPLICATION_JSON)
                 .bodyValue(dto)
                 .retrieve()
                 .bodyToMono(RestUser.class)
-                .subscribe(
-                        restUser -> {
-                            User response = convertToGrpcUser(restUser);
-                            responseObserver.onNext(response);
-                            responseObserver.onCompleted();
-                        },
-                        throwable -> {
-                            System.err.println("Error while adding user: " + throwable.getMessage());
-                            throwable.printStackTrace();
-                            responseObserver.onError(throwable);
-                        }
-                );
+                .block();
+        if (createdUser == null) {
+            responseObserver.onError(new RuntimeException("Failed to create item"));
+            return;
+        }
+
+        com.javainuse.user.User grpcUser = com.javainuse.user.User.newBuilder()
+                .setUserid(String.valueOf(createdUser.getUserId()))
+                .setUsername(createdUser.getUserName())
+                .setPassword(createdUser.getPassword())
+                .setUserRole(createdUser.getUserRole())
+                .setIsActive(createdUser.getIsActive())
+                .build();
+
+        responseObserver.onNext(grpcUser);
+        responseObserver.onCompleted();
+
     }
 
     @Override
