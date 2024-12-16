@@ -82,7 +82,7 @@ public class ItemsController: ControllerBase
     // ********** UPDATE Endpoints **********
     // PUT: /Items/{id}
     [HttpPut("{id}")]
-    public async Task<ActionResult> UpdateItem([FromRoute] int id, [FromBody] Item request)
+    public async Task<ActionResult> UpdateItem([FromRoute] int id, [FromBody] ItemDto request)
     {
         try
         {

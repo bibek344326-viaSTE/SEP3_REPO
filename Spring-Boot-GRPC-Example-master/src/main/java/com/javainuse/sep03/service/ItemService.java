@@ -79,11 +79,14 @@ public class ItemService extends ItemServiceGrpc.ItemServiceImplBase {
 
     @Override
     public void editItem(Item request, StreamObserver<Empty> responseObserver) {
+        System.out.println("Received edit request: " + request);
+
         // To edit an item, we do a PUT /Items/{id}
-        // We must provide a body that matches the REST item. The REST endpoint updates item’s properties.
-        // The ID is from the request's itemId
         String id = request.getItemId();
+        System.out.println("Item ID: " + id);
+
         if (id == null || id.isEmpty()) {
+            System.err.println("Error: Item ID is required");
             responseObserver.onError(new IllegalArgumentException("Item ID is required"));
             return;
         }
@@ -92,6 +95,7 @@ public class ItemService extends ItemServiceGrpc.ItemServiceImplBase {
         try {
             itemId = Integer.parseInt(id);
         } catch (NumberFormatException ex) {
+            System.err.println("Error: Invalid Item ID");
             responseObserver.onError(new IllegalArgumentException("Invalid Item ID"));
             return;
         }
@@ -102,6 +106,8 @@ public class ItemService extends ItemServiceGrpc.ItemServiceImplBase {
         restItem.setDescription(request.getDescription());
         restItem.setQuantityInStore(request.getQuantityInStore());
 
+        System.out.println("Calling REST API with RestItem: " + restItem);
+
         try {
             webClient.put()
                     .uri("/{id}", itemId)
@@ -110,12 +116,15 @@ public class ItemService extends ItemServiceGrpc.ItemServiceImplBase {
                     .toBodilessEntity()
                     .block(); // Blocking call
 
+            System.out.println("Item updated successfully: " + restItem);
             responseObserver.onNext(Empty.getDefaultInstance());
             responseObserver.onCompleted();
         } catch (Exception e) {
+            System.err.println("Error occurred during REST API call: " + e.getMessage());
             responseObserver.onError(e);
         }
     }
+
 
     @Override
     public void deleteItem(Item request, StreamObserver<Empty> responseObserver) {
