@@ -6,10 +6,10 @@ public interface IUserRepository
 {
     Task<User> GetUserById(int id); 
     Task<User> AddUserAsync(User user);
-    Task<User> UpdateUserAsync(User user);
+    Task<User> UpdateUserAsync(int userId, User user);
     Task<User> DeleteUserAsync(int id);
     IQueryable<User> GetAllUsers();
-    IQueryable<User> GetAllUsersByType(string type);
+    IQueryable<User> GetAllUsersByRole(UserRole type);
     Task<User?> GetUserByUsernameAndPasswordAsync(string? username, string? password);
     Task<User?> GetUserByUsernameAsync(string requestUserName);
 }

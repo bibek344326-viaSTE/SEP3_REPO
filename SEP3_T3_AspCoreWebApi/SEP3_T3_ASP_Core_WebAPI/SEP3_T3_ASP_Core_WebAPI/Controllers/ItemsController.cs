@@ -1,6 +1,10 @@
 ﻿using Entities;
 using Microsoft.AspNetCore.Mvc;
+<<<<<<< HEAD
 using Microsoft.AspNetCore.SignalR;
+=======
+using Microsoft.EntityFrameworkCore;
+>>>>>>> master
 using SEP3_T3_ASP_Core_WebAPI.ApiContracts.ItemDto;
 using SEP3_T3_ASP_Core_WebAPI.RepositoryContracts;
 using SEP3_T3_ASP_Core_WebAPI.SignalR_Helpers;
@@ -20,15 +24,64 @@ public class ItemsController: ControllerBase
         _itemRepository = itemRepository;
         _hubContext = hubContext;
     }
-    
-    // Create Endpoints
+
+    // ********** GET Endpoints **********
+    // GET: /Items
+    [HttpGet]
+    public async Task<ActionResult<IEnumerable<Item>>> GetAllItems()
+    {
+        List<Item> dtos = await itemRepository.GetAllItems()
+            .Select(item => new Item
+            {
+                ItemId = item.ItemId,
+                ItemName = item.ItemName,
+                Description = item.Description,
+                QuantityInStore = item.QuantityInStore
+            })
+            .ToListAsync();
+        return Ok(dtos);
+    }
+
+    // GET: /Items/{id}
+    [HttpGet("{id}")]
+    public async Task<ActionResult<Item>> GetSingleItem([FromRoute] int id)
+    {
+        try
+        {
+            Item item = await itemRepository.GetItemById(id);
+            Item dto = new()
+            {
+                ItemId = item.ItemId,
+                ItemName = item.ItemName,
+                Description = item.Description,
+                QuantityInStore = item.QuantityInStore
+            };
+            return Ok(dto);
+        }
+        catch (InvalidOperationException)
+        {
+            return NotFound($"Item with ID {id} not found.");
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            return StatusCode(500, $"An error occurred: {e.Message}");
+        }
+    }
+
+    // ********** CREATE Endpoints **********
     // POST: /Items
     [HttpPost]
-    public async Task<ActionResult<ItemDto>> AddItem([FromBody] CreateItemDto request)
+    public async Task<ActionResult<Item>> AddItem([FromBody] ItemDto request)
     {
         Item item = Entities.Item.Create(request.ItemName, request.Description, request.QuantityInStore);
+<<<<<<< HEAD
         Item created = await _itemRepository.AddItemAsync(item);
         ItemDto dto = new()
+=======
+        Item created = await itemRepository.AddItemAsync(item);
+        Item dto = new()
+>>>>>>> master
         {
             ItemId = created.ItemId,
             ItemName = created.ItemName,
@@ -37,10 +90,11 @@ public class ItemsController: ControllerBase
         };
         return Created($"/Items/{dto.ItemId}", created);
     }
-    
+
+    // ********** UPDATE Endpoints **********
     // PUT: /Items/{id}
     [HttpPut("{id}")]
-    public async Task<ActionResult> UpdateItem([FromRoute] int id, [FromBody] UpdateItemDto request)
+    public async Task<ActionResult> UpdateItem([FromRoute] int id, [FromBody] ItemDto request)
     {
         try
         {
@@ -63,6 +117,7 @@ public class ItemsController: ControllerBase
         }
     }
     
+<<<<<<< HEAD
     // GET: /Items
     [HttpGet]
     public async Task<ActionResult<IEnumerable<ItemDto>>> GetAllItems()
@@ -125,9 +180,11 @@ public class ItemsController: ControllerBase
         }
     }
     
+=======
+>>>>>>> master
     //update the quantity of an item
     [HttpPut("{id}/quantity")]
-    public async Task<ActionResult> UpdateItemQuantity([FromRoute] int id, [FromBody] UpdateItemDto request)
+    public async Task<ActionResult> UpdateItemQuantity([FromRoute] int id, [FromBody] Item request)
     {
         try
         {
@@ -158,7 +215,7 @@ public class ItemsController: ControllerBase
     
     //update the description of an item
     [HttpPut("{id}/description")]
-    public async Task<ActionResult> UpdateItemDescription([FromRoute] int id, [FromBody] UpdateItemDto request)
+    public async Task<ActionResult> UpdateItemDescription([FromRoute] int id, [FromBody] Item request)
     {
         try
         {
@@ -181,7 +238,7 @@ public class ItemsController: ControllerBase
     
     //update the name of an item
     [HttpPut("{id}/name")]
-    public async Task<ActionResult> UpdateItemName([FromRoute] int id, [FromBody] UpdateItemDto request)
+    public async Task<ActionResult> UpdateItemName([FromRoute] int id, [FromBody] Item request)
     {
         try
         {
@@ -189,6 +246,26 @@ public class ItemsController: ControllerBase
             itemToUpdate.ItemName = request.ItemName;
             
             await _itemRepository.UpdateItemAsync(itemToUpdate);
+            return NoContent();
+        }
+        catch (InvalidOperationException)
+        {
+            return NotFound($"Item with ID {id} not found.");
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            return StatusCode(500, $"An error occurred: {e.Message}");
+        }
+    }
+
+    // DELETE: /Items/{id}
+    [HttpDelete("{id}")]
+    public async Task<ActionResult> DeleteItem([FromRoute] int id)
+    {
+        try
+        {
+            await itemRepository.DeleteItemAsync(id);
             return NoContent();
         }
         catch (InvalidOperationException)

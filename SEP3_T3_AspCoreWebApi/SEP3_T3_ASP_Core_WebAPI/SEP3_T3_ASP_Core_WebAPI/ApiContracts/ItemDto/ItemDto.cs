@@ -2,7 +2,6 @@
 
 public class ItemDto
 {
-    public required int ItemId { get; set; }
     public required string ItemName { get; set; }
     public string? Description { get; set; }
     public int QuantityInStore { get; set; }

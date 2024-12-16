@@ -26,16 +26,13 @@
 
 
 @code {
-    [Inject] private AuthenticationStateProvider AuthenticationStateProvider { get; set; }
     [Inject] private NavigationManager NavigationManager { get; set; }
 
     private bool isAuthenticated = false;
 
     protected override async Task OnInitializedAsync()
     {
-        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
-        isAuthenticated = authState.User.Identity?.IsAuthenticated ?? false;
-    }
+        isAuthenticated =  false;    }
 }
 
 @code {

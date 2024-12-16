@@ -53,6 +53,12 @@ namespace EfcRepositories.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("OrderId"));
 
+                    b.Property<DateTimeOffset>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("CreatedById")
+                        .HasColumnType("integer");
+
                     b.Property<DateTime>("DeliveryDate")
                         .HasColumnType("timestamp with time zone");
 
@@ -60,10 +66,12 @@ namespace EfcRepositories.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<int>("UserId")
+                    b.Property<int?>("UserId")
                         .HasColumnType("integer");
 
                     b.HasKey("OrderId");
+
+                    b.HasIndex("CreatedById");
 
                     b.HasIndex("UserId");
 
@@ -99,6 +107,9 @@ namespace EfcRepositories.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("UserId"));
 
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("boolean");
+
                     b.Property<string>("Password")
                         .IsRequired()
                         .HasColumnType("text");
@@ -107,9 +118,8 @@ namespace EfcRepositories.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<string>("UserRole")
-                        .IsRequired()
-                        .HasColumnType("text");
+                    b.Property<int>("UserRole")
+                        .HasColumnType("integer");
 
                     b.HasKey("UserId");
 
@@ -118,13 +128,20 @@ namespace EfcRepositories.Migrations
 
             modelBuilder.Entity("Entities.Order", b =>
                 {
+                    b.HasOne("Entities.User", "CreatedBy")
+                        .WithMany()
+                        .HasForeignKey("CreatedById")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
                     b.HasOne("Entities.User", "AssignedUser")
                         .WithMany()
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("AssignedUser");
+
+                    b.Navigation("CreatedBy");
                 });
 
             modelBuilder.Entity("Entities.OrderItem", b =>

@@ -1,8 +1,6 @@
-﻿// Purpose: Contains the UsersController class which is responsible for handling requests related to users.
-
-using Entities;
+﻿using Entities;
 using Microsoft.AspNetCore.Mvc;
-using SEP3_T3_ASP_Core_WebAPI.ApiContracts.AuthDtos;
+using Microsoft.EntityFrameworkCore;
 using SEP3_T3_ASP_Core_WebAPI.ApiContracts.UserDto;
 using SEP3_T3_ASP_Core_WebAPI.RepositoryContracts;
 
@@ -18,45 +16,45 @@ public class UsersController: ControllerBase
     {
         this.userRepo = userRepo;
     }
-    
-    // Create Endpoints
+
+    // ********** CREATE Endpoints **********
     // POST: /Users
     [HttpPost]
-    public async Task<ActionResult<UserDto>> AddUser([FromBody] RegisterRequest request)
+    public async Task<ActionResult<User>> AddUser([FromBody] UerDTO request)
     {
+        // Verify that the username is available
         await VerifyUserNameIsAvailableAsync(request.UserName);
 
+        // Create a new User instance
         User user = Entities.User.Create(request.UserName, request.Password, request.UserRole);
+
+        // Save the user to the repository
         User created = await userRepo.AddUserAsync(user);
-        UserDto dto = new()
-        {
-            UserId = created.UserId,
-            UserName = created.UserName
-        };
-        return Created($"/Users/{dto.UserId}", created);
+
+        // Return the created user with status 201 (Created)
+        return CreatedAtAction(nameof(AddUser), new { id = created.UserId }, created);
     }
+
 
     private async Task VerifyUserNameIsAvailableAsync(string requestUserName)
     {
-        User existingUser = await userRepo.GetUserByUsernameAsync(requestUserName);
+        User? existingUser = await userRepo.GetUserByUsernameAsync(requestUserName);
         if (existingUser != null)
         {
             throw new InvalidOperationException($"Username {requestUserName} is already taken.");
         }
     }
-    
+
+
+    // ********** UPDATE Endpoints **********
     // PUT: /Users/{id}
     [HttpPut("{id}")]
-    public async Task<ActionResult> UpdateUser([FromRoute] int id, [FromBody] UpdateUserDto request)
+    public async Task<ActionResult> UpdateUser([FromRoute] int id, [FromBody] User request)
     {
         try
         {
-            User userToUpdate = await userRepo.GetUserById(id);
-            userToUpdate.UserName = request.UserName;
-            userToUpdate.Password = request.Password;
-            userToUpdate.UserRole = request.UserRole;
 
-            await userRepo.UpdateUserAsync(userToUpdate);
+            await userRepo.UpdateUserAsync(id, request);
             return NoContent();
         }
         catch (InvalidOperationException)
@@ -69,7 +67,8 @@ public class UsersController: ControllerBase
             return StatusCode(500, $"An error occurred: {e.Message}");
         }
     }
-    
+
+    // ********** Delete Endpoints **********
     // DELETE: /Users/{id}
     [HttpDelete("{id}")]
     public async Task<ActionResult> DeleteUser([FromRoute] int id)
@@ -90,18 +89,22 @@ public class UsersController: ControllerBase
             return StatusCode(500, $"An error occurred: {e.Message}");
         }
     }
-    
+
+    // ********** GET Endpoints **********
     // GET: /Users/{id}
     [HttpGet("{id}")]
-    public async Task<ActionResult<UserDto>> GetSingleUser([FromRoute] int id)
+    public async Task<ActionResult<User>> GetSingleUser([FromRoute] int id)
     {
         try
         {
             User user = await userRepo.GetUserById(id);
-            UserDto dto = new()
+            User dto = new User()
             {
                 UserId = user.UserId,
-                UserName = user.UserName
+                UserName = user.UserName,
+                Password = user.Password,
+                UserRole = user.UserRole,
+                IsActive = user.IsActive,
             };
             return Ok(dto);
         }
@@ -115,19 +118,15 @@ public class UsersController: ControllerBase
             return StatusCode(500, $"An error occurred: {e.Message}");
         }
     }
-    
+
     // GET: /Users
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<UserDto>>> GetAllUsers()
+    public async Task<ActionResult<IEnumerable<User>>> GetAllUsers()
     {
         try
         {
-            IQueryable<User> users = userRepo.GetAllUsers();
-            List<UserDto> dtos = users.Select(u => new UserDto()
-            {
-                UserId = u.UserId,
-                UserName = u.UserName
-            }).ToList();
+            List<User> dtos = await userRepo.GetAllUsers()
+                .ToListAsync(); // Ensure asynchronous operation
             return Ok(dtos);
         }
         catch (Exception e)
@@ -136,19 +135,16 @@ public class UsersController: ControllerBase
             return StatusCode(500, $"An error occurred: {e.Message}");
         }
     }
-    
-    // GET: /Users/Type/{type}
+
+
+    // Line 145: Update GetAllUsersByType method
     [HttpGet("Type/{type}")]
-    public async Task<ActionResult<IEnumerable<UserDto>>> GetAllUsersByType([FromRoute] string type)
+    public async Task<ActionResult<IEnumerable<User>>> GetAllUsersByType([FromRoute] UserRole type)
     {
         try
         {
-            IQueryable<User> users = userRepo.GetAllUsersByType(type);
-            List<UserDto> dtos = users.Select(u => new UserDto()
-            {
-                UserId = u.UserId,
-                UserName = u.UserName
-            }).ToList();
+            List<User> dtos = await userRepo.GetAllUsersByRole(type)
+                .ToListAsync();
             return Ok(dtos);
         }
         catch (Exception e)
@@ -157,24 +153,20 @@ public class UsersController: ControllerBase
             return StatusCode(500, $"An error occurred: {e.Message}");
         }
     }
-    
+
+
     // GET: /Users/Username/{username} 
     [HttpGet("Username/{username}")]
-    public async Task<ActionResult<UserDto>> GetUserByUsername([FromRoute] string username)
+    public async Task<ActionResult<User>> GetUserByUsername([FromRoute] string username)
     {
         try
         {
-            User user = await userRepo.GetUserByUsernameAsync(username);
-            UserDto dto = new()
+            User? user = await userRepo.GetUserByUsernameAsync(username);
+            if (user == null)
             {
-                UserId = user.UserId,
-                UserName = user.UserName
-            };
-            return Ok(dto);
-        }
-        catch (InvalidOperationException)
-        {
-            return NotFound($"User with username {username} not found.");
+                return NotFound($"User with username {username} not found.");
+            }
+            return Ok(user);
         }
         catch (Exception e)
         {
@@ -182,4 +174,5 @@ public class UsersController: ControllerBase
             return StatusCode(500, $"An error occurred: {e.Message}");
         }
     }
+
 }
