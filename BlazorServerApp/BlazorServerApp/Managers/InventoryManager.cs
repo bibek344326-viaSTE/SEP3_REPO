@@ -136,14 +136,14 @@ namespace BlazorServerApp.Managers
             _itemUseCases.EditItemAsync(updatedItem).Wait();
         }
 
-        public void DeleteItem(ItemViewModel item)
+        public async Task DeleteItemAsync(ItemViewModel item)
         {
             var itemToDelete = new Item
             {
                 ItemId = item.Id
             };
 
-            _itemUseCases.DeleteItemAsync(itemToDelete).Wait();
+            await _itemUseCases.DeleteItemAsync(itemToDelete);
         }
 
         public bool HasSelectedItems => FilterAndSortItems().Any(i => i.IsSelected);
@@ -179,5 +179,6 @@ public class ItemViewModel
 
     // Client-side properties for UI interactions
     public bool IsSelected { get; set; } = false; 
-    public int OrderQuantity { get; set; } = 0; 
+    public int OrderQuantity { get; set; } = 0;
+    public bool IsDeleting { get; set; } = false;
 }

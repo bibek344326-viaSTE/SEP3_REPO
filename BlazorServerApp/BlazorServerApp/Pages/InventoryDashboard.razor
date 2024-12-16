@@ -94,7 +94,6 @@
             </tr>
         }
 
-
     </tbody>
 </table>
 
@@ -117,6 +116,21 @@
 </div>
 
 @code {
+    private async Task DeleteItem(ItemViewModel item)
+    {
+        item.IsDeleting = true;
+        try
+        {
+            await Manager.DeleteItemAsync(item);
+
+        }
+        finally
+        {
+            item.IsDeleting = false;
+            StateHasChanged();
+        }
+    }
+
     private void UpdateItem(ItemViewModel item)
     {
         Manager.UpdateItem(item);
@@ -142,12 +156,6 @@
         StateHasChanged();
     }
 
-    private void DeleteItem(ItemViewModel item)
-    {
-        Manager.DeleteItem(item);
-        ToastService.ShowSuccess($"Item '{item.Name}' deleted successfully!");
-        StateHasChanged();
-    }
 
     private async Task PlaceOrder()
     {

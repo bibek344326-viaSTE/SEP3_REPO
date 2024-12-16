@@ -39,7 +39,15 @@
     </div>
 </div>
 
-@if (PaginatedOrders != null && PaginatedOrders.Any())
+@if (IsLoading)
+{
+    <div class="d-flex justify-content-center align-items-center mt-5">
+        <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+    </div>
+}
+else if (PaginatedOrders != null && PaginatedOrders.Any())
 {
     <div class="table-responsive">
         <table class="table table-striped table-hover text-center">
@@ -87,6 +95,7 @@ else
     private bool IsFirstPage;
     private bool IsLastPage;
     private int TotalPages;
+    private bool IsLoading;
 
     protected override async Task OnInitializedAsync()
     {
@@ -95,21 +104,35 @@ else
 
     private async Task LoadOrders()
     {
-        PaginatedOrders = (await OrderHistoryManager.GetPaginatedOrdersAsync()).ToList();
-        TotalPages = await OrderHistoryManager.GetTotalPagesAsync();
-        IsFirstPage = await OrderHistoryManager.IsFirstPageAsync();
-        IsLastPage = await OrderHistoryManager.IsLastPageAsync();
+        IsLoading = true;
+        try
+        {
+            PaginatedOrders = (await OrderHistoryManager.GetPaginatedOrdersAsync()).ToList();
+            TotalPages = await OrderHistoryManager.GetTotalPagesAsync();
+            IsFirstPage = OrderHistoryManager.CurrentPage == 1;
+            IsLastPage = OrderHistoryManager.CurrentPage >= TotalPages;
+        }
+        finally
+        {
+            IsLoading = false;
+        }
     }
 
     private async Task PreviousPage()
     {
-        OrderHistoryManager.PreviousPage();
-        await LoadOrders();
+        if (!IsFirstPage)
+        {
+            OrderHistoryManager.PreviousPage();
+            await LoadOrders();
+        }
     }
 
     private async Task NextPage()
     {
-        await OrderHistoryManager.NextPageAsync();
-        await LoadOrders();
+        if (!IsLastPage)
+        {
+            await OrderHistoryManager.NextPageAsync();
+            await LoadOrders();
+        }
     }
 }
