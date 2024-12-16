@@ -45,23 +45,25 @@ public final class OrderServiceOuterClass {
     java.lang.String[] descriptorData = {
       "\n\023order-service.proto\022\006orders\032\037google/pr" +
       "otobuf/timestamp.proto\032\033google/protobuf/" +
-      "empty.proto\032\022user-service.proto\"Z\n\014Order" +
+      "empty.proto\032\022user-service.proto\"[\n\014Order" +
       "Request\022&\n\013order_items\030\001 \003(\0132\021.orders.Or" +
-      "derItem\022\017\n\007user_id\030\002 \001(\005\022\021\n\tcreatedBy\030\003 " +
-      "\001(\005\"M\n\tOrderItem\022\025\n\rorder_item_id\030\001 \001(\005\022" +
-      "\017\n\007item_id\030\002 \001(\005\022\030\n\020quantity_to_pick\030\003 \001" +
-      "(\005\"\204\002\n\005Order\022\020\n\010order_id\030\001 \001(\005\022&\n\013order_" +
-      "items\030\002 \003(\0132\021.orders.OrderItem\022.\n\ncreate" +
-      "d_at\030\003 \001(\0132\032.google.protobuf.Timestamp\022\"" +
-      "\n\rassigned_user\030\004 \001(\0132\013.users.User\022$\n\017cr" +
-      "eated_by_user\030\005 \001(\0132\013.users.User\022\024\n\014orde" +
-      "r_status\030\006 \001(\005\0221\n\rdelivery_date\030\007 \001(\0132\032." +
-      "google.protobuf.Timestamp\"*\n\tOrderList\022\035" +
-      "\n\006orders\030\001 \003(\0132\r.orders.Order2}\n\014OrderSe" +
-      "rvice\0222\n\013createOrder\022\024.orders.OrderReque" +
-      "st\032\r.orders.Order\0229\n\014getAllOrders\022\026.goog" +
-      "le.protobuf.Empty\032\021.orders.OrderListB\030\n\024" +
-      "com.javainuse.ordersP\001b\006proto3"
+      "derItem\022\017\n\007user_id\030\002 \001(\005\022\022\n\ncreated_by\030\003" +
+      " \001(\005\"M\n\tOrderItem\022\025\n\rorder_item_id\030\001 \001(\005" +
+      "\022\017\n\007item_id\030\002 \001(\005\022\030\n\020quantity_to_pick\030\003 " +
+      "\001(\005\"\231\002\n\005Order\022\020\n\010order_id\030\001 \001(\005\022&\n\013order" +
+      "_items\030\002 \003(\0132\021.orders.OrderItem\022.\n\ncreat" +
+      "ed_at\030\003 \001(\0132\032.google.protobuf.Timestamp\022" +
+      "\"\n\rassigned_user\030\004 \001(\0132\013.users.User\022$\n\017c" +
+      "reated_by_user\030\005 \001(\0132\013.users.User\022)\n\014ord" +
+      "er_status\030\006 \001(\0162\023.orders.OrderStatus\0221\n\r" +
+      "delivery_date\030\007 \001(\0132\032.google.protobuf.Ti" +
+      "mestamp\"*\n\tOrderList\022\035\n\006orders\030\001 \003(\0132\r.o" +
+      "rders.Order*-\n\013OrderStatus\022\r\n\tCOMPLETED\020" +
+      "\000\022\017\n\013IN_PROGRESS\020\0012}\n\014OrderService\0222\n\013cr" +
+      "eateOrder\022\024.orders.OrderRequest\032\r.orders" +
+      ".Order\0229\n\014getAllOrders\022\026.google.protobuf" +
+      ".Empty\032\021.orders.OrderListB\030\n\024com.javainu" +
+      "se.ordersP\001b\006proto3"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {

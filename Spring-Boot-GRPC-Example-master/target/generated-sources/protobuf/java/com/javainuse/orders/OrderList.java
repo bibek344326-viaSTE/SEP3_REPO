@@ -90,20 +90,12 @@ private static final long serialVersionUID = 0L;
   public static final int ORDERS_FIELD_NUMBER = 1;
   private java.util.List<com.javainuse.orders.Order> orders_;
   /**
-   * <pre>
-   * Repeated cannot be null, only an empty list
-   * </pre>
-   *
    * <code>repeated .orders.Order orders = 1;</code>
    */
   public java.util.List<com.javainuse.orders.Order> getOrdersList() {
     return orders_;
   }
   /**
-   * <pre>
-   * Repeated cannot be null, only an empty list
-   * </pre>
-   *
    * <code>repeated .orders.Order orders = 1;</code>
    */
   public java.util.List<? extends com.javainuse.orders.OrderOrBuilder> 
@@ -111,30 +103,18 @@ private static final long serialVersionUID = 0L;
     return orders_;
   }
   /**
-   * <pre>
-   * Repeated cannot be null, only an empty list
-   * </pre>
-   *
    * <code>repeated .orders.Order orders = 1;</code>
    */
   public int getOrdersCount() {
     return orders_.size();
   }
   /**
-   * <pre>
-   * Repeated cannot be null, only an empty list
-   * </pre>
-   *
    * <code>repeated .orders.Order orders = 1;</code>
    */
   public com.javainuse.orders.Order getOrders(int index) {
     return orders_.get(index);
   }
   /**
-   * <pre>
-   * Repeated cannot be null, only an empty list
-   * </pre>
-   *
    * <code>repeated .orders.Order orders = 1;</code>
    */
   public com.javainuse.orders.OrderOrBuilder getOrdersOrBuilder(
@@ -498,10 +478,6 @@ private static final long serialVersionUID = 0L;
         com.javainuse.orders.Order, com.javainuse.orders.Order.Builder, com.javainuse.orders.OrderOrBuilder> ordersBuilder_;
 
     /**
-     * <pre>
-     * Repeated cannot be null, only an empty list
-     * </pre>
-     *
      * <code>repeated .orders.Order orders = 1;</code>
      */
     public java.util.List<com.javainuse.orders.Order> getOrdersList() {
@@ -512,10 +488,6 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <pre>
-     * Repeated cannot be null, only an empty list
-     * </pre>
-     *
      * <code>repeated .orders.Order orders = 1;</code>
      */
     public int getOrdersCount() {
@@ -526,10 +498,6 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <pre>
-     * Repeated cannot be null, only an empty list
-     * </pre>
-     *
      * <code>repeated .orders.Order orders = 1;</code>
      */
     public com.javainuse.orders.Order getOrders(int index) {
@@ -540,10 +508,6 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <pre>
-     * Repeated cannot be null, only an empty list
-     * </pre>
-     *
      * <code>repeated .orders.Order orders = 1;</code>
      */
     public Builder setOrders(
@@ -561,10 +525,6 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <pre>
-     * Repeated cannot be null, only an empty list
-     * </pre>
-     *
      * <code>repeated .orders.Order orders = 1;</code>
      */
     public Builder setOrders(
@@ -579,10 +539,6 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <pre>
-     * Repeated cannot be null, only an empty list
-     * </pre>
-     *
      * <code>repeated .orders.Order orders = 1;</code>
      */
     public Builder addOrders(com.javainuse.orders.Order value) {
@@ -599,10 +555,6 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <pre>
-     * Repeated cannot be null, only an empty list
-     * </pre>
-     *
      * <code>repeated .orders.Order orders = 1;</code>
      */
     public Builder addOrders(
@@ -620,10 +572,6 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <pre>
-     * Repeated cannot be null, only an empty list
-     * </pre>
-     *
      * <code>repeated .orders.Order orders = 1;</code>
      */
     public Builder addOrders(
@@ -638,10 +586,6 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <pre>
-     * Repeated cannot be null, only an empty list
-     * </pre>
-     *
      * <code>repeated .orders.Order orders = 1;</code>
      */
     public Builder addOrders(
@@ -656,10 +600,6 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <pre>
-     * Repeated cannot be null, only an empty list
-     * </pre>
-     *
      * <code>repeated .orders.Order orders = 1;</code>
      */
     public Builder addAllOrders(
@@ -675,10 +615,6 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <pre>
-     * Repeated cannot be null, only an empty list
-     * </pre>
-     *
      * <code>repeated .orders.Order orders = 1;</code>
      */
     public Builder clearOrders() {
@@ -692,10 +628,6 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <pre>
-     * Repeated cannot be null, only an empty list
-     * </pre>
-     *
      * <code>repeated .orders.Order orders = 1;</code>
      */
     public Builder removeOrders(int index) {
@@ -709,10 +641,6 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <pre>
-     * Repeated cannot be null, only an empty list
-     * </pre>
-     *
      * <code>repeated .orders.Order orders = 1;</code>
      */
     public com.javainuse.orders.Order.Builder getOrdersBuilder(
@@ -720,10 +648,6 @@ private static final long serialVersionUID = 0L;
       return getOrdersFieldBuilder().getBuilder(index);
     }
     /**
-     * <pre>
-     * Repeated cannot be null, only an empty list
-     * </pre>
-     *
      * <code>repeated .orders.Order orders = 1;</code>
      */
     public com.javainuse.orders.OrderOrBuilder getOrdersOrBuilder(
@@ -734,10 +658,6 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <pre>
-     * Repeated cannot be null, only an empty list
-     * </pre>
-     *
      * <code>repeated .orders.Order orders = 1;</code>
      */
     public java.util.List<? extends com.javainuse.orders.OrderOrBuilder> 
@@ -749,10 +669,6 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <pre>
-     * Repeated cannot be null, only an empty list
-     * </pre>
-     *
      * <code>repeated .orders.Order orders = 1;</code>
      */
     public com.javainuse.orders.Order.Builder addOrdersBuilder() {
@@ -760,10 +676,6 @@ private static final long serialVersionUID = 0L;
           com.javainuse.orders.Order.getDefaultInstance());
     }
     /**
-     * <pre>
-     * Repeated cannot be null, only an empty list
-     * </pre>
-     *
      * <code>repeated .orders.Order orders = 1;</code>
      */
     public com.javainuse.orders.Order.Builder addOrdersBuilder(
@@ -772,10 +684,6 @@ private static final long serialVersionUID = 0L;
           index, com.javainuse.orders.Order.getDefaultInstance());
     }
     /**
-     * <pre>
-     * Repeated cannot be null, only an empty list
-     * </pre>
-     *
      * <code>repeated .orders.Order orders = 1;</code>
      */
     public java.util.List<com.javainuse.orders.Order.Builder> 

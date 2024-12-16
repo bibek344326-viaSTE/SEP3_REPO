@@ -14,7 +14,7 @@ message Item {
   string itemId = 1;
   string itemName = 2;
   string description = 3;
-  int32 quantityInStore = 4;
+  int32 quantity_in_store = 4;
 }
 
 message ItemList {

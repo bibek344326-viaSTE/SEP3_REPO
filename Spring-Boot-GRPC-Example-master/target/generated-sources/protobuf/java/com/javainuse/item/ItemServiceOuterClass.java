@@ -41,15 +41,15 @@ public final class ItemServiceOuterClass {
       "\n\022item-service.proto\032\033google/protobuf/em" +
       "pty.proto\"G\n\007ItemDTO\022\014\n\004name\030\001 \001(\t\022\023\n\013de" +
       "scription\030\002 \001(\t\022\031\n\021quantity_in_store\030\003 \001" +
-      "(\005\"V\n\004Item\022\016\n\006itemId\030\001 \001(\t\022\020\n\010itemName\030\002" +
-      " \001(\t\022\023\n\013description\030\003 \001(\t\022\027\n\017quantityInS" +
-      "tore\030\004 \001(\005\" \n\010ItemList\022\024\n\005items\030\001 \003(\0132\005." +
-      "Item2\266\001\n\013ItemService\022\035\n\ncreateItem\022\010.Ite" +
-      "mDTO\032\005.Item\022)\n\010editItem\022\005.Item\032\026.google." +
-      "protobuf.Empty\022+\n\ndeleteItem\022\005.Item\032\026.go" +
-      "ogle.protobuf.Empty\0220\n\013getAllItems\022\026.goo" +
-      "gle.protobuf.Empty\032\t.ItemListB\026\n\022com.jav" +
-      "ainuse.itemP\001b\006proto3"
+      "(\005\"X\n\004Item\022\016\n\006itemId\030\001 \001(\t\022\020\n\010itemName\030\002" +
+      " \001(\t\022\023\n\013description\030\003 \001(\t\022\031\n\021quantity_in" +
+      "_store\030\004 \001(\005\" \n\010ItemList\022\024\n\005items\030\001 \003(\0132" +
+      "\005.Item2\266\001\n\013ItemService\022\035\n\ncreateItem\022\010.I" +
+      "temDTO\032\005.Item\022)\n\010editItem\022\005.Item\032\026.googl" +
+      "e.protobuf.Empty\022+\n\ndeleteItem\022\005.Item\032\026." +
+      "google.protobuf.Empty\0220\n\013getAllItems\022\026.g" +
+      "oogle.protobuf.Empty\032\t.ItemListB\026\n\022com.j" +
+      "avainuse.itemP\001b\006proto3"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {

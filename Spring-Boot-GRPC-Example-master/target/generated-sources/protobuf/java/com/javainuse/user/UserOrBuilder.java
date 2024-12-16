@@ -38,18 +38,10 @@ public interface UserOrBuilder extends
       getPasswordBytes();
 
   /**
-   * <pre>
-   * Role is now an enum
-   * </pre>
-   *
    * <code>.users.Role role = 4;</code>
    */
   int getRoleValue();
   /**
-   * <pre>
-   * Role is now an enum
-   * </pre>
-   *
    * <code>.users.Role role = 4;</code>
    */
   com.javainuse.user.Role getRole();

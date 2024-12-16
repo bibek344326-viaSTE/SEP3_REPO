@@ -38,7 +38,7 @@ public interface ItemOrBuilder extends
       getDescriptionBytes();
 
   /**
-   * <code>int32 quantityInStore = 4;</code>
+   * <code>int32 quantity_in_store = 4;</code>
    */
   int getQuantityInStore();
 }

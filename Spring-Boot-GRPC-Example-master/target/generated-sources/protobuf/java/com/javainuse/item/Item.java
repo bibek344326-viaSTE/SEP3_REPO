@@ -203,10 +203,10 @@ private static final long serialVersionUID = 0L;
     }
   }
 
-  public static final int QUANTITYINSTORE_FIELD_NUMBER = 4;
+  public static final int QUANTITY_IN_STORE_FIELD_NUMBER = 4;
   private int quantityInStore_;
   /**
-   * <code>int32 quantityInStore = 4;</code>
+   * <code>int32 quantity_in_store = 4;</code>
    */
   public int getQuantityInStore() {
     return quantityInStore_;
@@ -301,7 +301,7 @@ private static final long serialVersionUID = 0L;
     hash = (53 * hash) + getItemName().hashCode();
     hash = (37 * hash) + DESCRIPTION_FIELD_NUMBER;
     hash = (53 * hash) + getDescription().hashCode();
-    hash = (37 * hash) + QUANTITYINSTORE_FIELD_NUMBER;
+    hash = (37 * hash) + QUANTITY_IN_STORE_FIELD_NUMBER;
     hash = (53 * hash) + getQuantityInStore();
     hash = (29 * hash) + unknownFields.hashCode();
     memoizedHashCode = hash;
@@ -775,13 +775,13 @@ private static final long serialVersionUID = 0L;
 
     private int quantityInStore_ ;
     /**
-     * <code>int32 quantityInStore = 4;</code>
+     * <code>int32 quantity_in_store = 4;</code>
      */
     public int getQuantityInStore() {
       return quantityInStore_;
     }
     /**
-     * <code>int32 quantityInStore = 4;</code>
+     * <code>int32 quantity_in_store = 4;</code>
      */
     public Builder setQuantityInStore(int value) {
       
@@ -790,7 +790,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>int32 quantityInStore = 4;</code>
+     * <code>int32 quantity_in_store = 4;</code>
      */
     public Builder clearQuantityInStore() {
       

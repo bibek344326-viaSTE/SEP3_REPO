@@ -8,44 +8,24 @@ public interface OrderListOrBuilder extends
     com.google.protobuf.MessageOrBuilder {
 
   /**
-   * <pre>
-   * Repeated cannot be null, only an empty list
-   * </pre>
-   *
    * <code>repeated .orders.Order orders = 1;</code>
    */
   java.util.List<com.javainuse.orders.Order> 
       getOrdersList();
   /**
-   * <pre>
-   * Repeated cannot be null, only an empty list
-   * </pre>
-   *
    * <code>repeated .orders.Order orders = 1;</code>
    */
   com.javainuse.orders.Order getOrders(int index);
   /**
-   * <pre>
-   * Repeated cannot be null, only an empty list
-   * </pre>
-   *
    * <code>repeated .orders.Order orders = 1;</code>
    */
   int getOrdersCount();
   /**
-   * <pre>
-   * Repeated cannot be null, only an empty list
-   * </pre>
-   *
    * <code>repeated .orders.Order orders = 1;</code>
    */
   java.util.List<? extends com.javainuse.orders.OrderOrBuilder> 
       getOrdersOrBuilderList();
   /**
-   * <pre>
-   * Repeated cannot be null, only an empty list
-   * </pre>
-   *
    * <code>repeated .orders.Order orders = 1;</code>
    */
   com.javainuse.orders.OrderOrBuilder getOrdersOrBuilder(

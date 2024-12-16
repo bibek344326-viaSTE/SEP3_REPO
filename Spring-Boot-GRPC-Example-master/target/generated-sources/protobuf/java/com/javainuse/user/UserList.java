@@ -90,20 +90,12 @@ private static final long serialVersionUID = 0L;
   public static final int USERS_FIELD_NUMBER = 1;
   private java.util.List<com.javainuse.user.User> users_;
   /**
-   * <pre>
-   * Contains a list of User objects
-   * </pre>
-   *
    * <code>repeated .users.User users = 1;</code>
    */
   public java.util.List<com.javainuse.user.User> getUsersList() {
     return users_;
   }
   /**
-   * <pre>
-   * Contains a list of User objects
-   * </pre>
-   *
    * <code>repeated .users.User users = 1;</code>
    */
   public java.util.List<? extends com.javainuse.user.UserOrBuilder> 
@@ -111,30 +103,18 @@ private static final long serialVersionUID = 0L;
     return users_;
   }
   /**
-   * <pre>
-   * Contains a list of User objects
-   * </pre>
-   *
    * <code>repeated .users.User users = 1;</code>
    */
   public int getUsersCount() {
     return users_.size();
   }
   /**
-   * <pre>
-   * Contains a list of User objects
-   * </pre>
-   *
    * <code>repeated .users.User users = 1;</code>
    */
   public com.javainuse.user.User getUsers(int index) {
     return users_.get(index);
   }
   /**
-   * <pre>
-   * Contains a list of User objects
-   * </pre>
-   *
    * <code>repeated .users.User users = 1;</code>
    */
   public com.javainuse.user.UserOrBuilder getUsersOrBuilder(
@@ -498,10 +478,6 @@ private static final long serialVersionUID = 0L;
         com.javainuse.user.User, com.javainuse.user.User.Builder, com.javainuse.user.UserOrBuilder> usersBuilder_;
 
     /**
-     * <pre>
-     * Contains a list of User objects
-     * </pre>
-     *
      * <code>repeated .users.User users = 1;</code>
      */
     public java.util.List<com.javainuse.user.User> getUsersList() {
@@ -512,10 +488,6 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <pre>
-     * Contains a list of User objects
-     * </pre>
-     *
      * <code>repeated .users.User users = 1;</code>
      */
     public int getUsersCount() {
@@ -526,10 +498,6 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <pre>
-     * Contains a list of User objects
-     * </pre>
-     *
      * <code>repeated .users.User users = 1;</code>
      */
     public com.javainuse.user.User getUsers(int index) {
@@ -540,10 +508,6 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <pre>
-     * Contains a list of User objects
-     * </pre>
-     *
      * <code>repeated .users.User users = 1;</code>
      */
     public Builder setUsers(
@@ -561,10 +525,6 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <pre>
-     * Contains a list of User objects
-     * </pre>
-     *
      * <code>repeated .users.User users = 1;</code>
      */
     public Builder setUsers(
@@ -579,10 +539,6 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <pre>
-     * Contains a list of User objects
-     * </pre>
-     *
      * <code>repeated .users.User users = 1;</code>
      */
     public Builder addUsers(com.javainuse.user.User value) {
@@ -599,10 +555,6 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <pre>
-     * Contains a list of User objects
-     * </pre>
-     *
      * <code>repeated .users.User users = 1;</code>
      */
     public Builder addUsers(
@@ -620,10 +572,6 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <pre>
-     * Contains a list of User objects
-     * </pre>
-     *
      * <code>repeated .users.User users = 1;</code>
      */
     public Builder addUsers(
@@ -638,10 +586,6 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <pre>
-     * Contains a list of User objects
-     * </pre>
-     *
      * <code>repeated .users.User users = 1;</code>
      */
     public Builder addUsers(
@@ -656,10 +600,6 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <pre>
-     * Contains a list of User objects
-     * </pre>
-     *
      * <code>repeated .users.User users = 1;</code>
      */
     public Builder addAllUsers(
@@ -675,10 +615,6 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <pre>
-     * Contains a list of User objects
-     * </pre>
-     *
      * <code>repeated .users.User users = 1;</code>
      */
     public Builder clearUsers() {
@@ -692,10 +628,6 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <pre>
-     * Contains a list of User objects
-     * </pre>
-     *
      * <code>repeated .users.User users = 1;</code>
      */
     public Builder removeUsers(int index) {
@@ -709,10 +641,6 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <pre>
-     * Contains a list of User objects
-     * </pre>
-     *
      * <code>repeated .users.User users = 1;</code>
      */
     public com.javainuse.user.User.Builder getUsersBuilder(
@@ -720,10 +648,6 @@ private static final long serialVersionUID = 0L;
       return getUsersFieldBuilder().getBuilder(index);
     }
     /**
-     * <pre>
-     * Contains a list of User objects
-     * </pre>
-     *
      * <code>repeated .users.User users = 1;</code>
      */
     public com.javainuse.user.UserOrBuilder getUsersOrBuilder(
@@ -734,10 +658,6 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <pre>
-     * Contains a list of User objects
-     * </pre>
-     *
      * <code>repeated .users.User users = 1;</code>
      */
     public java.util.List<? extends com.javainuse.user.UserOrBuilder> 
@@ -749,10 +669,6 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <pre>
-     * Contains a list of User objects
-     * </pre>
-     *
      * <code>repeated .users.User users = 1;</code>
      */
     public com.javainuse.user.User.Builder addUsersBuilder() {
@@ -760,10 +676,6 @@ private static final long serialVersionUID = 0L;
           com.javainuse.user.User.getDefaultInstance());
     }
     /**
-     * <pre>
-     * Contains a list of User objects
-     * </pre>
-     *
      * <code>repeated .users.User users = 1;</code>
      */
     public com.javainuse.user.User.Builder addUsersBuilder(
@@ -772,10 +684,6 @@ private static final long serialVersionUID = 0L;
           index, com.javainuse.user.User.getDefaultInstance());
     }
     /**
-     * <pre>
-     * Contains a list of User objects
-     * </pre>
-     *
      * <code>repeated .users.User users = 1;</code>
      */
     public java.util.List<com.javainuse.user.User.Builder> 

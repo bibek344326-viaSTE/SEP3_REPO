@@ -16,13 +16,13 @@ message User {
   string userid = 1;
   string username = 2;
   string password = 3;
-  Role role = 4; // Role is now an enum
+  Role role = 4;
 }
 
 message UserDTO {
   string username = 2;
   string password = 3;
-  Role role = 4; // Role is now an enum
+  Role role = 4;
 }
 
 message EditResponse {
@@ -34,7 +34,7 @@ message UserDeleteResponse {
 }
 
 message UserList {
-  repeated User users = 1; // Contains a list of User objects
+  repeated User users = 1;
 }
 
 enum Role {

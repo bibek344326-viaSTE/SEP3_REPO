@@ -8,163 +8,91 @@ public interface OrderOrBuilder extends
     com.google.protobuf.MessageOrBuilder {
 
   /**
-   * <pre>
-   * REQUIRED int32, this must always be set
-   * </pre>
-   *
    * <code>int32 order_id = 1;</code>
    */
   int getOrderId();
 
   /**
-   * <pre>
-   * Should never be null, only empty list if no items
-   * </pre>
-   *
    * <code>repeated .orders.OrderItem order_items = 2;</code>
    */
   java.util.List<com.javainuse.orders.OrderItem> 
       getOrderItemsList();
   /**
-   * <pre>
-   * Should never be null, only empty list if no items
-   * </pre>
-   *
    * <code>repeated .orders.OrderItem order_items = 2;</code>
    */
   com.javainuse.orders.OrderItem getOrderItems(int index);
   /**
-   * <pre>
-   * Should never be null, only empty list if no items
-   * </pre>
-   *
    * <code>repeated .orders.OrderItem order_items = 2;</code>
    */
   int getOrderItemsCount();
   /**
-   * <pre>
-   * Should never be null, only empty list if no items
-   * </pre>
-   *
    * <code>repeated .orders.OrderItem order_items = 2;</code>
    */
   java.util.List<? extends com.javainuse.orders.OrderItemOrBuilder> 
       getOrderItemsOrBuilderList();
   /**
-   * <pre>
-   * Should never be null, only empty list if no items
-   * </pre>
-   *
    * <code>repeated .orders.OrderItem order_items = 2;</code>
    */
   com.javainuse.orders.OrderItemOrBuilder getOrderItemsOrBuilder(
       int index);
 
   /**
-   * <pre>
-   * Reflecting the JSON:
-   * </pre>
-   *
    * <code>.google.protobuf.Timestamp created_at = 3;</code>
    */
   boolean hasCreatedAt();
   /**
-   * <pre>
-   * Reflecting the JSON:
-   * </pre>
-   *
    * <code>.google.protobuf.Timestamp created_at = 3;</code>
    */
   com.google.protobuf.Timestamp getCreatedAt();
   /**
-   * <pre>
-   * Reflecting the JSON:
-   * </pre>
-   *
    * <code>.google.protobuf.Timestamp created_at = 3;</code>
    */
   com.google.protobuf.TimestampOrBuilder getCreatedAtOrBuilder();
 
   /**
-   * <pre>
-   * Assigned user information, must not be null, must conform to the User message format
-   * </pre>
-   *
    * <code>.users.User assigned_user = 4;</code>
    */
   boolean hasAssignedUser();
   /**
-   * <pre>
-   * Assigned user information, must not be null, must conform to the User message format
-   * </pre>
-   *
    * <code>.users.User assigned_user = 4;</code>
    */
   com.javainuse.user.User getAssignedUser();
   /**
-   * <pre>
-   * Assigned user information, must not be null, must conform to the User message format
-   * </pre>
-   *
    * <code>.users.User assigned_user = 4;</code>
    */
   com.javainuse.user.UserOrBuilder getAssignedUserOrBuilder();
 
   /**
-   * <pre>
-   * Created by user information, must not be null, must conform to the User message format
-   * </pre>
-   *
    * <code>.users.User created_by_user = 5;</code>
    */
   boolean hasCreatedByUser();
   /**
-   * <pre>
-   * Created by user information, must not be null, must conform to the User message format
-   * </pre>
-   *
    * <code>.users.User created_by_user = 5;</code>
    */
   com.javainuse.user.User getCreatedByUser();
   /**
-   * <pre>
-   * Created by user information, must not be null, must conform to the User message format
-   * </pre>
-   *
    * <code>.users.User created_by_user = 5;</code>
    */
   com.javainuse.user.UserOrBuilder getCreatedByUserOrBuilder();
 
   /**
-   * <pre>
-   * Order status, ensure this is always set (could be 0, 1, 2, etc.)
-   * </pre>
-   *
-   * <code>int32 order_status = 6;</code>
+   * <code>.orders.OrderStatus order_status = 6;</code>
    */
-  int getOrderStatus();
+  int getOrderStatusValue();
+  /**
+   * <code>.orders.OrderStatus order_status = 6;</code>
+   */
+  com.javainuse.orders.OrderStatus getOrderStatus();
 
   /**
-   * <pre>
-   * Delivery date as timestamp, must be valid ISO-8601 date-time string
-   * </pre>
-   *
    * <code>.google.protobuf.Timestamp delivery_date = 7;</code>
    */
   boolean hasDeliveryDate();
   /**
-   * <pre>
-   * Delivery date as timestamp, must be valid ISO-8601 date-time string
-   * </pre>
-   *
    * <code>.google.protobuf.Timestamp delivery_date = 7;</code>
    */
   com.google.protobuf.Timestamp getDeliveryDate();
   /**
-   * <pre>
-   * Delivery date as timestamp, must be valid ISO-8601 date-time string
-   * </pre>
-   *
    * <code>.google.protobuf.Timestamp delivery_date = 7;</code>
    */
   com.google.protobuf.TimestampOrBuilder getDeliveryDateOrBuilder();

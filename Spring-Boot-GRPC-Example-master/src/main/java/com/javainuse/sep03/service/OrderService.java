@@ -2,11 +2,7 @@ package com.javainuse.sep03.service;
 
 import com.google.protobuf.Empty;
 import com.google.protobuf.Timestamp;
-import com.javainuse.orders.Order;
-import com.javainuse.orders.OrderItem;
-import com.javainuse.orders.OrderList;
-import com.javainuse.orders.OrderRequest;
-import com.javainuse.orders.OrderServiceGrpc;
+import com.javainuse.orders.*;
 import com.javainuse.user.Role;
 import com.javainuse.user.User; // Import the gRPC User type
 import io.grpc.stub.StreamObserver;
@@ -33,7 +29,7 @@ class RestOrderItem {
 
 class RestOrder {
     public int orderId;
-    public String orderStatus;
+    public OrderStatus orderStatus;
     public String deliveryDate; // ISO-8601 or string representation
     public List<RestOrderItem> orderItems;
 
@@ -68,7 +64,7 @@ public class OrderService extends OrderServiceGrpc.OrderServiceImplBase {
         restOrder.assignedUser.userId = request.getUserId();
 
         // Set the order status and delivery date - as per your logic
-        restOrder.orderStatus = "IN_PROGRESS";
+        restOrder.orderStatus = OrderStatus.IN_PROGRESS;
         restOrder.deliveryDate = OffsetDateTime.now().plusDays(7).toString();
 
         // Convert order items
@@ -164,7 +160,7 @@ public class OrderService extends OrderServiceGrpc.OrderServiceImplBase {
         try {
             Order.Builder builder = Order.newBuilder()
                     .setOrderId(ro.orderId)
-                    .setOrderStatus(Integer.parseInt(ro.orderStatus));
+                    .setOrderStatus(ro.orderStatus);
 
             // Handle null assignedUser and createdBy
             if (ro.assignedUser != null) {

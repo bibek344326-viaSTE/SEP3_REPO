@@ -13,3 +13,4 @@ service AuthService {
   rpc login(LoginRequest) returns (LoginResponse) {};
 
 }
+

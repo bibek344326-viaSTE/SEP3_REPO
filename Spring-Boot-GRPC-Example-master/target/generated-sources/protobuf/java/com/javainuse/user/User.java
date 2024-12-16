@@ -207,20 +207,12 @@ private static final long serialVersionUID = 0L;
   public static final int ROLE_FIELD_NUMBER = 4;
   private int role_;
   /**
-   * <pre>
-   * Role is now an enum
-   * </pre>
-   *
    * <code>.users.Role role = 4;</code>
    */
   public int getRoleValue() {
     return role_;
   }
   /**
-   * <pre>
-   * Role is now an enum
-   * </pre>
-   *
    * <code>.users.Role role = 4;</code>
    */
   public com.javainuse.user.Role getRole() {
@@ -791,20 +783,12 @@ private static final long serialVersionUID = 0L;
 
     private int role_ = 0;
     /**
-     * <pre>
-     * Role is now an enum
-     * </pre>
-     *
      * <code>.users.Role role = 4;</code>
      */
     public int getRoleValue() {
       return role_;
     }
     /**
-     * <pre>
-     * Role is now an enum
-     * </pre>
-     *
      * <code>.users.Role role = 4;</code>
      */
     public Builder setRoleValue(int value) {
@@ -813,10 +797,6 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <pre>
-     * Role is now an enum
-     * </pre>
-     *
      * <code>.users.Role role = 4;</code>
      */
     public com.javainuse.user.Role getRole() {
@@ -825,10 +805,6 @@ private static final long serialVersionUID = 0L;
       return result == null ? com.javainuse.user.Role.UNRECOGNIZED : result;
     }
     /**
-     * <pre>
-     * Role is now an enum
-     * </pre>
-     *
      * <code>.users.Role role = 4;</code>
      */
     public Builder setRole(com.javainuse.user.Role value) {
@@ -841,10 +817,6 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <pre>
-     * Role is now an enum
-     * </pre>
-     *
      * <code>.users.Role role = 4;</code>
      */
     public Builder clearRole() {
