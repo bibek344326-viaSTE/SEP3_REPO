@@ -93,7 +93,6 @@
                 </td>
             </tr>
         }
-
     </tbody>
 </table>
 
@@ -116,6 +115,13 @@
 </div>
 
 @code {
+    protected override void OnInitialized()
+    {
+        // Initial load of data
+        Manager.LoadData();
+        base.OnInitialized();
+    }
+
     private async Task DeleteItem(ItemViewModel item)
     {
         item.IsDeleting = true;
@@ -150,7 +156,6 @@
             try
             {
                 Manager.RefreshData();
-                // If you need to explicitly invoke a re-render:
                 StateHasChanged();
                 ToastService.ShowInfo("Inventory has been refreshed to ensure data consistency.");
             }
@@ -160,8 +165,6 @@
             }
         }
     }
-
-
 
     private void ResetOrderQuantity(ItemViewModel item)
     {
