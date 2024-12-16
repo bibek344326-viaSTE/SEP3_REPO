@@ -122,7 +122,11 @@
         try
         {
             await Manager.DeleteItemAsync(item);
-
+            ToastService.ShowSuccess($"Item '{item.Name}' deleted successfully!");
+        }
+        catch (Exception ex)
+        {
+            ToastService.ShowError($"Failed to delete item '{item.Name}'. Error: {ex.Message}");
         }
         finally
         {
@@ -131,11 +135,30 @@
         }
     }
 
-    private void UpdateItem(ItemViewModel item)
+    private async Task UpdateItem(ItemViewModel item)
     {
-        Manager.UpdateItem(item);
-        ToastService.ShowSuccess($"Item '{item.Name}' updated successfully!");
+        try
+        {
+            await Manager.UpdateItem(item);
+            ToastService.ShowSuccess($"Item '{item.Name}' updated successfully!");
+        }
+        catch (Exception ex)
+        {
+            ToastService.ShowError($"Failed to update item '{item.Name}'. Error: {ex.Message}");
+
+            // Refresh items to ensure we have the most up-to-date data
+            try
+            {
+                await Manager.GetAllItemsAsync(); // Call to refresh the list of items
+                ToastService.ShowInfo("Inventory refreshed to ensure data consistency.");
+            }
+            catch (Exception refreshEx)
+            {
+                ToastService.ShowError($"Failed to refresh inventory. Error: {refreshEx.Message}");
+            }
+        }
     }
+
 
     private void ResetOrderQuantity(ItemViewModel item)
     {
@@ -156,11 +179,16 @@
         StateHasChanged();
     }
 
-
     private async Task PlaceOrder()
     {
-        await Manager.PlaceOrder();
-        ToastService.ShowSuccess("Order placed successfully");
+        try
+        {
+            await Manager.PlaceOrder();
+            ToastService.ShowSuccess("Order placed successfully");
+        }
+        catch (Exception ex)
+        {
+            ToastService.ShowError($"Failed to place order. Error: {ex.Message}");
+        }
     }
-
 }

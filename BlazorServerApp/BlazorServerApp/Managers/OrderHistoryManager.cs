@@ -18,7 +18,6 @@ namespace BlazorServerApp.Managers
 
         // Filters
         public OrderStatus? SelectedStatus { get; set; } = null;
-
         private string _searchQuery = string.Empty;
         public string SearchQuery
         {
@@ -31,11 +30,10 @@ namespace BlazorServerApp.Managers
 
         // Pagination
         public int CurrentPage { get; private set; } = 1;
-        public int PageSize { get; set; } = 17;
+        public int PageSize { get; set; } = 19;
 
         // Sorting
-        // If sorting is needed, we can use these. For now, defaults are fine.
-        public string SortColumn { get; private set; } = "OrderDate";
+        public string SortColumn { get; private set; } = "CreatedAt";
         public bool Ascending { get; private set; } = true;
 
         // Cached Orders
@@ -46,22 +44,16 @@ namespace BlazorServerApp.Managers
             AllOrders = (await _orderUseCases.GetAllOrdersAsync()).ToList();
         }
 
-        /// <summary>
-        /// ResetPagination sets the current page back to 1. 
-        /// This is intended to be called after filters change.
-        /// </summary>
         public void ResetPagination()
         {
             CurrentPage = 1;
         }
 
-        /// <summary>
-        /// Applies filtering and sorting to the entire order list.
-        /// </summary>
         private IEnumerable<Order> FilterAndSortOrders()
         {
             var orders = AllOrders.AsQueryable();
 
+            // Filters
             if (SelectedStatus.HasValue)
                 orders = orders.Where(o => o.OrderStatus == SelectedStatus.Value);
 
@@ -74,14 +66,13 @@ namespace BlazorServerApp.Managers
             if (EndDate.HasValue)
                 orders = orders.Where(o => o.CreatedAt.ToDateTime() <= EndDate.Value);
 
-            // Sorting - if needed, add logic for different columns
-            // Default is by OrderDate ascending/descending if desired
+            // Sorting
             return SortColumn switch
             {
                 "OrderId" => Ascending ? orders.OrderBy(o => o.OrderId) : orders.OrderByDescending(o => o.OrderId),
                 "CreatedAt" => Ascending ? orders.OrderBy(o => o.CreatedAt) : orders.OrderByDescending(o => o.CreatedAt),
-                "Status" => Ascending ? orders.OrderBy(o => o.OrderStatus) : orders.OrderByDescending(o => o.OrderStatus),
-                _ => orders // Default (no specific sorting)
+                "Status" => Ascending ? orders.OrderBy(o => o.OrderStatus.ToString()) : orders.OrderByDescending(o => o.OrderStatus.ToString()),
+                _ => orders
             };
         }
 
@@ -110,13 +101,22 @@ namespace BlazorServerApp.Managers
         {
             if (SortColumn == columnName)
             {
+                // Toggle direction if same column is clicked again
                 Ascending = !Ascending;
             }
             else
             {
+                // Switch to a new sort column and reset to ascending
                 SortColumn = columnName;
                 Ascending = true;
             }
+        }
+
+        public string GetSortIcon(string columnName)
+        {
+            if (SortColumn == columnName)
+                return Ascending ? "fas fa-sort-up ms-1" : "fas fa-sort-down ms-1";
+            return "fas fa-sort ms-1 text-muted";
         }
 
         public string GetStatusClass(OrderStatus status)

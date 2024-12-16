@@ -55,11 +55,24 @@
     <table class="table">
         <thead>
             <tr>
-                <th>Order ID</th>
-                <th>Order Date</th>
-                <th>Status</th>
-                <th>Created By</th>
-                <th>Created At</th>
+                <th @onclick="() => SortByOrderId()" style="cursor:pointer;">
+                    Order ID
+                    <i class="@OrderHistoryManager.GetSortIcon("OrderId")"></i>
+                </th>
+                <th @onclick="() => SortByCreatedAt()" style="cursor:pointer;">
+                    Order Date
+                    <i class="@OrderHistoryManager.GetSortIcon("CreatedAt")"></i>
+                </th>
+                <th @onclick="() => SortByStatus()" style="cursor:pointer;">
+                    Status
+                    <i class="@OrderHistoryManager.GetSortIcon("Status")"></i>
+                </th>
+                <th>
+                    Created By
+                </th>
+                <th>
+                    Created At
+                </th>
             </tr>
         </thead>
         <tbody>
@@ -97,19 +110,12 @@ else
         RefreshOrdersView();
     }
 
-    /// <summary>
-    /// RefreshOrdersView updates the visible orders after filters/pagination changes.
-    /// </summary>
     private void RefreshOrdersView()
     {
         PaginatedOrders = OrderHistoryManager.PagedItems.ToList();
         StateHasChanged();
     }
 
-    /// <summary>
-    /// ApplyFilter resets pagination (handled inside manager) and refreshes the view.
-    /// Call this whenever a filter input changes.
-    /// </summary>
     private void ApplyFilter()
     {
         OrderHistoryManager.ResetPagination();
@@ -131,6 +137,28 @@ else
     private void NextPage()
     {
         OrderHistoryManager.NextPage();
+        RefreshOrdersView();
+    }
+
+    private void SortBy(string columnName)
+    {
+        OrderHistoryManager.SortByColumn(columnName);
+        RefreshOrdersView();
+    }
+    private void SortByOrderId()
+    {
+        OrderHistoryManager.SortByColumn("OrderId");
+        RefreshOrdersView();      
+    }
+    private void SortByCreatedAt()
+    {
+        OrderHistoryManager.SortByColumn("CreatedAt");
+        RefreshOrdersView();
+    }
+    private void SortByStatus()
+    {
+        
+        OrderHistoryManager.SortByColumn("Status");
         RefreshOrdersView();
     }
 }

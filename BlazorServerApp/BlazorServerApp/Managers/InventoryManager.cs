@@ -123,7 +123,7 @@ namespace BlazorServerApp.Managers
         }
 
         // Item operations
-        public void UpdateItem(ItemViewModel item)
+        public async Task UpdateItem(ItemViewModel item)
         {
             var updatedItem = new Item
             {
@@ -133,7 +133,7 @@ namespace BlazorServerApp.Managers
                 QuantityInStore = item.QuantityInStore
             };
 
-            _itemUseCases.EditItemAsync(updatedItem).Wait();
+           await _itemUseCases.EditItemAsync(updatedItem);
         }
 
         public async Task DeleteItemAsync(ItemViewModel item)
