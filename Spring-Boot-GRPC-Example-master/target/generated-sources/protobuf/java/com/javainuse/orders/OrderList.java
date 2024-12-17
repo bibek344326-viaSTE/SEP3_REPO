@@ -45,11 +45,11 @@ private static final long serialVersionUID = 0L;
             break;
           case 10: {
             if (!((mutable_bitField0_ & 0x00000001) == 0x00000001)) {
-              orders_ = new java.util.ArrayList<com.javainuse.orders.Order>();
+              orders_ = new java.util.ArrayList<com.javainuse.orders.OrderDTO>();
               mutable_bitField0_ |= 0x00000001;
             }
             orders_.add(
-                input.readMessage(com.javainuse.orders.Order.parser(), extensionRegistry));
+                input.readMessage(com.javainuse.orders.OrderDTO.parser(), extensionRegistry));
             break;
           }
           default: {
@@ -88,36 +88,36 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int ORDERS_FIELD_NUMBER = 1;
-  private java.util.List<com.javainuse.orders.Order> orders_;
+  private java.util.List<com.javainuse.orders.OrderDTO> orders_;
   /**
-   * <code>repeated .orders.Order orders = 1;</code>
+   * <code>repeated .orders.OrderDTO orders = 1;</code>
    */
-  public java.util.List<com.javainuse.orders.Order> getOrdersList() {
+  public java.util.List<com.javainuse.orders.OrderDTO> getOrdersList() {
     return orders_;
   }
   /**
-   * <code>repeated .orders.Order orders = 1;</code>
+   * <code>repeated .orders.OrderDTO orders = 1;</code>
    */
-  public java.util.List<? extends com.javainuse.orders.OrderOrBuilder> 
+  public java.util.List<? extends com.javainuse.orders.OrderDTOOrBuilder> 
       getOrdersOrBuilderList() {
     return orders_;
   }
   /**
-   * <code>repeated .orders.Order orders = 1;</code>
+   * <code>repeated .orders.OrderDTO orders = 1;</code>
    */
   public int getOrdersCount() {
     return orders_.size();
   }
   /**
-   * <code>repeated .orders.Order orders = 1;</code>
+   * <code>repeated .orders.OrderDTO orders = 1;</code>
    */
-  public com.javainuse.orders.Order getOrders(int index) {
+  public com.javainuse.orders.OrderDTO getOrders(int index) {
     return orders_.get(index);
   }
   /**
-   * <code>repeated .orders.Order orders = 1;</code>
+   * <code>repeated .orders.OrderDTO orders = 1;</code>
    */
-  public com.javainuse.orders.OrderOrBuilder getOrdersOrBuilder(
+  public com.javainuse.orders.OrderDTOOrBuilder getOrdersOrBuilder(
       int index) {
     return orders_.get(index);
   }
@@ -465,22 +465,22 @@ private static final long serialVersionUID = 0L;
     }
     private int bitField0_;
 
-    private java.util.List<com.javainuse.orders.Order> orders_ =
+    private java.util.List<com.javainuse.orders.OrderDTO> orders_ =
       java.util.Collections.emptyList();
     private void ensureOrdersIsMutable() {
       if (!((bitField0_ & 0x00000001) == 0x00000001)) {
-        orders_ = new java.util.ArrayList<com.javainuse.orders.Order>(orders_);
+        orders_ = new java.util.ArrayList<com.javainuse.orders.OrderDTO>(orders_);
         bitField0_ |= 0x00000001;
        }
     }
 
     private com.google.protobuf.RepeatedFieldBuilderV3<
-        com.javainuse.orders.Order, com.javainuse.orders.Order.Builder, com.javainuse.orders.OrderOrBuilder> ordersBuilder_;
+        com.javainuse.orders.OrderDTO, com.javainuse.orders.OrderDTO.Builder, com.javainuse.orders.OrderDTOOrBuilder> ordersBuilder_;
 
     /**
-     * <code>repeated .orders.Order orders = 1;</code>
+     * <code>repeated .orders.OrderDTO orders = 1;</code>
      */
-    public java.util.List<com.javainuse.orders.Order> getOrdersList() {
+    public java.util.List<com.javainuse.orders.OrderDTO> getOrdersList() {
       if (ordersBuilder_ == null) {
         return java.util.Collections.unmodifiableList(orders_);
       } else {
@@ -488,7 +488,7 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>repeated .orders.Order orders = 1;</code>
+     * <code>repeated .orders.OrderDTO orders = 1;</code>
      */
     public int getOrdersCount() {
       if (ordersBuilder_ == null) {
@@ -498,9 +498,9 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>repeated .orders.Order orders = 1;</code>
+     * <code>repeated .orders.OrderDTO orders = 1;</code>
      */
-    public com.javainuse.orders.Order getOrders(int index) {
+    public com.javainuse.orders.OrderDTO getOrders(int index) {
       if (ordersBuilder_ == null) {
         return orders_.get(index);
       } else {
@@ -508,10 +508,10 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>repeated .orders.Order orders = 1;</code>
+     * <code>repeated .orders.OrderDTO orders = 1;</code>
      */
     public Builder setOrders(
-        int index, com.javainuse.orders.Order value) {
+        int index, com.javainuse.orders.OrderDTO value) {
       if (ordersBuilder_ == null) {
         if (value == null) {
           throw new NullPointerException();
@@ -525,10 +525,10 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>repeated .orders.Order orders = 1;</code>
+     * <code>repeated .orders.OrderDTO orders = 1;</code>
      */
     public Builder setOrders(
-        int index, com.javainuse.orders.Order.Builder builderForValue) {
+        int index, com.javainuse.orders.OrderDTO.Builder builderForValue) {
       if (ordersBuilder_ == null) {
         ensureOrdersIsMutable();
         orders_.set(index, builderForValue.build());
@@ -539,9 +539,9 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>repeated .orders.Order orders = 1;</code>
+     * <code>repeated .orders.OrderDTO orders = 1;</code>
      */
-    public Builder addOrders(com.javainuse.orders.Order value) {
+    public Builder addOrders(com.javainuse.orders.OrderDTO value) {
       if (ordersBuilder_ == null) {
         if (value == null) {
           throw new NullPointerException();
@@ -555,10 +555,10 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>repeated .orders.Order orders = 1;</code>
+     * <code>repeated .orders.OrderDTO orders = 1;</code>
      */
     public Builder addOrders(
-        int index, com.javainuse.orders.Order value) {
+        int index, com.javainuse.orders.OrderDTO value) {
       if (ordersBuilder_ == null) {
         if (value == null) {
           throw new NullPointerException();
@@ -572,10 +572,10 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>repeated .orders.Order orders = 1;</code>
+     * <code>repeated .orders.OrderDTO orders = 1;</code>
      */
     public Builder addOrders(
-        com.javainuse.orders.Order.Builder builderForValue) {
+        com.javainuse.orders.OrderDTO.Builder builderForValue) {
       if (ordersBuilder_ == null) {
         ensureOrdersIsMutable();
         orders_.add(builderForValue.build());
@@ -586,10 +586,10 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>repeated .orders.Order orders = 1;</code>
+     * <code>repeated .orders.OrderDTO orders = 1;</code>
      */
     public Builder addOrders(
-        int index, com.javainuse.orders.Order.Builder builderForValue) {
+        int index, com.javainuse.orders.OrderDTO.Builder builderForValue) {
       if (ordersBuilder_ == null) {
         ensureOrdersIsMutable();
         orders_.add(index, builderForValue.build());
@@ -600,10 +600,10 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>repeated .orders.Order orders = 1;</code>
+     * <code>repeated .orders.OrderDTO orders = 1;</code>
      */
     public Builder addAllOrders(
-        java.lang.Iterable<? extends com.javainuse.orders.Order> values) {
+        java.lang.Iterable<? extends com.javainuse.orders.OrderDTO> values) {
       if (ordersBuilder_ == null) {
         ensureOrdersIsMutable();
         com.google.protobuf.AbstractMessageLite.Builder.addAll(
@@ -615,7 +615,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>repeated .orders.Order orders = 1;</code>
+     * <code>repeated .orders.OrderDTO orders = 1;</code>
      */
     public Builder clearOrders() {
       if (ordersBuilder_ == null) {
@@ -628,7 +628,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>repeated .orders.Order orders = 1;</code>
+     * <code>repeated .orders.OrderDTO orders = 1;</code>
      */
     public Builder removeOrders(int index) {
       if (ordersBuilder_ == null) {
@@ -641,16 +641,16 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>repeated .orders.Order orders = 1;</code>
+     * <code>repeated .orders.OrderDTO orders = 1;</code>
      */
-    public com.javainuse.orders.Order.Builder getOrdersBuilder(
+    public com.javainuse.orders.OrderDTO.Builder getOrdersBuilder(
         int index) {
       return getOrdersFieldBuilder().getBuilder(index);
     }
     /**
-     * <code>repeated .orders.Order orders = 1;</code>
+     * <code>repeated .orders.OrderDTO orders = 1;</code>
      */
-    public com.javainuse.orders.OrderOrBuilder getOrdersOrBuilder(
+    public com.javainuse.orders.OrderDTOOrBuilder getOrdersOrBuilder(
         int index) {
       if (ordersBuilder_ == null) {
         return orders_.get(index);  } else {
@@ -658,9 +658,9 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>repeated .orders.Order orders = 1;</code>
+     * <code>repeated .orders.OrderDTO orders = 1;</code>
      */
-    public java.util.List<? extends com.javainuse.orders.OrderOrBuilder> 
+    public java.util.List<? extends com.javainuse.orders.OrderDTOOrBuilder> 
          getOrdersOrBuilderList() {
       if (ordersBuilder_ != null) {
         return ordersBuilder_.getMessageOrBuilderList();
@@ -669,33 +669,33 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>repeated .orders.Order orders = 1;</code>
+     * <code>repeated .orders.OrderDTO orders = 1;</code>
      */
-    public com.javainuse.orders.Order.Builder addOrdersBuilder() {
+    public com.javainuse.orders.OrderDTO.Builder addOrdersBuilder() {
       return getOrdersFieldBuilder().addBuilder(
-          com.javainuse.orders.Order.getDefaultInstance());
+          com.javainuse.orders.OrderDTO.getDefaultInstance());
     }
     /**
-     * <code>repeated .orders.Order orders = 1;</code>
+     * <code>repeated .orders.OrderDTO orders = 1;</code>
      */
-    public com.javainuse.orders.Order.Builder addOrdersBuilder(
+    public com.javainuse.orders.OrderDTO.Builder addOrdersBuilder(
         int index) {
       return getOrdersFieldBuilder().addBuilder(
-          index, com.javainuse.orders.Order.getDefaultInstance());
+          index, com.javainuse.orders.OrderDTO.getDefaultInstance());
     }
     /**
-     * <code>repeated .orders.Order orders = 1;</code>
+     * <code>repeated .orders.OrderDTO orders = 1;</code>
      */
-    public java.util.List<com.javainuse.orders.Order.Builder> 
+    public java.util.List<com.javainuse.orders.OrderDTO.Builder> 
          getOrdersBuilderList() {
       return getOrdersFieldBuilder().getBuilderList();
     }
     private com.google.protobuf.RepeatedFieldBuilderV3<
-        com.javainuse.orders.Order, com.javainuse.orders.Order.Builder, com.javainuse.orders.OrderOrBuilder> 
+        com.javainuse.orders.OrderDTO, com.javainuse.orders.OrderDTO.Builder, com.javainuse.orders.OrderDTOOrBuilder> 
         getOrdersFieldBuilder() {
       if (ordersBuilder_ == null) {
         ordersBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
-            com.javainuse.orders.Order, com.javainuse.orders.Order.Builder, com.javainuse.orders.OrderOrBuilder>(
+            com.javainuse.orders.OrderDTO, com.javainuse.orders.OrderDTO.Builder, com.javainuse.orders.OrderDTOOrBuilder>(
                 orders_,
                 ((bitField0_ & 0x00000001) == 0x00000001),
                 getParentForChildren(),

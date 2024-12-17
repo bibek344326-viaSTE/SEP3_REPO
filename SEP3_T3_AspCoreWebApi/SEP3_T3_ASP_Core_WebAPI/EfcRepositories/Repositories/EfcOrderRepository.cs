@@ -1,4 +1,5 @@
 ﻿using Entities;
+using Entities.DTOs;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using SEP3_T3_ASP_Core_WebAPI;
@@ -97,36 +98,32 @@ public class EfcOrderRepository: IOrderRepository
         return existingOrder;
     }
 
-    public async Task<IQueryable<Order>> GetAllOrders()
+    public async Task<List<OrderDTO>> GetAllOrders()
     {
-        return ctx.Orders
-            .Select(o => new Order
+        return await ctx.Orders
+            .Include(order => order.OrderItems)        // Load the OrderItems for the Order
+            .Include(order => order.AssignedUser)     // Load the User assigned to the Order
+            .Include(order => order.CreatedBy)       // Load the User who created the Order
+            .Select(order => new OrderDTO
             {
-                OrderId = o.OrderId,
-                OrderStatus = o.OrderStatus,
-                DeliveryDate = o.DeliveryDate,
-                CreatedBy = new User
+                OrderId = order.OrderId,
+                OrderStatus = order.OrderStatus.ToString(),
+                DeliveryDate = order.DeliveryDate,
+                OrderItems = order.OrderItems.Select(item => new OrderItemDTO
                 {
-                    UserId = o.CreatedBy.UserId,
-                    UserName = o.CreatedBy.UserName,
-                    Password = "",
-                    UserRole = o.CreatedBy.UserRole,
-                    IsActive = true
-                },
+                    ProductName = item.Item.ItemName,
+                    QuantityToPick = item.QuantityToPick
 
-                AssignedUser = o.AssignedUser != null
-                ? new User
+                }).ToList(),
+                AssignedUser = order.AssignedUser != null ? new UserDTO
                 {
-                    UserId = o.AssignedUser.UserId,
-                    UserName = o.AssignedUser.UserName,
-                    Password = "",
-                    UserRole = o.AssignedUser.UserRole,
-                    IsActive = true
+                    UserName = order.AssignedUser.UserName
+                } : null,
+                CreatedBy = new UserDTO
+                {
+                    UserName = order.CreatedBy.UserName
                 }
-                : null,
-                CreatedAt = o.CreatedAt
-            })
-            .AsQueryable();
+            }).ToListAsync();
     }
 
 

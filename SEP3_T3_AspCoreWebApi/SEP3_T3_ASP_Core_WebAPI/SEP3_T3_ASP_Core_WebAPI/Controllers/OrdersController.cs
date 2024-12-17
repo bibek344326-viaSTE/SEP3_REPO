@@ -1,4 +1,5 @@
 ﻿using Entities;
+using Entities.DTOs;
 using Microsoft.AspNetCore.Mvc;
 using SEP3_T3_ASP_Core_WebAPI.RepositoryContracts;
 using RouteAttribute = Microsoft.AspNetCore.Mvc.RouteAttribute;
@@ -22,7 +23,7 @@ namespace SEP3_T3_ASP_Core_WebAPI.Controllers
         public async Task<ActionResult<Order>> AddOrder([FromBody] Order order)
         {
             Order created = await orderRepository.AddOrderAsync(order);
-            return Created($"/Orders/{created.OrderId}", created);
+            return Ok(true);
         }
 
         // ********** UPDATE Endpoints **********
@@ -115,9 +116,9 @@ namespace SEP3_T3_ASP_Core_WebAPI.Controllers
 
         // GET: /Orders
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Order>>> GetAllOrders()
+        public async Task<ActionResult<IEnumerable<OrderDTO>>> GetAllOrders()
         {
-            IQueryable<Order> orders = await orderRepository.GetAllOrders();
+            List<OrderDTO> orders = await orderRepository.GetAllOrders();
             return Ok(orders);
         }
     }

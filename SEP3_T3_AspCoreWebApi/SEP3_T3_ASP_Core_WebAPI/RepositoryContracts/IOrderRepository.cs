@@ -1,4 +1,5 @@
 ﻿using Entities;
+using Entities.DTOs;
 
 namespace SEP3_T3_ASP_Core_WebAPI.RepositoryContracts;
 
@@ -8,6 +9,6 @@ public interface IOrderRepository
     Task<Order> AddOrderAsync(Order order);
     Task<Order> UpdateOrderAsync(Order order);
     Task<Order> DeleteOrderAsync(int id);
-    Task<IQueryable<Order>> GetAllOrders();
+    Task<List<OrderDTO>> GetAllOrders();
     Task<IQueryable<Order>> GetAllOrdersByType(string type);
 }

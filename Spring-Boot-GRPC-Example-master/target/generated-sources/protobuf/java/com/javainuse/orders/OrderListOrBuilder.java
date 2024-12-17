@@ -8,26 +8,26 @@ public interface OrderListOrBuilder extends
     com.google.protobuf.MessageOrBuilder {
 
   /**
-   * <code>repeated .orders.Order orders = 1;</code>
+   * <code>repeated .orders.OrderDTO orders = 1;</code>
    */
-  java.util.List<com.javainuse.orders.Order> 
+  java.util.List<com.javainuse.orders.OrderDTO> 
       getOrdersList();
   /**
-   * <code>repeated .orders.Order orders = 1;</code>
+   * <code>repeated .orders.OrderDTO orders = 1;</code>
    */
-  com.javainuse.orders.Order getOrders(int index);
+  com.javainuse.orders.OrderDTO getOrders(int index);
   /**
-   * <code>repeated .orders.Order orders = 1;</code>
+   * <code>repeated .orders.OrderDTO orders = 1;</code>
    */
   int getOrdersCount();
   /**
-   * <code>repeated .orders.Order orders = 1;</code>
+   * <code>repeated .orders.OrderDTO orders = 1;</code>
    */
-  java.util.List<? extends com.javainuse.orders.OrderOrBuilder> 
+  java.util.List<? extends com.javainuse.orders.OrderDTOOrBuilder> 
       getOrdersOrBuilderList();
   /**
-   * <code>repeated .orders.Order orders = 1;</code>
+   * <code>repeated .orders.OrderDTO orders = 1;</code>
    */
-  com.javainuse.orders.OrderOrBuilder getOrdersOrBuilder(
+  com.javainuse.orders.OrderDTOOrBuilder getOrdersOrBuilder(
       int index);
 }

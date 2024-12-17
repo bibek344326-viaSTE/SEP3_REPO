@@ -3,8 +3,8 @@
 
 package com.javainuse.orders;
 
-public interface OrderOrBuilder extends
-    // @@protoc_insertion_point(interface_extends:orders.Order)
+public interface OrderDTOOrBuilder extends
+    // @@protoc_insertion_point(interface_extends:orders.OrderDTO)
     com.google.protobuf.MessageOrBuilder {
 
   /**
@@ -13,27 +13,27 @@ public interface OrderOrBuilder extends
   int getOrderId();
 
   /**
-   * <code>repeated .orders.OrderItem order_items = 2;</code>
+   * <code>repeated .orders.OrderItemDTO order_items = 2;</code>
    */
-  java.util.List<com.javainuse.orders.OrderItem> 
+  java.util.List<com.javainuse.orders.OrderItemDTO> 
       getOrderItemsList();
   /**
-   * <code>repeated .orders.OrderItem order_items = 2;</code>
+   * <code>repeated .orders.OrderItemDTO order_items = 2;</code>
    */
-  com.javainuse.orders.OrderItem getOrderItems(int index);
+  com.javainuse.orders.OrderItemDTO getOrderItems(int index);
   /**
-   * <code>repeated .orders.OrderItem order_items = 2;</code>
+   * <code>repeated .orders.OrderItemDTO order_items = 2;</code>
    */
   int getOrderItemsCount();
   /**
-   * <code>repeated .orders.OrderItem order_items = 2;</code>
+   * <code>repeated .orders.OrderItemDTO order_items = 2;</code>
    */
-  java.util.List<? extends com.javainuse.orders.OrderItemOrBuilder> 
+  java.util.List<? extends com.javainuse.orders.OrderItemDTOOrBuilder> 
       getOrderItemsOrBuilderList();
   /**
-   * <code>repeated .orders.OrderItem order_items = 2;</code>
+   * <code>repeated .orders.OrderItemDTO order_items = 2;</code>
    */
-  com.javainuse.orders.OrderItemOrBuilder getOrderItemsOrBuilder(
+  com.javainuse.orders.OrderItemDTOOrBuilder getOrderItemsOrBuilder(
       int index);
 
   /**
@@ -50,30 +50,24 @@ public interface OrderOrBuilder extends
   com.google.protobuf.TimestampOrBuilder getCreatedAtOrBuilder();
 
   /**
-   * <code>.users.User assigned_user = 4;</code>
+   * <code>string assigned_user = 4;</code>
    */
-  boolean hasAssignedUser();
+  java.lang.String getAssignedUser();
   /**
-   * <code>.users.User assigned_user = 4;</code>
+   * <code>string assigned_user = 4;</code>
    */
-  com.javainuse.user.User getAssignedUser();
-  /**
-   * <code>.users.User assigned_user = 4;</code>
-   */
-  com.javainuse.user.UserOrBuilder getAssignedUserOrBuilder();
+  com.google.protobuf.ByteString
+      getAssignedUserBytes();
 
   /**
-   * <code>.users.User created_by_user = 5;</code>
+   * <code>string created_by_user = 5;</code>
    */
-  boolean hasCreatedByUser();
+  java.lang.String getCreatedByUser();
   /**
-   * <code>.users.User created_by_user = 5;</code>
+   * <code>string created_by_user = 5;</code>
    */
-  com.javainuse.user.User getCreatedByUser();
-  /**
-   * <code>.users.User created_by_user = 5;</code>
-   */
-  com.javainuse.user.UserOrBuilder getCreatedByUserOrBuilder();
+  com.google.protobuf.ByteString
+      getCreatedByUserBytes();
 
   /**
    * <code>.orders.OrderStatus order_status = 6;</code>

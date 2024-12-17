@@ -3,228 +3,183 @@ package com.javainuse.sep03.service;
 import com.google.protobuf.Empty;
 import com.google.protobuf.Timestamp;
 import com.javainuse.orders.*;
-import com.javainuse.user.User; // Import the gRPC User type
-import com.javainuse.user.UserRole;
-import io.grpc.stub.StreamObserver;
 import net.devh.boot.grpc.server.service.GrpcService;
 import org.springframework.web.reactive.function.client.WebClient;
+import org.springframework.http.MediaType;
+import io.grpc.stub.StreamObserver;
 
-import java.time.OffsetDateTime;
-import java.util.List;
+import java.time.Instant;
+import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
 import java.util.stream.Collectors;
-
-class RestUserOrder {
-    public int userId;
-    public String userName;
-    public String password; // Might be empty as per the C# code
-    public String userRole;
-}
-
-class RestOrderItem {
-    public int orderItemId;
-    public int orderId;
-    public int itemId;
-    public int quantityToPick;
-}
+import java.util.List;
 
 class RestOrder {
-    public int orderId;
-    public OrderStatus orderStatus;
-    public String deliveryDate; // ISO-8601 or string representation
-    public List<RestOrderItem> orderItems;
+    private int orderId;
+    private String orderStatus;
+    private String deliveryDate;
+    private List<OrderItem> orderItems;
+    private RestUserDTO assignedUser;
+    private RestUserDTO createdBy;
+    private Integer userId;
+    private Integer createdById;
+    private String createdAt;
 
-    public RestUserOrder createdBy;      // Detailed user who created the order
-    public RestUserOrder assignedUser;   // Detailed user to whom the order is assigned, can be null
-    public String createdAt;        // ISO-8601 string, parseable as OffsetDateTime
+    int getOrderId() { return orderId; }
+    void setOrderId(int orderId) { this.orderId = orderId; }
+    String getOrderStatus() { return orderStatus; }
+    void setOrderStatus(String orderStatus) { this.orderStatus = orderStatus; }
+    String getDeliveryDate() { return deliveryDate; }
+    void setDeliveryDate(String deliveryDate) { this.deliveryDate = deliveryDate; }
+    List<OrderItem> getOrderItems() { return orderItems; }
+    void setOrderItems(List<OrderItem> orderItems) { this.orderItems = orderItems; }
+    RestUserDTO getAssignedUser() { return assignedUser; }
+    void setAssignedUser(RestUserDTO assignedUser) { this.assignedUser = assignedUser; }
+    RestUserDTO getCreatedBy() { return createdBy; }
+    void setCreatedBy(RestUserDTO createdBy) { this.createdBy = createdBy; }
+    Integer getUserId() { return userId; }
+    void setUserId(Integer userId) { this.userId = userId; }
+    Integer getCreatedById() { return createdById; }
+    void setCreatedById(Integer createdById) { this.createdById = createdById; }
+    String getCreatedAt() { return createdAt; }
+    void setCreatedAt(String createdAt) { this.createdAt = createdAt; }
+}
+
+class OrderItem {
+    private int orderItemId;
+    private String productName;
+    private int quantityToPick;
+    private int itemId;
+
+    int getOrderItemId() { return orderItemId; }
+    void setOrderItemId(int orderItemId) { this.orderItemId = orderItemId; }
+    String getProductName() { return productName; }
+    void setProductName(String productName) { this.productName = productName; }
+    int getQuantityToPick() { return quantityToPick; }
+    void setQuantityToPick(int quantityToPick) { this.quantityToPick = quantityToPick; }
+    int getItemId() { return itemId; }
+    void setItemId(int itemId) { this.itemId = itemId; }
+}
+
+class RestUserDTO {
+    private String userName;
+
+    String getUserName() { return userName; }
+    void setUserName(String userName) { this.userName = userName; }
+}
+
+class CreateOrderRequest {
+    private String orderStatus;
+    private String deliveryDate;
+    private List<CreateOrderItemRequest> orderItems;
+    private Integer userId;
+    private Integer createdById;
+
+    String getOrderStatus() { return orderStatus; }
+    void setOrderStatus(String orderStatus) { this.orderStatus = orderStatus; }
+    String getDeliveryDate() { return deliveryDate; }
+    void setDeliveryDate(String deliveryDate) { this.deliveryDate = deliveryDate; }
+    List<CreateOrderItemRequest> getOrderItems() { return orderItems; }
+    void setOrderItems(List<CreateOrderItemRequest> orderItems) { this.orderItems = orderItems; }
+    Integer getUserId() { return userId; }
+    void setUserId(Integer userId) { this.userId = userId; }
+    Integer getCreatedById() { return createdById; }
+    void setCreatedById(Integer createdById) { this.createdById = createdById; }
+}
+
+class CreateOrderItemRequest {
+    private int itemId;
+    private int quantityToPick;
+
+    int getItemId() { return itemId; }
+    void setItemId(int itemId) { this.itemId = itemId; }
+    int getQuantityToPick() { return quantityToPick; }
+    void setQuantityToPick(int quantityToPick) { this.quantityToPick = quantityToPick; }
 }
 
 @GrpcService
 public class OrderService extends OrderServiceGrpc.OrderServiceImplBase {
 
-    private final WebClient webClient;
-    private final String baseUrl = "http://localhost:5203/Orders"; // Adjust to your actual OrdersController endpoint
-
-    public OrderService() {
-        this.webClient = WebClient.create(baseUrl);
-    }
-
-    @Override
-    public void createOrder(OrderRequest request, StreamObserver<Order> responseObserver) {
-        // Create RestOrder from the request
-        RestOrder restOrder = new RestOrder();
-
-        // The proto has user_id and createdBy separately
-        // We map:
-        // - createdBy to restOrder.createdBy.userId
-        // - user_id to restOrder.assignedUser.userId (the user who will handle this order)
-        restOrder.createdBy = new RestUserOrder();
-        restOrder.createdBy.userId = request.getCreatedBy();
-
-        restOrder.assignedUser = new RestUserOrder();
-        restOrder.assignedUser.userId = request.getUserId();
-
-        // Set the order status and delivery date - as per your logic
-        restOrder.orderStatus = OrderStatus.IN_PROGRESS;
-        restOrder.deliveryDate = OffsetDateTime.now().plusDays(7).toString();
-
-        // Convert order items
-        restOrder.orderItems = request.getOrderItemsList().stream().map(oi -> {
-            RestOrderItem item = new RestOrderItem();
-            item.itemId = oi.getItemId();
-            item.quantityToPick = oi.getQuantityToPick();
-            return item;
-        }).collect(Collectors.toList());
-
-        webClient.post()
-                .uri("") // baseUrl is already set
-                .bodyValue(restOrder)
-                .retrieve()
-                .bodyToMono(RestOrder.class)
-                .subscribe(
-                        createdRestOrder -> {
-                            Order response = convertRestOrderToProto(createdRestOrder);
-                            responseObserver.onNext(response);
-                            responseObserver.onCompleted();
-                        },
-                        responseObserver::onError
-                );
-    }
+    private final WebClient webClient = WebClient.builder().baseUrl("http://localhost:5203/Orders").build();
 
     @Override
     public void getAllOrders(Empty request, StreamObserver<OrderList> responseObserver) {
-        System.out.println("Starting getAllOrders() request...");
+        webClient.get().uri("/").retrieve().bodyToFlux(RestOrder.class)
+                .collectList()
+                .map(orderList -> {
+                    System.out.println("Received response from REST API: " + orderList);
+                    OrderList.Builder responseBuilder = OrderList.newBuilder();
+                    for (RestOrder o : orderList) {
+                        try {
+                            System.out.println("Processing order with ID: " + o.getOrderId());
+                            OrderDTO.Builder orderBuilder = OrderDTO.newBuilder()
+                                    .setOrderId(o.getOrderId())
+                                    .setOrderStatus(mapOrderStatus(o.getOrderStatus()));
 
-        webClient.get()
-                .uri("")
-                .retrieve()
-                .toEntityList(RestOrder.class)
-                .doOnNext(response -> {
-                    System.out.println("HTTP Status: " + response.getStatusCode());
-                    System.out.println("Response Headers: " + response.getHeaders());
-                })
-                .map(response -> response.getBody())
-                .doOnNext(restOrders -> {
-                    if (restOrders == null) {
-                        System.out.println("Error: Response body is null.");
-                    } else {
-                        System.out.println("Number of orders received: " + restOrders.size());
-                        for (int i = 0; i < restOrders.size(); i++) {
-                            System.out.println("Order " + (i + 1) + ": " + restOrders.get(i));
+                            // Parse deliveryDate safely
+                            Timestamp deliveryTimestamp = parseTimestamp(o.getDeliveryDate(), "deliveryDate", o.getOrderId());
+                            orderBuilder.setDeliveryDate(deliveryTimestamp);
+
+                            // Parse createdAt safely
+                            Timestamp createdAtTimestamp = parseTimestamp(o.getCreatedAt(), "createdAt", o.getOrderId());
+                            orderBuilder.setCreatedAt(createdAtTimestamp);
+
+                            orderBuilder.setAssignedUser(o.getAssignedUser() != null ? o.getAssignedUser().getUserName() : "");
+                            orderBuilder.setCreatedByUser(o.getCreatedBy() != null ? o.getCreatedBy().getUserName() : "");
+
+                            if (o.getOrderItems() != null) {
+                                for (OrderItem item : o.getOrderItems()) {
+                                    System.out.println("Processing item: " + item);
+                                    OrderItemDTO itemDto = OrderItemDTO.newBuilder()
+                                            .setProductName(item.getProductName() != null ? item.getProductName() : "")
+                                            .setQuantityToPick(item.getQuantityToPick())
+                                            .build();
+                                    orderBuilder.addOrderItems(itemDto);
+                                }
+                            }
+                            responseBuilder.addOrders(orderBuilder.build());
+                        } catch (Exception e) {
+                            System.err.println("Error processing order with ID: " + o.getOrderId());
+                            e.printStackTrace();
+                            throw new RuntimeException("Error processing order with ID: " + o.getOrderId(), e);
                         }
                     }
-                })
-                .map(restOrders -> {
-                    try {
-                        if (restOrders == null) {
-                            throw new RuntimeException("Response from REST API is null.");
-                        }
-
-                        // Convert List<RestOrder> to OrderList
-                        List<Order> protoOrders = restOrders.stream()
-                                .map(this::convertRestOrderToProto)
-                                .collect(Collectors.toList());
-                        System.out.println("Mapped " + protoOrders.size() + " orders to gRPC OrderList.");
-                        return OrderList.newBuilder().addAllOrders(protoOrders).build();
-                    } catch (Exception e) {
-                        System.out.println("Error mapping RestOrders to OrderList: " + e.getMessage());
-                        e.printStackTrace();
-                        throw e; // Re-throw so it gets caught downstream
-                    }
-                })
-                .doOnNext(orderList -> {
-                    System.out.println("OrderList ready to be sent to the client: " + orderList);
+                    return responseBuilder.build();
                 })
                 .subscribe(
-                        orderList -> {
-                            System.out.println("Sending OrderList to gRPC client...");
-                            responseObserver.onNext(orderList);
+                        response -> {
+                            System.out.println("Sending response to gRPC client: " + response);
+                            responseObserver.onNext(response);
                             responseObserver.onCompleted();
                         },
-                        throwable -> {
-                            System.out.println("Error occurred during getAllOrders(): " + throwable.getMessage());
-                            throwable.printStackTrace();
-                            responseObserver.onError(throwable);
+                        error -> {
+                            System.err.println("Error during WebClient call or processing: " + error.getMessage());
+                            error.printStackTrace();
+                            responseObserver.onError(error);
                         }
                 );
     }
 
-
-
-    // Utility method to convert from RestOrder to the proto Order message
-    private Order convertRestOrderToProto(RestOrder ro) {
-        if (ro == null) {
-            System.out.println("RestOrder is null.");
-            return Order.newBuilder().build();
-        }
-
+    private Timestamp parseTimestamp(String dateTime, String fieldName, int orderId) {
         try {
-            Order.Builder builder = Order.newBuilder()
-                    .setOrderId(ro.orderId)
-                    .setOrderStatus(ro.orderStatus);
-
-            // Handle null assignedUser and createdBy
-            if (ro.assignedUser != null) {
-                User assignedUserProto = convertRestUserToProto(ro.assignedUser);
-                builder.setAssignedUser(assignedUserProto);
-            } else {
-                System.out.println("Warning: assignedUser is null for order " + ro.orderId);
-                builder.setAssignedUser(User.newBuilder().build()); // Default to empty User
+            if (dateTime == null || dateTime.trim().isEmpty()) {
+                System.err.println("Warning: " + fieldName + " is null or empty for Order ID: " + orderId);
+                return Timestamp.newBuilder().setSeconds(0).setNanos(0).build(); // Default timestamp
             }
-
-            if (ro.createdBy != null) {
-                User createdByProto = convertRestUserToProto(ro.createdBy);
-                builder.setCreatedByUser(createdByProto);
-            } else {
-                System.out.println("Warning: createdBy is null for order " + ro.orderId);
-                builder.setCreatedByUser(User.newBuilder().build()); // Default to empty User
-            }
-
-            if (ro.orderItems != null) {
-                for (RestOrderItem roi : ro.orderItems) {
-                    OrderItem protoItem = OrderItem.newBuilder()
-                            .setOrderItemId(roi.orderItemId)
-                            .setItemId(roi.itemId)
-                            .setQuantityToPick(roi.quantityToPick)
-                            .build();
-                    builder.addOrderItems(protoItem);
-                }
-            }
-
-            if (ro.createdAt != null) {
-                OffsetDateTime odt = OffsetDateTime.parse(ro.createdAt);
-                long seconds = odt.toEpochSecond();
-                int nanos = odt.getNano();
-                builder.setCreatedAt(Timestamp.newBuilder().setSeconds(seconds).setNanos(nanos));
-            }
-
-            if (ro.deliveryDate != null) {
-                OffsetDateTime odt = OffsetDateTime.parse(ro.deliveryDate);
-                long seconds = odt.toEpochSecond();
-                int nanos = odt.getNano();
-                builder.setDeliveryDate(Timestamp.newBuilder().setSeconds(seconds).setNanos(nanos));
-            }
-
-            return builder.build();
+            System.out.println("Parsing " + fieldName + " for Order ID " + orderId + ": " + dateTime);
+            Instant instant = Instant.parse(dateTime);
+            return Timestamp.newBuilder()
+                    .setSeconds(instant.getEpochSecond())
+                    .setNanos(instant.getNano())
+                    .build();
         } catch (Exception e) {
-            System.out.println("Error in convertRestOrderToProto for order: " + e.getMessage());
+            System.err.println("Error parsing " + fieldName + " for Order ID: " + orderId + ". Value: " + dateTime);
             e.printStackTrace();
-            throw e;
+            return Timestamp.newBuilder().setSeconds(0).setNanos(0).build(); // Default timestamp
         }
     }
 
-
-    private User convertRestUserToProto(RestUserOrder restUser) {
-        if (restUser == null) {
-            System.out.println("Warning: RestUser is null.");
-            return User.newBuilder().build();
-        }
-
-        return User.newBuilder()
-                .setUserid(restUser.userId > 0 ? String.valueOf(restUser.userId) : "0")
-                .setUsername(restUser.userName != null ? restUser.userName : "unknown")
-                .setPassword(restUser.password != null ? restUser.password : "")
-                .setUserRole(UserRole.INVENTORY_MANAGER) // Default role
-                .build();
+    private OrderStatus mapOrderStatus(String status) {
+        return "COMPLETED".equals(status) ? OrderStatus.COMPLETED : OrderStatus.IN_PROGRESS;
     }
-
 }

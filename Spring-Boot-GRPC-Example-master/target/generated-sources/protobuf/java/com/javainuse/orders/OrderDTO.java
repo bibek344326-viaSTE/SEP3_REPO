@@ -4,20 +4,22 @@
 package com.javainuse.orders;
 
 /**
- * Protobuf type {@code orders.Order}
+ * Protobuf type {@code orders.OrderDTO}
  */
-public  final class Order extends
+public  final class OrderDTO extends
     com.google.protobuf.GeneratedMessageV3 implements
-    // @@protoc_insertion_point(message_implements:orders.Order)
-    OrderOrBuilder {
+    // @@protoc_insertion_point(message_implements:orders.OrderDTO)
+    OrderDTOOrBuilder {
 private static final long serialVersionUID = 0L;
-  // Use Order.newBuilder() to construct.
-  private Order(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+  // Use OrderDTO.newBuilder() to construct.
+  private OrderDTO(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
     super(builder);
   }
-  private Order() {
+  private OrderDTO() {
     orderId_ = 0;
     orderItems_ = java.util.Collections.emptyList();
+    assignedUser_ = "";
+    createdByUser_ = "";
     orderStatus_ = 0;
   }
 
@@ -26,7 +28,7 @@ private static final long serialVersionUID = 0L;
   getUnknownFields() {
     return this.unknownFields;
   }
-  private Order(
+  private OrderDTO(
       com.google.protobuf.CodedInputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
@@ -52,11 +54,11 @@ private static final long serialVersionUID = 0L;
           }
           case 18: {
             if (!((mutable_bitField0_ & 0x00000002) == 0x00000002)) {
-              orderItems_ = new java.util.ArrayList<com.javainuse.orders.OrderItem>();
+              orderItems_ = new java.util.ArrayList<com.javainuse.orders.OrderItemDTO>();
               mutable_bitField0_ |= 0x00000002;
             }
             orderItems_.add(
-                input.readMessage(com.javainuse.orders.OrderItem.parser(), extensionRegistry));
+                input.readMessage(com.javainuse.orders.OrderItemDTO.parser(), extensionRegistry));
             break;
           }
           case 26: {
@@ -73,29 +75,15 @@ private static final long serialVersionUID = 0L;
             break;
           }
           case 34: {
-            com.javainuse.user.User.Builder subBuilder = null;
-            if (assignedUser_ != null) {
-              subBuilder = assignedUser_.toBuilder();
-            }
-            assignedUser_ = input.readMessage(com.javainuse.user.User.parser(), extensionRegistry);
-            if (subBuilder != null) {
-              subBuilder.mergeFrom(assignedUser_);
-              assignedUser_ = subBuilder.buildPartial();
-            }
+            java.lang.String s = input.readStringRequireUtf8();
 
+            assignedUser_ = s;
             break;
           }
           case 42: {
-            com.javainuse.user.User.Builder subBuilder = null;
-            if (createdByUser_ != null) {
-              subBuilder = createdByUser_.toBuilder();
-            }
-            createdByUser_ = input.readMessage(com.javainuse.user.User.parser(), extensionRegistry);
-            if (subBuilder != null) {
-              subBuilder.mergeFrom(createdByUser_);
-              createdByUser_ = subBuilder.buildPartial();
-            }
+            java.lang.String s = input.readStringRequireUtf8();
 
+            createdByUser_ = s;
             break;
           }
           case 48: {
@@ -141,15 +129,15 @@ private static final long serialVersionUID = 0L;
   }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
-    return com.javainuse.orders.OrderServiceOuterClass.internal_static_orders_Order_descriptor;
+    return com.javainuse.orders.OrderServiceOuterClass.internal_static_orders_OrderDTO_descriptor;
   }
 
   @java.lang.Override
   protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internalGetFieldAccessorTable() {
-    return com.javainuse.orders.OrderServiceOuterClass.internal_static_orders_Order_fieldAccessorTable
+    return com.javainuse.orders.OrderServiceOuterClass.internal_static_orders_OrderDTO_fieldAccessorTable
         .ensureFieldAccessorsInitialized(
-            com.javainuse.orders.Order.class, com.javainuse.orders.Order.Builder.class);
+            com.javainuse.orders.OrderDTO.class, com.javainuse.orders.OrderDTO.Builder.class);
   }
 
   private int bitField0_;
@@ -163,36 +151,36 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int ORDER_ITEMS_FIELD_NUMBER = 2;
-  private java.util.List<com.javainuse.orders.OrderItem> orderItems_;
+  private java.util.List<com.javainuse.orders.OrderItemDTO> orderItems_;
   /**
-   * <code>repeated .orders.OrderItem order_items = 2;</code>
+   * <code>repeated .orders.OrderItemDTO order_items = 2;</code>
    */
-  public java.util.List<com.javainuse.orders.OrderItem> getOrderItemsList() {
+  public java.util.List<com.javainuse.orders.OrderItemDTO> getOrderItemsList() {
     return orderItems_;
   }
   /**
-   * <code>repeated .orders.OrderItem order_items = 2;</code>
+   * <code>repeated .orders.OrderItemDTO order_items = 2;</code>
    */
-  public java.util.List<? extends com.javainuse.orders.OrderItemOrBuilder> 
+  public java.util.List<? extends com.javainuse.orders.OrderItemDTOOrBuilder> 
       getOrderItemsOrBuilderList() {
     return orderItems_;
   }
   /**
-   * <code>repeated .orders.OrderItem order_items = 2;</code>
+   * <code>repeated .orders.OrderItemDTO order_items = 2;</code>
    */
   public int getOrderItemsCount() {
     return orderItems_.size();
   }
   /**
-   * <code>repeated .orders.OrderItem order_items = 2;</code>
+   * <code>repeated .orders.OrderItemDTO order_items = 2;</code>
    */
-  public com.javainuse.orders.OrderItem getOrderItems(int index) {
+  public com.javainuse.orders.OrderItemDTO getOrderItems(int index) {
     return orderItems_.get(index);
   }
   /**
-   * <code>repeated .orders.OrderItem order_items = 2;</code>
+   * <code>repeated .orders.OrderItemDTO order_items = 2;</code>
    */
-  public com.javainuse.orders.OrderItemOrBuilder getOrderItemsOrBuilder(
+  public com.javainuse.orders.OrderItemDTOOrBuilder getOrderItemsOrBuilder(
       int index) {
     return orderItems_.get(index);
   }
@@ -219,45 +207,71 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int ASSIGNED_USER_FIELD_NUMBER = 4;
-  private com.javainuse.user.User assignedUser_;
+  private volatile java.lang.Object assignedUser_;
   /**
-   * <code>.users.User assigned_user = 4;</code>
+   * <code>string assigned_user = 4;</code>
    */
-  public boolean hasAssignedUser() {
-    return assignedUser_ != null;
+  public java.lang.String getAssignedUser() {
+    java.lang.Object ref = assignedUser_;
+    if (ref instanceof java.lang.String) {
+      return (java.lang.String) ref;
+    } else {
+      com.google.protobuf.ByteString bs = 
+          (com.google.protobuf.ByteString) ref;
+      java.lang.String s = bs.toStringUtf8();
+      assignedUser_ = s;
+      return s;
+    }
   }
   /**
-   * <code>.users.User assigned_user = 4;</code>
+   * <code>string assigned_user = 4;</code>
    */
-  public com.javainuse.user.User getAssignedUser() {
-    return assignedUser_ == null ? com.javainuse.user.User.getDefaultInstance() : assignedUser_;
-  }
-  /**
-   * <code>.users.User assigned_user = 4;</code>
-   */
-  public com.javainuse.user.UserOrBuilder getAssignedUserOrBuilder() {
-    return getAssignedUser();
+  public com.google.protobuf.ByteString
+      getAssignedUserBytes() {
+    java.lang.Object ref = assignedUser_;
+    if (ref instanceof java.lang.String) {
+      com.google.protobuf.ByteString b = 
+          com.google.protobuf.ByteString.copyFromUtf8(
+              (java.lang.String) ref);
+      assignedUser_ = b;
+      return b;
+    } else {
+      return (com.google.protobuf.ByteString) ref;
+    }
   }
 
   public static final int CREATED_BY_USER_FIELD_NUMBER = 5;
-  private com.javainuse.user.User createdByUser_;
+  private volatile java.lang.Object createdByUser_;
   /**
-   * <code>.users.User created_by_user = 5;</code>
+   * <code>string created_by_user = 5;</code>
    */
-  public boolean hasCreatedByUser() {
-    return createdByUser_ != null;
+  public java.lang.String getCreatedByUser() {
+    java.lang.Object ref = createdByUser_;
+    if (ref instanceof java.lang.String) {
+      return (java.lang.String) ref;
+    } else {
+      com.google.protobuf.ByteString bs = 
+          (com.google.protobuf.ByteString) ref;
+      java.lang.String s = bs.toStringUtf8();
+      createdByUser_ = s;
+      return s;
+    }
   }
   /**
-   * <code>.users.User created_by_user = 5;</code>
+   * <code>string created_by_user = 5;</code>
    */
-  public com.javainuse.user.User getCreatedByUser() {
-    return createdByUser_ == null ? com.javainuse.user.User.getDefaultInstance() : createdByUser_;
-  }
-  /**
-   * <code>.users.User created_by_user = 5;</code>
-   */
-  public com.javainuse.user.UserOrBuilder getCreatedByUserOrBuilder() {
-    return getCreatedByUser();
+  public com.google.protobuf.ByteString
+      getCreatedByUserBytes() {
+    java.lang.Object ref = createdByUser_;
+    if (ref instanceof java.lang.String) {
+      com.google.protobuf.ByteString b = 
+          com.google.protobuf.ByteString.copyFromUtf8(
+              (java.lang.String) ref);
+      createdByUser_ = b;
+      return b;
+    } else {
+      return (com.google.protobuf.ByteString) ref;
+    }
   }
 
   public static final int ORDER_STATUS_FIELD_NUMBER = 6;
@@ -321,11 +335,11 @@ private static final long serialVersionUID = 0L;
     if (createdAt_ != null) {
       output.writeMessage(3, getCreatedAt());
     }
-    if (assignedUser_ != null) {
-      output.writeMessage(4, getAssignedUser());
+    if (!getAssignedUserBytes().isEmpty()) {
+      com.google.protobuf.GeneratedMessageV3.writeString(output, 4, assignedUser_);
     }
-    if (createdByUser_ != null) {
-      output.writeMessage(5, getCreatedByUser());
+    if (!getCreatedByUserBytes().isEmpty()) {
+      com.google.protobuf.GeneratedMessageV3.writeString(output, 5, createdByUser_);
     }
     if (orderStatus_ != com.javainuse.orders.OrderStatus.COMPLETED.getNumber()) {
       output.writeEnum(6, orderStatus_);
@@ -354,13 +368,11 @@ private static final long serialVersionUID = 0L;
       size += com.google.protobuf.CodedOutputStream
         .computeMessageSize(3, getCreatedAt());
     }
-    if (assignedUser_ != null) {
-      size += com.google.protobuf.CodedOutputStream
-        .computeMessageSize(4, getAssignedUser());
+    if (!getAssignedUserBytes().isEmpty()) {
+      size += com.google.protobuf.GeneratedMessageV3.computeStringSize(4, assignedUser_);
     }
-    if (createdByUser_ != null) {
-      size += com.google.protobuf.CodedOutputStream
-        .computeMessageSize(5, getCreatedByUser());
+    if (!getCreatedByUserBytes().isEmpty()) {
+      size += com.google.protobuf.GeneratedMessageV3.computeStringSize(5, createdByUser_);
     }
     if (orderStatus_ != com.javainuse.orders.OrderStatus.COMPLETED.getNumber()) {
       size += com.google.protobuf.CodedOutputStream
@@ -380,10 +392,10 @@ private static final long serialVersionUID = 0L;
     if (obj == this) {
      return true;
     }
-    if (!(obj instanceof com.javainuse.orders.Order)) {
+    if (!(obj instanceof com.javainuse.orders.OrderDTO)) {
       return super.equals(obj);
     }
-    com.javainuse.orders.Order other = (com.javainuse.orders.Order) obj;
+    com.javainuse.orders.OrderDTO other = (com.javainuse.orders.OrderDTO) obj;
 
     boolean result = true;
     result = result && (getOrderId()
@@ -395,16 +407,10 @@ private static final long serialVersionUID = 0L;
       result = result && getCreatedAt()
           .equals(other.getCreatedAt());
     }
-    result = result && (hasAssignedUser() == other.hasAssignedUser());
-    if (hasAssignedUser()) {
-      result = result && getAssignedUser()
-          .equals(other.getAssignedUser());
-    }
-    result = result && (hasCreatedByUser() == other.hasCreatedByUser());
-    if (hasCreatedByUser()) {
-      result = result && getCreatedByUser()
-          .equals(other.getCreatedByUser());
-    }
+    result = result && getAssignedUser()
+        .equals(other.getAssignedUser());
+    result = result && getCreatedByUser()
+        .equals(other.getCreatedByUser());
     result = result && orderStatus_ == other.orderStatus_;
     result = result && (hasDeliveryDate() == other.hasDeliveryDate());
     if (hasDeliveryDate()) {
@@ -432,14 +438,10 @@ private static final long serialVersionUID = 0L;
       hash = (37 * hash) + CREATED_AT_FIELD_NUMBER;
       hash = (53 * hash) + getCreatedAt().hashCode();
     }
-    if (hasAssignedUser()) {
-      hash = (37 * hash) + ASSIGNED_USER_FIELD_NUMBER;
-      hash = (53 * hash) + getAssignedUser().hashCode();
-    }
-    if (hasCreatedByUser()) {
-      hash = (37 * hash) + CREATED_BY_USER_FIELD_NUMBER;
-      hash = (53 * hash) + getCreatedByUser().hashCode();
-    }
+    hash = (37 * hash) + ASSIGNED_USER_FIELD_NUMBER;
+    hash = (53 * hash) + getAssignedUser().hashCode();
+    hash = (37 * hash) + CREATED_BY_USER_FIELD_NUMBER;
+    hash = (53 * hash) + getCreatedByUser().hashCode();
     hash = (37 * hash) + ORDER_STATUS_FIELD_NUMBER;
     hash = (53 * hash) + orderStatus_;
     if (hasDeliveryDate()) {
@@ -451,69 +453,69 @@ private static final long serialVersionUID = 0L;
     return hash;
   }
 
-  public static com.javainuse.orders.Order parseFrom(
+  public static com.javainuse.orders.OrderDTO parseFrom(
       java.nio.ByteBuffer data)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data);
   }
-  public static com.javainuse.orders.Order parseFrom(
+  public static com.javainuse.orders.OrderDTO parseFrom(
       java.nio.ByteBuffer data,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data, extensionRegistry);
   }
-  public static com.javainuse.orders.Order parseFrom(
+  public static com.javainuse.orders.OrderDTO parseFrom(
       com.google.protobuf.ByteString data)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data);
   }
-  public static com.javainuse.orders.Order parseFrom(
+  public static com.javainuse.orders.OrderDTO parseFrom(
       com.google.protobuf.ByteString data,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data, extensionRegistry);
   }
-  public static com.javainuse.orders.Order parseFrom(byte[] data)
+  public static com.javainuse.orders.OrderDTO parseFrom(byte[] data)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data);
   }
-  public static com.javainuse.orders.Order parseFrom(
+  public static com.javainuse.orders.OrderDTO parseFrom(
       byte[] data,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data, extensionRegistry);
   }
-  public static com.javainuse.orders.Order parseFrom(java.io.InputStream input)
+  public static com.javainuse.orders.OrderDTO parseFrom(java.io.InputStream input)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseWithIOException(PARSER, input);
   }
-  public static com.javainuse.orders.Order parseFrom(
+  public static com.javainuse.orders.OrderDTO parseFrom(
       java.io.InputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseWithIOException(PARSER, input, extensionRegistry);
   }
-  public static com.javainuse.orders.Order parseDelimitedFrom(java.io.InputStream input)
+  public static com.javainuse.orders.OrderDTO parseDelimitedFrom(java.io.InputStream input)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseDelimitedWithIOException(PARSER, input);
   }
-  public static com.javainuse.orders.Order parseDelimitedFrom(
+  public static com.javainuse.orders.OrderDTO parseDelimitedFrom(
       java.io.InputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
   }
-  public static com.javainuse.orders.Order parseFrom(
+  public static com.javainuse.orders.OrderDTO parseFrom(
       com.google.protobuf.CodedInputStream input)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseWithIOException(PARSER, input);
   }
-  public static com.javainuse.orders.Order parseFrom(
+  public static com.javainuse.orders.OrderDTO parseFrom(
       com.google.protobuf.CodedInputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws java.io.IOException {
@@ -526,7 +528,7 @@ private static final long serialVersionUID = 0L;
   public static Builder newBuilder() {
     return DEFAULT_INSTANCE.toBuilder();
   }
-  public static Builder newBuilder(com.javainuse.orders.Order prototype) {
+  public static Builder newBuilder(com.javainuse.orders.OrderDTO prototype) {
     return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
   }
   @java.lang.Override
@@ -542,26 +544,26 @@ private static final long serialVersionUID = 0L;
     return builder;
   }
   /**
-   * Protobuf type {@code orders.Order}
+   * Protobuf type {@code orders.OrderDTO}
    */
   public static final class Builder extends
       com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
-      // @@protoc_insertion_point(builder_implements:orders.Order)
-      com.javainuse.orders.OrderOrBuilder {
+      // @@protoc_insertion_point(builder_implements:orders.OrderDTO)
+      com.javainuse.orders.OrderDTOOrBuilder {
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.javainuse.orders.OrderServiceOuterClass.internal_static_orders_Order_descriptor;
+      return com.javainuse.orders.OrderServiceOuterClass.internal_static_orders_OrderDTO_descriptor;
     }
 
     @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.javainuse.orders.OrderServiceOuterClass.internal_static_orders_Order_fieldAccessorTable
+      return com.javainuse.orders.OrderServiceOuterClass.internal_static_orders_OrderDTO_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
-              com.javainuse.orders.Order.class, com.javainuse.orders.Order.Builder.class);
+              com.javainuse.orders.OrderDTO.class, com.javainuse.orders.OrderDTO.Builder.class);
     }
 
-    // Construct using com.javainuse.orders.Order.newBuilder()
+    // Construct using com.javainuse.orders.OrderDTO.newBuilder()
     private Builder() {
       maybeForceBuilderInitialization();
     }
@@ -594,18 +596,10 @@ private static final long serialVersionUID = 0L;
         createdAt_ = null;
         createdAtBuilder_ = null;
       }
-      if (assignedUserBuilder_ == null) {
-        assignedUser_ = null;
-      } else {
-        assignedUser_ = null;
-        assignedUserBuilder_ = null;
-      }
-      if (createdByUserBuilder_ == null) {
-        createdByUser_ = null;
-      } else {
-        createdByUser_ = null;
-        createdByUserBuilder_ = null;
-      }
+      assignedUser_ = "";
+
+      createdByUser_ = "";
+
       orderStatus_ = 0;
 
       if (deliveryDateBuilder_ == null) {
@@ -620,17 +614,17 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.google.protobuf.Descriptors.Descriptor
         getDescriptorForType() {
-      return com.javainuse.orders.OrderServiceOuterClass.internal_static_orders_Order_descriptor;
+      return com.javainuse.orders.OrderServiceOuterClass.internal_static_orders_OrderDTO_descriptor;
     }
 
     @java.lang.Override
-    public com.javainuse.orders.Order getDefaultInstanceForType() {
-      return com.javainuse.orders.Order.getDefaultInstance();
+    public com.javainuse.orders.OrderDTO getDefaultInstanceForType() {
+      return com.javainuse.orders.OrderDTO.getDefaultInstance();
     }
 
     @java.lang.Override
-    public com.javainuse.orders.Order build() {
-      com.javainuse.orders.Order result = buildPartial();
+    public com.javainuse.orders.OrderDTO build() {
+      com.javainuse.orders.OrderDTO result = buildPartial();
       if (!result.isInitialized()) {
         throw newUninitializedMessageException(result);
       }
@@ -638,8 +632,8 @@ private static final long serialVersionUID = 0L;
     }
 
     @java.lang.Override
-    public com.javainuse.orders.Order buildPartial() {
-      com.javainuse.orders.Order result = new com.javainuse.orders.Order(this);
+    public com.javainuse.orders.OrderDTO buildPartial() {
+      com.javainuse.orders.OrderDTO result = new com.javainuse.orders.OrderDTO(this);
       int from_bitField0_ = bitField0_;
       int to_bitField0_ = 0;
       result.orderId_ = orderId_;
@@ -657,16 +651,8 @@ private static final long serialVersionUID = 0L;
       } else {
         result.createdAt_ = createdAtBuilder_.build();
       }
-      if (assignedUserBuilder_ == null) {
-        result.assignedUser_ = assignedUser_;
-      } else {
-        result.assignedUser_ = assignedUserBuilder_.build();
-      }
-      if (createdByUserBuilder_ == null) {
-        result.createdByUser_ = createdByUser_;
-      } else {
-        result.createdByUser_ = createdByUserBuilder_.build();
-      }
+      result.assignedUser_ = assignedUser_;
+      result.createdByUser_ = createdByUser_;
       result.orderStatus_ = orderStatus_;
       if (deliveryDateBuilder_ == null) {
         result.deliveryDate_ = deliveryDate_;
@@ -712,16 +698,16 @@ private static final long serialVersionUID = 0L;
     }
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
-      if (other instanceof com.javainuse.orders.Order) {
-        return mergeFrom((com.javainuse.orders.Order)other);
+      if (other instanceof com.javainuse.orders.OrderDTO) {
+        return mergeFrom((com.javainuse.orders.OrderDTO)other);
       } else {
         super.mergeFrom(other);
         return this;
       }
     }
 
-    public Builder mergeFrom(com.javainuse.orders.Order other) {
-      if (other == com.javainuse.orders.Order.getDefaultInstance()) return this;
+    public Builder mergeFrom(com.javainuse.orders.OrderDTO other) {
+      if (other == com.javainuse.orders.OrderDTO.getDefaultInstance()) return this;
       if (other.getOrderId() != 0) {
         setOrderId(other.getOrderId());
       }
@@ -754,11 +740,13 @@ private static final long serialVersionUID = 0L;
       if (other.hasCreatedAt()) {
         mergeCreatedAt(other.getCreatedAt());
       }
-      if (other.hasAssignedUser()) {
-        mergeAssignedUser(other.getAssignedUser());
+      if (!other.getAssignedUser().isEmpty()) {
+        assignedUser_ = other.assignedUser_;
+        onChanged();
       }
-      if (other.hasCreatedByUser()) {
-        mergeCreatedByUser(other.getCreatedByUser());
+      if (!other.getCreatedByUser().isEmpty()) {
+        createdByUser_ = other.createdByUser_;
+        onChanged();
       }
       if (other.orderStatus_ != 0) {
         setOrderStatusValue(other.getOrderStatusValue());
@@ -781,11 +769,11 @@ private static final long serialVersionUID = 0L;
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
-      com.javainuse.orders.Order parsedMessage = null;
+      com.javainuse.orders.OrderDTO parsedMessage = null;
       try {
         parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
       } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-        parsedMessage = (com.javainuse.orders.Order) e.getUnfinishedMessage();
+        parsedMessage = (com.javainuse.orders.OrderDTO) e.getUnfinishedMessage();
         throw e.unwrapIOException();
       } finally {
         if (parsedMessage != null) {
@@ -822,22 +810,22 @@ private static final long serialVersionUID = 0L;
       return this;
     }
 
-    private java.util.List<com.javainuse.orders.OrderItem> orderItems_ =
+    private java.util.List<com.javainuse.orders.OrderItemDTO> orderItems_ =
       java.util.Collections.emptyList();
     private void ensureOrderItemsIsMutable() {
       if (!((bitField0_ & 0x00000002) == 0x00000002)) {
-        orderItems_ = new java.util.ArrayList<com.javainuse.orders.OrderItem>(orderItems_);
+        orderItems_ = new java.util.ArrayList<com.javainuse.orders.OrderItemDTO>(orderItems_);
         bitField0_ |= 0x00000002;
        }
     }
 
     private com.google.protobuf.RepeatedFieldBuilderV3<
-        com.javainuse.orders.OrderItem, com.javainuse.orders.OrderItem.Builder, com.javainuse.orders.OrderItemOrBuilder> orderItemsBuilder_;
+        com.javainuse.orders.OrderItemDTO, com.javainuse.orders.OrderItemDTO.Builder, com.javainuse.orders.OrderItemDTOOrBuilder> orderItemsBuilder_;
 
     /**
-     * <code>repeated .orders.OrderItem order_items = 2;</code>
+     * <code>repeated .orders.OrderItemDTO order_items = 2;</code>
      */
-    public java.util.List<com.javainuse.orders.OrderItem> getOrderItemsList() {
+    public java.util.List<com.javainuse.orders.OrderItemDTO> getOrderItemsList() {
       if (orderItemsBuilder_ == null) {
         return java.util.Collections.unmodifiableList(orderItems_);
       } else {
@@ -845,7 +833,7 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>repeated .orders.OrderItem order_items = 2;</code>
+     * <code>repeated .orders.OrderItemDTO order_items = 2;</code>
      */
     public int getOrderItemsCount() {
       if (orderItemsBuilder_ == null) {
@@ -855,9 +843,9 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>repeated .orders.OrderItem order_items = 2;</code>
+     * <code>repeated .orders.OrderItemDTO order_items = 2;</code>
      */
-    public com.javainuse.orders.OrderItem getOrderItems(int index) {
+    public com.javainuse.orders.OrderItemDTO getOrderItems(int index) {
       if (orderItemsBuilder_ == null) {
         return orderItems_.get(index);
       } else {
@@ -865,10 +853,10 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>repeated .orders.OrderItem order_items = 2;</code>
+     * <code>repeated .orders.OrderItemDTO order_items = 2;</code>
      */
     public Builder setOrderItems(
-        int index, com.javainuse.orders.OrderItem value) {
+        int index, com.javainuse.orders.OrderItemDTO value) {
       if (orderItemsBuilder_ == null) {
         if (value == null) {
           throw new NullPointerException();
@@ -882,10 +870,10 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>repeated .orders.OrderItem order_items = 2;</code>
+     * <code>repeated .orders.OrderItemDTO order_items = 2;</code>
      */
     public Builder setOrderItems(
-        int index, com.javainuse.orders.OrderItem.Builder builderForValue) {
+        int index, com.javainuse.orders.OrderItemDTO.Builder builderForValue) {
       if (orderItemsBuilder_ == null) {
         ensureOrderItemsIsMutable();
         orderItems_.set(index, builderForValue.build());
@@ -896,9 +884,9 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>repeated .orders.OrderItem order_items = 2;</code>
+     * <code>repeated .orders.OrderItemDTO order_items = 2;</code>
      */
-    public Builder addOrderItems(com.javainuse.orders.OrderItem value) {
+    public Builder addOrderItems(com.javainuse.orders.OrderItemDTO value) {
       if (orderItemsBuilder_ == null) {
         if (value == null) {
           throw new NullPointerException();
@@ -912,10 +900,10 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>repeated .orders.OrderItem order_items = 2;</code>
+     * <code>repeated .orders.OrderItemDTO order_items = 2;</code>
      */
     public Builder addOrderItems(
-        int index, com.javainuse.orders.OrderItem value) {
+        int index, com.javainuse.orders.OrderItemDTO value) {
       if (orderItemsBuilder_ == null) {
         if (value == null) {
           throw new NullPointerException();
@@ -929,10 +917,10 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>repeated .orders.OrderItem order_items = 2;</code>
+     * <code>repeated .orders.OrderItemDTO order_items = 2;</code>
      */
     public Builder addOrderItems(
-        com.javainuse.orders.OrderItem.Builder builderForValue) {
+        com.javainuse.orders.OrderItemDTO.Builder builderForValue) {
       if (orderItemsBuilder_ == null) {
         ensureOrderItemsIsMutable();
         orderItems_.add(builderForValue.build());
@@ -943,10 +931,10 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>repeated .orders.OrderItem order_items = 2;</code>
+     * <code>repeated .orders.OrderItemDTO order_items = 2;</code>
      */
     public Builder addOrderItems(
-        int index, com.javainuse.orders.OrderItem.Builder builderForValue) {
+        int index, com.javainuse.orders.OrderItemDTO.Builder builderForValue) {
       if (orderItemsBuilder_ == null) {
         ensureOrderItemsIsMutable();
         orderItems_.add(index, builderForValue.build());
@@ -957,10 +945,10 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>repeated .orders.OrderItem order_items = 2;</code>
+     * <code>repeated .orders.OrderItemDTO order_items = 2;</code>
      */
     public Builder addAllOrderItems(
-        java.lang.Iterable<? extends com.javainuse.orders.OrderItem> values) {
+        java.lang.Iterable<? extends com.javainuse.orders.OrderItemDTO> values) {
       if (orderItemsBuilder_ == null) {
         ensureOrderItemsIsMutable();
         com.google.protobuf.AbstractMessageLite.Builder.addAll(
@@ -972,7 +960,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>repeated .orders.OrderItem order_items = 2;</code>
+     * <code>repeated .orders.OrderItemDTO order_items = 2;</code>
      */
     public Builder clearOrderItems() {
       if (orderItemsBuilder_ == null) {
@@ -985,7 +973,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>repeated .orders.OrderItem order_items = 2;</code>
+     * <code>repeated .orders.OrderItemDTO order_items = 2;</code>
      */
     public Builder removeOrderItems(int index) {
       if (orderItemsBuilder_ == null) {
@@ -998,16 +986,16 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>repeated .orders.OrderItem order_items = 2;</code>
+     * <code>repeated .orders.OrderItemDTO order_items = 2;</code>
      */
-    public com.javainuse.orders.OrderItem.Builder getOrderItemsBuilder(
+    public com.javainuse.orders.OrderItemDTO.Builder getOrderItemsBuilder(
         int index) {
       return getOrderItemsFieldBuilder().getBuilder(index);
     }
     /**
-     * <code>repeated .orders.OrderItem order_items = 2;</code>
+     * <code>repeated .orders.OrderItemDTO order_items = 2;</code>
      */
-    public com.javainuse.orders.OrderItemOrBuilder getOrderItemsOrBuilder(
+    public com.javainuse.orders.OrderItemDTOOrBuilder getOrderItemsOrBuilder(
         int index) {
       if (orderItemsBuilder_ == null) {
         return orderItems_.get(index);  } else {
@@ -1015,9 +1003,9 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>repeated .orders.OrderItem order_items = 2;</code>
+     * <code>repeated .orders.OrderItemDTO order_items = 2;</code>
      */
-    public java.util.List<? extends com.javainuse.orders.OrderItemOrBuilder> 
+    public java.util.List<? extends com.javainuse.orders.OrderItemDTOOrBuilder> 
          getOrderItemsOrBuilderList() {
       if (orderItemsBuilder_ != null) {
         return orderItemsBuilder_.getMessageOrBuilderList();
@@ -1026,33 +1014,33 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>repeated .orders.OrderItem order_items = 2;</code>
+     * <code>repeated .orders.OrderItemDTO order_items = 2;</code>
      */
-    public com.javainuse.orders.OrderItem.Builder addOrderItemsBuilder() {
+    public com.javainuse.orders.OrderItemDTO.Builder addOrderItemsBuilder() {
       return getOrderItemsFieldBuilder().addBuilder(
-          com.javainuse.orders.OrderItem.getDefaultInstance());
+          com.javainuse.orders.OrderItemDTO.getDefaultInstance());
     }
     /**
-     * <code>repeated .orders.OrderItem order_items = 2;</code>
+     * <code>repeated .orders.OrderItemDTO order_items = 2;</code>
      */
-    public com.javainuse.orders.OrderItem.Builder addOrderItemsBuilder(
+    public com.javainuse.orders.OrderItemDTO.Builder addOrderItemsBuilder(
         int index) {
       return getOrderItemsFieldBuilder().addBuilder(
-          index, com.javainuse.orders.OrderItem.getDefaultInstance());
+          index, com.javainuse.orders.OrderItemDTO.getDefaultInstance());
     }
     /**
-     * <code>repeated .orders.OrderItem order_items = 2;</code>
+     * <code>repeated .orders.OrderItemDTO order_items = 2;</code>
      */
-    public java.util.List<com.javainuse.orders.OrderItem.Builder> 
+    public java.util.List<com.javainuse.orders.OrderItemDTO.Builder> 
          getOrderItemsBuilderList() {
       return getOrderItemsFieldBuilder().getBuilderList();
     }
     private com.google.protobuf.RepeatedFieldBuilderV3<
-        com.javainuse.orders.OrderItem, com.javainuse.orders.OrderItem.Builder, com.javainuse.orders.OrderItemOrBuilder> 
+        com.javainuse.orders.OrderItemDTO, com.javainuse.orders.OrderItemDTO.Builder, com.javainuse.orders.OrderItemDTOOrBuilder> 
         getOrderItemsFieldBuilder() {
       if (orderItemsBuilder_ == null) {
         orderItemsBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
-            com.javainuse.orders.OrderItem, com.javainuse.orders.OrderItem.Builder, com.javainuse.orders.OrderItemOrBuilder>(
+            com.javainuse.orders.OrderItemDTO, com.javainuse.orders.OrderItemDTO.Builder, com.javainuse.orders.OrderItemDTOOrBuilder>(
                 orderItems_,
                 ((bitField0_ & 0x00000002) == 0x00000002),
                 getParentForChildren(),
@@ -1179,238 +1167,142 @@ private static final long serialVersionUID = 0L;
       return createdAtBuilder_;
     }
 
-    private com.javainuse.user.User assignedUser_ = null;
-    private com.google.protobuf.SingleFieldBuilderV3<
-        com.javainuse.user.User, com.javainuse.user.User.Builder, com.javainuse.user.UserOrBuilder> assignedUserBuilder_;
+    private java.lang.Object assignedUser_ = "";
     /**
-     * <code>.users.User assigned_user = 4;</code>
+     * <code>string assigned_user = 4;</code>
      */
-    public boolean hasAssignedUser() {
-      return assignedUserBuilder_ != null || assignedUser_ != null;
-    }
-    /**
-     * <code>.users.User assigned_user = 4;</code>
-     */
-    public com.javainuse.user.User getAssignedUser() {
-      if (assignedUserBuilder_ == null) {
-        return assignedUser_ == null ? com.javainuse.user.User.getDefaultInstance() : assignedUser_;
+    public java.lang.String getAssignedUser() {
+      java.lang.Object ref = assignedUser_;
+      if (!(ref instanceof java.lang.String)) {
+        com.google.protobuf.ByteString bs =
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        assignedUser_ = s;
+        return s;
       } else {
-        return assignedUserBuilder_.getMessage();
+        return (java.lang.String) ref;
       }
     }
     /**
-     * <code>.users.User assigned_user = 4;</code>
+     * <code>string assigned_user = 4;</code>
      */
-    public Builder setAssignedUser(com.javainuse.user.User value) {
-      if (assignedUserBuilder_ == null) {
-        if (value == null) {
-          throw new NullPointerException();
-        }
-        assignedUser_ = value;
-        onChanged();
+    public com.google.protobuf.ByteString
+        getAssignedUserBytes() {
+      java.lang.Object ref = assignedUser_;
+      if (ref instanceof String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        assignedUser_ = b;
+        return b;
       } else {
-        assignedUserBuilder_.setMessage(value);
+        return (com.google.protobuf.ByteString) ref;
       }
-
-      return this;
     }
     /**
-     * <code>.users.User assigned_user = 4;</code>
+     * <code>string assigned_user = 4;</code>
      */
     public Builder setAssignedUser(
-        com.javainuse.user.User.Builder builderForValue) {
-      if (assignedUserBuilder_ == null) {
-        assignedUser_ = builderForValue.build();
-        onChanged();
-      } else {
-        assignedUserBuilder_.setMessage(builderForValue.build());
-      }
-
+        java.lang.String value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  
+      assignedUser_ = value;
+      onChanged();
       return this;
     }
     /**
-     * <code>.users.User assigned_user = 4;</code>
-     */
-    public Builder mergeAssignedUser(com.javainuse.user.User value) {
-      if (assignedUserBuilder_ == null) {
-        if (assignedUser_ != null) {
-          assignedUser_ =
-            com.javainuse.user.User.newBuilder(assignedUser_).mergeFrom(value).buildPartial();
-        } else {
-          assignedUser_ = value;
-        }
-        onChanged();
-      } else {
-        assignedUserBuilder_.mergeFrom(value);
-      }
-
-      return this;
-    }
-    /**
-     * <code>.users.User assigned_user = 4;</code>
+     * <code>string assigned_user = 4;</code>
      */
     public Builder clearAssignedUser() {
-      if (assignedUserBuilder_ == null) {
-        assignedUser_ = null;
-        onChanged();
-      } else {
-        assignedUser_ = null;
-        assignedUserBuilder_ = null;
-      }
-
-      return this;
-    }
-    /**
-     * <code>.users.User assigned_user = 4;</code>
-     */
-    public com.javainuse.user.User.Builder getAssignedUserBuilder() {
       
+      assignedUser_ = getDefaultInstance().getAssignedUser();
       onChanged();
-      return getAssignedUserFieldBuilder().getBuilder();
-    }
-    /**
-     * <code>.users.User assigned_user = 4;</code>
-     */
-    public com.javainuse.user.UserOrBuilder getAssignedUserOrBuilder() {
-      if (assignedUserBuilder_ != null) {
-        return assignedUserBuilder_.getMessageOrBuilder();
-      } else {
-        return assignedUser_ == null ?
-            com.javainuse.user.User.getDefaultInstance() : assignedUser_;
-      }
-    }
-    /**
-     * <code>.users.User assigned_user = 4;</code>
-     */
-    private com.google.protobuf.SingleFieldBuilderV3<
-        com.javainuse.user.User, com.javainuse.user.User.Builder, com.javainuse.user.UserOrBuilder> 
-        getAssignedUserFieldBuilder() {
-      if (assignedUserBuilder_ == null) {
-        assignedUserBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
-            com.javainuse.user.User, com.javainuse.user.User.Builder, com.javainuse.user.UserOrBuilder>(
-                getAssignedUser(),
-                getParentForChildren(),
-                isClean());
-        assignedUser_ = null;
-      }
-      return assignedUserBuilder_;
-    }
-
-    private com.javainuse.user.User createdByUser_ = null;
-    private com.google.protobuf.SingleFieldBuilderV3<
-        com.javainuse.user.User, com.javainuse.user.User.Builder, com.javainuse.user.UserOrBuilder> createdByUserBuilder_;
-    /**
-     * <code>.users.User created_by_user = 5;</code>
-     */
-    public boolean hasCreatedByUser() {
-      return createdByUserBuilder_ != null || createdByUser_ != null;
-    }
-    /**
-     * <code>.users.User created_by_user = 5;</code>
-     */
-    public com.javainuse.user.User getCreatedByUser() {
-      if (createdByUserBuilder_ == null) {
-        return createdByUser_ == null ? com.javainuse.user.User.getDefaultInstance() : createdByUser_;
-      } else {
-        return createdByUserBuilder_.getMessage();
-      }
-    }
-    /**
-     * <code>.users.User created_by_user = 5;</code>
-     */
-    public Builder setCreatedByUser(com.javainuse.user.User value) {
-      if (createdByUserBuilder_ == null) {
-        if (value == null) {
-          throw new NullPointerException();
-        }
-        createdByUser_ = value;
-        onChanged();
-      } else {
-        createdByUserBuilder_.setMessage(value);
-      }
-
       return this;
     }
     /**
-     * <code>.users.User created_by_user = 5;</code>
+     * <code>string assigned_user = 4;</code>
+     */
+    public Builder setAssignedUserBytes(
+        com.google.protobuf.ByteString value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+      
+      assignedUser_ = value;
+      onChanged();
+      return this;
+    }
+
+    private java.lang.Object createdByUser_ = "";
+    /**
+     * <code>string created_by_user = 5;</code>
+     */
+    public java.lang.String getCreatedByUser() {
+      java.lang.Object ref = createdByUser_;
+      if (!(ref instanceof java.lang.String)) {
+        com.google.protobuf.ByteString bs =
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        createdByUser_ = s;
+        return s;
+      } else {
+        return (java.lang.String) ref;
+      }
+    }
+    /**
+     * <code>string created_by_user = 5;</code>
+     */
+    public com.google.protobuf.ByteString
+        getCreatedByUserBytes() {
+      java.lang.Object ref = createdByUser_;
+      if (ref instanceof String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        createdByUser_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+    /**
+     * <code>string created_by_user = 5;</code>
      */
     public Builder setCreatedByUser(
-        com.javainuse.user.User.Builder builderForValue) {
-      if (createdByUserBuilder_ == null) {
-        createdByUser_ = builderForValue.build();
-        onChanged();
-      } else {
-        createdByUserBuilder_.setMessage(builderForValue.build());
-      }
-
+        java.lang.String value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  
+      createdByUser_ = value;
+      onChanged();
       return this;
     }
     /**
-     * <code>.users.User created_by_user = 5;</code>
-     */
-    public Builder mergeCreatedByUser(com.javainuse.user.User value) {
-      if (createdByUserBuilder_ == null) {
-        if (createdByUser_ != null) {
-          createdByUser_ =
-            com.javainuse.user.User.newBuilder(createdByUser_).mergeFrom(value).buildPartial();
-        } else {
-          createdByUser_ = value;
-        }
-        onChanged();
-      } else {
-        createdByUserBuilder_.mergeFrom(value);
-      }
-
-      return this;
-    }
-    /**
-     * <code>.users.User created_by_user = 5;</code>
+     * <code>string created_by_user = 5;</code>
      */
     public Builder clearCreatedByUser() {
-      if (createdByUserBuilder_ == null) {
-        createdByUser_ = null;
-        onChanged();
-      } else {
-        createdByUser_ = null;
-        createdByUserBuilder_ = null;
-      }
-
+      
+      createdByUser_ = getDefaultInstance().getCreatedByUser();
+      onChanged();
       return this;
     }
     /**
-     * <code>.users.User created_by_user = 5;</code>
+     * <code>string created_by_user = 5;</code>
      */
-    public com.javainuse.user.User.Builder getCreatedByUserBuilder() {
+    public Builder setCreatedByUserBytes(
+        com.google.protobuf.ByteString value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
       
+      createdByUser_ = value;
       onChanged();
-      return getCreatedByUserFieldBuilder().getBuilder();
-    }
-    /**
-     * <code>.users.User created_by_user = 5;</code>
-     */
-    public com.javainuse.user.UserOrBuilder getCreatedByUserOrBuilder() {
-      if (createdByUserBuilder_ != null) {
-        return createdByUserBuilder_.getMessageOrBuilder();
-      } else {
-        return createdByUser_ == null ?
-            com.javainuse.user.User.getDefaultInstance() : createdByUser_;
-      }
-    }
-    /**
-     * <code>.users.User created_by_user = 5;</code>
-     */
-    private com.google.protobuf.SingleFieldBuilderV3<
-        com.javainuse.user.User, com.javainuse.user.User.Builder, com.javainuse.user.UserOrBuilder> 
-        getCreatedByUserFieldBuilder() {
-      if (createdByUserBuilder_ == null) {
-        createdByUserBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
-            com.javainuse.user.User, com.javainuse.user.User.Builder, com.javainuse.user.UserOrBuilder>(
-                getCreatedByUser(),
-                getParentForChildren(),
-                isClean());
-        createdByUser_ = null;
-      }
-      return createdByUserBuilder_;
+      return this;
     }
 
     private int orderStatus_ = 0;
@@ -1587,41 +1479,41 @@ private static final long serialVersionUID = 0L;
     }
 
 
-    // @@protoc_insertion_point(builder_scope:orders.Order)
+    // @@protoc_insertion_point(builder_scope:orders.OrderDTO)
   }
 
-  // @@protoc_insertion_point(class_scope:orders.Order)
-  private static final com.javainuse.orders.Order DEFAULT_INSTANCE;
+  // @@protoc_insertion_point(class_scope:orders.OrderDTO)
+  private static final com.javainuse.orders.OrderDTO DEFAULT_INSTANCE;
   static {
-    DEFAULT_INSTANCE = new com.javainuse.orders.Order();
+    DEFAULT_INSTANCE = new com.javainuse.orders.OrderDTO();
   }
 
-  public static com.javainuse.orders.Order getDefaultInstance() {
+  public static com.javainuse.orders.OrderDTO getDefaultInstance() {
     return DEFAULT_INSTANCE;
   }
 
-  private static final com.google.protobuf.Parser<Order>
-      PARSER = new com.google.protobuf.AbstractParser<Order>() {
+  private static final com.google.protobuf.Parser<OrderDTO>
+      PARSER = new com.google.protobuf.AbstractParser<OrderDTO>() {
     @java.lang.Override
-    public Order parsePartialFrom(
+    public OrderDTO parsePartialFrom(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
-      return new Order(input, extensionRegistry);
+      return new OrderDTO(input, extensionRegistry);
     }
   };
 
-  public static com.google.protobuf.Parser<Order> parser() {
+  public static com.google.protobuf.Parser<OrderDTO> parser() {
     return PARSER;
   }
 
   @java.lang.Override
-  public com.google.protobuf.Parser<Order> getParserForType() {
+  public com.google.protobuf.Parser<OrderDTO> getParserForType() {
     return PARSER;
   }
 
   @java.lang.Override
-  public com.javainuse.orders.Order getDefaultInstanceForType() {
+  public com.javainuse.orders.OrderDTO getDefaultInstanceForType() {
     return DEFAULT_INSTANCE;
   }
 

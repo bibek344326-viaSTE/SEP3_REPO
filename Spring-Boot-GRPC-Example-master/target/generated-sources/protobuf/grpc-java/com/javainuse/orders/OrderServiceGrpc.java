@@ -28,21 +28,21 @@ public final class OrderServiceGrpc {
 
   // Static method descriptors that strictly reflect the proto.
   private static volatile io.grpc.MethodDescriptor<com.javainuse.orders.OrderRequest,
-      com.javainuse.orders.Order> getCreateOrderMethod;
+      com.javainuse.orders.CreateOrderResponse> getCreateOrderMethod;
 
   @io.grpc.stub.annotations.RpcMethod(
       fullMethodName = SERVICE_NAME + '/' + "createOrder",
       requestType = com.javainuse.orders.OrderRequest.class,
-      responseType = com.javainuse.orders.Order.class,
+      responseType = com.javainuse.orders.CreateOrderResponse.class,
       methodType = io.grpc.MethodDescriptor.MethodType.UNARY)
   public static io.grpc.MethodDescriptor<com.javainuse.orders.OrderRequest,
-      com.javainuse.orders.Order> getCreateOrderMethod() {
-    io.grpc.MethodDescriptor<com.javainuse.orders.OrderRequest, com.javainuse.orders.Order> getCreateOrderMethod;
+      com.javainuse.orders.CreateOrderResponse> getCreateOrderMethod() {
+    io.grpc.MethodDescriptor<com.javainuse.orders.OrderRequest, com.javainuse.orders.CreateOrderResponse> getCreateOrderMethod;
     if ((getCreateOrderMethod = OrderServiceGrpc.getCreateOrderMethod) == null) {
       synchronized (OrderServiceGrpc.class) {
         if ((getCreateOrderMethod = OrderServiceGrpc.getCreateOrderMethod) == null) {
           OrderServiceGrpc.getCreateOrderMethod = getCreateOrderMethod = 
-              io.grpc.MethodDescriptor.<com.javainuse.orders.OrderRequest, com.javainuse.orders.Order>newBuilder()
+              io.grpc.MethodDescriptor.<com.javainuse.orders.OrderRequest, com.javainuse.orders.CreateOrderResponse>newBuilder()
               .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
               .setFullMethodName(generateFullMethodName(
                   "orders.OrderService", "createOrder"))
@@ -50,7 +50,7 @@ public final class OrderServiceGrpc {
               .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
                   com.javainuse.orders.OrderRequest.getDefaultInstance()))
               .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  com.javainuse.orders.Order.getDefaultInstance()))
+                  com.javainuse.orders.CreateOrderResponse.getDefaultInstance()))
                   .setSchemaDescriptor(new OrderServiceMethodDescriptorSupplier("createOrder"))
                   .build();
           }
@@ -121,7 +121,7 @@ public final class OrderServiceGrpc {
     /**
      */
     public void createOrder(com.javainuse.orders.OrderRequest request,
-        io.grpc.stub.StreamObserver<com.javainuse.orders.Order> responseObserver) {
+        io.grpc.stub.StreamObserver<com.javainuse.orders.CreateOrderResponse> responseObserver) {
       asyncUnimplementedUnaryCall(getCreateOrderMethod(), responseObserver);
     }
 
@@ -139,7 +139,7 @@ public final class OrderServiceGrpc {
             asyncUnaryCall(
               new MethodHandlers<
                 com.javainuse.orders.OrderRequest,
-                com.javainuse.orders.Order>(
+                com.javainuse.orders.CreateOrderResponse>(
                   this, METHODID_CREATE_ORDER)))
           .addMethod(
             getGetAllOrdersMethod(),
@@ -173,7 +173,7 @@ public final class OrderServiceGrpc {
     /**
      */
     public void createOrder(com.javainuse.orders.OrderRequest request,
-        io.grpc.stub.StreamObserver<com.javainuse.orders.Order> responseObserver) {
+        io.grpc.stub.StreamObserver<com.javainuse.orders.CreateOrderResponse> responseObserver) {
       asyncUnaryCall(
           getChannel().newCall(getCreateOrderMethod(), getCallOptions()), request, responseObserver);
     }
@@ -207,7 +207,7 @@ public final class OrderServiceGrpc {
 
     /**
      */
-    public com.javainuse.orders.Order createOrder(com.javainuse.orders.OrderRequest request) {
+    public com.javainuse.orders.CreateOrderResponse createOrder(com.javainuse.orders.OrderRequest request) {
       return blockingUnaryCall(
           getChannel(), getCreateOrderMethod(), getCallOptions(), request);
     }
@@ -240,7 +240,7 @@ public final class OrderServiceGrpc {
 
     /**
      */
-    public com.google.common.util.concurrent.ListenableFuture<com.javainuse.orders.Order> createOrder(
+    public com.google.common.util.concurrent.ListenableFuture<com.javainuse.orders.CreateOrderResponse> createOrder(
         com.javainuse.orders.OrderRequest request) {
       return futureUnaryCall(
           getChannel().newCall(getCreateOrderMethod(), getCallOptions()), request);
@@ -277,7 +277,7 @@ public final class OrderServiceGrpc {
       switch (methodId) {
         case METHODID_CREATE_ORDER:
           serviceImpl.createOrder((com.javainuse.orders.OrderRequest) request,
-              (io.grpc.stub.StreamObserver<com.javainuse.orders.Order>) responseObserver);
+              (io.grpc.stub.StreamObserver<com.javainuse.orders.CreateOrderResponse>) responseObserver);
           break;
         case METHODID_GET_ALL_ORDERS:
           serviceImpl.getAllOrders((com.google.protobuf.Empty) request,

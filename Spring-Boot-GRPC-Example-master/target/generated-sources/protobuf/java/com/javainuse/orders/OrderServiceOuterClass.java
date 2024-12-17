@@ -15,6 +15,11 @@ public final class OrderServiceOuterClass {
         (com.google.protobuf.ExtensionRegistryLite) registry);
   }
   static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_orders_CreateOrderResponse_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_orders_CreateOrderResponse_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
     internal_static_orders_OrderRequest_descriptor;
   static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
@@ -25,10 +30,15 @@ public final class OrderServiceOuterClass {
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_orders_OrderItem_fieldAccessorTable;
   static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_orders_Order_descriptor;
+    internal_static_orders_OrderItemDTO_descriptor;
   static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_orders_Order_fieldAccessorTable;
+      internal_static_orders_OrderItemDTO_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_orders_OrderDTO_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_orders_OrderDTO_fieldAccessorTable;
   static final com.google.protobuf.Descriptors.Descriptor
     internal_static_orders_OrderList_descriptor;
   static final 
@@ -45,25 +55,28 @@ public final class OrderServiceOuterClass {
     java.lang.String[] descriptorData = {
       "\n\023order-service.proto\022\006orders\032\037google/pr" +
       "otobuf/timestamp.proto\032\033google/protobuf/" +
-      "empty.proto\032\022user-service.proto\"[\n\014Order" +
+      "empty.proto\032\022user-service.proto\"&\n\023Creat" +
+      "eOrderResponse\022\017\n\007success\030\001 \001(\010\"[\n\014Order" +
       "Request\022&\n\013order_items\030\001 \003(\0132\021.orders.Or" +
       "derItem\022\017\n\007user_id\030\002 \001(\005\022\022\n\ncreated_by\030\003" +
       " \001(\005\"M\n\tOrderItem\022\025\n\rorder_item_id\030\001 \001(\005" +
       "\022\017\n\007item_id\030\002 \001(\005\022\030\n\020quantity_to_pick\030\003 " +
-      "\001(\005\"\231\002\n\005Order\022\020\n\010order_id\030\001 \001(\005\022&\n\013order" +
-      "_items\030\002 \003(\0132\021.orders.OrderItem\022.\n\ncreat" +
-      "ed_at\030\003 \001(\0132\032.google.protobuf.Timestamp\022" +
-      "\"\n\rassigned_user\030\004 \001(\0132\013.users.User\022$\n\017c" +
-      "reated_by_user\030\005 \001(\0132\013.users.User\022)\n\014ord" +
-      "er_status\030\006 \001(\0162\023.orders.OrderStatus\0221\n\r" +
-      "delivery_date\030\007 \001(\0132\032.google.protobuf.Ti" +
-      "mestamp\"*\n\tOrderList\022\035\n\006orders\030\001 \003(\0132\r.o" +
-      "rders.Order*-\n\013OrderStatus\022\r\n\tCOMPLETED\020" +
-      "\000\022\017\n\013IN_PROGRESS\020\0012}\n\014OrderService\0222\n\013cr" +
-      "eateOrder\022\024.orders.OrderRequest\032\r.orders" +
-      ".Order\0229\n\014getAllOrders\022\026.google.protobuf" +
-      ".Empty\032\021.orders.OrderListB\030\n\024com.javainu" +
-      "se.ordersP\001b\006proto3"
+      "\001(\005\">\n\014OrderItemDTO\022\024\n\014product_name\030\001 \001(" +
+      "\t\022\030\n\020quantity_to_pick\030\002 \001(\005\"\205\002\n\010OrderDTO" +
+      "\022\020\n\010order_id\030\001 \001(\005\022)\n\013order_items\030\002 \003(\0132" +
+      "\024.orders.OrderItemDTO\022.\n\ncreated_at\030\003 \001(" +
+      "\0132\032.google.protobuf.Timestamp\022\025\n\rassigne" +
+      "d_user\030\004 \001(\t\022\027\n\017created_by_user\030\005 \001(\t\022)\n" +
+      "\014order_status\030\006 \001(\0162\023.orders.OrderStatus" +
+      "\0221\n\rdelivery_date\030\007 \001(\0132\032.google.protobu" +
+      "f.Timestamp\"-\n\tOrderList\022 \n\006orders\030\001 \003(\013" +
+      "2\020.orders.OrderDTO*-\n\013OrderStatus\022\r\n\tCOM" +
+      "PLETED\020\000\022\017\n\013IN_PROGRESS\020\0012\213\001\n\014OrderServi" +
+      "ce\022@\n\013createOrder\022\024.orders.OrderRequest\032" +
+      "\033.orders.CreateOrderResponse\0229\n\014getAllOr" +
+      "ders\022\026.google.protobuf.Empty\032\021.orders.Or" +
+      "derListB\030\n\024com.javainuse.ordersP\001b\006proto" +
+      "3"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -80,26 +93,38 @@ public final class OrderServiceOuterClass {
           com.google.protobuf.EmptyProto.getDescriptor(),
           com.javainuse.user.UserServiceOuterClass.getDescriptor(),
         }, assigner);
-    internal_static_orders_OrderRequest_descriptor =
+    internal_static_orders_CreateOrderResponse_descriptor =
       getDescriptor().getMessageTypes().get(0);
+    internal_static_orders_CreateOrderResponse_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_orders_CreateOrderResponse_descriptor,
+        new java.lang.String[] { "Success", });
+    internal_static_orders_OrderRequest_descriptor =
+      getDescriptor().getMessageTypes().get(1);
     internal_static_orders_OrderRequest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_orders_OrderRequest_descriptor,
         new java.lang.String[] { "OrderItems", "UserId", "CreatedBy", });
     internal_static_orders_OrderItem_descriptor =
-      getDescriptor().getMessageTypes().get(1);
+      getDescriptor().getMessageTypes().get(2);
     internal_static_orders_OrderItem_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_orders_OrderItem_descriptor,
         new java.lang.String[] { "OrderItemId", "ItemId", "QuantityToPick", });
-    internal_static_orders_Order_descriptor =
-      getDescriptor().getMessageTypes().get(2);
-    internal_static_orders_Order_fieldAccessorTable = new
+    internal_static_orders_OrderItemDTO_descriptor =
+      getDescriptor().getMessageTypes().get(3);
+    internal_static_orders_OrderItemDTO_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_orders_Order_descriptor,
+        internal_static_orders_OrderItemDTO_descriptor,
+        new java.lang.String[] { "ProductName", "QuantityToPick", });
+    internal_static_orders_OrderDTO_descriptor =
+      getDescriptor().getMessageTypes().get(4);
+    internal_static_orders_OrderDTO_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_orders_OrderDTO_descriptor,
         new java.lang.String[] { "OrderId", "OrderItems", "CreatedAt", "AssignedUser", "CreatedByUser", "OrderStatus", "DeliveryDate", });
     internal_static_orders_OrderList_descriptor =
-      getDescriptor().getMessageTypes().get(3);
+      getDescriptor().getMessageTypes().get(5);
     internal_static_orders_OrderList_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_orders_OrderList_descriptor,
