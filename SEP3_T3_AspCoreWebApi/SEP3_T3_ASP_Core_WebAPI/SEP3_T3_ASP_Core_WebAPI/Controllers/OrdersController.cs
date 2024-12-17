@@ -20,7 +20,7 @@ namespace SEP3_T3_ASP_Core_WebAPI.Controllers
         // ********** CREATE Endpoints **********
         // POST: /Orders
         [HttpPost]
-        public async Task<ActionResult<Order>> AddOrder([FromBody] Order order)
+        public async Task<ActionResult<bool>> AddOrder([FromBody] CreateOrderDTO order)
         {
             Order created = await orderRepository.AddOrderAsync(order);
             return Ok(true);
@@ -116,9 +116,9 @@ namespace SEP3_T3_ASP_Core_WebAPI.Controllers
 
         // GET: /Orders
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<OrderDTO>>> GetAllOrders()
+        public async Task<ActionResult<IEnumerable<GetOrderDTO>>> GetAllOrders()
         {
-            List<OrderDTO> orders = await orderRepository.GetAllOrders();
+            List<GetOrderDTO> orders = await orderRepository.GetAllOrders();
             return Ok(orders);
         }
     }
