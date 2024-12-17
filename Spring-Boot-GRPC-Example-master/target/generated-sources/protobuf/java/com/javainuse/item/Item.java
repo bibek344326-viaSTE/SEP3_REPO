@@ -4,11 +4,11 @@
 package com.javainuse.item;
 
 /**
- * Protobuf type {@code Item}
+ * Protobuf type {@code items.Item}
  */
 public  final class Item extends
     com.google.protobuf.GeneratedMessageV3 implements
-    // @@protoc_insertion_point(message_implements:Item)
+    // @@protoc_insertion_point(message_implements:items.Item)
     ItemOrBuilder {
 private static final long serialVersionUID = 0L;
   // Use Item.newBuilder() to construct.
@@ -90,13 +90,13 @@ private static final long serialVersionUID = 0L;
   }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
-    return com.javainuse.item.ItemServiceOuterClass.internal_static_Item_descriptor;
+    return com.javainuse.item.ItemServiceOuterClass.internal_static_items_Item_descriptor;
   }
 
   @java.lang.Override
   protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internalGetFieldAccessorTable() {
-    return com.javainuse.item.ItemServiceOuterClass.internal_static_Item_fieldAccessorTable
+    return com.javainuse.item.ItemServiceOuterClass.internal_static_items_Item_fieldAccessorTable
         .ensureFieldAccessorsInitialized(
             com.javainuse.item.Item.class, com.javainuse.item.Item.Builder.class);
   }
@@ -399,21 +399,21 @@ private static final long serialVersionUID = 0L;
     return builder;
   }
   /**
-   * Protobuf type {@code Item}
+   * Protobuf type {@code items.Item}
    */
   public static final class Builder extends
       com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
-      // @@protoc_insertion_point(builder_implements:Item)
+      // @@protoc_insertion_point(builder_implements:items.Item)
       com.javainuse.item.ItemOrBuilder {
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.javainuse.item.ItemServiceOuterClass.internal_static_Item_descriptor;
+      return com.javainuse.item.ItemServiceOuterClass.internal_static_items_Item_descriptor;
     }
 
     @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.javainuse.item.ItemServiceOuterClass.internal_static_Item_fieldAccessorTable
+      return com.javainuse.item.ItemServiceOuterClass.internal_static_items_Item_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
               com.javainuse.item.Item.class, com.javainuse.item.Item.Builder.class);
     }
@@ -450,7 +450,7 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.google.protobuf.Descriptors.Descriptor
         getDescriptorForType() {
-      return com.javainuse.item.ItemServiceOuterClass.internal_static_Item_descriptor;
+      return com.javainuse.item.ItemServiceOuterClass.internal_static_items_Item_descriptor;
     }
 
     @java.lang.Override
@@ -811,10 +811,10 @@ private static final long serialVersionUID = 0L;
     }
 
 
-    // @@protoc_insertion_point(builder_scope:Item)
+    // @@protoc_insertion_point(builder_scope:items.Item)
   }
 
-  // @@protoc_insertion_point(class_scope:Item)
+  // @@protoc_insertion_point(class_scope:items.Item)
   private static final com.javainuse.item.Item DEFAULT_INSTANCE;
   static {
     DEFAULT_INSTANCE = new com.javainuse.item.Item();

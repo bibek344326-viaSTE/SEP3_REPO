@@ -4,7 +4,7 @@
 package com.javainuse.item;
 
 public interface ItemDTOOrBuilder extends
-    // @@protoc_insertion_point(interface_extends:ItemDTO)
+    // @@protoc_insertion_point(interface_extends:items.ItemDTO)
     com.google.protobuf.MessageOrBuilder {
 
   /**

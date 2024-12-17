@@ -8,14 +8,17 @@ public interface OrderItemDTOOrBuilder extends
     com.google.protobuf.MessageOrBuilder {
 
   /**
-   * <code>string product_name = 1;</code>
+   * <code>.items.Item item = 1;</code>
    */
-  java.lang.String getProductName();
+  boolean hasItem();
   /**
-   * <code>string product_name = 1;</code>
+   * <code>.items.Item item = 1;</code>
    */
-  com.google.protobuf.ByteString
-      getProductNameBytes();
+  com.javainuse.item.Item getItem();
+  /**
+   * <code>.items.Item item = 1;</code>
+   */
+  com.javainuse.item.ItemOrBuilder getItemOrBuilder();
 
   /**
    * <code>int32 quantity_to_pick = 2;</code>

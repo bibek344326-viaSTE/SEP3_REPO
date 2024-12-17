@@ -8,33 +8,41 @@ public interface OrderRequestOrBuilder extends
     com.google.protobuf.MessageOrBuilder {
 
   /**
-   * <code>repeated .orders.OrderItem order_items = 1;</code>
+   * <code>repeated .orders.OrderItemDTO order_items = 1;</code>
    */
-  java.util.List<com.javainuse.orders.OrderItem> 
+  java.util.List<com.javainuse.orders.OrderItemDTO> 
       getOrderItemsList();
   /**
-   * <code>repeated .orders.OrderItem order_items = 1;</code>
+   * <code>repeated .orders.OrderItemDTO order_items = 1;</code>
    */
-  com.javainuse.orders.OrderItem getOrderItems(int index);
+  com.javainuse.orders.OrderItemDTO getOrderItems(int index);
   /**
-   * <code>repeated .orders.OrderItem order_items = 1;</code>
+   * <code>repeated .orders.OrderItemDTO order_items = 1;</code>
    */
   int getOrderItemsCount();
   /**
-   * <code>repeated .orders.OrderItem order_items = 1;</code>
+   * <code>repeated .orders.OrderItemDTO order_items = 1;</code>
    */
-  java.util.List<? extends com.javainuse.orders.OrderItemOrBuilder> 
+  java.util.List<? extends com.javainuse.orders.OrderItemDTOOrBuilder> 
       getOrderItemsOrBuilderList();
   /**
-   * <code>repeated .orders.OrderItem order_items = 1;</code>
+   * <code>repeated .orders.OrderItemDTO order_items = 1;</code>
    */
-  com.javainuse.orders.OrderItemOrBuilder getOrderItemsOrBuilder(
+  com.javainuse.orders.OrderItemDTOOrBuilder getOrderItemsOrBuilder(
       int index);
 
   /**
-   * <code>int32 user_id = 2;</code>
+   * <code>.google.protobuf.Timestamp delivery_date = 2;</code>
    */
-  int getUserId();
+  boolean hasDeliveryDate();
+  /**
+   * <code>.google.protobuf.Timestamp delivery_date = 2;</code>
+   */
+  com.google.protobuf.Timestamp getDeliveryDate();
+  /**
+   * <code>.google.protobuf.Timestamp delivery_date = 2;</code>
+   */
+  com.google.protobuf.TimestampOrBuilder getDeliveryDateOrBuilder();
 
   /**
    * <code>int32 created_by = 3;</code>

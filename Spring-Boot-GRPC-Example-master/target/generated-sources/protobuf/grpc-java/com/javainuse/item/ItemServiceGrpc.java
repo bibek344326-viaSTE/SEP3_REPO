@@ -24,7 +24,7 @@ public final class ItemServiceGrpc {
 
   private ItemServiceGrpc() {}
 
-  public static final String SERVICE_NAME = "ItemService";
+  public static final String SERVICE_NAME = "items.ItemService";
 
   // Static method descriptors that strictly reflect the proto.
   private static volatile io.grpc.MethodDescriptor<com.javainuse.item.ItemDTO,
@@ -45,7 +45,7 @@ public final class ItemServiceGrpc {
               io.grpc.MethodDescriptor.<com.javainuse.item.ItemDTO, com.javainuse.item.Item>newBuilder()
               .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
               .setFullMethodName(generateFullMethodName(
-                  "ItemService", "createItem"))
+                  "items.ItemService", "createItem"))
               .setSampledToLocalTracing(true)
               .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
                   com.javainuse.item.ItemDTO.getDefaultInstance()))
@@ -77,7 +77,7 @@ public final class ItemServiceGrpc {
               io.grpc.MethodDescriptor.<com.javainuse.item.Item, com.google.protobuf.Empty>newBuilder()
               .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
               .setFullMethodName(generateFullMethodName(
-                  "ItemService", "editItem"))
+                  "items.ItemService", "editItem"))
               .setSampledToLocalTracing(true)
               .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
                   com.javainuse.item.Item.getDefaultInstance()))
@@ -109,7 +109,7 @@ public final class ItemServiceGrpc {
               io.grpc.MethodDescriptor.<com.javainuse.item.Item, com.google.protobuf.Empty>newBuilder()
               .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
               .setFullMethodName(generateFullMethodName(
-                  "ItemService", "deleteItem"))
+                  "items.ItemService", "deleteItem"))
               .setSampledToLocalTracing(true)
               .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
                   com.javainuse.item.Item.getDefaultInstance()))
@@ -141,7 +141,7 @@ public final class ItemServiceGrpc {
               io.grpc.MethodDescriptor.<com.google.protobuf.Empty, com.javainuse.item.ItemList>newBuilder()
               .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
               .setFullMethodName(generateFullMethodName(
-                  "ItemService", "getAllItems"))
+                  "items.ItemService", "getAllItems"))
               .setSampledToLocalTracing(true)
               .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
                   com.google.protobuf.Empty.getDefaultInstance()))

@@ -4,11 +4,11 @@
 package com.javainuse.item;
 
 /**
- * Protobuf type {@code ItemList}
+ * Protobuf type {@code items.ItemList}
  */
 public  final class ItemList extends
     com.google.protobuf.GeneratedMessageV3 implements
-    // @@protoc_insertion_point(message_implements:ItemList)
+    // @@protoc_insertion_point(message_implements:items.ItemList)
     ItemListOrBuilder {
 private static final long serialVersionUID = 0L;
   // Use ItemList.newBuilder() to construct.
@@ -76,13 +76,13 @@ private static final long serialVersionUID = 0L;
   }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
-    return com.javainuse.item.ItemServiceOuterClass.internal_static_ItemList_descriptor;
+    return com.javainuse.item.ItemServiceOuterClass.internal_static_items_ItemList_descriptor;
   }
 
   @java.lang.Override
   protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internalGetFieldAccessorTable() {
-    return com.javainuse.item.ItemServiceOuterClass.internal_static_ItemList_fieldAccessorTable
+    return com.javainuse.item.ItemServiceOuterClass.internal_static_items_ItemList_fieldAccessorTable
         .ensureFieldAccessorsInitialized(
             com.javainuse.item.ItemList.class, com.javainuse.item.ItemList.Builder.class);
   }
@@ -90,32 +90,32 @@ private static final long serialVersionUID = 0L;
   public static final int ITEMS_FIELD_NUMBER = 1;
   private java.util.List<com.javainuse.item.Item> items_;
   /**
-   * <code>repeated .Item items = 1;</code>
+   * <code>repeated .items.Item items = 1;</code>
    */
   public java.util.List<com.javainuse.item.Item> getItemsList() {
     return items_;
   }
   /**
-   * <code>repeated .Item items = 1;</code>
+   * <code>repeated .items.Item items = 1;</code>
    */
   public java.util.List<? extends com.javainuse.item.ItemOrBuilder> 
       getItemsOrBuilderList() {
     return items_;
   }
   /**
-   * <code>repeated .Item items = 1;</code>
+   * <code>repeated .items.Item items = 1;</code>
    */
   public int getItemsCount() {
     return items_.size();
   }
   /**
-   * <code>repeated .Item items = 1;</code>
+   * <code>repeated .items.Item items = 1;</code>
    */
   public com.javainuse.item.Item getItems(int index) {
     return items_.get(index);
   }
   /**
-   * <code>repeated .Item items = 1;</code>
+   * <code>repeated .items.Item items = 1;</code>
    */
   public com.javainuse.item.ItemOrBuilder getItemsOrBuilder(
       int index) {
@@ -281,21 +281,21 @@ private static final long serialVersionUID = 0L;
     return builder;
   }
   /**
-   * Protobuf type {@code ItemList}
+   * Protobuf type {@code items.ItemList}
    */
   public static final class Builder extends
       com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
-      // @@protoc_insertion_point(builder_implements:ItemList)
+      // @@protoc_insertion_point(builder_implements:items.ItemList)
       com.javainuse.item.ItemListOrBuilder {
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.javainuse.item.ItemServiceOuterClass.internal_static_ItemList_descriptor;
+      return com.javainuse.item.ItemServiceOuterClass.internal_static_items_ItemList_descriptor;
     }
 
     @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.javainuse.item.ItemServiceOuterClass.internal_static_ItemList_fieldAccessorTable
+      return com.javainuse.item.ItemServiceOuterClass.internal_static_items_ItemList_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
               com.javainuse.item.ItemList.class, com.javainuse.item.ItemList.Builder.class);
     }
@@ -331,7 +331,7 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.google.protobuf.Descriptors.Descriptor
         getDescriptorForType() {
-      return com.javainuse.item.ItemServiceOuterClass.internal_static_ItemList_descriptor;
+      return com.javainuse.item.ItemServiceOuterClass.internal_static_items_ItemList_descriptor;
     }
 
     @java.lang.Override
@@ -478,7 +478,7 @@ private static final long serialVersionUID = 0L;
         com.javainuse.item.Item, com.javainuse.item.Item.Builder, com.javainuse.item.ItemOrBuilder> itemsBuilder_;
 
     /**
-     * <code>repeated .Item items = 1;</code>
+     * <code>repeated .items.Item items = 1;</code>
      */
     public java.util.List<com.javainuse.item.Item> getItemsList() {
       if (itemsBuilder_ == null) {
@@ -488,7 +488,7 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>repeated .Item items = 1;</code>
+     * <code>repeated .items.Item items = 1;</code>
      */
     public int getItemsCount() {
       if (itemsBuilder_ == null) {
@@ -498,7 +498,7 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>repeated .Item items = 1;</code>
+     * <code>repeated .items.Item items = 1;</code>
      */
     public com.javainuse.item.Item getItems(int index) {
       if (itemsBuilder_ == null) {
@@ -508,7 +508,7 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>repeated .Item items = 1;</code>
+     * <code>repeated .items.Item items = 1;</code>
      */
     public Builder setItems(
         int index, com.javainuse.item.Item value) {
@@ -525,7 +525,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>repeated .Item items = 1;</code>
+     * <code>repeated .items.Item items = 1;</code>
      */
     public Builder setItems(
         int index, com.javainuse.item.Item.Builder builderForValue) {
@@ -539,7 +539,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>repeated .Item items = 1;</code>
+     * <code>repeated .items.Item items = 1;</code>
      */
     public Builder addItems(com.javainuse.item.Item value) {
       if (itemsBuilder_ == null) {
@@ -555,7 +555,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>repeated .Item items = 1;</code>
+     * <code>repeated .items.Item items = 1;</code>
      */
     public Builder addItems(
         int index, com.javainuse.item.Item value) {
@@ -572,7 +572,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>repeated .Item items = 1;</code>
+     * <code>repeated .items.Item items = 1;</code>
      */
     public Builder addItems(
         com.javainuse.item.Item.Builder builderForValue) {
@@ -586,7 +586,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>repeated .Item items = 1;</code>
+     * <code>repeated .items.Item items = 1;</code>
      */
     public Builder addItems(
         int index, com.javainuse.item.Item.Builder builderForValue) {
@@ -600,7 +600,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>repeated .Item items = 1;</code>
+     * <code>repeated .items.Item items = 1;</code>
      */
     public Builder addAllItems(
         java.lang.Iterable<? extends com.javainuse.item.Item> values) {
@@ -615,7 +615,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>repeated .Item items = 1;</code>
+     * <code>repeated .items.Item items = 1;</code>
      */
     public Builder clearItems() {
       if (itemsBuilder_ == null) {
@@ -628,7 +628,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>repeated .Item items = 1;</code>
+     * <code>repeated .items.Item items = 1;</code>
      */
     public Builder removeItems(int index) {
       if (itemsBuilder_ == null) {
@@ -641,14 +641,14 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>repeated .Item items = 1;</code>
+     * <code>repeated .items.Item items = 1;</code>
      */
     public com.javainuse.item.Item.Builder getItemsBuilder(
         int index) {
       return getItemsFieldBuilder().getBuilder(index);
     }
     /**
-     * <code>repeated .Item items = 1;</code>
+     * <code>repeated .items.Item items = 1;</code>
      */
     public com.javainuse.item.ItemOrBuilder getItemsOrBuilder(
         int index) {
@@ -658,7 +658,7 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>repeated .Item items = 1;</code>
+     * <code>repeated .items.Item items = 1;</code>
      */
     public java.util.List<? extends com.javainuse.item.ItemOrBuilder> 
          getItemsOrBuilderList() {
@@ -669,14 +669,14 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>repeated .Item items = 1;</code>
+     * <code>repeated .items.Item items = 1;</code>
      */
     public com.javainuse.item.Item.Builder addItemsBuilder() {
       return getItemsFieldBuilder().addBuilder(
           com.javainuse.item.Item.getDefaultInstance());
     }
     /**
-     * <code>repeated .Item items = 1;</code>
+     * <code>repeated .items.Item items = 1;</code>
      */
     public com.javainuse.item.Item.Builder addItemsBuilder(
         int index) {
@@ -684,7 +684,7 @@ private static final long serialVersionUID = 0L;
           index, com.javainuse.item.Item.getDefaultInstance());
     }
     /**
-     * <code>repeated .Item items = 1;</code>
+     * <code>repeated .items.Item items = 1;</code>
      */
     public java.util.List<com.javainuse.item.Item.Builder> 
          getItemsBuilderList() {
@@ -717,10 +717,10 @@ private static final long serialVersionUID = 0L;
     }
 
 
-    // @@protoc_insertion_point(builder_scope:ItemList)
+    // @@protoc_insertion_point(builder_scope:items.ItemList)
   }
 
-  // @@protoc_insertion_point(class_scope:ItemList)
+  // @@protoc_insertion_point(class_scope:items.ItemList)
   private static final com.javainuse.item.ItemList DEFAULT_INSTANCE;
   static {
     DEFAULT_INSTANCE = new com.javainuse.item.ItemList();

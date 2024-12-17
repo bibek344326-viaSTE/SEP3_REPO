@@ -16,7 +16,6 @@ private static final long serialVersionUID = 0L;
     super(builder);
   }
   private OrderItemDTO() {
-    productName_ = "";
     quantityToPick_ = 0;
   }
 
@@ -45,9 +44,16 @@ private static final long serialVersionUID = 0L;
             done = true;
             break;
           case 10: {
-            java.lang.String s = input.readStringRequireUtf8();
+            com.javainuse.item.Item.Builder subBuilder = null;
+            if (item_ != null) {
+              subBuilder = item_.toBuilder();
+            }
+            item_ = input.readMessage(com.javainuse.item.Item.parser(), extensionRegistry);
+            if (subBuilder != null) {
+              subBuilder.mergeFrom(item_);
+              item_ = subBuilder.buildPartial();
+            }
 
-            productName_ = s;
             break;
           }
           case 16: {
@@ -87,38 +93,25 @@ private static final long serialVersionUID = 0L;
             com.javainuse.orders.OrderItemDTO.class, com.javainuse.orders.OrderItemDTO.Builder.class);
   }
 
-  public static final int PRODUCT_NAME_FIELD_NUMBER = 1;
-  private volatile java.lang.Object productName_;
+  public static final int ITEM_FIELD_NUMBER = 1;
+  private com.javainuse.item.Item item_;
   /**
-   * <code>string product_name = 1;</code>
+   * <code>.items.Item item = 1;</code>
    */
-  public java.lang.String getProductName() {
-    java.lang.Object ref = productName_;
-    if (ref instanceof java.lang.String) {
-      return (java.lang.String) ref;
-    } else {
-      com.google.protobuf.ByteString bs = 
-          (com.google.protobuf.ByteString) ref;
-      java.lang.String s = bs.toStringUtf8();
-      productName_ = s;
-      return s;
-    }
+  public boolean hasItem() {
+    return item_ != null;
   }
   /**
-   * <code>string product_name = 1;</code>
+   * <code>.items.Item item = 1;</code>
    */
-  public com.google.protobuf.ByteString
-      getProductNameBytes() {
-    java.lang.Object ref = productName_;
-    if (ref instanceof java.lang.String) {
-      com.google.protobuf.ByteString b = 
-          com.google.protobuf.ByteString.copyFromUtf8(
-              (java.lang.String) ref);
-      productName_ = b;
-      return b;
-    } else {
-      return (com.google.protobuf.ByteString) ref;
-    }
+  public com.javainuse.item.Item getItem() {
+    return item_ == null ? com.javainuse.item.Item.getDefaultInstance() : item_;
+  }
+  /**
+   * <code>.items.Item item = 1;</code>
+   */
+  public com.javainuse.item.ItemOrBuilder getItemOrBuilder() {
+    return getItem();
   }
 
   public static final int QUANTITY_TO_PICK_FIELD_NUMBER = 2;
@@ -144,8 +137,8 @@ private static final long serialVersionUID = 0L;
   @java.lang.Override
   public void writeTo(com.google.protobuf.CodedOutputStream output)
                       throws java.io.IOException {
-    if (!getProductNameBytes().isEmpty()) {
-      com.google.protobuf.GeneratedMessageV3.writeString(output, 1, productName_);
+    if (item_ != null) {
+      output.writeMessage(1, getItem());
     }
     if (quantityToPick_ != 0) {
       output.writeInt32(2, quantityToPick_);
@@ -159,8 +152,9 @@ private static final long serialVersionUID = 0L;
     if (size != -1) return size;
 
     size = 0;
-    if (!getProductNameBytes().isEmpty()) {
-      size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, productName_);
+    if (item_ != null) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeMessageSize(1, getItem());
     }
     if (quantityToPick_ != 0) {
       size += com.google.protobuf.CodedOutputStream
@@ -182,8 +176,11 @@ private static final long serialVersionUID = 0L;
     com.javainuse.orders.OrderItemDTO other = (com.javainuse.orders.OrderItemDTO) obj;
 
     boolean result = true;
-    result = result && getProductName()
-        .equals(other.getProductName());
+    result = result && (hasItem() == other.hasItem());
+    if (hasItem()) {
+      result = result && getItem()
+          .equals(other.getItem());
+    }
     result = result && (getQuantityToPick()
         == other.getQuantityToPick());
     result = result && unknownFields.equals(other.unknownFields);
@@ -197,8 +194,10 @@ private static final long serialVersionUID = 0L;
     }
     int hash = 41;
     hash = (19 * hash) + getDescriptor().hashCode();
-    hash = (37 * hash) + PRODUCT_NAME_FIELD_NUMBER;
-    hash = (53 * hash) + getProductName().hashCode();
+    if (hasItem()) {
+      hash = (37 * hash) + ITEM_FIELD_NUMBER;
+      hash = (53 * hash) + getItem().hashCode();
+    }
     hash = (37 * hash) + QUANTITY_TO_PICK_FIELD_NUMBER;
     hash = (53 * hash) + getQuantityToPick();
     hash = (29 * hash) + unknownFields.hashCode();
@@ -334,8 +333,12 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public Builder clear() {
       super.clear();
-      productName_ = "";
-
+      if (itemBuilder_ == null) {
+        item_ = null;
+      } else {
+        item_ = null;
+        itemBuilder_ = null;
+      }
       quantityToPick_ = 0;
 
       return this;
@@ -364,7 +367,11 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.javainuse.orders.OrderItemDTO buildPartial() {
       com.javainuse.orders.OrderItemDTO result = new com.javainuse.orders.OrderItemDTO(this);
-      result.productName_ = productName_;
+      if (itemBuilder_ == null) {
+        result.item_ = item_;
+      } else {
+        result.item_ = itemBuilder_.build();
+      }
       result.quantityToPick_ = quantityToPick_;
       onBuilt();
       return result;
@@ -414,9 +421,8 @@ private static final long serialVersionUID = 0L;
 
     public Builder mergeFrom(com.javainuse.orders.OrderItemDTO other) {
       if (other == com.javainuse.orders.OrderItemDTO.getDefaultInstance()) return this;
-      if (!other.getProductName().isEmpty()) {
-        productName_ = other.productName_;
-        onChanged();
+      if (other.hasItem()) {
+        mergeItem(other.getItem());
       }
       if (other.getQuantityToPick() != 0) {
         setQuantityToPick(other.getQuantityToPick());
@@ -450,73 +456,121 @@ private static final long serialVersionUID = 0L;
       return this;
     }
 
-    private java.lang.Object productName_ = "";
+    private com.javainuse.item.Item item_ = null;
+    private com.google.protobuf.SingleFieldBuilderV3<
+        com.javainuse.item.Item, com.javainuse.item.Item.Builder, com.javainuse.item.ItemOrBuilder> itemBuilder_;
     /**
-     * <code>string product_name = 1;</code>
+     * <code>.items.Item item = 1;</code>
      */
-    public java.lang.String getProductName() {
-      java.lang.Object ref = productName_;
-      if (!(ref instanceof java.lang.String)) {
-        com.google.protobuf.ByteString bs =
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        productName_ = s;
-        return s;
+    public boolean hasItem() {
+      return itemBuilder_ != null || item_ != null;
+    }
+    /**
+     * <code>.items.Item item = 1;</code>
+     */
+    public com.javainuse.item.Item getItem() {
+      if (itemBuilder_ == null) {
+        return item_ == null ? com.javainuse.item.Item.getDefaultInstance() : item_;
       } else {
-        return (java.lang.String) ref;
+        return itemBuilder_.getMessage();
       }
     }
     /**
-     * <code>string product_name = 1;</code>
+     * <code>.items.Item item = 1;</code>
      */
-    public com.google.protobuf.ByteString
-        getProductNameBytes() {
-      java.lang.Object ref = productName_;
-      if (ref instanceof String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        productName_ = b;
-        return b;
+    public Builder setItem(com.javainuse.item.Item value) {
+      if (itemBuilder_ == null) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        item_ = value;
+        onChanged();
       } else {
-        return (com.google.protobuf.ByteString) ref;
+        itemBuilder_.setMessage(value);
+      }
+
+      return this;
+    }
+    /**
+     * <code>.items.Item item = 1;</code>
+     */
+    public Builder setItem(
+        com.javainuse.item.Item.Builder builderForValue) {
+      if (itemBuilder_ == null) {
+        item_ = builderForValue.build();
+        onChanged();
+      } else {
+        itemBuilder_.setMessage(builderForValue.build());
+      }
+
+      return this;
+    }
+    /**
+     * <code>.items.Item item = 1;</code>
+     */
+    public Builder mergeItem(com.javainuse.item.Item value) {
+      if (itemBuilder_ == null) {
+        if (item_ != null) {
+          item_ =
+            com.javainuse.item.Item.newBuilder(item_).mergeFrom(value).buildPartial();
+        } else {
+          item_ = value;
+        }
+        onChanged();
+      } else {
+        itemBuilder_.mergeFrom(value);
+      }
+
+      return this;
+    }
+    /**
+     * <code>.items.Item item = 1;</code>
+     */
+    public Builder clearItem() {
+      if (itemBuilder_ == null) {
+        item_ = null;
+        onChanged();
+      } else {
+        item_ = null;
+        itemBuilder_ = null;
+      }
+
+      return this;
+    }
+    /**
+     * <code>.items.Item item = 1;</code>
+     */
+    public com.javainuse.item.Item.Builder getItemBuilder() {
+      
+      onChanged();
+      return getItemFieldBuilder().getBuilder();
+    }
+    /**
+     * <code>.items.Item item = 1;</code>
+     */
+    public com.javainuse.item.ItemOrBuilder getItemOrBuilder() {
+      if (itemBuilder_ != null) {
+        return itemBuilder_.getMessageOrBuilder();
+      } else {
+        return item_ == null ?
+            com.javainuse.item.Item.getDefaultInstance() : item_;
       }
     }
     /**
-     * <code>string product_name = 1;</code>
+     * <code>.items.Item item = 1;</code>
      */
-    public Builder setProductName(
-        java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  
-      productName_ = value;
-      onChanged();
-      return this;
-    }
-    /**
-     * <code>string product_name = 1;</code>
-     */
-    public Builder clearProductName() {
-      
-      productName_ = getDefaultInstance().getProductName();
-      onChanged();
-      return this;
-    }
-    /**
-     * <code>string product_name = 1;</code>
-     */
-    public Builder setProductNameBytes(
-        com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-      
-      productName_ = value;
-      onChanged();
-      return this;
+    private com.google.protobuf.SingleFieldBuilderV3<
+        com.javainuse.item.Item, com.javainuse.item.Item.Builder, com.javainuse.item.ItemOrBuilder> 
+        getItemFieldBuilder() {
+      if (itemBuilder_ == null) {
+        itemBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+            com.javainuse.item.Item, com.javainuse.item.Item.Builder, com.javainuse.item.ItemOrBuilder>(
+                getItem(),
+                getParentForChildren(),
+                isClean());
+        item_ = null;
+      }
+      return itemBuilder_;
     }
 
     private int quantityToPick_ ;
