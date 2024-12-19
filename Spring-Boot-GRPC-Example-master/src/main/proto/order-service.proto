@@ -9,23 +9,23 @@ package orders;
 option java_multiple_files = true;
 option java_package = "com.javainuse.orders";
 
-
 service OrderService {
   rpc createOrder(OrderRequest) returns (CreateOrderResponse);
   rpc getAllOrders(google.protobuf.Empty) returns (OrderList);
 }
+
 message CreateOrderResponse {
   bool success = 1;
 }
 
 message OrderRequest {
-  repeated OrderItemDTO order_items = 1;
+  repeated CreateOrderItemDTO order_items = 1; // For creating, we only send item_ids
   google.protobuf.Timestamp delivery_date = 2;
   int32 created_by = 3;
 }
 
-message OrderItemDTO {
-  items.Item item = 1;
+message CreateOrderItemDTO {
+  int32 item_id = 1;
   int32 quantity_to_pick = 2;
 }
 
@@ -37,6 +37,11 @@ message OrderDTO {
   string created_by_user = 5;
   OrderStatus order_status = 6;
   google.protobuf.Timestamp delivery_date = 7;
+}
+
+message OrderItemDTO {
+  items.Item item = 1; // For fetching, we return the full item
+  int32 quantity_to_pick = 2;
 }
 
 message OrderList {

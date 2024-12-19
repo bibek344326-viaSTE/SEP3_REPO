@@ -41,7 +41,7 @@ public final class ItemServiceOuterClass {
       "\n\022item-service.proto\022\005items\032\033google/prot" +
       "obuf/empty.proto\"G\n\007ItemDTO\022\014\n\004name\030\001 \001(" +
       "\t\022\023\n\013description\030\002 \001(\t\022\031\n\021quantity_in_st" +
-      "ore\030\003 \001(\005\"X\n\004Item\022\016\n\006itemId\030\001 \001(\t\022\020\n\010ite" +
+      "ore\030\003 \001(\005\"X\n\004Item\022\016\n\006itemId\030\001 \001(\005\022\020\n\010ite" +
       "mName\030\002 \001(\t\022\023\n\013description\030\003 \001(\t\022\031\n\021quan" +
       "tity_in_store\030\004 \001(\005\"&\n\010ItemList\022\032\n\005items" +
       "\030\001 \003(\0132\013.items.Item2\324\001\n\013ItemService\022)\n\nc" +

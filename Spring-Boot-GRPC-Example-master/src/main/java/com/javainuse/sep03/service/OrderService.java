@@ -1,73 +1,33 @@
 package com.javainuse.sep03.service;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.protobuf.Empty;
-import com.google.protobuf.Timestamp;
 import com.javainuse.item.Item;
 import com.javainuse.orders.*;
+import io.grpc.stub.StreamObserver;
 import io.netty.handler.ssl.SslContextBuilder;
 import io.netty.handler.ssl.util.InsecureTrustManagerFactory;
 import net.devh.boot.grpc.server.service.GrpcService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.client.reactive.ReactorClientHttpConnector;
 import org.springframework.web.reactive.function.client.WebClient;
-import org.springframework.http.MediaType;
-import io.grpc.stub.StreamObserver;
+import reactor.core.publisher.Mono;
 import reactor.netty.http.client.HttpClient;
 
 import java.time.Instant;
 import java.util.List;
-
-@JsonIgnoreProperties(ignoreUnknown = true) // Ignore unknown fields
-class RestOrder {
-    private int orderId;
-    private OrderStatus orderStatus;
-    private String deliveryDate;
-    private List<RestOrderItem> orderItems;
-    private String assignedUser;
-    private String createdBy;
-    private String createdAt;
-
-    // Getters and Setters
-    public int getOrderId() { return orderId; }
-    public void setOrderId(int orderId) { this.orderId = orderId; }
-
-    public OrderStatus getOrderStatus() { return orderStatus; }
-    public void setOrderStatus(OrderStatus orderStatus) { this.orderStatus = orderStatus; }
-
-    public String getDeliveryDate() { return deliveryDate; }
-    public void setDeliveryDate(String deliveryDate) { this.deliveryDate = deliveryDate; }
-
-    public List<RestOrderItem> getOrderItems() { return orderItems; }
-    public void setOrderItems(List<RestOrderItem> orderItems) { this.orderItems = orderItems; }
-
-    public String getAssignedUser() { return assignedUser; }
-    public void setAssignedUser(String assignedUser) { this.assignedUser = assignedUser; }
-
-    public String getCreatedBy() { return createdBy; }
-    public void setCreatedBy(String createdBy) { this.createdBy = createdBy; }
-
-    public String getCreatedAt() { return createdAt; }
-    public void setCreatedAt(String createdAt) { this.createdAt = createdAt; }
-}
-
-@JsonIgnoreProperties(ignoreUnknown = true) // Ignore unknown fields
-class RestOrderItem {
-    private RestItem item;
-    private int quantityToPick;
-
-    public RestItem getItem() { return item; }
-    public void setItem(RestItem item) { this.item = item; }
-
-    public int getQuantityToPick() { return quantityToPick; }
-    public void setQuantityToPick(int quantityToPick) { this.quantityToPick = quantityToPick; }
-}
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @GrpcService
 public class OrderService extends OrderServiceGrpc.OrderServiceImplBase {
 
+    private static final Logger logger = LoggerFactory.getLogger(OrderService.class);
 
-    WebClient webClient = WebClient.builder()
+    private final WebClient webClient = WebClient.builder()
             .baseUrl("https://localhost:7211/Orders")
             .clientConnector(new ReactorClientHttpConnector(
                     HttpClient.create().secure(sslContextSpec ->
@@ -78,86 +38,226 @@ public class OrderService extends OrderServiceGrpc.OrderServiceImplBase {
 
 
     @Override
+    public void createOrder(OrderRequest request, StreamObserver<CreateOrderResponse> responseObserver) {
+        logger.info("Received request to create order: {}", request);
+
+        try {
+            // Map gRPC OrderRequest to REST API CreateOrderDTO
+            CreateOrderDTO createOrderDTO = new CreateOrderDTO(
+                    Instant.ofEpochSecond(request.getDeliveryDate().getSeconds()).toString(), // Convert gRPC timestamp to ISO-8601 date string
+                    request.getOrderItemsList().stream().map(orderItemDTO -> {
+                        try {
+                            logger.info("Processing order item: {}", orderItemDTO);
+                            return new RestOrderItemDTO(
+                                    orderItemDTO.getItemId(), // Send only itemId for create
+                                    orderItemDTO.getQuantityToPick()
+                            );
+                        } catch (Exception e) {
+                            logger.error("Failed to map order item: {}", orderItemDTO, e);
+                            throw new RuntimeException("Error while processing order item", e);
+                        }
+                    }).collect(Collectors.toList()),
+                    request.getCreatedBy(),
+                    Instant.now().toString() // Set createdAt as current timestamp in ISO-8601 format
+            );
+
+            logger.info("Mapped CreateOrderDTO to send to REST API: {}", createOrderDTO);
+
+            webClient.post()
+                    .uri("/")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .body(Mono.just(createOrderDTO), CreateOrderDTO.class)
+                    .retrieve()
+                    .onStatus(HttpStatus::isError, response -> {
+                        logger.error("Error from REST API: {}", response.statusCode());
+                        return Mono.error(new RuntimeException("Error calling REST API"));
+                    })
+                    .bodyToMono(Boolean.class)
+                    .doOnSuccess(success -> logger.info("Order created successfully: {}", success))
+                    .doOnError(error -> logger.error("Failed to create order", error))
+                    .subscribe(
+                            success -> {
+                                CreateOrderResponse response = CreateOrderResponse.newBuilder().setSuccess(success).build();
+                                responseObserver.onNext(response);
+                                responseObserver.onCompleted();
+                            },
+                            error -> {
+                                logger.error("Error occurred in createOrder: ", error);
+                                responseObserver.onError(error);
+                            }
+                    );
+        } catch (Exception e) {
+            logger.error("Exception occurred while processing createOrder", e);
+            responseObserver.onError(e);
+        }
+    }
+
+
+    @Override
     public void getAllOrders(Empty request, StreamObserver<OrderList> responseObserver) {
-        System.out.println("[INFO] Calling REST API to fetch all orders");
+        logger.info("Received request to get all orders from REST API");
 
         webClient.get()
                 .uri("/")
                 .accept(MediaType.APPLICATION_JSON)
                 .retrieve()
-                .bodyToMono(String.class)
-                .doOnNext(responseBody -> System.out.println("[INFO] Raw REST response: " + responseBody))
-                .map(responseBody -> {
-                    try {
-                        ObjectMapper mapper = new ObjectMapper();
-                        List<RestOrder> orderList = mapper.readValue(responseBody, mapper.getTypeFactory().constructCollectionType(List.class, RestOrder.class));
-                        System.out.println("[INFO] Successfully deserialized response with size: " + orderList.size());
-
-                        OrderList.Builder responseBuilder = OrderList.newBuilder();
-                        for (RestOrder o : orderList) {
-                            OrderDTO.Builder orderBuilder = OrderDTO.newBuilder()
-                                    .setOrderId(o.getOrderId())
-                                    .setOrderStatus(o.getOrderStatus())
-                                    .setAssignedUser(o.getAssignedUser() != null ? o.getAssignedUser() : "Unassigned")
-                                    .setCreatedByUser(o.getCreatedBy() != null ? o.getCreatedBy() : "Unknown Creator");
-
-                            orderBuilder.setDeliveryDate(parseTimestamp(o.getDeliveryDate(), "deliveryDate", o.getOrderId()));
-                            orderBuilder.setCreatedAt(parseTimestamp(o.getCreatedAt(), "createdAt", o.getOrderId()));
-
-                            if (o.getOrderItems() != null) {
-                                for (RestOrderItem item : o.getOrderItems()) {
-                                    if (item.getItem() != null) {
-                                        RestItem restItem = item.getItem();
-                                        Item grpcItem = Item.newBuilder()
-                                                .setItemId(String.valueOf(restItem.getItemId()))
-                                                .setItemName(restItem.getItemName() != null ? restItem.getItemName() : "Unknown Product")
-                                                .setQuantityInStore(restItem.getQuantityInStore())
-                                                .build();
-
-                                        OrderItemDTO itemDto = OrderItemDTO.newBuilder()
-                                                .setItem(grpcItem)
-                                                .setQuantityToPick(item.getQuantityToPick())
-                                                .build();
-
-                                        orderBuilder.addOrderItems(itemDto);
-                                    }
-                                }
-                            }
-                            responseBuilder.addOrders(orderBuilder.build());
-                        }
-                        return responseBuilder.build();
-                    } catch (Exception e) {
-                        System.err.println("[ERROR] Failed to deserialize REST API response.");
-                        e.printStackTrace();
-                        throw new RuntimeException(e);
-                    }
-                })
+                .bodyToMono(List.class)
                 .subscribe(
-                        responseObserver::onNext, // onNext (only when successful)
-                        error -> {
-                            System.err.println("[ERROR] Error occurred during gRPC response: " + error.getMessage());
-                                responseObserver.onError(error); // Send an error back to the client
+                        orders -> {
+                            try {
+                                List<OrderDTO> grpcOrderList = ((List<?>) orders).stream().map(order -> {
+                                    try {
+                                        Map<String, Object> orderMap = (Map<String, Object>) order;
+                                        List<OrderItemDTO> orderItems = ((List<?>) orderMap.getOrDefault("orderItems", List.of()))
+                                                .stream().map(orderItem -> {
+                                                    Map<String, Object> orderItemMap = (Map<String, Object>) orderItem;
+                                                    Map<String, Object> itemMap = (Map<String, Object>) orderItemMap.get("item");
 
+                                                    return OrderItemDTO.newBuilder()
+                                                            .setItem(Item.newBuilder()
+                                                                    .setItemId((Integer) itemMap.getOrDefault("itemId", 0))
+                                                                    .setItemName((String) itemMap.getOrDefault("itemName", "Unknown"))
+                                                                    .setDescription(itemMap.get("description") != null ? (String) itemMap.get("description") : "") // Null check for description
+                                                                    .setQuantityInStore((Integer) itemMap.getOrDefault("quantityInStore", 0))
+                                                                    .build())
+                                                            .setQuantityToPick((Integer) orderItemMap.getOrDefault("quantityToPick", 0))
+                                                            .build();
+                                                }).collect(Collectors.toList());
+
+                                        return OrderDTO.newBuilder()
+                                                .setOrderId((Integer) orderMap.getOrDefault("orderId", 0))
+                                                .addAllOrderItems(orderItems)
+                                                .setCreatedAt(com.google.protobuf.Timestamp.newBuilder()
+                                                        .setSeconds(((String) orderMap.getOrDefault("createdAt", "1970-01-01T00:00:00Z")).hashCode())
+                                                        .build())
+                                                .setAssignedUser(orderMap.get("assignedUser") != null ? orderMap.get("assignedUser").toString() : "Unassigned") // Null check for assignedUser
+                                                .setCreatedByUser(orderMap.getOrDefault("createdBy", "Unknown").toString()) // Null check for createdBy
+                                                .setOrderStatus(OrderStatus.valueOf((String) orderMap.getOrDefault("orderStatus", "IN_PROGRESS"))) // Null check for orderStatus
+                                                .setDeliveryDate(com.google.protobuf.Timestamp.newBuilder()
+                                                        .setSeconds(((String) orderMap.getOrDefault("deliveryDate", "1970-01-01T00:00:00Z")).hashCode())
+                                                        .build())
+                                                .build();
+                                    } catch (Exception e) {
+                                        logger.error("Failed to process order: {}", order, e);
+                                        throw new RuntimeException(e);
+                                    }
+                                }).collect(Collectors.toList());
+
+                                OrderList orderList = OrderList.newBuilder().addAllOrders(grpcOrderList).build();
+                                responseObserver.onNext(orderList);
+                                responseObserver.onCompleted();
+                            } catch (Exception e) {
+                                logger.error("Exception while processing orders", e);
+                                responseObserver.onError(e);
+                            }
                         },
-                        () -> {
-                            System.out.println("[INFO] Completed sending all orders to gRPC client.");
-                                responseObserver.onCompleted(); // ✅ Mark the stream as completed
-
+                        error -> {
+                            logger.error("Error occurred while fetching orders", error);
+                            responseObserver.onError(error);
                         }
                 );
-    }
 
-    private Timestamp parseTimestamp(String dateTime, String fieldName, int orderId) {
-        try {
-            Instant instant = Instant.parse(dateTime);
-            return Timestamp.newBuilder().setSeconds(instant.getEpochSecond()).setNanos(instant.getNano()).build();
-        } catch (Exception e) {
-            System.err.println("[ERROR] Error parsing " + fieldName + " for Order ID: " + orderId);
-            return Timestamp.newBuilder().setSeconds(0).setNanos(0).build();
+
+    }
+    public static class CreateOrderDTO {
+
+        @JsonProperty("deliveryDate")
+        private String deliveryDate;
+
+        @JsonProperty("orderItems")
+        private List<RestOrderItemDTO> orderItems;
+
+        @JsonProperty("createdBy")
+        private int createdBy;
+
+        @JsonProperty("createdAt")
+        private String createdAt;
+
+        public CreateOrderDTO(String deliveryDate, List<RestOrderItemDTO> orderItems, int createdBy, String createdAt) {
+            this.deliveryDate = deliveryDate; // ISO-8601 formatted string
+            this.orderItems = orderItems;
+            this.createdBy = createdBy;
+            this.createdAt = createdAt;
+        }
+
+        public String getDeliveryDate() {
+            return deliveryDate;
+        }
+
+        public void setDeliveryDate(String deliveryDate) {
+            this.deliveryDate = deliveryDate;
+        }
+
+        public List<RestOrderItemDTO> getOrderItems() {
+            return orderItems;
+        }
+
+        public void setOrderItems(List<RestOrderItemDTO> orderItems) {
+            this.orderItems = orderItems;
+        }
+
+        public int getCreatedBy() {
+            return createdBy;
+        }
+
+        public void setCreatedBy(int createdBy) {
+            this.createdBy = createdBy;
+        }
+
+        public String getCreatedAt() {
+            return createdAt;
+        }
+
+        public void setCreatedAt(String createdAt) {
+            this.createdAt = createdAt;
+        }
+
+        @Override
+        public String toString() {
+            return "CreateOrderDTO{" +
+                    "deliveryDate='" + deliveryDate + '\'' +
+                    ", orderItems=" + orderItems +
+                    ", createdBy=" + createdBy +
+                    ", createdAt='" + createdAt + '\'' +
+                    '}';
+        }
+    }
+    public static class RestOrderItemDTO {
+
+        @JsonProperty("itemId")
+        private int itemId;
+
+        @JsonProperty("quantityToPick")
+        private int quantityToPick;
+
+        public RestOrderItemDTO(int itemId, int quantityToPick) {
+            this.itemId = itemId; // Send only the item ID
+            this.quantityToPick = quantityToPick;
+        }
+
+        public int getItemId() {
+            return itemId;
+        }
+
+        public void setItemId(int itemId) {
+            this.itemId = itemId;
+        }
+
+        public int getQuantityToPick() {
+            return quantityToPick;
+        }
+
+        public void setQuantityToPick(int quantityToPick) {
+            this.quantityToPick = quantityToPick;
+        }
+
+        @Override
+        public String toString() {
+            return "RestOrderItemDTO{" +
+                    "itemId=" + itemId +
+                    ", quantityToPick=" + quantityToPick +
+                    '}';
         }
     }
 
-    private OrderStatus mapOrderStatus(String status) {
-        return "COMPLETED".equals(status) ? OrderStatus.COMPLETED : OrderStatus.IN_PROGRESS;
-    }
 }

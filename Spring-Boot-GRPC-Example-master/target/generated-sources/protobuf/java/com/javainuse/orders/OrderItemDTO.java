@@ -96,18 +96,30 @@ private static final long serialVersionUID = 0L;
   public static final int ITEM_FIELD_NUMBER = 1;
   private com.javainuse.item.Item item_;
   /**
+   * <pre>
+   * For fetching, we return the full item
+   * </pre>
+   *
    * <code>.items.Item item = 1;</code>
    */
   public boolean hasItem() {
     return item_ != null;
   }
   /**
+   * <pre>
+   * For fetching, we return the full item
+   * </pre>
+   *
    * <code>.items.Item item = 1;</code>
    */
   public com.javainuse.item.Item getItem() {
     return item_ == null ? com.javainuse.item.Item.getDefaultInstance() : item_;
   }
   /**
+   * <pre>
+   * For fetching, we return the full item
+   * </pre>
+   *
    * <code>.items.Item item = 1;</code>
    */
   public com.javainuse.item.ItemOrBuilder getItemOrBuilder() {
@@ -460,12 +472,20 @@ private static final long serialVersionUID = 0L;
     private com.google.protobuf.SingleFieldBuilderV3<
         com.javainuse.item.Item, com.javainuse.item.Item.Builder, com.javainuse.item.ItemOrBuilder> itemBuilder_;
     /**
+     * <pre>
+     * For fetching, we return the full item
+     * </pre>
+     *
      * <code>.items.Item item = 1;</code>
      */
     public boolean hasItem() {
       return itemBuilder_ != null || item_ != null;
     }
     /**
+     * <pre>
+     * For fetching, we return the full item
+     * </pre>
+     *
      * <code>.items.Item item = 1;</code>
      */
     public com.javainuse.item.Item getItem() {
@@ -476,6 +496,10 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
+     * <pre>
+     * For fetching, we return the full item
+     * </pre>
+     *
      * <code>.items.Item item = 1;</code>
      */
     public Builder setItem(com.javainuse.item.Item value) {
@@ -492,6 +516,10 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
+     * <pre>
+     * For fetching, we return the full item
+     * </pre>
+     *
      * <code>.items.Item item = 1;</code>
      */
     public Builder setItem(
@@ -506,6 +534,10 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
+     * <pre>
+     * For fetching, we return the full item
+     * </pre>
+     *
      * <code>.items.Item item = 1;</code>
      */
     public Builder mergeItem(com.javainuse.item.Item value) {
@@ -524,6 +556,10 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
+     * <pre>
+     * For fetching, we return the full item
+     * </pre>
+     *
      * <code>.items.Item item = 1;</code>
      */
     public Builder clearItem() {
@@ -538,6 +574,10 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
+     * <pre>
+     * For fetching, we return the full item
+     * </pre>
+     *
      * <code>.items.Item item = 1;</code>
      */
     public com.javainuse.item.Item.Builder getItemBuilder() {
@@ -546,6 +586,10 @@ private static final long serialVersionUID = 0L;
       return getItemFieldBuilder().getBuilder();
     }
     /**
+     * <pre>
+     * For fetching, we return the full item
+     * </pre>
+     *
      * <code>.items.Item item = 1;</code>
      */
     public com.javainuse.item.ItemOrBuilder getItemOrBuilder() {
@@ -557,6 +601,10 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
+     * <pre>
+     * For fetching, we return the full item
+     * </pre>
+     *
      * <code>.items.Item item = 1;</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<

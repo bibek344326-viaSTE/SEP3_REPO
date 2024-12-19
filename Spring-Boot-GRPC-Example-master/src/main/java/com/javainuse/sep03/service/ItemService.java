@@ -91,23 +91,8 @@ public class ItemService extends ItemServiceGrpc.ItemServiceImplBase {
         System.out.println("Received edit request: " + request);
 
         // To edit an item, we do a PUT /Items/{id}
-        String id = request.getItemId();
-        System.out.println("Item ID: " + id);
+        int itemId = request.getItemId();
 
-        if (id == null || id.isEmpty()) {
-            System.err.println("Error: Item ID is required");
-            responseObserver.onError(new IllegalArgumentException("Item ID is required"));
-            return;
-        }
-
-        int itemId;
-        try {
-            itemId = Integer.parseInt(id);
-        } catch (NumberFormatException ex) {
-            System.err.println("Error: Invalid Item ID");
-            responseObserver.onError(new IllegalArgumentException("Invalid Item ID"));
-            return;
-        }
 
         RestItem restItem = new RestItem();
         restItem.setItemId(itemId);
@@ -138,19 +123,7 @@ public class ItemService extends ItemServiceGrpc.ItemServiceImplBase {
     @Override
     public void deleteItem(Item request, StreamObserver<Empty> responseObserver) {
         // DELETE /Items/{id}
-        String id = request.getItemId();
-        if (id == null || id.isEmpty()) {
-            responseObserver.onError(new IllegalArgumentException("Item ID is required"));
-            return;
-        }
-
-        int itemId;
-        try {
-            itemId = Integer.parseInt(id);
-        } catch (NumberFormatException ex) {
-            responseObserver.onError(new IllegalArgumentException("Invalid Item ID"));
-            return;
-        }
+        int itemId = request.getItemId();
 
         try {
             webClient.delete()
@@ -185,7 +158,7 @@ public class ItemService extends ItemServiceGrpc.ItemServiceImplBase {
             ItemList.Builder itemListBuilder = ItemList.newBuilder();
             for (RestItem ri : restItems) {
                 Item grpcItem = Item.newBuilder()
-                        .setItemId(String.valueOf(ri.getItemId()))
+                        .setItemId((ri.getItemId()))
                         .setItemName(ri.getItemName())
                         .setDescription(ri.getDescription() == null ? "" : ri.getDescription())
                         .setQuantityInStore(ri.getQuantityInStore())
@@ -222,7 +195,7 @@ public class ItemService extends ItemServiceGrpc.ItemServiceImplBase {
             }
 
             com.javainuse.item.Item grpcItem = com.javainuse.item.Item.newBuilder()
-                    .setItemId(String.valueOf(createdItem.getItemId()))
+                    .setItemId((createdItem.getItemId()))
                     .setItemName(createdItem.getItemName())
                     .setDescription(createdItem.getDescription() == null ? "" : createdItem.getDescription())
                     .setQuantityInStore(createdItem.getQuantityInStore())

@@ -46,11 +46,11 @@ private static final long serialVersionUID = 0L;
             break;
           case 10: {
             if (!((mutable_bitField0_ & 0x00000001) == 0x00000001)) {
-              orderItems_ = new java.util.ArrayList<com.javainuse.orders.OrderItemDTO>();
+              orderItems_ = new java.util.ArrayList<com.javainuse.orders.CreateOrderItemDTO>();
               mutable_bitField0_ |= 0x00000001;
             }
             orderItems_.add(
-                input.readMessage(com.javainuse.orders.OrderItemDTO.parser(), extensionRegistry));
+                input.readMessage(com.javainuse.orders.CreateOrderItemDTO.parser(), extensionRegistry));
             break;
           }
           case 18: {
@@ -108,36 +108,56 @@ private static final long serialVersionUID = 0L;
 
   private int bitField0_;
   public static final int ORDER_ITEMS_FIELD_NUMBER = 1;
-  private java.util.List<com.javainuse.orders.OrderItemDTO> orderItems_;
+  private java.util.List<com.javainuse.orders.CreateOrderItemDTO> orderItems_;
   /**
-   * <code>repeated .orders.OrderItemDTO order_items = 1;</code>
+   * <pre>
+   * For creating, we only send item_ids
+   * </pre>
+   *
+   * <code>repeated .orders.CreateOrderItemDTO order_items = 1;</code>
    */
-  public java.util.List<com.javainuse.orders.OrderItemDTO> getOrderItemsList() {
+  public java.util.List<com.javainuse.orders.CreateOrderItemDTO> getOrderItemsList() {
     return orderItems_;
   }
   /**
-   * <code>repeated .orders.OrderItemDTO order_items = 1;</code>
+   * <pre>
+   * For creating, we only send item_ids
+   * </pre>
+   *
+   * <code>repeated .orders.CreateOrderItemDTO order_items = 1;</code>
    */
-  public java.util.List<? extends com.javainuse.orders.OrderItemDTOOrBuilder> 
+  public java.util.List<? extends com.javainuse.orders.CreateOrderItemDTOOrBuilder> 
       getOrderItemsOrBuilderList() {
     return orderItems_;
   }
   /**
-   * <code>repeated .orders.OrderItemDTO order_items = 1;</code>
+   * <pre>
+   * For creating, we only send item_ids
+   * </pre>
+   *
+   * <code>repeated .orders.CreateOrderItemDTO order_items = 1;</code>
    */
   public int getOrderItemsCount() {
     return orderItems_.size();
   }
   /**
-   * <code>repeated .orders.OrderItemDTO order_items = 1;</code>
+   * <pre>
+   * For creating, we only send item_ids
+   * </pre>
+   *
+   * <code>repeated .orders.CreateOrderItemDTO order_items = 1;</code>
    */
-  public com.javainuse.orders.OrderItemDTO getOrderItems(int index) {
+  public com.javainuse.orders.CreateOrderItemDTO getOrderItems(int index) {
     return orderItems_.get(index);
   }
   /**
-   * <code>repeated .orders.OrderItemDTO order_items = 1;</code>
+   * <pre>
+   * For creating, we only send item_ids
+   * </pre>
+   *
+   * <code>repeated .orders.CreateOrderItemDTO order_items = 1;</code>
    */
-  public com.javainuse.orders.OrderItemDTOOrBuilder getOrderItemsOrBuilder(
+  public com.javainuse.orders.CreateOrderItemDTOOrBuilder getOrderItemsOrBuilder(
       int index) {
     return orderItems_.get(index);
   }
@@ -564,22 +584,26 @@ private static final long serialVersionUID = 0L;
     }
     private int bitField0_;
 
-    private java.util.List<com.javainuse.orders.OrderItemDTO> orderItems_ =
+    private java.util.List<com.javainuse.orders.CreateOrderItemDTO> orderItems_ =
       java.util.Collections.emptyList();
     private void ensureOrderItemsIsMutable() {
       if (!((bitField0_ & 0x00000001) == 0x00000001)) {
-        orderItems_ = new java.util.ArrayList<com.javainuse.orders.OrderItemDTO>(orderItems_);
+        orderItems_ = new java.util.ArrayList<com.javainuse.orders.CreateOrderItemDTO>(orderItems_);
         bitField0_ |= 0x00000001;
        }
     }
 
     private com.google.protobuf.RepeatedFieldBuilderV3<
-        com.javainuse.orders.OrderItemDTO, com.javainuse.orders.OrderItemDTO.Builder, com.javainuse.orders.OrderItemDTOOrBuilder> orderItemsBuilder_;
+        com.javainuse.orders.CreateOrderItemDTO, com.javainuse.orders.CreateOrderItemDTO.Builder, com.javainuse.orders.CreateOrderItemDTOOrBuilder> orderItemsBuilder_;
 
     /**
-     * <code>repeated .orders.OrderItemDTO order_items = 1;</code>
+     * <pre>
+     * For creating, we only send item_ids
+     * </pre>
+     *
+     * <code>repeated .orders.CreateOrderItemDTO order_items = 1;</code>
      */
-    public java.util.List<com.javainuse.orders.OrderItemDTO> getOrderItemsList() {
+    public java.util.List<com.javainuse.orders.CreateOrderItemDTO> getOrderItemsList() {
       if (orderItemsBuilder_ == null) {
         return java.util.Collections.unmodifiableList(orderItems_);
       } else {
@@ -587,7 +611,11 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>repeated .orders.OrderItemDTO order_items = 1;</code>
+     * <pre>
+     * For creating, we only send item_ids
+     * </pre>
+     *
+     * <code>repeated .orders.CreateOrderItemDTO order_items = 1;</code>
      */
     public int getOrderItemsCount() {
       if (orderItemsBuilder_ == null) {
@@ -597,9 +625,13 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>repeated .orders.OrderItemDTO order_items = 1;</code>
+     * <pre>
+     * For creating, we only send item_ids
+     * </pre>
+     *
+     * <code>repeated .orders.CreateOrderItemDTO order_items = 1;</code>
      */
-    public com.javainuse.orders.OrderItemDTO getOrderItems(int index) {
+    public com.javainuse.orders.CreateOrderItemDTO getOrderItems(int index) {
       if (orderItemsBuilder_ == null) {
         return orderItems_.get(index);
       } else {
@@ -607,10 +639,14 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>repeated .orders.OrderItemDTO order_items = 1;</code>
+     * <pre>
+     * For creating, we only send item_ids
+     * </pre>
+     *
+     * <code>repeated .orders.CreateOrderItemDTO order_items = 1;</code>
      */
     public Builder setOrderItems(
-        int index, com.javainuse.orders.OrderItemDTO value) {
+        int index, com.javainuse.orders.CreateOrderItemDTO value) {
       if (orderItemsBuilder_ == null) {
         if (value == null) {
           throw new NullPointerException();
@@ -624,10 +660,14 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>repeated .orders.OrderItemDTO order_items = 1;</code>
+     * <pre>
+     * For creating, we only send item_ids
+     * </pre>
+     *
+     * <code>repeated .orders.CreateOrderItemDTO order_items = 1;</code>
      */
     public Builder setOrderItems(
-        int index, com.javainuse.orders.OrderItemDTO.Builder builderForValue) {
+        int index, com.javainuse.orders.CreateOrderItemDTO.Builder builderForValue) {
       if (orderItemsBuilder_ == null) {
         ensureOrderItemsIsMutable();
         orderItems_.set(index, builderForValue.build());
@@ -638,9 +678,13 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>repeated .orders.OrderItemDTO order_items = 1;</code>
+     * <pre>
+     * For creating, we only send item_ids
+     * </pre>
+     *
+     * <code>repeated .orders.CreateOrderItemDTO order_items = 1;</code>
      */
-    public Builder addOrderItems(com.javainuse.orders.OrderItemDTO value) {
+    public Builder addOrderItems(com.javainuse.orders.CreateOrderItemDTO value) {
       if (orderItemsBuilder_ == null) {
         if (value == null) {
           throw new NullPointerException();
@@ -654,10 +698,14 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>repeated .orders.OrderItemDTO order_items = 1;</code>
+     * <pre>
+     * For creating, we only send item_ids
+     * </pre>
+     *
+     * <code>repeated .orders.CreateOrderItemDTO order_items = 1;</code>
      */
     public Builder addOrderItems(
-        int index, com.javainuse.orders.OrderItemDTO value) {
+        int index, com.javainuse.orders.CreateOrderItemDTO value) {
       if (orderItemsBuilder_ == null) {
         if (value == null) {
           throw new NullPointerException();
@@ -671,10 +719,14 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>repeated .orders.OrderItemDTO order_items = 1;</code>
+     * <pre>
+     * For creating, we only send item_ids
+     * </pre>
+     *
+     * <code>repeated .orders.CreateOrderItemDTO order_items = 1;</code>
      */
     public Builder addOrderItems(
-        com.javainuse.orders.OrderItemDTO.Builder builderForValue) {
+        com.javainuse.orders.CreateOrderItemDTO.Builder builderForValue) {
       if (orderItemsBuilder_ == null) {
         ensureOrderItemsIsMutable();
         orderItems_.add(builderForValue.build());
@@ -685,10 +737,14 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>repeated .orders.OrderItemDTO order_items = 1;</code>
+     * <pre>
+     * For creating, we only send item_ids
+     * </pre>
+     *
+     * <code>repeated .orders.CreateOrderItemDTO order_items = 1;</code>
      */
     public Builder addOrderItems(
-        int index, com.javainuse.orders.OrderItemDTO.Builder builderForValue) {
+        int index, com.javainuse.orders.CreateOrderItemDTO.Builder builderForValue) {
       if (orderItemsBuilder_ == null) {
         ensureOrderItemsIsMutable();
         orderItems_.add(index, builderForValue.build());
@@ -699,10 +755,14 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>repeated .orders.OrderItemDTO order_items = 1;</code>
+     * <pre>
+     * For creating, we only send item_ids
+     * </pre>
+     *
+     * <code>repeated .orders.CreateOrderItemDTO order_items = 1;</code>
      */
     public Builder addAllOrderItems(
-        java.lang.Iterable<? extends com.javainuse.orders.OrderItemDTO> values) {
+        java.lang.Iterable<? extends com.javainuse.orders.CreateOrderItemDTO> values) {
       if (orderItemsBuilder_ == null) {
         ensureOrderItemsIsMutable();
         com.google.protobuf.AbstractMessageLite.Builder.addAll(
@@ -714,7 +774,11 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>repeated .orders.OrderItemDTO order_items = 1;</code>
+     * <pre>
+     * For creating, we only send item_ids
+     * </pre>
+     *
+     * <code>repeated .orders.CreateOrderItemDTO order_items = 1;</code>
      */
     public Builder clearOrderItems() {
       if (orderItemsBuilder_ == null) {
@@ -727,7 +791,11 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>repeated .orders.OrderItemDTO order_items = 1;</code>
+     * <pre>
+     * For creating, we only send item_ids
+     * </pre>
+     *
+     * <code>repeated .orders.CreateOrderItemDTO order_items = 1;</code>
      */
     public Builder removeOrderItems(int index) {
       if (orderItemsBuilder_ == null) {
@@ -740,16 +808,24 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>repeated .orders.OrderItemDTO order_items = 1;</code>
+     * <pre>
+     * For creating, we only send item_ids
+     * </pre>
+     *
+     * <code>repeated .orders.CreateOrderItemDTO order_items = 1;</code>
      */
-    public com.javainuse.orders.OrderItemDTO.Builder getOrderItemsBuilder(
+    public com.javainuse.orders.CreateOrderItemDTO.Builder getOrderItemsBuilder(
         int index) {
       return getOrderItemsFieldBuilder().getBuilder(index);
     }
     /**
-     * <code>repeated .orders.OrderItemDTO order_items = 1;</code>
+     * <pre>
+     * For creating, we only send item_ids
+     * </pre>
+     *
+     * <code>repeated .orders.CreateOrderItemDTO order_items = 1;</code>
      */
-    public com.javainuse.orders.OrderItemDTOOrBuilder getOrderItemsOrBuilder(
+    public com.javainuse.orders.CreateOrderItemDTOOrBuilder getOrderItemsOrBuilder(
         int index) {
       if (orderItemsBuilder_ == null) {
         return orderItems_.get(index);  } else {
@@ -757,9 +833,13 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>repeated .orders.OrderItemDTO order_items = 1;</code>
+     * <pre>
+     * For creating, we only send item_ids
+     * </pre>
+     *
+     * <code>repeated .orders.CreateOrderItemDTO order_items = 1;</code>
      */
-    public java.util.List<? extends com.javainuse.orders.OrderItemDTOOrBuilder> 
+    public java.util.List<? extends com.javainuse.orders.CreateOrderItemDTOOrBuilder> 
          getOrderItemsOrBuilderList() {
       if (orderItemsBuilder_ != null) {
         return orderItemsBuilder_.getMessageOrBuilderList();
@@ -768,33 +848,45 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>repeated .orders.OrderItemDTO order_items = 1;</code>
+     * <pre>
+     * For creating, we only send item_ids
+     * </pre>
+     *
+     * <code>repeated .orders.CreateOrderItemDTO order_items = 1;</code>
      */
-    public com.javainuse.orders.OrderItemDTO.Builder addOrderItemsBuilder() {
+    public com.javainuse.orders.CreateOrderItemDTO.Builder addOrderItemsBuilder() {
       return getOrderItemsFieldBuilder().addBuilder(
-          com.javainuse.orders.OrderItemDTO.getDefaultInstance());
+          com.javainuse.orders.CreateOrderItemDTO.getDefaultInstance());
     }
     /**
-     * <code>repeated .orders.OrderItemDTO order_items = 1;</code>
+     * <pre>
+     * For creating, we only send item_ids
+     * </pre>
+     *
+     * <code>repeated .orders.CreateOrderItemDTO order_items = 1;</code>
      */
-    public com.javainuse.orders.OrderItemDTO.Builder addOrderItemsBuilder(
+    public com.javainuse.orders.CreateOrderItemDTO.Builder addOrderItemsBuilder(
         int index) {
       return getOrderItemsFieldBuilder().addBuilder(
-          index, com.javainuse.orders.OrderItemDTO.getDefaultInstance());
+          index, com.javainuse.orders.CreateOrderItemDTO.getDefaultInstance());
     }
     /**
-     * <code>repeated .orders.OrderItemDTO order_items = 1;</code>
+     * <pre>
+     * For creating, we only send item_ids
+     * </pre>
+     *
+     * <code>repeated .orders.CreateOrderItemDTO order_items = 1;</code>
      */
-    public java.util.List<com.javainuse.orders.OrderItemDTO.Builder> 
+    public java.util.List<com.javainuse.orders.CreateOrderItemDTO.Builder> 
          getOrderItemsBuilderList() {
       return getOrderItemsFieldBuilder().getBuilderList();
     }
     private com.google.protobuf.RepeatedFieldBuilderV3<
-        com.javainuse.orders.OrderItemDTO, com.javainuse.orders.OrderItemDTO.Builder, com.javainuse.orders.OrderItemDTOOrBuilder> 
+        com.javainuse.orders.CreateOrderItemDTO, com.javainuse.orders.CreateOrderItemDTO.Builder, com.javainuse.orders.CreateOrderItemDTOOrBuilder> 
         getOrderItemsFieldBuilder() {
       if (orderItemsBuilder_ == null) {
         orderItemsBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
-            com.javainuse.orders.OrderItemDTO, com.javainuse.orders.OrderItemDTO.Builder, com.javainuse.orders.OrderItemDTOOrBuilder>(
+            com.javainuse.orders.CreateOrderItemDTO, com.javainuse.orders.CreateOrderItemDTO.Builder, com.javainuse.orders.CreateOrderItemDTOOrBuilder>(
                 orderItems_,
                 ((bitField0_ & 0x00000001) == 0x00000001),
                 getParentForChildren(),

@@ -101,7 +101,8 @@ namespace SEP3_T3_ASP_Core_WebAPI.Controllers
                     item = new ItemDTO
                     {
                         ItemId = oi.ItemId,
-                        ItemName = oi.Item?.ItemName ?? "Unknown Item"
+                        ItemName = oi.Item.ItemName,
+                        QuantityInStore = oi.Item.QuantityInStore
                     },
                     QuantityToPick = oi.QuantityToPick
                 }).ToList(),

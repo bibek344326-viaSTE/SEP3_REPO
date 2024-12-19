@@ -82,6 +82,7 @@ public class EfcOrderRepository : IOrderRepository
     {
         return await ctx.Orders
             .Include(order => order.OrderItems)
+            .ThenInclude(oi => oi.Item )
             .Include(order => order.AssignedUser)
             .Include(order => order.CreatedBy)
             .ToListAsync();

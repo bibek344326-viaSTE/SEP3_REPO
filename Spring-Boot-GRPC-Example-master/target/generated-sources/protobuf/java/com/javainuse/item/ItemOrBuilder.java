@@ -8,14 +8,9 @@ public interface ItemOrBuilder extends
     com.google.protobuf.MessageOrBuilder {
 
   /**
-   * <code>string itemId = 1;</code>
+   * <code>int32 itemId = 1;</code>
    */
-  java.lang.String getItemId();
-  /**
-   * <code>string itemId = 1;</code>
-   */
-  com.google.protobuf.ByteString
-      getItemIdBytes();
+  int getItemId();
 
   /**
    * <code>string itemName = 2;</code>

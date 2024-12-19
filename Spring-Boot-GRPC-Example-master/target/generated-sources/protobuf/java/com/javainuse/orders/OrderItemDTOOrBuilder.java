@@ -8,14 +8,26 @@ public interface OrderItemDTOOrBuilder extends
     com.google.protobuf.MessageOrBuilder {
 
   /**
+   * <pre>
+   * For fetching, we return the full item
+   * </pre>
+   *
    * <code>.items.Item item = 1;</code>
    */
   boolean hasItem();
   /**
+   * <pre>
+   * For fetching, we return the full item
+   * </pre>
+   *
    * <code>.items.Item item = 1;</code>
    */
   com.javainuse.item.Item getItem();
   /**
+   * <pre>
+   * For fetching, we return the full item
+   * </pre>
+   *
    * <code>.items.Item item = 1;</code>
    */
   com.javainuse.item.ItemOrBuilder getItemOrBuilder();

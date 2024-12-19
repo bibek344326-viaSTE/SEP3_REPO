@@ -8,27 +8,47 @@ public interface OrderRequestOrBuilder extends
     com.google.protobuf.MessageOrBuilder {
 
   /**
-   * <code>repeated .orders.OrderItemDTO order_items = 1;</code>
+   * <pre>
+   * For creating, we only send item_ids
+   * </pre>
+   *
+   * <code>repeated .orders.CreateOrderItemDTO order_items = 1;</code>
    */
-  java.util.List<com.javainuse.orders.OrderItemDTO> 
+  java.util.List<com.javainuse.orders.CreateOrderItemDTO> 
       getOrderItemsList();
   /**
-   * <code>repeated .orders.OrderItemDTO order_items = 1;</code>
+   * <pre>
+   * For creating, we only send item_ids
+   * </pre>
+   *
+   * <code>repeated .orders.CreateOrderItemDTO order_items = 1;</code>
    */
-  com.javainuse.orders.OrderItemDTO getOrderItems(int index);
+  com.javainuse.orders.CreateOrderItemDTO getOrderItems(int index);
   /**
-   * <code>repeated .orders.OrderItemDTO order_items = 1;</code>
+   * <pre>
+   * For creating, we only send item_ids
+   * </pre>
+   *
+   * <code>repeated .orders.CreateOrderItemDTO order_items = 1;</code>
    */
   int getOrderItemsCount();
   /**
-   * <code>repeated .orders.OrderItemDTO order_items = 1;</code>
+   * <pre>
+   * For creating, we only send item_ids
+   * </pre>
+   *
+   * <code>repeated .orders.CreateOrderItemDTO order_items = 1;</code>
    */
-  java.util.List<? extends com.javainuse.orders.OrderItemDTOOrBuilder> 
+  java.util.List<? extends com.javainuse.orders.CreateOrderItemDTOOrBuilder> 
       getOrderItemsOrBuilderList();
   /**
-   * <code>repeated .orders.OrderItemDTO order_items = 1;</code>
+   * <pre>
+   * For creating, we only send item_ids
+   * </pre>
+   *
+   * <code>repeated .orders.CreateOrderItemDTO order_items = 1;</code>
    */
-  com.javainuse.orders.OrderItemDTOOrBuilder getOrderItemsOrBuilder(
+  com.javainuse.orders.CreateOrderItemDTOOrBuilder getOrderItemsOrBuilder(
       int index);
 
   /**
