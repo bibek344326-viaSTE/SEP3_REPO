@@ -20,7 +20,7 @@ public class UsersController: ControllerBase
     // ********** CREATE Endpoints **********
     // POST: /Users
     [HttpPost]
-    public async Task<ActionResult<User>> AddUser([FromBody] UserCreateDto request)
+    public async Task<ActionResult<GetUserDto>> AddUser([FromBody] UserCreateDto request)
     {
         // Verify that the username is available
         await VerifyUserNameIsAvailableAsync(request.UserName);
@@ -31,9 +31,19 @@ public class UsersController: ControllerBase
         // Save the user to the repository
         User created = await userRepo.AddUserAsync(user);
 
-        // Return the created user with status 201 (Created)
-        return CreatedAtAction(nameof(AddUser), new { id = created.UserId }, created);
+        // Map the created User to GetUserDto
+        GetUserDto userDto = new GetUserDto
+        {
+            UserId = created.UserId,
+            UserName = created.UserName,
+            UserRole = created.UserRole,
+            IsActive = created.IsActive
+        };
+
+        // Return the created user DTO with status 201 (Created)
+        return CreatedAtAction(nameof(AddUser), new { id = created.UserId }, userDto);
     }
+
 
 
     private async Task VerifyUserNameIsAvailableAsync(string requestUserName)

@@ -28,13 +28,14 @@ public interface GetUserDTOOrBuilder extends
       getUserNameBytes();
 
   /**
-   * <code>.users.UserRole userRole = 3;</code>
+   * <code>string userRole = 3;</code>
    */
-  int getUserRoleValue();
+  java.lang.String getUserRole();
   /**
-   * <code>.users.UserRole userRole = 3;</code>
+   * <code>string userRole = 3;</code>
    */
-  com.javainuse.user.UserRole getUserRole();
+  com.google.protobuf.ByteString
+      getUserRoleBytes();
 
   /**
    * <code>bool isActive = 4;</code>

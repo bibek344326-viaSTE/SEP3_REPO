@@ -13,7 +13,7 @@ service UserService {
 }
 
 message User {
-  string userid = 1;
+  int32 userId = 1;
   string username = 2;
   string password = 3;
   UserRole userRole = 4;
@@ -27,9 +27,9 @@ message UserCreateDTO {
 }
 
 message GetUserDTO {
-  string userId = 1;
+  int32 userId = 1;
   string userName = 2;
-  UserRole userRole = 3;
+  string userRole = 3;
   bool isActive = 4;
 }
 

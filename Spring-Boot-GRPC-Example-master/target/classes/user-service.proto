@@ -29,7 +29,7 @@ message UserCreateDTO {
 message GetUserDTO {
   string userId = 1;
   string userName = 2;
-  UserRole userRole = 3;
+  string userRole = 3;
   bool isActive = 4;
 }
 

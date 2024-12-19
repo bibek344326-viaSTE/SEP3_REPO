@@ -18,7 +18,7 @@ private static final long serialVersionUID = 0L;
   private GetUserDTO() {
     userId_ = "";
     userName_ = "";
-    userRole_ = 0;
+    userRole_ = "";
     isActive_ = false;
   }
 
@@ -58,10 +58,10 @@ private static final long serialVersionUID = 0L;
             userName_ = s;
             break;
           }
-          case 24: {
-            int rawValue = input.readEnum();
+          case 26: {
+            java.lang.String s = input.readStringRequireUtf8();
 
-            userRole_ = rawValue;
+            userRole_ = s;
             break;
           }
           case 32: {
@@ -170,20 +170,37 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int USERROLE_FIELD_NUMBER = 3;
-  private int userRole_;
+  private volatile java.lang.Object userRole_;
   /**
-   * <code>.users.UserRole userRole = 3;</code>
+   * <code>string userRole = 3;</code>
    */
-  public int getUserRoleValue() {
-    return userRole_;
+  public java.lang.String getUserRole() {
+    java.lang.Object ref = userRole_;
+    if (ref instanceof java.lang.String) {
+      return (java.lang.String) ref;
+    } else {
+      com.google.protobuf.ByteString bs = 
+          (com.google.protobuf.ByteString) ref;
+      java.lang.String s = bs.toStringUtf8();
+      userRole_ = s;
+      return s;
+    }
   }
   /**
-   * <code>.users.UserRole userRole = 3;</code>
+   * <code>string userRole = 3;</code>
    */
-  public com.javainuse.user.UserRole getUserRole() {
-    @SuppressWarnings("deprecation")
-    com.javainuse.user.UserRole result = com.javainuse.user.UserRole.valueOf(userRole_);
-    return result == null ? com.javainuse.user.UserRole.UNRECOGNIZED : result;
+  public com.google.protobuf.ByteString
+      getUserRoleBytes() {
+    java.lang.Object ref = userRole_;
+    if (ref instanceof java.lang.String) {
+      com.google.protobuf.ByteString b = 
+          com.google.protobuf.ByteString.copyFromUtf8(
+              (java.lang.String) ref);
+      userRole_ = b;
+      return b;
+    } else {
+      return (com.google.protobuf.ByteString) ref;
+    }
   }
 
   public static final int ISACTIVE_FIELD_NUMBER = 4;
@@ -215,8 +232,8 @@ private static final long serialVersionUID = 0L;
     if (!getUserNameBytes().isEmpty()) {
       com.google.protobuf.GeneratedMessageV3.writeString(output, 2, userName_);
     }
-    if (userRole_ != com.javainuse.user.UserRole.INVENTORY_MANAGER.getNumber()) {
-      output.writeEnum(3, userRole_);
+    if (!getUserRoleBytes().isEmpty()) {
+      com.google.protobuf.GeneratedMessageV3.writeString(output, 3, userRole_);
     }
     if (isActive_ != false) {
       output.writeBool(4, isActive_);
@@ -236,9 +253,8 @@ private static final long serialVersionUID = 0L;
     if (!getUserNameBytes().isEmpty()) {
       size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, userName_);
     }
-    if (userRole_ != com.javainuse.user.UserRole.INVENTORY_MANAGER.getNumber()) {
-      size += com.google.protobuf.CodedOutputStream
-        .computeEnumSize(3, userRole_);
+    if (!getUserRoleBytes().isEmpty()) {
+      size += com.google.protobuf.GeneratedMessageV3.computeStringSize(3, userRole_);
     }
     if (isActive_ != false) {
       size += com.google.protobuf.CodedOutputStream
@@ -264,7 +280,8 @@ private static final long serialVersionUID = 0L;
         .equals(other.getUserId());
     result = result && getUserName()
         .equals(other.getUserName());
-    result = result && userRole_ == other.userRole_;
+    result = result && getUserRole()
+        .equals(other.getUserRole());
     result = result && (getIsActive()
         == other.getIsActive());
     result = result && unknownFields.equals(other.unknownFields);
@@ -283,7 +300,7 @@ private static final long serialVersionUID = 0L;
     hash = (37 * hash) + USERNAME_FIELD_NUMBER;
     hash = (53 * hash) + getUserName().hashCode();
     hash = (37 * hash) + USERROLE_FIELD_NUMBER;
-    hash = (53 * hash) + userRole_;
+    hash = (53 * hash) + getUserRole().hashCode();
     hash = (37 * hash) + ISACTIVE_FIELD_NUMBER;
     hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
         getIsActive());
@@ -424,7 +441,7 @@ private static final long serialVersionUID = 0L;
 
       userName_ = "";
 
-      userRole_ = 0;
+      userRole_ = "";
 
       isActive_ = false;
 
@@ -514,8 +531,9 @@ private static final long serialVersionUID = 0L;
         userName_ = other.userName_;
         onChanged();
       }
-      if (other.userRole_ != 0) {
-        setUserRoleValue(other.getUserRoleValue());
+      if (!other.getUserRole().isEmpty()) {
+        userRole_ = other.userRole_;
+        onChanged();
       }
       if (other.getIsActive() != false) {
         setIsActive(other.getIsActive());
@@ -687,47 +705,71 @@ private static final long serialVersionUID = 0L;
       return this;
     }
 
-    private int userRole_ = 0;
+    private java.lang.Object userRole_ = "";
     /**
-     * <code>.users.UserRole userRole = 3;</code>
+     * <code>string userRole = 3;</code>
      */
-    public int getUserRoleValue() {
-      return userRole_;
+    public java.lang.String getUserRole() {
+      java.lang.Object ref = userRole_;
+      if (!(ref instanceof java.lang.String)) {
+        com.google.protobuf.ByteString bs =
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        userRole_ = s;
+        return s;
+      } else {
+        return (java.lang.String) ref;
+      }
     }
     /**
-     * <code>.users.UserRole userRole = 3;</code>
+     * <code>string userRole = 3;</code>
      */
-    public Builder setUserRoleValue(int value) {
+    public com.google.protobuf.ByteString
+        getUserRoleBytes() {
+      java.lang.Object ref = userRole_;
+      if (ref instanceof String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        userRole_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+    /**
+     * <code>string userRole = 3;</code>
+     */
+    public Builder setUserRole(
+        java.lang.String value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  
       userRole_ = value;
       onChanged();
       return this;
     }
     /**
-     * <code>.users.UserRole userRole = 3;</code>
+     * <code>string userRole = 3;</code>
      */
-    public com.javainuse.user.UserRole getUserRole() {
-      @SuppressWarnings("deprecation")
-      com.javainuse.user.UserRole result = com.javainuse.user.UserRole.valueOf(userRole_);
-      return result == null ? com.javainuse.user.UserRole.UNRECOGNIZED : result;
-    }
-    /**
-     * <code>.users.UserRole userRole = 3;</code>
-     */
-    public Builder setUserRole(com.javainuse.user.UserRole value) {
-      if (value == null) {
-        throw new NullPointerException();
-      }
+    public Builder clearUserRole() {
       
-      userRole_ = value.getNumber();
+      userRole_ = getDefaultInstance().getUserRole();
       onChanged();
       return this;
     }
     /**
-     * <code>.users.UserRole userRole = 3;</code>
+     * <code>string userRole = 3;</code>
      */
-    public Builder clearUserRole() {
+    public Builder setUserRoleBytes(
+        com.google.protobuf.ByteString value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
       
-      userRole_ = 0;
+      userRole_ = value;
       onChanged();
       return this;
     }

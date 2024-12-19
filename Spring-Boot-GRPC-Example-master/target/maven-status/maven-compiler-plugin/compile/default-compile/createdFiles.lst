@@ -9,7 +9,6 @@ com\javainuse\orders\OrderDTOOrBuilder.class
 com\javainuse\orders\OrderItemDTO$1.class
 com\javainuse\user\GetUserDTOOrBuilder.class
 com\javainuse\user\UserCreateDTO.class
-com\javainuse\sep03\service\UserDTO.class
 com\javainuse\orders\CreateOrderResponse.class
 com\javainuse\orders\OrderDTO.class
 com\javainuse\user\GetUserDTO$Builder.class

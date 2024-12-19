@@ -49,18 +49,18 @@ public final class UserServiceOuterClass {
       "userRole\030\004 \001(\0162\017.users.UserRole\022\020\n\010isAct" +
       "ive\030\005 \001(\010\"V\n\rUserCreateDTO\022\020\n\010userName\030\001" +
       " \001(\t\022\020\n\010password\030\002 \001(\t\022!\n\010userRole\030\003 \001(\016" +
-      "2\017.users.UserRole\"c\n\nGetUserDTO\022\016\n\006userI" +
-      "d\030\001 \001(\t\022\020\n\010userName\030\002 \001(\t\022!\n\010userRole\030\003 " +
-      "\001(\0162\017.users.UserRole\022\020\n\010isActive\030\004 \001(\010\"," +
-      "\n\010UserList\022 \n\005users\030\001 \003(\0132\021.users.GetUse" +
-      "rDTO*7\n\010UserRole\022\025\n\021INVENTORY_MANAGER\020\000\022" +
-      "\024\n\020WAREHOUSE_WORKER\020\0012\335\001\n\013UserService\0222\n" +
-      "\007addUser\022\024.users.UserCreateDTO\032\021.users.G" +
-      "etUserDTO\022/\n\010editUser\022\013.users.User\032\026.goo" +
-      "gle.protobuf.Empty\0221\n\ndeleteUser\022\013.users" +
-      ".User\032\026.google.protobuf.Empty\0226\n\013getAllU" +
-      "sers\022\026.google.protobuf.Empty\032\017.users.Use" +
-      "rListB\026\n\022com.javainuse.userP\001b\006proto3"
+      "2\017.users.UserRole\"R\n\nGetUserDTO\022\016\n\006userI" +
+      "d\030\001 \001(\t\022\020\n\010userName\030\002 \001(\t\022\020\n\010userRole\030\003 " +
+      "\001(\t\022\020\n\010isActive\030\004 \001(\010\",\n\010UserList\022 \n\005use" +
+      "rs\030\001 \003(\0132\021.users.GetUserDTO*7\n\010UserRole\022" +
+      "\025\n\021INVENTORY_MANAGER\020\000\022\024\n\020WAREHOUSE_WORK" +
+      "ER\020\0012\335\001\n\013UserService\0222\n\007addUser\022\024.users." +
+      "UserCreateDTO\032\021.users.GetUserDTO\022/\n\010edit" +
+      "User\022\013.users.User\032\026.google.protobuf.Empt" +
+      "y\0221\n\ndeleteUser\022\013.users.User\032\026.google.pr" +
+      "otobuf.Empty\0226\n\013getAllUsers\022\026.google.pro" +
+      "tobuf.Empty\032\017.users.UserListB\026\n\022com.java" +
+      "inuse.userP\001b\006proto3"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
