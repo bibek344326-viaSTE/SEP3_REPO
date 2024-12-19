@@ -6,10 +6,14 @@ import com.google.protobuf.Empty;
 import com.google.protobuf.Timestamp;
 import com.javainuse.item.Item;
 import com.javainuse.orders.*;
+import io.netty.handler.ssl.SslContextBuilder;
+import io.netty.handler.ssl.util.InsecureTrustManagerFactory;
 import net.devh.boot.grpc.server.service.GrpcService;
+import org.springframework.http.client.reactive.ReactorClientHttpConnector;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.http.MediaType;
 import io.grpc.stub.StreamObserver;
+import reactor.netty.http.client.HttpClient;
 
 import java.time.Instant;
 import java.util.List;
@@ -62,9 +66,14 @@ class RestOrderItem {
 @GrpcService
 public class OrderService extends OrderServiceGrpc.OrderServiceImplBase {
 
-    private final WebClient webClient = WebClient.builder()
-            .baseUrl("http://localhost:5203/Orders")
-            .defaultHeader("Accept", MediaType.APPLICATION_JSON_VALUE)
+
+    WebClient webClient = WebClient.builder()
+            .baseUrl("https://localhost:7211/Orders")
+            .clientConnector(new ReactorClientHttpConnector(
+                    HttpClient.create().secure(sslContextSpec ->
+                            sslContextSpec.sslContext(SslContextBuilder.forClient().trustManager(InsecureTrustManagerFactory.INSTANCE))
+                    )
+            ))
             .build();
 
 
