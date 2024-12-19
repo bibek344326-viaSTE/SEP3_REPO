@@ -8,6 +8,7 @@ import com.javainuse.user.*;
 import org.springframework.http.MediaType;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 import io.grpc.stub.StreamObserver;
 import net.devh.boot.grpc.server.service.GrpcService;
 import org.slf4j.Logger;
@@ -34,6 +35,105 @@ public class UserService extends UserServiceGrpc.UserServiceImplBase {
             .build();
 
     @Override
+    public void addUser(UserCreateDTO request, StreamObserver<GetUserDTO> responseObserver) {
+        logger.info("Starting addUser request for user: {}", request.getUserName());
+
+        // Convert the Protobuf request to a RestUserCreateDTO
+        RestUserCreateDTO restRequest = new RestUserCreateDTO(
+                request.getUserName(),
+                request.getPassword(),
+                request.getUserRoleValue()
+        );
+
+        webClient.post()
+                .uri("/")
+                .contentType(MediaType.APPLICATION_JSON)
+                .bodyValue(restRequest)  // Use the plain DTO
+                .retrieve()
+                .bodyToMono(String.class)
+                .doOnNext(responseBody -> logger.info("Raw API Response: {}", responseBody))
+                .flatMap(responseBody -> {
+                    try {
+                        ObjectMapper mapper = new ObjectMapper();
+                        UserResponse userResponse = mapper.readValue(responseBody, UserResponse.class);
+                        return Mono.just(userResponse);
+                    } catch (Exception e) {
+                        logger.error("Failed to parse JSON into UserResponse: ", e);
+                        return Mono.error(new RuntimeException("Failed to parse JSON: " + e.getMessage()));
+                    }
+                })
+                .doOnSuccess(userResponse -> {
+                    GetUserDTO userDTO = GetUserDTO.newBuilder()
+                            .setUserId(userResponse.getUserId())
+                            .setUserName(userResponse.getUserName())
+                            .setUserRole(userResponse.getUserRole())
+                            .setIsActive(userResponse.isActive())
+                            .build();
+
+                    logger.info("User successfully created: {}", userDTO);
+                    responseObserver.onNext(userDTO);
+                    responseObserver.onCompleted();
+                })
+                .doOnError(error -> {
+                    logger.error("Failed to create user: ", error);
+                    responseObserver.onError(new RuntimeException("Failed to create user: " + error.getMessage()));
+                })
+                .subscribe();
+    }
+
+    @Override
+    public void editUser(User request, StreamObserver<Empty> responseObserver) {
+        logger.info("Starting editUser request for userId: {}", request.getUserId());
+
+        // Step 1: Convert Protobuf User to RestUserUpdateDTO
+        RestUserUpdateDTO restRequest = new RestUserUpdateDTO(
+                request.getUserId(),
+                request.getUsername(),
+                request.getPassword(),
+                request.getUserRoleValue(),
+                request.getIsActive()
+        );
+
+        webClient.put()
+                .uri("/{id}", restRequest.getUserId())
+                .contentType(MediaType.APPLICATION_JSON)
+                .bodyValue(restRequest) // Step 2: Use clean DTO for REST request
+                .retrieve()
+                .toBodilessEntity()
+                .doOnSuccess(response -> {
+                    logger.info("User successfully updated: {}", restRequest.getUserId());
+                    responseObserver.onNext(Empty.getDefaultInstance());
+                    responseObserver.onCompleted();
+                })
+                .doOnError(error -> {
+                    logger.error("Failed to update user: ", error);
+                    responseObserver.onError(new RuntimeException("Failed to update user: " + error.getMessage()));
+                })
+                .subscribe();
+    }
+
+
+    @Override
+    public void deleteUser(User request, StreamObserver<Empty> responseObserver) {
+        logger.info("Starting deleteUser request for userId: {}", request.getUserId());
+
+        webClient.delete()
+                .uri("/{id}", request.getUserId())
+                .retrieve()
+                .toBodilessEntity()
+                .doOnSuccess(response -> {
+                    logger.info("User successfully deleted: {}", request.getUserId());
+                    responseObserver.onNext(Empty.getDefaultInstance());
+                    responseObserver.onCompleted();
+                })
+                .doOnError(error -> {
+                    logger.error("Failed to delete user: ", error);
+                    responseObserver.onError(new RuntimeException("Failed to delete user: " + error.getMessage()));
+                })
+                .subscribe();
+    }
+
+    @Override
     public void getAllUsers(Empty request, StreamObserver<UserList> responseObserver) {
         logger.info("Starting getAllUsers request...");
 
@@ -45,59 +145,27 @@ public class UserService extends UserServiceGrpc.UserServiceImplBase {
                 .doOnNext(responseBody -> logger.info("Raw API Response: {}", responseBody))
                 .flatMapMany(responseBody -> {
                     try {
-                        logger.info("Parsing JSON response into List<UserResponse>...");
                         ObjectMapper mapper = new ObjectMapper();
                         List<UserResponse> userResponses = mapper.readValue(responseBody, new TypeReference<List<UserResponse>>() {});
-                        logger.info("Successfully parsed {} users from the API response.", userResponses.size());
                         return Flux.fromIterable(userResponses);
                     } catch (Exception e) {
                         logger.error("Failed to parse JSON into UserResponse: ", e);
                         return Flux.error(new RuntimeException("Failed to parse JSON: " + e.getMessage()));
                     }
                 })
-                .<GetUserDTO>handle((userResponse, sink) -> {
-                    try {
-                        logger.info("Mapping UserResponse to GetUserDTO: {}", userResponse);
-
-                        UserRole grpcRole;
-                        if (userResponse.getUserRole() != null) {
-                            try {
-                                grpcRole = UserRole.valueOf(userResponse.getUserRole().name());
-                            } catch (Exception e) {
-                                logger.error("Failed to map userRole for userId {}. UserRole from REST: {}", userResponse.getUserId(), userResponse.getUserRole(), e);
-                                return;
-                            }
-                        } else {
-                            logger.error("userRole is NULL for userId {}.", userResponse.getUserId());
-                            return;
-                        }
-
-                        GetUserDTO userDTO = GetUserDTO.newBuilder()
-                                .setUserId(userResponse.getUserId())
-                                .setUserName(userResponse.getUserName())
-                                .setUserRole(grpcRole)
-                                .setIsActive(userResponse.isActive())
-                                .build();
-
-                        logger.info("Mapped GetUserDTO: userId: {}, userName: {}, userRole: {}, isActive: {}",
-                                userDTO.getUserId(),
-                                userDTO.getUserName(),
-                                userDTO.getUserRole(),
-                                userDTO.getIsActive());
-
-                        sink.next(userDTO);
-                    } catch (Exception e) {
-                        logger.error("Failed to map UserResponse to GetUserDTO for userId {}: {}", userResponse.getUserId(), e.getMessage());
-                        sink.error(e);
-                    }
+                .map(userResponse -> {
+                    return GetUserDTO.newBuilder()
+                            .setUserId(userResponse.getUserId())
+                            .setUserName(userResponse.getUserName())
+                            .setUserRole(userResponse.getUserRole())
+                            .setIsActive(userResponse.isActive())
+                            .build();
                 })
                 .collectList()
                 .doOnSuccess(userDTOList -> {
                     UserList.Builder userListBuilder = UserList.newBuilder();
                     userDTOList.forEach(userListBuilder::addUsers);
-                    UserList userList = userListBuilder.build();
-                    logger.info("UserList successfully created with {} users.", userDTOList.size());
-                    responseObserver.onNext(userList);
+                    responseObserver.onNext(userListBuilder.build());
                     responseObserver.onCompleted();
                 })
                 .doOnError(error -> {
@@ -105,6 +173,97 @@ public class UserService extends UserServiceGrpc.UserServiceImplBase {
                     responseObserver.onError(new RuntimeException("Failed to fetch users: " + error.getMessage()));
                 })
                 .subscribe();
+    }
+    public class RestUserUpdateDTO {
+        private int userId;
+        private String username;
+        private String password;
+        private int userRole;
+        private boolean isActive;
+
+        public RestUserUpdateDTO(int userId, String username, String password, int userRole, boolean isActive) {
+            this.userId = userId;
+            this.username = username;
+            this.password = password;
+            this.userRole = userRole;
+            this.isActive = isActive;
+        }
+
+        public int getUserId() {
+            return userId;
+        }
+
+        public void setUserId(int userId) {
+            this.userId = userId;
+        }
+
+        public String getUsername() {
+            return username;
+        }
+
+        public void setUsername(String username) {
+            this.username = username;
+        }
+
+        public String getPassword() {
+            return password;
+        }
+
+        public void setPassword(String password) {
+            this.password = password;
+        }
+
+        public int getUserRole() {
+            return userRole;
+        }
+
+        public void setUserRole(int userRole) {
+            this.userRole = userRole;
+        }
+
+        public boolean getIsActive() {
+            return isActive;
+        }
+
+        public void setIsActive(boolean isActive) {
+            this.isActive = isActive;
+        }
+    }
+
+    public class RestUserCreateDTO {
+        private String userName;
+        private String password;
+        private int userRole; // This could be a String too if you want to use the role name
+
+        public RestUserCreateDTO(String userName, String password, int userRole) {
+            this.userName = userName;
+            this.password = password;
+            this.userRole = userRole;
+        }
+
+        public String getUserName() {
+            return userName;
+        }
+
+        public void setUserName(String userName) {
+            this.userName = userName;
+        }
+
+        public String getPassword() {
+            return password;
+        }
+
+        public void setPassword(String password) {
+            this.password = password;
+        }
+
+        public int getUserRole() {
+            return userRole;
+        }
+
+        public void setUserRole(int userRole) {
+            this.userRole = userRole;
+        }
     }
 
     public static class UserResponse {
