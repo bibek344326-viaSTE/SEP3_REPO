@@ -20,39 +20,34 @@ public class AuthService extends AuthServiceGrpc.AuthServiceImplBase {
         System.out.println("Login attempt: Username - " + request.getUsername() + " Password - " + request.getPassword());
 
         Map<String, String> requestBody = Map.of(
-                "UserName", request.getUsername(),
-                "Password", request.getPassword()
+                "userName", request.getUsername(),
+                "password", request.getPassword()
         );
 
         try {
-            webClient.post()
+            String responseString = webClient.post()
                     .uri("/login")
                     .bodyValue(requestBody)
                     .retrieve()
-                    .bodyToMono(String.class) // Assuming the response is a String JSON response
-                    .doOnNext(responseString -> {
-                        System.out.println("Response body from REST API: " + responseString);
-                    })
-                    .map(this::extractTokenFromResponse) // Extract the token from the response
-                    .doOnNext(token -> {
-                        System.out.println("Extracted Token: " + token);
-                    })
-                    .doOnError(throwable -> {
-                        System.err.println("Error during login request: " + throwable.getMessage());
-                        responseObserver.onError(throwable);
-                    })
-                    .subscribe(token -> {
-                        LoginResponse response = LoginResponse.newBuilder()
-                                .setToken(token)
-                                .build();
+                    .bodyToMono(String.class)
+                    .block(); // This makes the call synchronous
 
-                        responseObserver.onNext(response);
-                        responseObserver.onCompleted();
-                    });
+            System.out.println("Response body from REST API: " + responseString);
+
+            String token = extractTokenFromResponse(responseString);
+            System.out.println("Extracted Token: " + token);
+
+            LoginResponse response = LoginResponse.newBuilder()
+                    .setToken(token)
+                    .build();
+
+            responseObserver.onNext(response);
+            responseObserver.onCompleted();
         } catch (Exception e) {
             e.printStackTrace();
             responseObserver.onError(e);
         }
+
     }
 
     /**

@@ -53,19 +53,6 @@ public class CustomAuthenticationStateProvider : AuthenticationStateProvider
         NotifyAuthenticationStateChanged(Task.FromResult(new AuthenticationState(_anonymous)));
     }
 
-    private async Task InitializeAsync()
-    {
-        if (!_isInitialized)
-        {
-            var tokenResult = await _protectedSessionStore.GetAsync<string>("authToken");
-            _cachedToken = tokenResult.Value;
-            _isInitialized = true;
-
-            // Notify Blazor that the authentication state has changed
-            NotifyAuthenticationStateChanged(GetAuthenticationStateAsync());
-        }
-    }
-
     private IEnumerable<Claim> ParseClaimsFromJwt(string jwt)
     {
         var claims = new List<Claim>();
@@ -82,6 +69,19 @@ public class CustomAuthenticationStateProvider : AuthenticationStateProvider
         }
 
         return claims;
+    }
+
+    private async Task InitializeAsync()
+    {
+        if (!_isInitialized)
+        {
+            var tokenResult = await _protectedSessionStore.GetAsync<string>("authToken");
+            _cachedToken = tokenResult.Value;
+            _isInitialized = true;
+
+            // Notify Blazor that the authentication state has changed
+            NotifyAuthenticationStateChanged(GetAuthenticationStateAsync());
+        }
     }
 
     private string PadBase64(string base64)

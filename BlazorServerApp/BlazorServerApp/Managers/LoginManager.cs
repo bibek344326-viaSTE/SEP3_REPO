@@ -80,7 +80,7 @@ public class LoginManager : INotifyPropertyChanged
         }
         finally
         {
-            IsLoading = false; // Set loading to false
+            IsLoading = false; 
         }
     }
 
