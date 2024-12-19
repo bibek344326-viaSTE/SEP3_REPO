@@ -6,7 +6,7 @@ option java_package = "com.javainuse.user";
 package users;
 
 service UserService {
-  rpc addUser(UserDTO) returns (User);
+  rpc addUser(UserCreateDTO) returns (GetUserDTO);
   rpc editUser(User) returns (google.protobuf.Empty);
   rpc deleteUser(User) returns (google.protobuf.Empty);
   rpc getAllUsers(google.protobuf.Empty) returns (UserList);
@@ -20,27 +20,24 @@ message User {
   bool isActive = 5;
 }
 
-message UserDTO {
+message UserCreateDTO {
   string userName = 1;
   string password = 2;
   UserRole userRole = 3;
 }
 
-message EditResponse {
-  bool success = 1;
-}
-
-message UserDeleteResponse {
-  bool success = 1;
+message GetUserDTO {
+  string userId = 1;
+  string userName = 2;
+  UserRole userRole = 3;
+  bool isActive = 4;
 }
 
 message UserList {
-  repeated User users = 1;
+  repeated GetUserDTO users = 1;
 }
 
 enum UserRole {
   INVENTORY_MANAGER = 0;
   WAREHOUSE_WORKER = 1;
 }
-
-

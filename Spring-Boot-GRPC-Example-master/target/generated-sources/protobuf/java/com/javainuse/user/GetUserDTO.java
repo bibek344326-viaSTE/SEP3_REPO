@@ -4,21 +4,22 @@
 package com.javainuse.user;
 
 /**
- * Protobuf type {@code users.UserDTO}
+ * Protobuf type {@code users.GetUserDTO}
  */
-public  final class UserDTO extends
+public  final class GetUserDTO extends
     com.google.protobuf.GeneratedMessageV3 implements
-    // @@protoc_insertion_point(message_implements:users.UserDTO)
-    UserDTOOrBuilder {
+    // @@protoc_insertion_point(message_implements:users.GetUserDTO)
+    GetUserDTOOrBuilder {
 private static final long serialVersionUID = 0L;
-  // Use UserDTO.newBuilder() to construct.
-  private UserDTO(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+  // Use GetUserDTO.newBuilder() to construct.
+  private GetUserDTO(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
     super(builder);
   }
-  private UserDTO() {
+  private GetUserDTO() {
+    userId_ = "";
     userName_ = "";
-    password_ = "";
     userRole_ = 0;
+    isActive_ = false;
   }
 
   @java.lang.Override
@@ -26,7 +27,7 @@ private static final long serialVersionUID = 0L;
   getUnknownFields() {
     return this.unknownFields;
   }
-  private UserDTO(
+  private GetUserDTO(
       com.google.protobuf.CodedInputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
@@ -48,19 +49,24 @@ private static final long serialVersionUID = 0L;
           case 10: {
             java.lang.String s = input.readStringRequireUtf8();
 
-            userName_ = s;
+            userId_ = s;
             break;
           }
           case 18: {
             java.lang.String s = input.readStringRequireUtf8();
 
-            password_ = s;
+            userName_ = s;
             break;
           }
           case 24: {
             int rawValue = input.readEnum();
 
             userRole_ = rawValue;
+            break;
+          }
+          case 32: {
+
+            isActive_ = input.readBool();
             break;
           }
           default: {
@@ -84,21 +90,55 @@ private static final long serialVersionUID = 0L;
   }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
-    return com.javainuse.user.UserServiceOuterClass.internal_static_users_UserDTO_descriptor;
+    return com.javainuse.user.UserServiceOuterClass.internal_static_users_GetUserDTO_descriptor;
   }
 
   @java.lang.Override
   protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internalGetFieldAccessorTable() {
-    return com.javainuse.user.UserServiceOuterClass.internal_static_users_UserDTO_fieldAccessorTable
+    return com.javainuse.user.UserServiceOuterClass.internal_static_users_GetUserDTO_fieldAccessorTable
         .ensureFieldAccessorsInitialized(
-            com.javainuse.user.UserDTO.class, com.javainuse.user.UserDTO.Builder.class);
+            com.javainuse.user.GetUserDTO.class, com.javainuse.user.GetUserDTO.Builder.class);
   }
 
-  public static final int USERNAME_FIELD_NUMBER = 1;
+  public static final int USERID_FIELD_NUMBER = 1;
+  private volatile java.lang.Object userId_;
+  /**
+   * <code>string userId = 1;</code>
+   */
+  public java.lang.String getUserId() {
+    java.lang.Object ref = userId_;
+    if (ref instanceof java.lang.String) {
+      return (java.lang.String) ref;
+    } else {
+      com.google.protobuf.ByteString bs = 
+          (com.google.protobuf.ByteString) ref;
+      java.lang.String s = bs.toStringUtf8();
+      userId_ = s;
+      return s;
+    }
+  }
+  /**
+   * <code>string userId = 1;</code>
+   */
+  public com.google.protobuf.ByteString
+      getUserIdBytes() {
+    java.lang.Object ref = userId_;
+    if (ref instanceof java.lang.String) {
+      com.google.protobuf.ByteString b = 
+          com.google.protobuf.ByteString.copyFromUtf8(
+              (java.lang.String) ref);
+      userId_ = b;
+      return b;
+    } else {
+      return (com.google.protobuf.ByteString) ref;
+    }
+  }
+
+  public static final int USERNAME_FIELD_NUMBER = 2;
   private volatile java.lang.Object userName_;
   /**
-   * <code>string userName = 1;</code>
+   * <code>string userName = 2;</code>
    */
   public java.lang.String getUserName() {
     java.lang.Object ref = userName_;
@@ -113,7 +153,7 @@ private static final long serialVersionUID = 0L;
     }
   }
   /**
-   * <code>string userName = 1;</code>
+   * <code>string userName = 2;</code>
    */
   public com.google.protobuf.ByteString
       getUserNameBytes() {
@@ -123,40 +163,6 @@ private static final long serialVersionUID = 0L;
           com.google.protobuf.ByteString.copyFromUtf8(
               (java.lang.String) ref);
       userName_ = b;
-      return b;
-    } else {
-      return (com.google.protobuf.ByteString) ref;
-    }
-  }
-
-  public static final int PASSWORD_FIELD_NUMBER = 2;
-  private volatile java.lang.Object password_;
-  /**
-   * <code>string password = 2;</code>
-   */
-  public java.lang.String getPassword() {
-    java.lang.Object ref = password_;
-    if (ref instanceof java.lang.String) {
-      return (java.lang.String) ref;
-    } else {
-      com.google.protobuf.ByteString bs = 
-          (com.google.protobuf.ByteString) ref;
-      java.lang.String s = bs.toStringUtf8();
-      password_ = s;
-      return s;
-    }
-  }
-  /**
-   * <code>string password = 2;</code>
-   */
-  public com.google.protobuf.ByteString
-      getPasswordBytes() {
-    java.lang.Object ref = password_;
-    if (ref instanceof java.lang.String) {
-      com.google.protobuf.ByteString b = 
-          com.google.protobuf.ByteString.copyFromUtf8(
-              (java.lang.String) ref);
-      password_ = b;
       return b;
     } else {
       return (com.google.protobuf.ByteString) ref;
@@ -180,6 +186,15 @@ private static final long serialVersionUID = 0L;
     return result == null ? com.javainuse.user.UserRole.UNRECOGNIZED : result;
   }
 
+  public static final int ISACTIVE_FIELD_NUMBER = 4;
+  private boolean isActive_;
+  /**
+   * <code>bool isActive = 4;</code>
+   */
+  public boolean getIsActive() {
+    return isActive_;
+  }
+
   private byte memoizedIsInitialized = -1;
   @java.lang.Override
   public final boolean isInitialized() {
@@ -194,14 +209,17 @@ private static final long serialVersionUID = 0L;
   @java.lang.Override
   public void writeTo(com.google.protobuf.CodedOutputStream output)
                       throws java.io.IOException {
-    if (!getUserNameBytes().isEmpty()) {
-      com.google.protobuf.GeneratedMessageV3.writeString(output, 1, userName_);
+    if (!getUserIdBytes().isEmpty()) {
+      com.google.protobuf.GeneratedMessageV3.writeString(output, 1, userId_);
     }
-    if (!getPasswordBytes().isEmpty()) {
-      com.google.protobuf.GeneratedMessageV3.writeString(output, 2, password_);
+    if (!getUserNameBytes().isEmpty()) {
+      com.google.protobuf.GeneratedMessageV3.writeString(output, 2, userName_);
     }
     if (userRole_ != com.javainuse.user.UserRole.INVENTORY_MANAGER.getNumber()) {
       output.writeEnum(3, userRole_);
+    }
+    if (isActive_ != false) {
+      output.writeBool(4, isActive_);
     }
     unknownFields.writeTo(output);
   }
@@ -212,15 +230,19 @@ private static final long serialVersionUID = 0L;
     if (size != -1) return size;
 
     size = 0;
-    if (!getUserNameBytes().isEmpty()) {
-      size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, userName_);
+    if (!getUserIdBytes().isEmpty()) {
+      size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, userId_);
     }
-    if (!getPasswordBytes().isEmpty()) {
-      size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, password_);
+    if (!getUserNameBytes().isEmpty()) {
+      size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, userName_);
     }
     if (userRole_ != com.javainuse.user.UserRole.INVENTORY_MANAGER.getNumber()) {
       size += com.google.protobuf.CodedOutputStream
         .computeEnumSize(3, userRole_);
+    }
+    if (isActive_ != false) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeBoolSize(4, isActive_);
     }
     size += unknownFields.getSerializedSize();
     memoizedSize = size;
@@ -232,17 +254,19 @@ private static final long serialVersionUID = 0L;
     if (obj == this) {
      return true;
     }
-    if (!(obj instanceof com.javainuse.user.UserDTO)) {
+    if (!(obj instanceof com.javainuse.user.GetUserDTO)) {
       return super.equals(obj);
     }
-    com.javainuse.user.UserDTO other = (com.javainuse.user.UserDTO) obj;
+    com.javainuse.user.GetUserDTO other = (com.javainuse.user.GetUserDTO) obj;
 
     boolean result = true;
+    result = result && getUserId()
+        .equals(other.getUserId());
     result = result && getUserName()
         .equals(other.getUserName());
-    result = result && getPassword()
-        .equals(other.getPassword());
     result = result && userRole_ == other.userRole_;
+    result = result && (getIsActive()
+        == other.getIsActive());
     result = result && unknownFields.equals(other.unknownFields);
     return result;
   }
@@ -254,80 +278,83 @@ private static final long serialVersionUID = 0L;
     }
     int hash = 41;
     hash = (19 * hash) + getDescriptor().hashCode();
+    hash = (37 * hash) + USERID_FIELD_NUMBER;
+    hash = (53 * hash) + getUserId().hashCode();
     hash = (37 * hash) + USERNAME_FIELD_NUMBER;
     hash = (53 * hash) + getUserName().hashCode();
-    hash = (37 * hash) + PASSWORD_FIELD_NUMBER;
-    hash = (53 * hash) + getPassword().hashCode();
     hash = (37 * hash) + USERROLE_FIELD_NUMBER;
     hash = (53 * hash) + userRole_;
+    hash = (37 * hash) + ISACTIVE_FIELD_NUMBER;
+    hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
+        getIsActive());
     hash = (29 * hash) + unknownFields.hashCode();
     memoizedHashCode = hash;
     return hash;
   }
 
-  public static com.javainuse.user.UserDTO parseFrom(
+  public static com.javainuse.user.GetUserDTO parseFrom(
       java.nio.ByteBuffer data)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data);
   }
-  public static com.javainuse.user.UserDTO parseFrom(
+  public static com.javainuse.user.GetUserDTO parseFrom(
       java.nio.ByteBuffer data,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data, extensionRegistry);
   }
-  public static com.javainuse.user.UserDTO parseFrom(
+  public static com.javainuse.user.GetUserDTO parseFrom(
       com.google.protobuf.ByteString data)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data);
   }
-  public static com.javainuse.user.UserDTO parseFrom(
+  public static com.javainuse.user.GetUserDTO parseFrom(
       com.google.protobuf.ByteString data,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data, extensionRegistry);
   }
-  public static com.javainuse.user.UserDTO parseFrom(byte[] data)
+  public static com.javainuse.user.GetUserDTO parseFrom(byte[] data)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data);
   }
-  public static com.javainuse.user.UserDTO parseFrom(
+  public static com.javainuse.user.GetUserDTO parseFrom(
       byte[] data,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data, extensionRegistry);
   }
-  public static com.javainuse.user.UserDTO parseFrom(java.io.InputStream input)
+  public static com.javainuse.user.GetUserDTO parseFrom(java.io.InputStream input)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseWithIOException(PARSER, input);
   }
-  public static com.javainuse.user.UserDTO parseFrom(
+  public static com.javainuse.user.GetUserDTO parseFrom(
       java.io.InputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseWithIOException(PARSER, input, extensionRegistry);
   }
-  public static com.javainuse.user.UserDTO parseDelimitedFrom(java.io.InputStream input)
+  public static com.javainuse.user.GetUserDTO parseDelimitedFrom(java.io.InputStream input)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseDelimitedWithIOException(PARSER, input);
   }
-  public static com.javainuse.user.UserDTO parseDelimitedFrom(
+  public static com.javainuse.user.GetUserDTO parseDelimitedFrom(
       java.io.InputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
   }
-  public static com.javainuse.user.UserDTO parseFrom(
+  public static com.javainuse.user.GetUserDTO parseFrom(
       com.google.protobuf.CodedInputStream input)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseWithIOException(PARSER, input);
   }
-  public static com.javainuse.user.UserDTO parseFrom(
+  public static com.javainuse.user.GetUserDTO parseFrom(
       com.google.protobuf.CodedInputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws java.io.IOException {
@@ -340,7 +367,7 @@ private static final long serialVersionUID = 0L;
   public static Builder newBuilder() {
     return DEFAULT_INSTANCE.toBuilder();
   }
-  public static Builder newBuilder(com.javainuse.user.UserDTO prototype) {
+  public static Builder newBuilder(com.javainuse.user.GetUserDTO prototype) {
     return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
   }
   @java.lang.Override
@@ -356,26 +383,26 @@ private static final long serialVersionUID = 0L;
     return builder;
   }
   /**
-   * Protobuf type {@code users.UserDTO}
+   * Protobuf type {@code users.GetUserDTO}
    */
   public static final class Builder extends
       com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
-      // @@protoc_insertion_point(builder_implements:users.UserDTO)
-      com.javainuse.user.UserDTOOrBuilder {
+      // @@protoc_insertion_point(builder_implements:users.GetUserDTO)
+      com.javainuse.user.GetUserDTOOrBuilder {
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.javainuse.user.UserServiceOuterClass.internal_static_users_UserDTO_descriptor;
+      return com.javainuse.user.UserServiceOuterClass.internal_static_users_GetUserDTO_descriptor;
     }
 
     @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.javainuse.user.UserServiceOuterClass.internal_static_users_UserDTO_fieldAccessorTable
+      return com.javainuse.user.UserServiceOuterClass.internal_static_users_GetUserDTO_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
-              com.javainuse.user.UserDTO.class, com.javainuse.user.UserDTO.Builder.class);
+              com.javainuse.user.GetUserDTO.class, com.javainuse.user.GetUserDTO.Builder.class);
     }
 
-    // Construct using com.javainuse.user.UserDTO.newBuilder()
+    // Construct using com.javainuse.user.GetUserDTO.newBuilder()
     private Builder() {
       maybeForceBuilderInitialization();
     }
@@ -393,11 +420,13 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public Builder clear() {
       super.clear();
+      userId_ = "";
+
       userName_ = "";
 
-      password_ = "";
-
       userRole_ = 0;
+
+      isActive_ = false;
 
       return this;
     }
@@ -405,17 +434,17 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.google.protobuf.Descriptors.Descriptor
         getDescriptorForType() {
-      return com.javainuse.user.UserServiceOuterClass.internal_static_users_UserDTO_descriptor;
+      return com.javainuse.user.UserServiceOuterClass.internal_static_users_GetUserDTO_descriptor;
     }
 
     @java.lang.Override
-    public com.javainuse.user.UserDTO getDefaultInstanceForType() {
-      return com.javainuse.user.UserDTO.getDefaultInstance();
+    public com.javainuse.user.GetUserDTO getDefaultInstanceForType() {
+      return com.javainuse.user.GetUserDTO.getDefaultInstance();
     }
 
     @java.lang.Override
-    public com.javainuse.user.UserDTO build() {
-      com.javainuse.user.UserDTO result = buildPartial();
+    public com.javainuse.user.GetUserDTO build() {
+      com.javainuse.user.GetUserDTO result = buildPartial();
       if (!result.isInitialized()) {
         throw newUninitializedMessageException(result);
       }
@@ -423,11 +452,12 @@ private static final long serialVersionUID = 0L;
     }
 
     @java.lang.Override
-    public com.javainuse.user.UserDTO buildPartial() {
-      com.javainuse.user.UserDTO result = new com.javainuse.user.UserDTO(this);
+    public com.javainuse.user.GetUserDTO buildPartial() {
+      com.javainuse.user.GetUserDTO result = new com.javainuse.user.GetUserDTO(this);
+      result.userId_ = userId_;
       result.userName_ = userName_;
-      result.password_ = password_;
       result.userRole_ = userRole_;
+      result.isActive_ = isActive_;
       onBuilt();
       return result;
     }
@@ -466,26 +496,29 @@ private static final long serialVersionUID = 0L;
     }
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
-      if (other instanceof com.javainuse.user.UserDTO) {
-        return mergeFrom((com.javainuse.user.UserDTO)other);
+      if (other instanceof com.javainuse.user.GetUserDTO) {
+        return mergeFrom((com.javainuse.user.GetUserDTO)other);
       } else {
         super.mergeFrom(other);
         return this;
       }
     }
 
-    public Builder mergeFrom(com.javainuse.user.UserDTO other) {
-      if (other == com.javainuse.user.UserDTO.getDefaultInstance()) return this;
+    public Builder mergeFrom(com.javainuse.user.GetUserDTO other) {
+      if (other == com.javainuse.user.GetUserDTO.getDefaultInstance()) return this;
+      if (!other.getUserId().isEmpty()) {
+        userId_ = other.userId_;
+        onChanged();
+      }
       if (!other.getUserName().isEmpty()) {
         userName_ = other.userName_;
         onChanged();
       }
-      if (!other.getPassword().isEmpty()) {
-        password_ = other.password_;
-        onChanged();
-      }
       if (other.userRole_ != 0) {
         setUserRoleValue(other.getUserRoleValue());
+      }
+      if (other.getIsActive() != false) {
+        setIsActive(other.getIsActive());
       }
       this.mergeUnknownFields(other.unknownFields);
       onChanged();
@@ -502,11 +535,11 @@ private static final long serialVersionUID = 0L;
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
-      com.javainuse.user.UserDTO parsedMessage = null;
+      com.javainuse.user.GetUserDTO parsedMessage = null;
       try {
         parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
       } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-        parsedMessage = (com.javainuse.user.UserDTO) e.getUnfinishedMessage();
+        parsedMessage = (com.javainuse.user.GetUserDTO) e.getUnfinishedMessage();
         throw e.unwrapIOException();
       } finally {
         if (parsedMessage != null) {
@@ -516,9 +549,78 @@ private static final long serialVersionUID = 0L;
       return this;
     }
 
+    private java.lang.Object userId_ = "";
+    /**
+     * <code>string userId = 1;</code>
+     */
+    public java.lang.String getUserId() {
+      java.lang.Object ref = userId_;
+      if (!(ref instanceof java.lang.String)) {
+        com.google.protobuf.ByteString bs =
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        userId_ = s;
+        return s;
+      } else {
+        return (java.lang.String) ref;
+      }
+    }
+    /**
+     * <code>string userId = 1;</code>
+     */
+    public com.google.protobuf.ByteString
+        getUserIdBytes() {
+      java.lang.Object ref = userId_;
+      if (ref instanceof String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        userId_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+    /**
+     * <code>string userId = 1;</code>
+     */
+    public Builder setUserId(
+        java.lang.String value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  
+      userId_ = value;
+      onChanged();
+      return this;
+    }
+    /**
+     * <code>string userId = 1;</code>
+     */
+    public Builder clearUserId() {
+      
+      userId_ = getDefaultInstance().getUserId();
+      onChanged();
+      return this;
+    }
+    /**
+     * <code>string userId = 1;</code>
+     */
+    public Builder setUserIdBytes(
+        com.google.protobuf.ByteString value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+      
+      userId_ = value;
+      onChanged();
+      return this;
+    }
+
     private java.lang.Object userName_ = "";
     /**
-     * <code>string userName = 1;</code>
+     * <code>string userName = 2;</code>
      */
     public java.lang.String getUserName() {
       java.lang.Object ref = userName_;
@@ -533,7 +635,7 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>string userName = 1;</code>
+     * <code>string userName = 2;</code>
      */
     public com.google.protobuf.ByteString
         getUserNameBytes() {
@@ -549,7 +651,7 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>string userName = 1;</code>
+     * <code>string userName = 2;</code>
      */
     public Builder setUserName(
         java.lang.String value) {
@@ -562,7 +664,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>string userName = 1;</code>
+     * <code>string userName = 2;</code>
      */
     public Builder clearUserName() {
       
@@ -571,7 +673,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>string userName = 1;</code>
+     * <code>string userName = 2;</code>
      */
     public Builder setUserNameBytes(
         com.google.protobuf.ByteString value) {
@@ -581,75 +683,6 @@ private static final long serialVersionUID = 0L;
   checkByteStringIsUtf8(value);
       
       userName_ = value;
-      onChanged();
-      return this;
-    }
-
-    private java.lang.Object password_ = "";
-    /**
-     * <code>string password = 2;</code>
-     */
-    public java.lang.String getPassword() {
-      java.lang.Object ref = password_;
-      if (!(ref instanceof java.lang.String)) {
-        com.google.protobuf.ByteString bs =
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        password_ = s;
-        return s;
-      } else {
-        return (java.lang.String) ref;
-      }
-    }
-    /**
-     * <code>string password = 2;</code>
-     */
-    public com.google.protobuf.ByteString
-        getPasswordBytes() {
-      java.lang.Object ref = password_;
-      if (ref instanceof String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        password_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
-    }
-    /**
-     * <code>string password = 2;</code>
-     */
-    public Builder setPassword(
-        java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  
-      password_ = value;
-      onChanged();
-      return this;
-    }
-    /**
-     * <code>string password = 2;</code>
-     */
-    public Builder clearPassword() {
-      
-      password_ = getDefaultInstance().getPassword();
-      onChanged();
-      return this;
-    }
-    /**
-     * <code>string password = 2;</code>
-     */
-    public Builder setPasswordBytes(
-        com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-      
-      password_ = value;
       onChanged();
       return this;
     }
@@ -698,6 +731,32 @@ private static final long serialVersionUID = 0L;
       onChanged();
       return this;
     }
+
+    private boolean isActive_ ;
+    /**
+     * <code>bool isActive = 4;</code>
+     */
+    public boolean getIsActive() {
+      return isActive_;
+    }
+    /**
+     * <code>bool isActive = 4;</code>
+     */
+    public Builder setIsActive(boolean value) {
+      
+      isActive_ = value;
+      onChanged();
+      return this;
+    }
+    /**
+     * <code>bool isActive = 4;</code>
+     */
+    public Builder clearIsActive() {
+      
+      isActive_ = false;
+      onChanged();
+      return this;
+    }
     @java.lang.Override
     public final Builder setUnknownFields(
         final com.google.protobuf.UnknownFieldSet unknownFields) {
@@ -711,41 +770,41 @@ private static final long serialVersionUID = 0L;
     }
 
 
-    // @@protoc_insertion_point(builder_scope:users.UserDTO)
+    // @@protoc_insertion_point(builder_scope:users.GetUserDTO)
   }
 
-  // @@protoc_insertion_point(class_scope:users.UserDTO)
-  private static final com.javainuse.user.UserDTO DEFAULT_INSTANCE;
+  // @@protoc_insertion_point(class_scope:users.GetUserDTO)
+  private static final com.javainuse.user.GetUserDTO DEFAULT_INSTANCE;
   static {
-    DEFAULT_INSTANCE = new com.javainuse.user.UserDTO();
+    DEFAULT_INSTANCE = new com.javainuse.user.GetUserDTO();
   }
 
-  public static com.javainuse.user.UserDTO getDefaultInstance() {
+  public static com.javainuse.user.GetUserDTO getDefaultInstance() {
     return DEFAULT_INSTANCE;
   }
 
-  private static final com.google.protobuf.Parser<UserDTO>
-      PARSER = new com.google.protobuf.AbstractParser<UserDTO>() {
+  private static final com.google.protobuf.Parser<GetUserDTO>
+      PARSER = new com.google.protobuf.AbstractParser<GetUserDTO>() {
     @java.lang.Override
-    public UserDTO parsePartialFrom(
+    public GetUserDTO parsePartialFrom(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
-      return new UserDTO(input, extensionRegistry);
+      return new GetUserDTO(input, extensionRegistry);
     }
   };
 
-  public static com.google.protobuf.Parser<UserDTO> parser() {
+  public static com.google.protobuf.Parser<GetUserDTO> parser() {
     return PARSER;
   }
 
   @java.lang.Override
-  public com.google.protobuf.Parser<UserDTO> getParserForType() {
+  public com.google.protobuf.Parser<GetUserDTO> getParserForType() {
     return PARSER;
   }
 
   @java.lang.Override
-  public com.javainuse.user.UserDTO getDefaultInstanceForType() {
+  public com.javainuse.user.GetUserDTO getDefaultInstanceForType() {
     return DEFAULT_INSTANCE;
   }
 

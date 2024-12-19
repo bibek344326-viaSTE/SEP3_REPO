@@ -2,7 +2,6 @@
 using Entities.DTOs;
 using Microsoft.AspNetCore.Mvc;
 using SEP3_T3_ASP_Core_WebAPI.RepositoryContracts;
-using RouteAttribute = Microsoft.AspNetCore.Mvc.RouteAttribute;
 
 namespace SEP3_T3_ASP_Core_WebAPI.Controllers
 {
@@ -17,26 +16,33 @@ namespace SEP3_T3_ASP_Core_WebAPI.Controllers
             this.orderRepository = orderRepository;
         }
 
-        // ********** CREATE Endpoints **********
-        // POST: /Orders
         [HttpPost]
-        public async Task<ActionResult<bool>> AddOrder([FromBody] CreateOrderDTO order)
+        public async Task<ActionResult<bool>> AddOrder([FromBody] CreateOrderDTO createOrderDTO)
         {
-            Order created = await orderRepository.AddOrderAsync(order);
+            var order = new Order
+            {
+                DeliveryDate = createOrderDTO.DeliveryDate,
+                CreatedById = createOrderDTO.CreatedBy,
+                OrderItems = createOrderDTO.OrderItems.Select(itemDto => new OrderItem
+                {
+                    ItemId = itemDto.item.ItemId,
+                    QuantityToPick = itemDto.QuantityToPick
+                }).ToList()
+            };
+
+            var createdOrder = await orderRepository.AddOrderAsync(order);
             return Ok(true);
         }
 
-        // ********** UPDATE Endpoints **********
-        // PUT: /Orders/{id}
         [HttpPut("{id}")]
         public async Task<ActionResult> UpdateOrder([FromRoute] int id, [FromBody] Order order)
         {
             try
             {
-                Order orderToUpdate = await orderRepository.GetOrderById(id);
-                orderToUpdate.OrderItems = order.OrderItems;
+                var orderToUpdate = await orderRepository.GetOrderById(id);
                 orderToUpdate.OrderStatus = order.OrderStatus;
                 orderToUpdate.DeliveryDate = order.DeliveryDate;
+                orderToUpdate.OrderItems = order.OrderItems;
 
                 await orderRepository.UpdateOrderAsync(orderToUpdate);
                 return NoContent();
@@ -45,81 +51,65 @@ namespace SEP3_T3_ASP_Core_WebAPI.Controllers
             {
                 return NotFound($"Order with ID {id} not found.");
             }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-                return StatusCode(500, $"An error occurred: {e.Message}");
-            }
         }
 
-        [HttpPut("{id}/status")]
-        public async Task<ActionResult> UpdateOrderStatus([FromRoute] int id, [FromBody] OrderStatus orderStatus)
-        {
-            try
-            {
-                var orderToUpdate = await orderRepository.GetOrderById(id);
-                orderToUpdate.OrderStatus = orderStatus;
-                await orderRepository.UpdateOrderAsync(orderToUpdate);
-                return NoContent();
-            }
-            catch (InvalidOperationException)
-            {
-                return NotFound($"Order with ID {id} not found.");
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-                return StatusCode(500, $"An error occurred: {e.Message}");
-            }
-        }
-
-        // DELETE: /Orders/{id}
-        [HttpDelete("{id}")]
-        public async Task<ActionResult> DeleteOrder([FromRoute] int id)
-        {
-            try
-            {
-                await orderRepository.DeleteOrderAsync(id);
-                return NoContent();
-            }
-            catch (InvalidOperationException)
-            {
-                return NotFound($"Order with ID {id} not found.");
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-                return StatusCode(500, $"An error occurred: {e.Message}");
-            }
-        }
-
-        // ********** GET Endpoints **********
-        // GET: /Orders/{id}
         [HttpGet("{id}")]
-        public async Task<ActionResult<Order>> GetSingleOrder([FromRoute] int id)
+        public async Task<ActionResult<GetOrderDTO>> GetSingleOrder([FromRoute] int id)
         {
             try
             {
-                Order order = await orderRepository.GetOrderById(id);
-                return Ok(order);
+                var order = await orderRepository.GetOrderById(id);
+                var orderDto = new GetOrderDTO
+                {
+                    OrderId = order.OrderId,
+                    OrderStatus = order.OrderStatus.ToString(),
+                    DeliveryDate = order.DeliveryDate,
+                    CreatedAt = order.CreatedAt,
+                    OrderItems = order.OrderItems.Select(oi => new OrderItemDTO
+                    {
+                        item = new ItemDTO
+                        {
+                            ItemId = oi.ItemId,
+                            ItemName = oi.Item?.ItemName ?? "Unknown Item"
+                        },
+                        QuantityToPick = oi.QuantityToPick
+                    }).ToList(),
+                    AssignedUser = order.AssignedUser?.UserName,
+                    CreatedBy = order.CreatedBy.UserName
+                };
+
+                return Ok(orderDto);
             }
             catch (InvalidOperationException)
             {
                 return NotFound($"Order with ID {id} not found.");
             }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-                return StatusCode(500, $"An error occurred: {e.Message}");
-            }
         }
 
-        // GET: /Orders
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<GetOrderDTO>>> GetAllOrders()
+        public async Task<ActionResult<List<GetOrderDTO>>> GetAllOrders()
         {
-            List<GetOrderDTO> orders = await orderRepository.GetAllOrders();
-            return Ok(orders);
+            var orders = await orderRepository.GetAllOrders();
+            var orderDtos = orders.Select(order => new GetOrderDTO
+            {
+                OrderId = order.OrderId,
+                OrderStatus = order.OrderStatus.ToString(),
+                DeliveryDate = order.DeliveryDate,
+                CreatedAt = order.CreatedAt,
+                OrderItems = order.OrderItems.Select(oi => new OrderItemDTO
+                {
+                    item = new ItemDTO
+                    {
+                        ItemId = oi.ItemId,
+                        ItemName = oi.Item?.ItemName ?? "Unknown Item"
+                    },
+                    QuantityToPick = oi.QuantityToPick
+                }).ToList(),
+                AssignedUser = order.AssignedUser?.UserName,
+                CreatedBy = order.CreatedBy.UserName
+            }).ToList();
+
+            return Ok(orderDtos);
         }
     }
 }

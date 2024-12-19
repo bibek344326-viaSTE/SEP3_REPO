@@ -20,7 +20,7 @@ public class UsersController: ControllerBase
     // ********** CREATE Endpoints **********
     // POST: /Users
     [HttpPost]
-    public async Task<ActionResult<User>> AddUser([FromBody] UerDTO request)
+    public async Task<ActionResult<User>> AddUser([FromBody] UserCreateDto request)
     {
         // Verify that the username is available
         await VerifyUserNameIsAvailableAsync(request.UserName);
@@ -121,13 +121,22 @@ public class UsersController: ControllerBase
 
     // GET: /Users
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<User>>> GetAllUsers()
+    public async Task<ActionResult<IEnumerable<GetUserDto>>> GetAllUsers()
     {
         try
         {
-            List<User> dtos = await userRepo.GetAllUsers()
+            // Fetch users and project them into GetUserDto objects to exclude the Password property
+            List<GetUserDto> userDtos = await userRepo.GetAllUsers()
+                .Select(user => new GetUserDto
+                {
+                    UserId = user.UserId,
+                    UserName = user.UserName,
+                    UserRole = user.UserRole,
+                    IsActive = user.IsActive
+                })
                 .ToListAsync(); // Ensure asynchronous operation
-            return Ok(dtos);
+
+            return Ok(userDtos);
         }
         catch (Exception e)
         {
@@ -135,6 +144,7 @@ public class UsersController: ControllerBase
             return StatusCode(500, $"An error occurred: {e.Message}");
         }
     }
+
 
 
     // Line 145: Update GetAllUsersByType method

@@ -3,8 +3,8 @@
 
 package com.javainuse.user;
 
-public interface UserDTOOrBuilder extends
-    // @@protoc_insertion_point(interface_extends:users.UserDTO)
+public interface UserCreateDTOOrBuilder extends
+    // @@protoc_insertion_point(interface_extends:users.UserCreateDTO)
     com.google.protobuf.MessageOrBuilder {
 
   /**

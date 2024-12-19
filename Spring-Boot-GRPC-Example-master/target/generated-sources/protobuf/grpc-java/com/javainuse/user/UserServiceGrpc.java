@@ -27,30 +27,30 @@ public final class UserServiceGrpc {
   public static final String SERVICE_NAME = "users.UserService";
 
   // Static method descriptors that strictly reflect the proto.
-  private static volatile io.grpc.MethodDescriptor<com.javainuse.user.UserDTO,
-      com.javainuse.user.User> getAddUserMethod;
+  private static volatile io.grpc.MethodDescriptor<com.javainuse.user.UserCreateDTO,
+      com.javainuse.user.GetUserDTO> getAddUserMethod;
 
   @io.grpc.stub.annotations.RpcMethod(
       fullMethodName = SERVICE_NAME + '/' + "addUser",
-      requestType = com.javainuse.user.UserDTO.class,
-      responseType = com.javainuse.user.User.class,
+      requestType = com.javainuse.user.UserCreateDTO.class,
+      responseType = com.javainuse.user.GetUserDTO.class,
       methodType = io.grpc.MethodDescriptor.MethodType.UNARY)
-  public static io.grpc.MethodDescriptor<com.javainuse.user.UserDTO,
-      com.javainuse.user.User> getAddUserMethod() {
-    io.grpc.MethodDescriptor<com.javainuse.user.UserDTO, com.javainuse.user.User> getAddUserMethod;
+  public static io.grpc.MethodDescriptor<com.javainuse.user.UserCreateDTO,
+      com.javainuse.user.GetUserDTO> getAddUserMethod() {
+    io.grpc.MethodDescriptor<com.javainuse.user.UserCreateDTO, com.javainuse.user.GetUserDTO> getAddUserMethod;
     if ((getAddUserMethod = UserServiceGrpc.getAddUserMethod) == null) {
       synchronized (UserServiceGrpc.class) {
         if ((getAddUserMethod = UserServiceGrpc.getAddUserMethod) == null) {
           UserServiceGrpc.getAddUserMethod = getAddUserMethod = 
-              io.grpc.MethodDescriptor.<com.javainuse.user.UserDTO, com.javainuse.user.User>newBuilder()
+              io.grpc.MethodDescriptor.<com.javainuse.user.UserCreateDTO, com.javainuse.user.GetUserDTO>newBuilder()
               .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
               .setFullMethodName(generateFullMethodName(
                   "users.UserService", "addUser"))
               .setSampledToLocalTracing(true)
               .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  com.javainuse.user.UserDTO.getDefaultInstance()))
+                  com.javainuse.user.UserCreateDTO.getDefaultInstance()))
               .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  com.javainuse.user.User.getDefaultInstance()))
+                  com.javainuse.user.GetUserDTO.getDefaultInstance()))
                   .setSchemaDescriptor(new UserServiceMethodDescriptorSupplier("addUser"))
                   .build();
           }
@@ -184,8 +184,8 @@ public final class UserServiceGrpc {
 
     /**
      */
-    public void addUser(com.javainuse.user.UserDTO request,
-        io.grpc.stub.StreamObserver<com.javainuse.user.User> responseObserver) {
+    public void addUser(com.javainuse.user.UserCreateDTO request,
+        io.grpc.stub.StreamObserver<com.javainuse.user.GetUserDTO> responseObserver) {
       asyncUnimplementedUnaryCall(getAddUserMethod(), responseObserver);
     }
 
@@ -216,8 +216,8 @@ public final class UserServiceGrpc {
             getAddUserMethod(),
             asyncUnaryCall(
               new MethodHandlers<
-                com.javainuse.user.UserDTO,
-                com.javainuse.user.User>(
+                com.javainuse.user.UserCreateDTO,
+                com.javainuse.user.GetUserDTO>(
                   this, METHODID_ADD_USER)))
           .addMethod(
             getEditUserMethod(),
@@ -264,8 +264,8 @@ public final class UserServiceGrpc {
 
     /**
      */
-    public void addUser(com.javainuse.user.UserDTO request,
-        io.grpc.stub.StreamObserver<com.javainuse.user.User> responseObserver) {
+    public void addUser(com.javainuse.user.UserCreateDTO request,
+        io.grpc.stub.StreamObserver<com.javainuse.user.GetUserDTO> responseObserver) {
       asyncUnaryCall(
           getChannel().newCall(getAddUserMethod(), getCallOptions()), request, responseObserver);
     }
@@ -315,7 +315,7 @@ public final class UserServiceGrpc {
 
     /**
      */
-    public com.javainuse.user.User addUser(com.javainuse.user.UserDTO request) {
+    public com.javainuse.user.GetUserDTO addUser(com.javainuse.user.UserCreateDTO request) {
       return blockingUnaryCall(
           getChannel(), getAddUserMethod(), getCallOptions(), request);
     }
@@ -362,8 +362,8 @@ public final class UserServiceGrpc {
 
     /**
      */
-    public com.google.common.util.concurrent.ListenableFuture<com.javainuse.user.User> addUser(
-        com.javainuse.user.UserDTO request) {
+    public com.google.common.util.concurrent.ListenableFuture<com.javainuse.user.GetUserDTO> addUser(
+        com.javainuse.user.UserCreateDTO request) {
       return futureUnaryCall(
           getChannel().newCall(getAddUserMethod(), getCallOptions()), request);
     }
@@ -416,8 +416,8 @@ public final class UserServiceGrpc {
     public void invoke(Req request, io.grpc.stub.StreamObserver<Resp> responseObserver) {
       switch (methodId) {
         case METHODID_ADD_USER:
-          serviceImpl.addUser((com.javainuse.user.UserDTO) request,
-              (io.grpc.stub.StreamObserver<com.javainuse.user.User>) responseObserver);
+          serviceImpl.addUser((com.javainuse.user.UserCreateDTO) request,
+              (io.grpc.stub.StreamObserver<com.javainuse.user.GetUserDTO>) responseObserver);
           break;
         case METHODID_EDIT_USER:
           serviceImpl.editUser((com.javainuse.user.User) request,

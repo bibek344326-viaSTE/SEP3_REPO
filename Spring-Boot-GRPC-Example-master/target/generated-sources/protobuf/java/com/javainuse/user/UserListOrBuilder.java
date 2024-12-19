@@ -8,26 +8,26 @@ public interface UserListOrBuilder extends
     com.google.protobuf.MessageOrBuilder {
 
   /**
-   * <code>repeated .users.User users = 1;</code>
+   * <code>repeated .users.GetUserDTO users = 1;</code>
    */
-  java.util.List<com.javainuse.user.User> 
+  java.util.List<com.javainuse.user.GetUserDTO> 
       getUsersList();
   /**
-   * <code>repeated .users.User users = 1;</code>
+   * <code>repeated .users.GetUserDTO users = 1;</code>
    */
-  com.javainuse.user.User getUsers(int index);
+  com.javainuse.user.GetUserDTO getUsers(int index);
   /**
-   * <code>repeated .users.User users = 1;</code>
+   * <code>repeated .users.GetUserDTO users = 1;</code>
    */
   int getUsersCount();
   /**
-   * <code>repeated .users.User users = 1;</code>
+   * <code>repeated .users.GetUserDTO users = 1;</code>
    */
-  java.util.List<? extends com.javainuse.user.UserOrBuilder> 
+  java.util.List<? extends com.javainuse.user.GetUserDTOOrBuilder> 
       getUsersOrBuilderList();
   /**
-   * <code>repeated .users.User users = 1;</code>
+   * <code>repeated .users.GetUserDTO users = 1;</code>
    */
-  com.javainuse.user.UserOrBuilder getUsersOrBuilder(
+  com.javainuse.user.GetUserDTOOrBuilder getUsersOrBuilder(
       int index);
 }
