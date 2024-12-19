@@ -6,9 +6,13 @@ import com.javainuse.item.ItemDTO;
 import com.javainuse.item.ItemList;
 import com.javainuse.item.ItemServiceGrpc;
 import com.google.protobuf.Empty;
+import io.netty.handler.ssl.SslContextBuilder;
+import io.netty.handler.ssl.util.InsecureTrustManagerFactory;
 import net.devh.boot.grpc.server.service.GrpcService;
+import org.springframework.http.client.reactive.ReactorClientHttpConnector;
 import org.springframework.web.reactive.function.client.WebClient;
 import io.grpc.stub.StreamObserver;
+import reactor.netty.http.client.HttpClient;
 
 import java.util.List;
 
@@ -73,9 +77,14 @@ class RestItemDto {
 @GrpcService
 public class ItemService extends ItemServiceGrpc.ItemServiceImplBase {
 
-    private final String baseUrl = "http://localhost:5203/Items";
-    private final WebClient webClient = WebClient.create(baseUrl);
-
+    WebClient webClient = WebClient.builder()
+            .baseUrl("https://localhost:7211/Items")
+            .clientConnector(new ReactorClientHttpConnector(
+                    HttpClient.create().secure(sslContextSpec ->
+                            sslContextSpec.sslContext(SslContextBuilder.forClient().trustManager(InsecureTrustManagerFactory.INSTANCE))
+                    )
+            ))
+            .build();
 
     @Override
     public void editItem(Item request, StreamObserver<Empty> responseObserver) {

@@ -4,24 +4,34 @@ import com.javainuse.authentication.AuthServiceGrpc;
 import com.javainuse.authentication.LoginRequest;
 import com.javainuse.authentication.LoginResponse;
 import io.grpc.stub.StreamObserver;
+import io.netty.handler.ssl.SslContextBuilder;
+import io.netty.handler.ssl.util.InsecureTrustManagerFactory;
 import net.devh.boot.grpc.server.service.GrpcService;
+import org.springframework.http.client.reactive.ReactorClientHttpConnector;
 import org.springframework.web.reactive.function.client.WebClient;
+import reactor.netty.http.client.HttpClient;
 
 import java.util.Map;
 
 @GrpcService
 public class AuthService extends AuthServiceGrpc.AuthServiceImplBase {
 
-    private final String baseUrl = "http://localhost:5203/api/auth";
-    private final WebClient webClient = WebClient.create(baseUrl);
+    WebClient webClient = WebClient.builder()
+            .baseUrl("https://localhost:7211/api/auth")
+            .clientConnector(new ReactorClientHttpConnector(
+                    HttpClient.create().secure(sslContextSpec ->
+                            sslContextSpec.sslContext(SslContextBuilder.forClient().trustManager(InsecureTrustManagerFactory.INSTANCE))
+                    )
+            ))
+            .build();
 
     @Override
     public void login(LoginRequest request, StreamObserver<LoginResponse> responseObserver) {
         System.out.println("Login attempt: Username - " + request.getUsername() + " Password - " + request.getPassword());
 
         Map<String, String> requestBody = Map.of(
-                "UserName", request.getUsername(),
-                "Password", request.getPassword()
+                "username", request.getUsername(),
+                "password", request.getPassword()
         );
 
         try {
