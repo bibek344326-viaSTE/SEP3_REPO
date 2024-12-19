@@ -44,13 +44,16 @@ public class EfcOrderRepository : IOrderRepository
             throw new Exception($"User with UserId '{order.CreatedById}' not found.");
         }
 
-        order.CreatedAt = DateTimeOffset.Now;
+        // Ensure these timestamps are in UTC before saving them to the database
+        order.CreatedAt = DateTimeOffset.UtcNow; // Automatically set CreatedAt to UTC
+        order.DeliveryDate = order.DeliveryDate.ToUniversalTime(); // Convert DeliveryDate to UTC
         order.CreatedBy = createdByUser;
 
         EntityEntry<Order> entityEntry = await ctx.Orders.AddAsync(order);
         await ctx.SaveChangesAsync();
         return entityEntry.Entity;
     }
+
 
     public async Task<Order> UpdateOrderAsync(Order order)
     {

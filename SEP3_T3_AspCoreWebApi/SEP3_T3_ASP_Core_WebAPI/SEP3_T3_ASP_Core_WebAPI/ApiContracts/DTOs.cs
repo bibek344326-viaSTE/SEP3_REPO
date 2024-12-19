@@ -1,39 +1,40 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Text.Json.Serialization;
-using System.Threading.Tasks;
 
 namespace Entities.DTOs
 {
-
-
-        public class GetOrderDTO
+    public class GetOrderDTO
     {
-            public int OrderId { get; set; }
-            public string OrderStatus { get; set; }
-            public DateTime DeliveryDate { get; set; }
-            public List<OrderItemDTO> OrderItems { get; set; }
-        public  string AssignedUser { get; set; }
+        public int OrderId { get; set; }
+        public string OrderStatus { get; set; }
+        public DateTime DeliveryDate { get; set; }
+        public List<OrderItemDTO> OrderItems { get; set; }
+        public string AssignedUser { get; set; }
         public string CreatedBy { get; set; }
-
-        public DateTimeOffset CreatedAt { get; set; } 
+        public DateTimeOffset CreatedAt { get; set; }
     }
+
     public class CreateOrderDTO
     {
         public DateTime DeliveryDate { get; set; }
-        public List<OrderItemDTO> OrderItems { get; set; }
-        public int CreatedBy { get; set; } 
+        public List<CreateOrderItemDTO> OrderItems { get; set; } // Corrected from CreateOrderDTO to CreateOrderItemDTO
+        public int CreatedBy { get; set; }
         public DateTimeOffset CreatedAt { get; set; }
     }
 
     public class OrderItemDTO
-        {
-            public ItemDTO item { get; set; }
-            public int QuantityToPick { get; set; } // Quantity of the item in the order
+    {
+        public ItemDTO item { get; set; }
+        public int QuantityToPick { get; set; }
+    }
 
-        }
+    public class CreateOrderItemDTO
+    {
+        public int ItemId { get; set; }
+        public int QuantityToPick { get; set; }
+    }
+
     public class ItemDTO
     {
         public int ItemId { get; set; }

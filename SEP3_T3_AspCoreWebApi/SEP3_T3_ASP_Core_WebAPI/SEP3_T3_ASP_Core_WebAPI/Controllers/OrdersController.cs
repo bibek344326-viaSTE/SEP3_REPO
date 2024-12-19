@@ -19,20 +19,51 @@ namespace SEP3_T3_ASP_Core_WebAPI.Controllers
         [HttpPost]
         public async Task<ActionResult<bool>> AddOrder([FromBody] CreateOrderDTO createOrderDTO)
         {
-            var order = new Order
+            try
             {
-                DeliveryDate = createOrderDTO.DeliveryDate,
-                CreatedById = createOrderDTO.CreatedBy,
-                OrderItems = createOrderDTO.OrderItems.Select(itemDto => new OrderItem
-                {
-                    ItemId = itemDto.item.ItemId,
-                    QuantityToPick = itemDto.QuantityToPick
-                }).ToList()
-            };
+                // Log the incoming request
+                Console.WriteLine($"Received CreateOrderDTO: {System.Text.Json.JsonSerializer.Serialize(createOrderDTO)}");
 
-            var createdOrder = await orderRepository.AddOrderAsync(order);
-            return Ok(true);
+                // Validate OrderItems
+                if (createOrderDTO.OrderItems == null || !createOrderDTO.OrderItems.Any())
+                {
+                    return BadRequest("Order must have at least one item.");
+                }
+
+                // Convert DeliveryDate and CreatedAt to UTC
+                createOrderDTO.DeliveryDate = createOrderDTO.DeliveryDate.ToUniversalTime();
+                createOrderDTO.CreatedAt = createOrderDTO.CreatedAt.ToUniversalTime();
+
+                // Create the order from the DTO
+                var order = new Order
+                {
+                    DeliveryDate = createOrderDTO.DeliveryDate, // Ensure this is in UTC
+                    CreatedById = createOrderDTO.CreatedBy,
+                    CreatedAt = createOrderDTO.CreatedAt, // Ensure this is in UTC
+                    OrderItems = createOrderDTO.OrderItems.Select(itemDto => new OrderItem
+                    {
+                        ItemId = itemDto.ItemId,
+                        QuantityToPick = itemDto.QuantityToPick
+                    }).ToList()
+                };
+
+                // Log the order to be saved
+                Console.WriteLine($"Mapped Order: {System.Text.Json.JsonSerializer.Serialize(order)}");
+
+                // Call the repository to save the order
+                var createdOrder = await orderRepository.AddOrderAsync(order);
+
+                // Return success
+                return Ok(true);
+            }
+            catch (Exception ex)
+            {
+                // Log the error for debugging
+                Console.WriteLine($"Error in AddOrder: {ex.Message}");
+                return StatusCode(500, "An error occurred while creating the order");
+            }
         }
+
 
         [HttpPut("{id}")]
         public async Task<ActionResult> UpdateOrder([FromRoute] int id, [FromBody] Order order)
@@ -40,6 +71,11 @@ namespace SEP3_T3_ASP_Core_WebAPI.Controllers
             try
             {
                 var orderToUpdate = await orderRepository.GetOrderById(id);
+                if (orderToUpdate == null)
+                {
+                    return NotFound($"Order with ID {id} not found.");
+                }
+
                 orderToUpdate.OrderStatus = order.OrderStatus;
                 orderToUpdate.DeliveryDate = order.DeliveryDate;
                 orderToUpdate.OrderItems = order.OrderItems;
@@ -59,6 +95,11 @@ namespace SEP3_T3_ASP_Core_WebAPI.Controllers
             try
             {
                 var order = await orderRepository.GetOrderById(id);
+                if (order == null)
+                {
+                    return NotFound($"Order with ID {id} not found.");
+                }
+
                 var orderDto = new GetOrderDTO
                 {
                     OrderId = order.OrderId,
