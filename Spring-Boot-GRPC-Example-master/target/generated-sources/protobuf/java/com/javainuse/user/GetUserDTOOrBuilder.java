@@ -8,14 +8,9 @@ public interface GetUserDTOOrBuilder extends
     com.google.protobuf.MessageOrBuilder {
 
   /**
-   * <code>string userId = 1;</code>
+   * <code>int32 userId = 1;</code>
    */
-  java.lang.String getUserId();
-  /**
-   * <code>string userId = 1;</code>
-   */
-  com.google.protobuf.ByteString
-      getUserIdBytes();
+  int getUserId();
 
   /**
    * <code>string userName = 2;</code>
@@ -28,14 +23,13 @@ public interface GetUserDTOOrBuilder extends
       getUserNameBytes();
 
   /**
-   * <code>string userRole = 3;</code>
+   * <code>.users.UserRole userRole = 3;</code>
    */
-  java.lang.String getUserRole();
+  int getUserRoleValue();
   /**
-   * <code>string userRole = 3;</code>
+   * <code>.users.UserRole userRole = 3;</code>
    */
-  com.google.protobuf.ByteString
-      getUserRoleBytes();
+  com.javainuse.user.UserRole getUserRole();
 
   /**
    * <code>bool isActive = 4;</code>

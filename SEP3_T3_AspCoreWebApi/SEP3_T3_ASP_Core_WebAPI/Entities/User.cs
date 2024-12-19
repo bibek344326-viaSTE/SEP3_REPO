@@ -12,7 +12,6 @@ namespace Entities
         public int UserId { get; set; }
         public required string UserName { get; set; }
         public required string Password { get; set; }
-        [JsonConverter(typeof(JsonStringEnumConverter))]
         public required UserRole UserRole { get; set; }
         public required bool IsActive { get; set; }
 

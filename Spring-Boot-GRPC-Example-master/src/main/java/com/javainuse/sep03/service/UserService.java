@@ -1,154 +1,139 @@
 package com.javainuse.sep03.service;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.protobuf.Empty;
 import com.javainuse.user.*;
+import org.springframework.http.MediaType;
+import org.springframework.web.reactive.function.client.WebClient;
+import reactor.core.publisher.Flux;
+import io.grpc.stub.StreamObserver;
+import net.devh.boot.grpc.server.service.GrpcService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import reactor.netty.http.client.HttpClient;
 import io.netty.handler.ssl.SslContextBuilder;
 import io.netty.handler.ssl.util.InsecureTrustManagerFactory;
-import io.grpc.stub.StreamObserver;
-import net.devh.boot.grpc.server.service.GrpcService;
 import org.springframework.http.client.reactive.ReactorClientHttpConnector;
-import org.springframework.web.reactive.function.client.WebClient;
-import reactor.core.publisher.Mono;
-import reactor.netty.http.client.HttpClient;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @GrpcService
 public class UserService extends UserServiceGrpc.UserServiceImplBase {
 
+    private static final Logger logger = LoggerFactory.getLogger(UserService.class);
 
     WebClient webClient = WebClient.builder()
-            .baseUrl("https://localhost:7211")
-            .defaultHeader("Accept", "application/json")
-            .defaultHeader("Content-Type", "application/json")
-            .clientConnector(
-                    new ReactorClientHttpConnector(
-                            HttpClient.create().secure(sslContextSpec ->
-                                    sslContextSpec.sslContext(SslContextBuilder.forClient().trustManager(InsecureTrustManagerFactory.INSTANCE))
-                            )
+            .baseUrl("https://localhost:7211/Users")
+            .clientConnector(new ReactorClientHttpConnector(
+                    HttpClient.create().secure(sslContextSpec ->
+                            sslContextSpec.sslContext(SslContextBuilder.forClient().trustManager(InsecureTrustManagerFactory.INSTANCE))
                     )
-            )
+            ))
             .build();
 
-
-
-    @Override
-    public void addUser(UserCreateDTO request, StreamObserver<GetUserDTO> responseObserver) {
-        webClient.post()
-                .uri("/")
-                .bodyValue(new UserCreateDto(request.getUserName(), request.getPassword(), request.getUserRole().name()))
-                .retrieve()
-                .bodyToMono(GetUserDTO.class)
-                .doOnSuccess(responseObserver::onNext)
-                .doOnError(error -> responseObserver.onError(new RuntimeException("Failed to add user: " + error.getMessage())))
-                .doFinally(signal -> responseObserver.onCompleted())
-                .subscribe();
-    }
-
-    @Override
-    public void editUser(User request, StreamObserver<Empty> responseObserver) {
-        webClient.put()
-                .uri("/{id}", request.getUserid())
-                .bodyValue(new UserDto(request.getUserid(), request.getUsername(), request.getPassword(), request.getUserRole().name(), request.getIsActive()))
-                .retrieve()
-                .bodyToMono(Void.class)
-                .doOnSuccess(v -> responseObserver.onNext(Empty.getDefaultInstance()))
-                .doOnError(error -> responseObserver.onError(new RuntimeException("Failed to update user: " + error.getMessage())))
-                .doFinally(signal -> responseObserver.onCompleted())
-                .subscribe();
-    }
-
-    @Override
-    public void deleteUser(User request, StreamObserver<Empty> responseObserver) {
-        webClient.delete()
-                .uri("/{id}", request.getUserid())
-                .retrieve()
-                .bodyToMono(Void.class)
-                .doOnSuccess(v -> responseObserver.onNext(Empty.getDefaultInstance()))
-                .doOnError(error -> responseObserver.onError(new RuntimeException("Failed to delete user: " + error.getMessage())))
-                .doFinally(signal -> responseObserver.onCompleted())
-                .subscribe();
-    }
     @Override
     public void getAllUsers(Empty request, StreamObserver<UserList> responseObserver) {
-        System.out.println("Calling URL: http://localhost:5203/Users");
+        logger.info("Starting getAllUsers request...");
 
-        String rawResponse = webClient.get()
-                .uri("/Users/")
+        webClient.get()
+                .uri("/")
+                .accept(MediaType.APPLICATION_JSON)
                 .retrieve()
-                .onStatus(
-                        status -> !status.is2xxSuccessful(),
-                        response -> {
-                            System.out.println("Failed with status: " + response.statusCode());
-                            return response.bodyToMono(String.class).flatMap(body -> {
-                                System.out.println("Error body: " + body);
-                                return Mono.error(new RuntimeException("API returned status: " + response.statusCode()));
-                            });
-                        }
-                )
                 .bodyToMono(String.class)
-                .doOnNext(rawResponseStr -> System.out.println("Raw API Response: " + rawResponseStr))
-                .block();
+                .doOnNext(responseBody -> logger.info("Raw API Response: {}", responseBody))
+                .flatMapMany(responseBody -> {
+                    try {
+                        logger.info("Parsing JSON response into List<UserResponse>...");
+                        ObjectMapper mapper = new ObjectMapper();
+                        List<UserResponse> userResponses = mapper.readValue(responseBody, new TypeReference<List<UserResponse>>() {});
+                        logger.info("Successfully parsed {} users from the API response.", userResponses.size());
+                        return Flux.fromIterable(userResponses);
+                    } catch (Exception e) {
+                        logger.error("Failed to parse JSON into UserResponse: ", e);
+                        return Flux.error(new RuntimeException("Failed to parse JSON: " + e.getMessage()));
+                    }
+                })
+                .<GetUserDTO>handle((userResponse, sink) -> {
+                    try {
+                        logger.info("Mapping UserResponse to GetUserDTO: {}", userResponse);
 
-        System.out.println("Final Raw Response: " + rawResponse);
-        UserList.Builder builder = UserList.newBuilder();
-        responseObserver.onNext(builder.build());
-        responseObserver.onCompleted();
+                        UserRole grpcRole;
+                        if (userResponse.getUserRole() != null) {
+                            try {
+                                grpcRole = UserRole.valueOf(userResponse.getUserRole().name());
+                            } catch (Exception e) {
+                                logger.error("Failed to map userRole for userId {}. UserRole from REST: {}", userResponse.getUserId(), userResponse.getUserRole(), e);
+                                return;
+                            }
+                        } else {
+                            logger.error("userRole is NULL for userId {}.", userResponse.getUserId());
+                            return;
+                        }
+
+                        GetUserDTO userDTO = GetUserDTO.newBuilder()
+                                .setUserId(userResponse.getUserId())
+                                .setUserName(userResponse.getUserName())
+                                .setUserRole(grpcRole)
+                                .setIsActive(userResponse.isActive())
+                                .build();
+
+                        logger.info("Mapped GetUserDTO: userId: {}, userName: {}, userRole: {}, isActive: {}",
+                                userDTO.getUserId(),
+                                userDTO.getUserName(),
+                                userDTO.getUserRole(),
+                                userDTO.getIsActive());
+
+                        sink.next(userDTO);
+                    } catch (Exception e) {
+                        logger.error("Failed to map UserResponse to GetUserDTO for userId {}: {}", userResponse.getUserId(), e.getMessage());
+                        sink.error(e);
+                    }
+                })
+                .collectList()
+                .doOnSuccess(userDTOList -> {
+                    UserList.Builder userListBuilder = UserList.newBuilder();
+                    userDTOList.forEach(userListBuilder::addUsers);
+                    UserList userList = userListBuilder.build();
+                    logger.info("UserList successfully created with {} users.", userDTOList.size());
+                    responseObserver.onNext(userList);
+                    responseObserver.onCompleted();
+                })
+                .doOnError(error -> {
+                    logger.error("Failed to fetch users: ", error);
+                    responseObserver.onError(new RuntimeException("Failed to fetch users: " + error.getMessage()));
+                })
+                .subscribe();
     }
 
+    public static class UserResponse {
+        @JsonProperty("userId")
+        private int userId;
 
-
-
-
-    // DTO classes used in WebClient
-    private static class UserCreateDto {
+        @JsonProperty("userName")
         private String userName;
-        private String password;
-        private String userRole;
 
-        public UserCreateDto(String userName, String password, String userRole) {
-            this.userName = userName;
-            this.password = password;
-            this.userRole = userRole;
-        }
+        @JsonProperty("userRole")
+        private UserRole userRole;
 
-        // Getters and Setters
-        public String getUserName() { return userName; }
-        public void setUserName(String userName) { this.userName = userName; }
-        public String getPassword() { return password; }
-        public void setPassword(String password) { this.password = password; }
-        public String getUserRole() { return userRole; }
-        public void setUserRole(String userRole) { this.userRole = userRole; }
-    }
-
-    private static class UserDto {
-        private String userid;
-        private String username;
-        private String password;
-        private String userRole;
+        @JsonProperty("isActive")
         private boolean isActive;
 
-        public UserDto(String userid, String username, String password, String userRole, boolean isActive) {
-            this.userid = userid;
-            this.username = username;
-            this.password = password;
-            this.userRole = userRole;
-            this.isActive = isActive;
+        public int getUserId() {
+            return userId;
         }
 
-        // Getters and Setters
-        public String getUserid() { return userid; }
-        public void setUserid(String userid) { this.userid = userid; }
-        public String getUsername() { return username; }
-        public void setUsername(String username) { this.username = username; }
-        public String getPassword() { return password; }
-        public void setPassword(String password) { this.password = password; }
-        public String getUserRole() { return userRole; }
-        public void setUserRole(String userRole) { this.userRole = userRole; }
-        public boolean getIsActive() { return isActive; }
-        public void setIsActive(boolean isActive) { this.isActive = isActive; }
+        public String getUserName() {
+            return userName;
+        }
+
+        public UserRole getUserRole() {
+            return userRole;
+        }
+
+        public boolean isActive() {
+            return isActive;
+        }
     }
 }
