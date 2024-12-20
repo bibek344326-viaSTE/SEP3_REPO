@@ -201,14 +201,12 @@ public class UserService extends UserServiceGrpc.UserServiceImplBase {
         private String username;
         private String password;
         private int userRole;
-        private boolean isActive;
 
         public RestUserUpdateDTO(int userId, String username, String password, int userRole) {
             this.userId = userId;
             this.username = username;
             this.password = password;
             this.userRole = userRole;
-            this.isActive = isActive;
         }
 
         // Getter and Setter for userId
@@ -245,15 +243,6 @@ public class UserService extends UserServiceGrpc.UserServiceImplBase {
 
         public void setUserRole(int userRole) {
             this.userRole = userRole;
-        }
-
-        // Getter and Setter for isActive
-        public boolean isActive() {
-            return isActive;
-        }
-
-        public void setActive(boolean active) {
-            isActive = active;
         }
     }
 
