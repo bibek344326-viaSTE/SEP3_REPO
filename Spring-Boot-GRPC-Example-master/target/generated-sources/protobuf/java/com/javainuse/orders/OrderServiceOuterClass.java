@@ -60,23 +60,24 @@ public final class OrderServiceOuterClass {
       "ccess\030\001 \001(\010\"\202\001\n\013CreateOrder\022,\n\013order_ite" +
       "ms\030\001 \003(\0132\027.orders.CreateOrderItem\0221\n\rdel" +
       "ivery_date\030\002 \001(\0132\032.google.protobuf.Times" +
-      "tamp\022\022\n\ncreated_by\030\003 \001(\005\"<\n\017CreateOrderI" +
-      "tem\022\017\n\007item_id\030\001 \001(\005\022\030\n\020quantity_to_pick" +
-      "\030\002 \001(\005\"\202\002\n\005Order\022\020\n\010order_id\030\001 \001(\005\022)\n\013or" +
-      "der_items\030\002 \003(\0132\024.orders.GetOrderItem\022.\n" +
-      "\ncreated_at\030\003 \001(\0132\032.google.protobuf.Time" +
-      "stamp\022\025\n\rassigned_user\030\004 \001(\t\022\027\n\017created_" +
-      "by_user\030\005 \001(\t\022)\n\014order_status\030\006 \001(\0162\023.or" +
-      "ders.OrderStatus\0221\n\rdelivery_date\030\007 \001(\0132" +
-      "\032.google.protobuf.Timestamp\":\n\014GetOrderI" +
-      "tem\022\020\n\010itemName\030\001 \001(\t\022\030\n\020quantity_to_pic" +
-      "k\030\002 \001(\005\"*\n\tOrderList\022\035\n\006orders\030\001 \003(\0132\r.o" +
-      "rders.Order*-\n\013OrderStatus\022\r\n\tCOMPLETED\020" +
-      "\000\022\017\n\013IN_PROGRESS\020\0012\212\001\n\014OrderService\022?\n\013c" +
-      "reateOrder\022\023.orders.CreateOrder\032\033.orders" +
-      ".CreateOrderResponse\0229\n\014getAllOrders\022\026.g" +
-      "oogle.protobuf.Empty\032\021.orders.OrderListB" +
-      "\030\n\024com.javainuse.ordersP\001b\006proto3"
+      "tamp\022\022\n\ncreated_by\030\003 \001(\005\":\n\017CreateOrderI" +
+      "tem\022\017\n\007item_id\030\001 \001(\005\022\026\n\016total_quantity\030\002" +
+      " \001(\005\"\202\002\n\005Order\022\020\n\010order_id\030\001 \001(\005\022)\n\013orde" +
+      "r_items\030\002 \003(\0132\024.orders.GetOrderItem\022.\n\nc" +
+      "reated_at\030\003 \001(\0132\032.google.protobuf.Timest" +
+      "amp\022\025\n\rassigned_user\030\004 \001(\t\022\027\n\017created_by" +
+      "_user\030\005 \001(\t\022)\n\014order_status\030\006 \001(\0162\023.orde" +
+      "rs.OrderStatus\0221\n\rdelivery_date\030\007 \001(\0132\032." +
+      "google.protobuf.Timestamp\"R\n\014GetOrderIte" +
+      "m\022\020\n\010itemName\030\001 \001(\t\022\030\n\020quantity_to_pick\030" +
+      "\002 \001(\005\022\026\n\016total_quantity\030\003 \001(\005\"*\n\tOrderLi" +
+      "st\022\035\n\006orders\030\001 \003(\0132\r.orders.Order*-\n\013Ord" +
+      "erStatus\022\r\n\tCOMPLETED\020\000\022\017\n\013IN_PROGRESS\020\001" +
+      "2\212\001\n\014OrderService\022?\n\013createOrder\022\023.order" +
+      "s.CreateOrder\032\033.orders.CreateOrderRespon" +
+      "se\0229\n\014getAllOrders\022\026.google.protobuf.Emp" +
+      "ty\032\021.orders.OrderListB\030\n\024com.javainuse.o" +
+      "rdersP\001b\006proto3"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -111,7 +112,7 @@ public final class OrderServiceOuterClass {
     internal_static_orders_CreateOrderItem_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_orders_CreateOrderItem_descriptor,
-        new java.lang.String[] { "ItemId", "QuantityToPick", });
+        new java.lang.String[] { "ItemId", "TotalQuantity", });
     internal_static_orders_Order_descriptor =
       getDescriptor().getMessageTypes().get(3);
     internal_static_orders_Order_fieldAccessorTable = new
@@ -123,7 +124,7 @@ public final class OrderServiceOuterClass {
     internal_static_orders_GetOrderItem_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_orders_GetOrderItem_descriptor,
-        new java.lang.String[] { "ItemName", "QuantityToPick", });
+        new java.lang.String[] { "ItemName", "QuantityToPick", "TotalQuantity", });
     internal_static_orders_OrderList_descriptor =
       getDescriptor().getMessageTypes().get(5);
     internal_static_orders_OrderList_fieldAccessorTable = new

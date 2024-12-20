@@ -29,4 +29,9 @@ public interface GetOrderItemOrBuilder extends
    * <code>int32 quantity_to_pick = 2;</code>
    */
   int getQuantityToPick();
+
+  /**
+   * <code>int32 total_quantity = 3;</code>
+   */
+  int getTotalQuantity();
 }

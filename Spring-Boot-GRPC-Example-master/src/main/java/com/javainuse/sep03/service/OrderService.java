@@ -1,6 +1,8 @@
 package com.javainuse.sep03.service;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.protobuf.Empty;
 import com.javainuse.orders.*;
 import io.grpc.stub.StreamObserver;
@@ -36,19 +38,25 @@ public class OrderService extends OrderServiceGrpc.OrderServiceImplBase {
             ))
             .build();
 
-    @Override
+    /**
+     * Handles creating a new order
+     */
     public void createOrder(CreateOrder request, StreamObserver<CreateOrderResponse> responseObserver) {
         logger.info("Received request to create order");
 
         try {
+            String deliveryDate = Instant.ofEpochSecond(request.getDeliveryDate().getSeconds(), request.getDeliveryDate().getNanos()).toString();
+
             OrderData createOrderDTO = new OrderData(
-                    Instant.ofEpochSecond(request.getDeliveryDate().getSeconds()).toString(),
+                    deliveryDate,
                     request.getOrderItemsList().stream().map(orderItem ->
-                            new OrderItemData(orderItem.getItemId(), orderItem.getQuantityToPick())
+                            new OrderItemData(orderItem.getItemId(), orderItem.getTotalQuantity())
                     ).collect(Collectors.toList()),
                     request.getCreatedBy(),
                     Instant.now().toString()
             );
+
+            logger.info("Sending payload to REST API: {}", new ObjectMapper().writeValueAsString(createOrderDTO));
 
             webClient.post()
                     .uri("/")
@@ -57,7 +65,9 @@ public class OrderService extends OrderServiceGrpc.OrderServiceImplBase {
                     .retrieve()
                     .onStatus(HttpStatus::isError, response -> {
                         logger.error("Error from REST API with status: {}", response.statusCode());
-                        return Mono.error(new RuntimeException("Error calling REST API"));
+                        return response.bodyToMono(String.class)
+                                .doOnNext(body -> logger.error("Error response from REST API: {}", body))
+                                .flatMap(errorBody -> Mono.error(new RuntimeException("Error calling REST API: " + errorBody)));
                     })
                     .bodyToMono(Boolean.class)
                     .subscribe(
@@ -78,6 +88,9 @@ public class OrderService extends OrderServiceGrpc.OrderServiceImplBase {
         }
     }
 
+    /**
+     * Handles fetching all orders
+     */
     @Override
     public void getAllOrders(Empty request, StreamObserver<OrderList> responseObserver) {
         logger.info("Fetching all orders from REST API");
@@ -94,16 +107,18 @@ public class OrderService extends OrderServiceGrpc.OrderServiceImplBase {
                                     try {
                                         Map<String, Object> orderMap = (Map<String, Object>) order;
 
-                                        // Safely extract order items
                                         List<GetOrderItem> orderItems = ((List<?>) orderMap.getOrDefault("orderItems", List.of()))
                                                 .stream().map(orderItem -> {
                                                     try {
                                                         Map<String, Object> orderItemMap = (Map<String, Object>) orderItem;
                                                         String itemName = Optional.ofNullable((String) orderItemMap.get("itemName")).orElse("Unknown");
                                                         int quantityToPick = ((Number) orderItemMap.getOrDefault("quantityToPick", 0)).intValue();
+                                                        int totalQuantity = ((Number) orderItemMap.getOrDefault("totalQuantity", 0)).intValue();
+
                                                         return GetOrderItem.newBuilder()
                                                                 .setItemName(itemName)
                                                                 .setQuantityToPick(quantityToPick)
+                                                                .setTotalQuantity(totalQuantity)
                                                                 .build();
                                                     } catch (Exception e) {
                                                         logger.error("Error while processing order item: {}", orderItem, e);
@@ -111,22 +126,19 @@ public class OrderService extends OrderServiceGrpc.OrderServiceImplBase {
                                                     }
                                                 }).collect(Collectors.toList());
 
-                                        // Safely extract order-level fields
                                         int orderId = ((Number) orderMap.getOrDefault("orderId", 0)).intValue();
                                         String assignedUser = Optional.ofNullable((String) orderMap.get("assignedUser")).orElse("Unassigned");
                                         String createdBy = Optional.ofNullable((String) orderMap.get("createdBy")).orElse("Unknown");
-                                        String orderStatusStr = Optional.ofNullable((String) orderMap.get("orderStatus")).orElse("IN_PROGRESS");
 
-                                        // Handle date parsing with null checks
                                         Instant deliveryDate = Optional.ofNullable(orderMap.get("deliveryDate"))
                                                 .map(dateStr -> {
                                                     try {
                                                         return Instant.parse((String) dateStr);
                                                     } catch (Exception e) {
                                                         logger.warn("Invalid delivery date format: {}", dateStr, e);
-                                                        return Instant.now(); // Default to now if the date is invalid
+                                                        return null;
                                                     }
-                                                }).orElse(Instant.now());
+                                                }).orElse(null);
 
                                         Instant createdAt = Optional.ofNullable(orderMap.get("createdAt"))
                                                 .map(dateStr -> {
@@ -134,25 +146,27 @@ public class OrderService extends OrderServiceGrpc.OrderServiceImplBase {
                                                         return Instant.parse((String) dateStr);
                                                     } catch (Exception e) {
                                                         logger.warn("Invalid created at date format: {}", dateStr, e);
-                                                        return Instant.now(); // Default to now if the date is invalid
+                                                        return null;
                                                     }
-                                                }).orElse(Instant.now());
+                                                }).orElse(null);
 
-                                        // Safely build the Order object
                                         return Order.newBuilder()
                                                 .setOrderId(orderId)
                                                 .addAllOrderItems(orderItems)
-                                                .setCreatedAt(com.google.protobuf.Timestamp.newBuilder()
-                                                        .setSeconds(createdAt.getEpochSecond())
-                                                        .setNanos(createdAt.getNano())
-                                                        .build())
                                                 .setAssignedUser(assignedUser)
                                                 .setCreatedByUser(createdBy)
-                                                .setOrderStatus(OrderStatus.valueOf(orderStatusStr))
-                                                .setDeliveryDate(com.google.protobuf.Timestamp.newBuilder()
-                                                        .setSeconds(deliveryDate.getEpochSecond())
-                                                        .setNanos(deliveryDate.getNano())
-                                                        .build())
+                                                .setDeliveryDate(deliveryDate != null ?
+                                                        com.google.protobuf.Timestamp.newBuilder()
+                                                                .setSeconds(deliveryDate.getEpochSecond())
+                                                                .setNanos(deliveryDate.getNano())
+                                                                .build() :
+                                                        com.google.protobuf.Timestamp.getDefaultInstance())
+                                                .setCreatedAt(createdAt != null ?
+                                                        com.google.protobuf.Timestamp.newBuilder()
+                                                                .setSeconds(createdAt.getEpochSecond())
+                                                                .setNanos(createdAt.getNano())
+                                                                .build() :
+                                                        com.google.protobuf.Timestamp.getDefaultInstance())
                                                 .build();
                                     } catch (Exception e) {
                                         logger.error("Error while processing order: {}", order, e);
@@ -176,8 +190,9 @@ public class OrderService extends OrderServiceGrpc.OrderServiceImplBase {
                         }
                 );
     }
-
-
+/**
+     * Data structure for posting orders
+     */
     public static class OrderData {
         @JsonProperty("deliveryDate")
         private String deliveryDate;
@@ -199,15 +214,30 @@ public class OrderService extends OrderServiceGrpc.OrderServiceImplBase {
         }
     }
 
+    /**
+     * Data structure for order items
+     */
     public static class OrderItemData {
-        @JsonProperty("itemName")
-        private int itemName;
+        @JsonProperty("itemId")
+        private int itemId;
+
+        @JsonProperty("totalQuantity")
+        private int totalQuantity;
 
         @JsonProperty("quantityToPick")
-        private int quantityToPick;
+        @JsonInclude(JsonInclude.Include.NON_NULL)
+        private Integer quantityToPick;
 
-        public OrderItemData(int itemId, int quantityToPick) {
-            this.itemName = itemId;
+        // For POST requests (only itemId and totalQuantity)
+        public OrderItemData(int itemId, int totalQuantity) {
+            this.itemId = itemId;
+            this.totalQuantity = totalQuantity;
+        }
+
+        // For GET requests (all three fields)
+        public OrderItemData(int itemId, int totalQuantity, int quantityToPick) {
+            this.itemId = itemId;
+            this.totalQuantity = totalQuantity;
             this.quantityToPick = quantityToPick;
         }
     }

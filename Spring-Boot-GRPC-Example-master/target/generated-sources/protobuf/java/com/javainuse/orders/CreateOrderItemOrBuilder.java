@@ -13,7 +13,7 @@ public interface CreateOrderItemOrBuilder extends
   int getItemId();
 
   /**
-   * <code>int32 quantity_to_pick = 2;</code>
+   * <code>int32 total_quantity = 2;</code>
    */
-  int getQuantityToPick();
+  int getTotalQuantity();
 }

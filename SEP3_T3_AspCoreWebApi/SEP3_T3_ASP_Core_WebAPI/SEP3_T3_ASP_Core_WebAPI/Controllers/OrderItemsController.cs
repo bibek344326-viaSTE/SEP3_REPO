@@ -35,7 +35,7 @@ public class OrderItemsController: ControllerBase
             OrderItem orderItemToUpdate = await orderItemRepository.GetOrderItemById(id);
             orderItemToUpdate.OrderId = orderItem.OrderId;
             orderItemToUpdate.ItemId = orderItem.ItemId;
-            orderItemToUpdate.QuantityToPick = orderItem.QuantityToPick;
+            orderItemToUpdate.TotalQuantity = orderItem.TotalQuantity;
             
             await orderItemRepository.UpdateOrderItemAsync(orderItemToUpdate);
             return NoContent();

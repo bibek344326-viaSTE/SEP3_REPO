@@ -18,6 +18,7 @@ private static final long serialVersionUID = 0L;
   private GetOrderItem() {
     itemName_ = "";
     quantityToPick_ = 0;
+    totalQuantity_ = 0;
   }
 
   @java.lang.Override
@@ -53,6 +54,11 @@ private static final long serialVersionUID = 0L;
           case 16: {
 
             quantityToPick_ = input.readInt32();
+            break;
+          }
+          case 24: {
+
+            totalQuantity_ = input.readInt32();
             break;
           }
           default: {
@@ -138,6 +144,15 @@ private static final long serialVersionUID = 0L;
     return quantityToPick_;
   }
 
+  public static final int TOTAL_QUANTITY_FIELD_NUMBER = 3;
+  private int totalQuantity_;
+  /**
+   * <code>int32 total_quantity = 3;</code>
+   */
+  public int getTotalQuantity() {
+    return totalQuantity_;
+  }
+
   private byte memoizedIsInitialized = -1;
   @java.lang.Override
   public final boolean isInitialized() {
@@ -158,6 +173,9 @@ private static final long serialVersionUID = 0L;
     if (quantityToPick_ != 0) {
       output.writeInt32(2, quantityToPick_);
     }
+    if (totalQuantity_ != 0) {
+      output.writeInt32(3, totalQuantity_);
+    }
     unknownFields.writeTo(output);
   }
 
@@ -173,6 +191,10 @@ private static final long serialVersionUID = 0L;
     if (quantityToPick_ != 0) {
       size += com.google.protobuf.CodedOutputStream
         .computeInt32Size(2, quantityToPick_);
+    }
+    if (totalQuantity_ != 0) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeInt32Size(3, totalQuantity_);
     }
     size += unknownFields.getSerializedSize();
     memoizedSize = size;
@@ -194,6 +216,8 @@ private static final long serialVersionUID = 0L;
         .equals(other.getItemName());
     result = result && (getQuantityToPick()
         == other.getQuantityToPick());
+    result = result && (getTotalQuantity()
+        == other.getTotalQuantity());
     result = result && unknownFields.equals(other.unknownFields);
     return result;
   }
@@ -209,6 +233,8 @@ private static final long serialVersionUID = 0L;
     hash = (53 * hash) + getItemName().hashCode();
     hash = (37 * hash) + QUANTITY_TO_PICK_FIELD_NUMBER;
     hash = (53 * hash) + getQuantityToPick();
+    hash = (37 * hash) + TOTAL_QUANTITY_FIELD_NUMBER;
+    hash = (53 * hash) + getTotalQuantity();
     hash = (29 * hash) + unknownFields.hashCode();
     memoizedHashCode = hash;
     return hash;
@@ -346,6 +372,8 @@ private static final long serialVersionUID = 0L;
 
       quantityToPick_ = 0;
 
+      totalQuantity_ = 0;
+
       return this;
     }
 
@@ -374,6 +402,7 @@ private static final long serialVersionUID = 0L;
       com.javainuse.orders.GetOrderItem result = new com.javainuse.orders.GetOrderItem(this);
       result.itemName_ = itemName_;
       result.quantityToPick_ = quantityToPick_;
+      result.totalQuantity_ = totalQuantity_;
       onBuilt();
       return result;
     }
@@ -428,6 +457,9 @@ private static final long serialVersionUID = 0L;
       }
       if (other.getQuantityToPick() != 0) {
         setQuantityToPick(other.getQuantityToPick());
+      }
+      if (other.getTotalQuantity() != 0) {
+        setTotalQuantity(other.getTotalQuantity());
       }
       this.mergeUnknownFields(other.unknownFields);
       onChanged();
@@ -569,6 +601,32 @@ private static final long serialVersionUID = 0L;
     public Builder clearQuantityToPick() {
       
       quantityToPick_ = 0;
+      onChanged();
+      return this;
+    }
+
+    private int totalQuantity_ ;
+    /**
+     * <code>int32 total_quantity = 3;</code>
+     */
+    public int getTotalQuantity() {
+      return totalQuantity_;
+    }
+    /**
+     * <code>int32 total_quantity = 3;</code>
+     */
+    public Builder setTotalQuantity(int value) {
+      
+      totalQuantity_ = value;
+      onChanged();
+      return this;
+    }
+    /**
+     * <code>int32 total_quantity = 3;</code>
+     */
+    public Builder clearTotalQuantity() {
+      
+      totalQuantity_ = 0;
       onChanged();
       return this;
     }

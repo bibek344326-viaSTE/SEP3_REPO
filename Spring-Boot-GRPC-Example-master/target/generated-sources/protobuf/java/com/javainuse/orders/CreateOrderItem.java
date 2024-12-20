@@ -17,7 +17,7 @@ private static final long serialVersionUID = 0L;
   }
   private CreateOrderItem() {
     itemId_ = 0;
-    quantityToPick_ = 0;
+    totalQuantity_ = 0;
   }
 
   @java.lang.Override
@@ -51,7 +51,7 @@ private static final long serialVersionUID = 0L;
           }
           case 16: {
 
-            quantityToPick_ = input.readInt32();
+            totalQuantity_ = input.readInt32();
             break;
           }
           default: {
@@ -95,13 +95,13 @@ private static final long serialVersionUID = 0L;
     return itemId_;
   }
 
-  public static final int QUANTITY_TO_PICK_FIELD_NUMBER = 2;
-  private int quantityToPick_;
+  public static final int TOTAL_QUANTITY_FIELD_NUMBER = 2;
+  private int totalQuantity_;
   /**
-   * <code>int32 quantity_to_pick = 2;</code>
+   * <code>int32 total_quantity = 2;</code>
    */
-  public int getQuantityToPick() {
-    return quantityToPick_;
+  public int getTotalQuantity() {
+    return totalQuantity_;
   }
 
   private byte memoizedIsInitialized = -1;
@@ -121,8 +121,8 @@ private static final long serialVersionUID = 0L;
     if (itemId_ != 0) {
       output.writeInt32(1, itemId_);
     }
-    if (quantityToPick_ != 0) {
-      output.writeInt32(2, quantityToPick_);
+    if (totalQuantity_ != 0) {
+      output.writeInt32(2, totalQuantity_);
     }
     unknownFields.writeTo(output);
   }
@@ -137,9 +137,9 @@ private static final long serialVersionUID = 0L;
       size += com.google.protobuf.CodedOutputStream
         .computeInt32Size(1, itemId_);
     }
-    if (quantityToPick_ != 0) {
+    if (totalQuantity_ != 0) {
       size += com.google.protobuf.CodedOutputStream
-        .computeInt32Size(2, quantityToPick_);
+        .computeInt32Size(2, totalQuantity_);
     }
     size += unknownFields.getSerializedSize();
     memoizedSize = size;
@@ -159,8 +159,8 @@ private static final long serialVersionUID = 0L;
     boolean result = true;
     result = result && (getItemId()
         == other.getItemId());
-    result = result && (getQuantityToPick()
-        == other.getQuantityToPick());
+    result = result && (getTotalQuantity()
+        == other.getTotalQuantity());
     result = result && unknownFields.equals(other.unknownFields);
     return result;
   }
@@ -174,8 +174,8 @@ private static final long serialVersionUID = 0L;
     hash = (19 * hash) + getDescriptor().hashCode();
     hash = (37 * hash) + ITEM_ID_FIELD_NUMBER;
     hash = (53 * hash) + getItemId();
-    hash = (37 * hash) + QUANTITY_TO_PICK_FIELD_NUMBER;
-    hash = (53 * hash) + getQuantityToPick();
+    hash = (37 * hash) + TOTAL_QUANTITY_FIELD_NUMBER;
+    hash = (53 * hash) + getTotalQuantity();
     hash = (29 * hash) + unknownFields.hashCode();
     memoizedHashCode = hash;
     return hash;
@@ -311,7 +311,7 @@ private static final long serialVersionUID = 0L;
       super.clear();
       itemId_ = 0;
 
-      quantityToPick_ = 0;
+      totalQuantity_ = 0;
 
       return this;
     }
@@ -340,7 +340,7 @@ private static final long serialVersionUID = 0L;
     public com.javainuse.orders.CreateOrderItem buildPartial() {
       com.javainuse.orders.CreateOrderItem result = new com.javainuse.orders.CreateOrderItem(this);
       result.itemId_ = itemId_;
-      result.quantityToPick_ = quantityToPick_;
+      result.totalQuantity_ = totalQuantity_;
       onBuilt();
       return result;
     }
@@ -392,8 +392,8 @@ private static final long serialVersionUID = 0L;
       if (other.getItemId() != 0) {
         setItemId(other.getItemId());
       }
-      if (other.getQuantityToPick() != 0) {
-        setQuantityToPick(other.getQuantityToPick());
+      if (other.getTotalQuantity() != 0) {
+        setTotalQuantity(other.getTotalQuantity());
       }
       this.mergeUnknownFields(other.unknownFields);
       onChanged();
@@ -450,28 +450,28 @@ private static final long serialVersionUID = 0L;
       return this;
     }
 
-    private int quantityToPick_ ;
+    private int totalQuantity_ ;
     /**
-     * <code>int32 quantity_to_pick = 2;</code>
+     * <code>int32 total_quantity = 2;</code>
      */
-    public int getQuantityToPick() {
-      return quantityToPick_;
+    public int getTotalQuantity() {
+      return totalQuantity_;
     }
     /**
-     * <code>int32 quantity_to_pick = 2;</code>
+     * <code>int32 total_quantity = 2;</code>
      */
-    public Builder setQuantityToPick(int value) {
+    public Builder setTotalQuantity(int value) {
       
-      quantityToPick_ = value;
+      totalQuantity_ = value;
       onChanged();
       return this;
     }
     /**
-     * <code>int32 quantity_to_pick = 2;</code>
+     * <code>int32 total_quantity = 2;</code>
      */
-    public Builder clearQuantityToPick() {
+    public Builder clearTotalQuantity() {
       
-      quantityToPick_ = 0;
+      totalQuantity_ = 0;
       onChanged();
       return this;
     }

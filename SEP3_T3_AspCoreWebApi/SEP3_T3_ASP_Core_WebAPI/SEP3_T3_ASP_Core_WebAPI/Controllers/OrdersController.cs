@@ -32,18 +32,17 @@ namespace SEP3_T3_ASP_Core_WebAPI.Controllers
 
                 // Convert DeliveryDate and CreatedAt to UTC
                 createOrderDTO.DeliveryDate = createOrderDTO.DeliveryDate.ToUniversalTime();
-                createOrderDTO.CreatedAt = createOrderDTO.CreatedAt.ToUniversalTime();
 
                 // Create the order from the DTO
                 var order = new Order
                 {
                     DeliveryDate = createOrderDTO.DeliveryDate, // Ensure this is in UTC
                     CreatedById = createOrderDTO.CreatedBy,
-                    CreatedAt = createOrderDTO.CreatedAt, // Ensure this is in UTC
+                    CreatedAt = DateTime.UtcNow, // Set CreatedAt to current UTC time
                     OrderItems = createOrderDTO.OrderItems.Select(itemDto => new OrderItem
                     {
                         ItemId = itemDto.ItemId,
-                        QuantityToPick = itemDto.QuantityToPick
+                        TotalQuantity = itemDto.TotalQuantity
                     }).ToList()
                 };
 
@@ -103,7 +102,8 @@ namespace SEP3_T3_ASP_Core_WebAPI.Controllers
                 OrderItems = order.OrderItems.Select(oi => new GetOrderItemDTO
                 {
                     itemName = oi.Item.ItemName, // Include only itemName
-                    QuantityToPick = oi.QuantityToPick
+                    QuantityToPick = oi.TotalQuantity,
+                    TotalQuantity = oi.TotalQuantity,
                 }).ToList(),
                 AssignedUser = order.AssignedUser?.UserName,
                 CreatedBy = order.CreatedBy.UserName

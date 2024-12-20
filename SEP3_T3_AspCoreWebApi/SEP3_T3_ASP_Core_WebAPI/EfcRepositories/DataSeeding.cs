@@ -70,99 +70,101 @@ namespace SEP3_T3_ASP_Core_WebAPI.Data
                     context.SaveChanges();
 
 
+                    /*
+                     * 
 
 
-
-
-                                         // ----- Step 3: Insert Orders -----
-                    var orders = new List<Order>
-                    {
-                        new Order
-                        {
-                            OrderStatus = OrderStatus.COMPLETED,
-                            DeliveryDate = DateTime.UtcNow.AddDays(-1),
-                            CreatedById = user1.UserId,
-                            UserId = user1.UserId,
-                            CreatedAt = DateTimeOffset.UtcNow,
-                            OrderItems = new List<OrderItem>
-                            {
-                                new OrderItem { ItemId = items[1].ItemId, QuantityToPick = 8 }, // Coffee
-                                new OrderItem { ItemId = items[3].ItemId, QuantityToPick = 6 }, // Bread
-                                new OrderItem { ItemId = items[2].ItemId, QuantityToPick = 4 }  // Chocolate
-                            }
-                        },
-                        new Order
-                        {
-                            OrderStatus = OrderStatus.IN_PROGRESS,
-                            DeliveryDate = DateTime.UtcNow.AddDays(5),
-                            CreatedById = user2.UserId,
-                            CreatedBy = user2,
-                            UserId= null,
-                            AssignedUser = null,
-                            CreatedAt = DateTimeOffset.UtcNow,
-                            OrderItems = new List<OrderItem>
-                            {
-                                new OrderItem { ItemId = items[8].ItemId, QuantityToPick = 5 }, // Bananas
-                                new OrderItem { ItemId = items[0].ItemId, QuantityToPick = 7 }  // Milk
-                            }
-                        },
-                        new Order
-                        {
-                            OrderStatus = OrderStatus.IN_PROGRESS,
-                            DeliveryDate = DateTime.UtcNow.AddDays(3),
-                            CreatedById = user1.UserId,
-                            CreatedBy= user1,
-                            UserId = user1.UserId,
-                            AssignedUser = user1,
-                            CreatedAt = DateTimeOffset.UtcNow,
-                            OrderItems = new List<OrderItem>
-                            {
-                                new OrderItem { ItemId = items[5].ItemId, QuantityToPick = 3 }, // Cheese
-                                new OrderItem { ItemId = items[4].ItemId, QuantityToPick = 2 }  // Butter
-                            }
-                        }
-                    };
-                                        context.Orders.AddRange(orders);
-                    context.SaveChanges();
-                                        // ----- Step 4: Insert Additional Orders and OrderItems -----
-                       var random = new Random(); // Ensuring a single Random instance for unique randomness
-                    for (int i = 3; i < 20; i++) // Creating orders #4 to #20
-                    {
-                        var order = new Order
-                        {
-                            OrderStatus = i % 3 == 0 ? OrderStatus.COMPLETED : OrderStatus.IN_PROGRESS,
-                            DeliveryDate = DateTime.UtcNow.AddDays(-i),
-                            CreatedById = (i % 2 == 0) ? user1.UserId : user2.UserId, // Assign a CreatedById from user1 or user2
-                            UserId = (i % 2 == 0) ? user1.UserId : user2.UserId, // Assign a UserId from user1 or user2
-                            CreatedAt = DateTimeOffset.UtcNow, // Timestamp for order creation
-                            OrderItems = new List<OrderItem>()
-                        };
-
-                        int numberOfItems = random.Next(3, 7); // Each order has between 3 to 6 items
-
-                        for (int j = 0; j < numberOfItems; j++)
-                        {
-                            var randomItem = items[random.Next(items.Count)]; // Pick a random item from the items list
-                            int quantity = random.Next(1, 11); // Quantity between 1 to 10
-
-                            // Avoid duplicate items in the same order
-                            if (!order.OrderItems.Any(oi => oi.ItemId == randomItem.ItemId))
-                            {
-                                order.OrderItems.Add(new OrderItem
+                                                     // ----- Step 3: Insert Orders -----
+                                var orders = new List<Order>
                                 {
-                                    ItemId = randomItem.ItemId,
-                                    QuantityToPick = quantity
-                                });
-                            }
-                        }
+                                    new Order
+                                    {
+                                        OrderStatus = OrderStatus.COMPLETED,
+                                        DeliveryDate = DateTime.UtcNow.AddDays(-1),
+                                        CreatedById = user1.UserId,
+                                        UserId = user1.UserId,
+                                        CreatedAt = DateTimeOffset.UtcNow,
+                                        OrderItems = new List<OrderItem>
+                                        {
+                                            new OrderItem { ItemId = items[1].ItemId, TotalQuantity = 8 }, // Coffee
+                                            new OrderItem { ItemId = items[3].ItemId, TotalQuantity = 6 }, // Bread
+                                            new OrderItem { ItemId = items[2].ItemId, TotalQuantity = 4 }  // Chocolate
+                                        }
+                                    },
+                                    new Order
+                                    {
+                                        OrderStatus = OrderStatus.IN_PROGRESS,
+                                        DeliveryDate = DateTime.UtcNow.AddDays(5),
+                                        CreatedById = user2.UserId,
+                                        CreatedBy = user2,
+                                        UserId= null,
+                                        AssignedUser = null,
+                                        CreatedAt = DateTimeOffset.UtcNow,
+                                        OrderItems = new List<OrderItem>
+                                        {
+                                            new OrderItem { ItemId = items[8].ItemId, TotalQuantity = 5 }, // Bananas
+                                            new OrderItem { ItemId = items[0].ItemId, TotalQuantity = 7 }  // Milk
+                                        }
+                                    },
+                                    new Order
+                                    {
+                                        OrderStatus = OrderStatus.IN_PROGRESS,
+                                        DeliveryDate = DateTime.UtcNow.AddDays(3),
+                                        CreatedById = user1.UserId,
+                                        CreatedBy= user1,
+                                        UserId = user1.UserId,
+                                        AssignedUser = user1,
+                                        CreatedAt = DateTimeOffset.UtcNow,
+                                        OrderItems = new List<OrderItem>
+                                        {
+                                            new OrderItem { ItemId = items[5].ItemId, TotalQuantity = 3 }, // Cheese
+                                            new OrderItem { ItemId = items[4].ItemId, TotalQuantity = 2 }  // Butter
+                                        }
+                                    }
+                                };
+                                                    context.Orders.AddRange(orders);
+                                context.SaveChanges();
+                                                    // ----- Step 4: Insert Additional Orders and OrderItems -----
+                                   var random = new Random(); // Ensuring a single Random instance for unique randomness
+                                for (int i = 3; i < 20; i++) // Creating orders #4 to #20
+                                {
+                                    var order = new Order
+                                    {
+                                        OrderStatus = i % 3 == 0 ? OrderStatus.COMPLETED : OrderStatus.IN_PROGRESS,
+                                        DeliveryDate = DateTime.UtcNow.AddDays(-i),
+                                        CreatedById = (i % 2 == 0) ? user1.UserId : user2.UserId, // Assign a CreatedById from user1 or user2
+                                        UserId = (i % 2 == 0) ? user1.UserId : user2.UserId, // Assign a UserId from user1 or user2
+                                        CreatedAt = DateTimeOffset.UtcNow, // Timestamp for order creation
+                                        OrderItems = new List<OrderItem>()
+                                    };
 
-                        orders.Add(order);
-                    }
+                                    int numberOfItems = random.Next(3, 7); // Each order has between 3 to 6 items
 
-                    context.Orders.AddRange(orders.GetRange(3, orders.Count - 3));
-                    context.SaveChanges();
+                                    for (int j = 0; j < numberOfItems; j++)
+                                    {
+                                        var randomItem = items[random.Next(items.Count)]; // Pick a random item from the items list
+                                        int quantity = random.Next(1, 11); // Quantity between 1 to 10
 
-                     
+                                        // Avoid duplicate items in the same order
+                                        if (!order.OrderItems.Any(oi => oi.ItemId == randomItem.ItemId))
+                                        {
+                                            order.OrderItems.Add(new OrderItem
+                                            {
+                                                ItemId = randomItem.ItemId,
+                                                TotalQuantity = quantity
+                                            });
+                                        }
+                                    }
+
+                                    orders.Add(order);
+                                }
+
+                                context.Orders.AddRange(orders.GetRange(3, orders.Count - 3));
+                                context.SaveChanges();
+
+
+                     */
+
 
                 }
 

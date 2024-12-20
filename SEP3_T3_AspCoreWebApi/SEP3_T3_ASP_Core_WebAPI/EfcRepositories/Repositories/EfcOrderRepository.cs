@@ -58,6 +58,7 @@ public class EfcOrderRepository : IOrderRepository
         foreach (var orderItem in order.OrderItems)
         {
             orderItem.OrderId = order.OrderId; // Attach the new OrderId to each OrderItem
+            orderItem.QuantityToPick = orderItem.TotalQuantity;
             ctx.Attach(orderItem); // Attach instead of Add
         }
 

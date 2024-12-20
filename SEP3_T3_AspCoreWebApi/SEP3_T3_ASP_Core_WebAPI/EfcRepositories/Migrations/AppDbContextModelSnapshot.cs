@@ -94,6 +94,9 @@ namespace EfcRepositories.Migrations
                     b.Property<int>("QuantityToPick")
                         .HasColumnType("integer");
 
+                    b.Property<int>("TotalQuantity")
+                        .HasColumnType("integer");
+
                     b.HasKey("OrderId", "ItemId");
 
                     b.HasIndex("ItemId");
