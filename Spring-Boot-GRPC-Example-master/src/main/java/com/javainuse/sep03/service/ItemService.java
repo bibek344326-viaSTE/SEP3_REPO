@@ -34,7 +34,8 @@ public class ItemService extends ItemServiceGrpc.ItemServiceImplBase {
 
     @Override
     public void createItem(CreateItem request, StreamObserver<Item> responseObserver) {
-        logger.info("Received create request: {}", request);
+        logger.info("Received create request: name={}, description={}, quantityInStore={}",
+                request.getName(), request.getDescription(), request.getQuantityInStore());
 
         ItemData restCreateItem = new ItemData();
         restCreateItem.setItemName(request.getName());
@@ -61,7 +62,9 @@ public class ItemService extends ItemServiceGrpc.ItemServiceImplBase {
                     .setQuantityInStore(createdItem.getQuantityInStore())
                     .build();
 
-            logger.info("Item created successfully: {}", grpcItem);
+            logger.info("Item created successfully: itemId={}, itemName={}, description={}, quantityInStore={}",
+                    grpcItem.getItemId(), grpcItem.getItemName(), grpcItem.getDescription(), grpcItem.getQuantityInStore());
+
             responseObserver.onNext(grpcItem);
             responseObserver.onCompleted();
         } catch (Exception e) {
@@ -72,7 +75,8 @@ public class ItemService extends ItemServiceGrpc.ItemServiceImplBase {
 
     @Override
     public void editItem(Item request, StreamObserver<Empty> responseObserver) {
-        logger.info("Received edit request: {}", request);
+        logger.info("Received edit request: itemId={}, itemName={}, description={}, quantityInStore={}",
+                request.getItemId(), request.getItemName(), request.getDescription(), request.getQuantityInStore());
 
         int itemId = request.getItemId();
 
@@ -92,7 +96,9 @@ public class ItemService extends ItemServiceGrpc.ItemServiceImplBase {
                     .toBodilessEntity()
                     .block();
 
-            logger.info("Item updated successfully: {}", restItem);
+            logger.info("Item updated successfully: itemId={}, itemName={}, description={}, quantityInStore={}",
+                    restItem.getItemId(), restItem.getItemName(), restItem.getDescription(), restItem.getQuantityInStore());
+
             responseObserver.onNext(Empty.getDefaultInstance());
             responseObserver.onCompleted();
         } catch (Exception e) {
@@ -150,7 +156,9 @@ public class ItemService extends ItemServiceGrpc.ItemServiceImplBase {
                 itemListBuilder.addItems(grpcItem);
             }
 
-            logger.info("Items retrieved successfully: {}", itemListBuilder.getItemsList().size());
+            logger.info("Items retrieved successfully: count={}, items={}",
+                    itemListBuilder.getItemsList().size(), restItems);
+
             responseObserver.onNext(itemListBuilder.build());
             responseObserver.onCompleted();
         } catch (Exception e) {
@@ -200,5 +208,4 @@ public class ItemService extends ItemServiceGrpc.ItemServiceImplBase {
                     '}';
         }
     }
-
 }
