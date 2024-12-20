@@ -89,43 +89,6 @@ namespace SEP3_T3_ASP_Core_WebAPI.Controllers
             }
         }
 
-        [HttpGet("{id}")]
-        public async Task<ActionResult<GetOrderDTO>> GetSingleOrder([FromRoute] int id)
-        {
-            try
-            {
-                var order = await orderRepository.GetOrderById(id);
-                if (order == null)
-                {
-                    return NotFound($"Order with ID {id} not found.");
-                }
-
-                var orderDto = new GetOrderDTO
-                {
-                    OrderId = order.OrderId,
-                    OrderStatus = order.OrderStatus.ToString(),
-                    DeliveryDate = order.DeliveryDate,
-                    CreatedAt = order.CreatedAt,
-                    OrderItems = order.OrderItems.Select(oi => new OrderItemDTO
-                    {
-                        item = new ItemDTO
-                        {
-                            ItemId = oi.ItemId,
-                            ItemName = oi.Item?.ItemName ?? "Unknown Item"
-                        },
-                        QuantityToPick = oi.QuantityToPick
-                    }).ToList(),
-                    AssignedUser = order.AssignedUser?.UserName,
-                    CreatedBy = order.CreatedBy.UserName
-                };
-
-                return Ok(orderDto);
-            }
-            catch (InvalidOperationException)
-            {
-                return NotFound($"Order with ID {id} not found.");
-            }
-        }
 
         [HttpGet]
         public async Task<ActionResult<List<GetOrderDTO>>> GetAllOrders()
@@ -137,14 +100,9 @@ namespace SEP3_T3_ASP_Core_WebAPI.Controllers
                 OrderStatus = order.OrderStatus.ToString(),
                 DeliveryDate = order.DeliveryDate,
                 CreatedAt = order.CreatedAt,
-                OrderItems = order.OrderItems.Select(oi => new OrderItemDTO
+                OrderItems = order.OrderItems.Select(oi => new GetOrderItemDTO
                 {
-                    item = new ItemDTO
-                    {
-                        ItemId = oi.ItemId,
-                        ItemName = oi.Item.ItemName,
-                        QuantityInStore = oi.Item.QuantityInStore
-                    },
+                    itemName = oi.Item.ItemName, // Include only itemName
                     QuantityToPick = oi.QuantityToPick
                 }).ToList(),
                 AssignedUser = order.AssignedUser?.UserName,
@@ -153,5 +111,6 @@ namespace SEP3_T3_ASP_Core_WebAPI.Controllers
 
             return Ok(orderDtos);
         }
+
     }
 }

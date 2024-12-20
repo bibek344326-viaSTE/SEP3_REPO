@@ -4,19 +4,19 @@
 package com.javainuse.orders;
 
 /**
- * Protobuf type {@code orders.CreateOrderItemDTO}
+ * Protobuf type {@code orders.GetOrderItem}
  */
-public  final class CreateOrderItemDTO extends
+public  final class GetOrderItem extends
     com.google.protobuf.GeneratedMessageV3 implements
-    // @@protoc_insertion_point(message_implements:orders.CreateOrderItemDTO)
-    CreateOrderItemDTOOrBuilder {
+    // @@protoc_insertion_point(message_implements:orders.GetOrderItem)
+    GetOrderItemOrBuilder {
 private static final long serialVersionUID = 0L;
-  // Use CreateOrderItemDTO.newBuilder() to construct.
-  private CreateOrderItemDTO(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+  // Use GetOrderItem.newBuilder() to construct.
+  private GetOrderItem(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
     super(builder);
   }
-  private CreateOrderItemDTO() {
-    itemId_ = 0;
+  private GetOrderItem() {
+    itemName_ = "";
     quantityToPick_ = 0;
   }
 
@@ -25,7 +25,7 @@ private static final long serialVersionUID = 0L;
   getUnknownFields() {
     return this.unknownFields;
   }
-  private CreateOrderItemDTO(
+  private GetOrderItem(
       com.google.protobuf.CodedInputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
@@ -44,9 +44,10 @@ private static final long serialVersionUID = 0L;
           case 0:
             done = true;
             break;
-          case 8: {
+          case 10: {
+            java.lang.String s = input.readStringRequireUtf8();
 
-            itemId_ = input.readInt32();
+            itemName_ = s;
             break;
           }
           case 16: {
@@ -75,24 +76,57 @@ private static final long serialVersionUID = 0L;
   }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
-    return com.javainuse.orders.OrderServiceOuterClass.internal_static_orders_CreateOrderItemDTO_descriptor;
+    return com.javainuse.orders.OrderServiceOuterClass.internal_static_orders_GetOrderItem_descriptor;
   }
 
   @java.lang.Override
   protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internalGetFieldAccessorTable() {
-    return com.javainuse.orders.OrderServiceOuterClass.internal_static_orders_CreateOrderItemDTO_fieldAccessorTable
+    return com.javainuse.orders.OrderServiceOuterClass.internal_static_orders_GetOrderItem_fieldAccessorTable
         .ensureFieldAccessorsInitialized(
-            com.javainuse.orders.CreateOrderItemDTO.class, com.javainuse.orders.CreateOrderItemDTO.Builder.class);
+            com.javainuse.orders.GetOrderItem.class, com.javainuse.orders.GetOrderItem.Builder.class);
   }
 
-  public static final int ITEM_ID_FIELD_NUMBER = 1;
-  private int itemId_;
+  public static final int ITEMNAME_FIELD_NUMBER = 1;
+  private volatile java.lang.Object itemName_;
   /**
-   * <code>int32 item_id = 1;</code>
+   * <pre>
+   * For fetching, we return the full item
+   * </pre>
+   *
+   * <code>string itemName = 1;</code>
    */
-  public int getItemId() {
-    return itemId_;
+  public java.lang.String getItemName() {
+    java.lang.Object ref = itemName_;
+    if (ref instanceof java.lang.String) {
+      return (java.lang.String) ref;
+    } else {
+      com.google.protobuf.ByteString bs = 
+          (com.google.protobuf.ByteString) ref;
+      java.lang.String s = bs.toStringUtf8();
+      itemName_ = s;
+      return s;
+    }
+  }
+  /**
+   * <pre>
+   * For fetching, we return the full item
+   * </pre>
+   *
+   * <code>string itemName = 1;</code>
+   */
+  public com.google.protobuf.ByteString
+      getItemNameBytes() {
+    java.lang.Object ref = itemName_;
+    if (ref instanceof java.lang.String) {
+      com.google.protobuf.ByteString b = 
+          com.google.protobuf.ByteString.copyFromUtf8(
+              (java.lang.String) ref);
+      itemName_ = b;
+      return b;
+    } else {
+      return (com.google.protobuf.ByteString) ref;
+    }
   }
 
   public static final int QUANTITY_TO_PICK_FIELD_NUMBER = 2;
@@ -118,8 +152,8 @@ private static final long serialVersionUID = 0L;
   @java.lang.Override
   public void writeTo(com.google.protobuf.CodedOutputStream output)
                       throws java.io.IOException {
-    if (itemId_ != 0) {
-      output.writeInt32(1, itemId_);
+    if (!getItemNameBytes().isEmpty()) {
+      com.google.protobuf.GeneratedMessageV3.writeString(output, 1, itemName_);
     }
     if (quantityToPick_ != 0) {
       output.writeInt32(2, quantityToPick_);
@@ -133,9 +167,8 @@ private static final long serialVersionUID = 0L;
     if (size != -1) return size;
 
     size = 0;
-    if (itemId_ != 0) {
-      size += com.google.protobuf.CodedOutputStream
-        .computeInt32Size(1, itemId_);
+    if (!getItemNameBytes().isEmpty()) {
+      size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, itemName_);
     }
     if (quantityToPick_ != 0) {
       size += com.google.protobuf.CodedOutputStream
@@ -151,14 +184,14 @@ private static final long serialVersionUID = 0L;
     if (obj == this) {
      return true;
     }
-    if (!(obj instanceof com.javainuse.orders.CreateOrderItemDTO)) {
+    if (!(obj instanceof com.javainuse.orders.GetOrderItem)) {
       return super.equals(obj);
     }
-    com.javainuse.orders.CreateOrderItemDTO other = (com.javainuse.orders.CreateOrderItemDTO) obj;
+    com.javainuse.orders.GetOrderItem other = (com.javainuse.orders.GetOrderItem) obj;
 
     boolean result = true;
-    result = result && (getItemId()
-        == other.getItemId());
+    result = result && getItemName()
+        .equals(other.getItemName());
     result = result && (getQuantityToPick()
         == other.getQuantityToPick());
     result = result && unknownFields.equals(other.unknownFields);
@@ -172,8 +205,8 @@ private static final long serialVersionUID = 0L;
     }
     int hash = 41;
     hash = (19 * hash) + getDescriptor().hashCode();
-    hash = (37 * hash) + ITEM_ID_FIELD_NUMBER;
-    hash = (53 * hash) + getItemId();
+    hash = (37 * hash) + ITEMNAME_FIELD_NUMBER;
+    hash = (53 * hash) + getItemName().hashCode();
     hash = (37 * hash) + QUANTITY_TO_PICK_FIELD_NUMBER;
     hash = (53 * hash) + getQuantityToPick();
     hash = (29 * hash) + unknownFields.hashCode();
@@ -181,69 +214,69 @@ private static final long serialVersionUID = 0L;
     return hash;
   }
 
-  public static com.javainuse.orders.CreateOrderItemDTO parseFrom(
+  public static com.javainuse.orders.GetOrderItem parseFrom(
       java.nio.ByteBuffer data)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data);
   }
-  public static com.javainuse.orders.CreateOrderItemDTO parseFrom(
+  public static com.javainuse.orders.GetOrderItem parseFrom(
       java.nio.ByteBuffer data,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data, extensionRegistry);
   }
-  public static com.javainuse.orders.CreateOrderItemDTO parseFrom(
+  public static com.javainuse.orders.GetOrderItem parseFrom(
       com.google.protobuf.ByteString data)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data);
   }
-  public static com.javainuse.orders.CreateOrderItemDTO parseFrom(
+  public static com.javainuse.orders.GetOrderItem parseFrom(
       com.google.protobuf.ByteString data,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data, extensionRegistry);
   }
-  public static com.javainuse.orders.CreateOrderItemDTO parseFrom(byte[] data)
+  public static com.javainuse.orders.GetOrderItem parseFrom(byte[] data)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data);
   }
-  public static com.javainuse.orders.CreateOrderItemDTO parseFrom(
+  public static com.javainuse.orders.GetOrderItem parseFrom(
       byte[] data,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data, extensionRegistry);
   }
-  public static com.javainuse.orders.CreateOrderItemDTO parseFrom(java.io.InputStream input)
+  public static com.javainuse.orders.GetOrderItem parseFrom(java.io.InputStream input)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseWithIOException(PARSER, input);
   }
-  public static com.javainuse.orders.CreateOrderItemDTO parseFrom(
+  public static com.javainuse.orders.GetOrderItem parseFrom(
       java.io.InputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseWithIOException(PARSER, input, extensionRegistry);
   }
-  public static com.javainuse.orders.CreateOrderItemDTO parseDelimitedFrom(java.io.InputStream input)
+  public static com.javainuse.orders.GetOrderItem parseDelimitedFrom(java.io.InputStream input)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseDelimitedWithIOException(PARSER, input);
   }
-  public static com.javainuse.orders.CreateOrderItemDTO parseDelimitedFrom(
+  public static com.javainuse.orders.GetOrderItem parseDelimitedFrom(
       java.io.InputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
   }
-  public static com.javainuse.orders.CreateOrderItemDTO parseFrom(
+  public static com.javainuse.orders.GetOrderItem parseFrom(
       com.google.protobuf.CodedInputStream input)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseWithIOException(PARSER, input);
   }
-  public static com.javainuse.orders.CreateOrderItemDTO parseFrom(
+  public static com.javainuse.orders.GetOrderItem parseFrom(
       com.google.protobuf.CodedInputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws java.io.IOException {
@@ -256,7 +289,7 @@ private static final long serialVersionUID = 0L;
   public static Builder newBuilder() {
     return DEFAULT_INSTANCE.toBuilder();
   }
-  public static Builder newBuilder(com.javainuse.orders.CreateOrderItemDTO prototype) {
+  public static Builder newBuilder(com.javainuse.orders.GetOrderItem prototype) {
     return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
   }
   @java.lang.Override
@@ -272,26 +305,26 @@ private static final long serialVersionUID = 0L;
     return builder;
   }
   /**
-   * Protobuf type {@code orders.CreateOrderItemDTO}
+   * Protobuf type {@code orders.GetOrderItem}
    */
   public static final class Builder extends
       com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
-      // @@protoc_insertion_point(builder_implements:orders.CreateOrderItemDTO)
-      com.javainuse.orders.CreateOrderItemDTOOrBuilder {
+      // @@protoc_insertion_point(builder_implements:orders.GetOrderItem)
+      com.javainuse.orders.GetOrderItemOrBuilder {
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.javainuse.orders.OrderServiceOuterClass.internal_static_orders_CreateOrderItemDTO_descriptor;
+      return com.javainuse.orders.OrderServiceOuterClass.internal_static_orders_GetOrderItem_descriptor;
     }
 
     @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.javainuse.orders.OrderServiceOuterClass.internal_static_orders_CreateOrderItemDTO_fieldAccessorTable
+      return com.javainuse.orders.OrderServiceOuterClass.internal_static_orders_GetOrderItem_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
-              com.javainuse.orders.CreateOrderItemDTO.class, com.javainuse.orders.CreateOrderItemDTO.Builder.class);
+              com.javainuse.orders.GetOrderItem.class, com.javainuse.orders.GetOrderItem.Builder.class);
     }
 
-    // Construct using com.javainuse.orders.CreateOrderItemDTO.newBuilder()
+    // Construct using com.javainuse.orders.GetOrderItem.newBuilder()
     private Builder() {
       maybeForceBuilderInitialization();
     }
@@ -309,7 +342,7 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public Builder clear() {
       super.clear();
-      itemId_ = 0;
+      itemName_ = "";
 
       quantityToPick_ = 0;
 
@@ -319,17 +352,17 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.google.protobuf.Descriptors.Descriptor
         getDescriptorForType() {
-      return com.javainuse.orders.OrderServiceOuterClass.internal_static_orders_CreateOrderItemDTO_descriptor;
+      return com.javainuse.orders.OrderServiceOuterClass.internal_static_orders_GetOrderItem_descriptor;
     }
 
     @java.lang.Override
-    public com.javainuse.orders.CreateOrderItemDTO getDefaultInstanceForType() {
-      return com.javainuse.orders.CreateOrderItemDTO.getDefaultInstance();
+    public com.javainuse.orders.GetOrderItem getDefaultInstanceForType() {
+      return com.javainuse.orders.GetOrderItem.getDefaultInstance();
     }
 
     @java.lang.Override
-    public com.javainuse.orders.CreateOrderItemDTO build() {
-      com.javainuse.orders.CreateOrderItemDTO result = buildPartial();
+    public com.javainuse.orders.GetOrderItem build() {
+      com.javainuse.orders.GetOrderItem result = buildPartial();
       if (!result.isInitialized()) {
         throw newUninitializedMessageException(result);
       }
@@ -337,9 +370,9 @@ private static final long serialVersionUID = 0L;
     }
 
     @java.lang.Override
-    public com.javainuse.orders.CreateOrderItemDTO buildPartial() {
-      com.javainuse.orders.CreateOrderItemDTO result = new com.javainuse.orders.CreateOrderItemDTO(this);
-      result.itemId_ = itemId_;
+    public com.javainuse.orders.GetOrderItem buildPartial() {
+      com.javainuse.orders.GetOrderItem result = new com.javainuse.orders.GetOrderItem(this);
+      result.itemName_ = itemName_;
       result.quantityToPick_ = quantityToPick_;
       onBuilt();
       return result;
@@ -379,18 +412,19 @@ private static final long serialVersionUID = 0L;
     }
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
-      if (other instanceof com.javainuse.orders.CreateOrderItemDTO) {
-        return mergeFrom((com.javainuse.orders.CreateOrderItemDTO)other);
+      if (other instanceof com.javainuse.orders.GetOrderItem) {
+        return mergeFrom((com.javainuse.orders.GetOrderItem)other);
       } else {
         super.mergeFrom(other);
         return this;
       }
     }
 
-    public Builder mergeFrom(com.javainuse.orders.CreateOrderItemDTO other) {
-      if (other == com.javainuse.orders.CreateOrderItemDTO.getDefaultInstance()) return this;
-      if (other.getItemId() != 0) {
-        setItemId(other.getItemId());
+    public Builder mergeFrom(com.javainuse.orders.GetOrderItem other) {
+      if (other == com.javainuse.orders.GetOrderItem.getDefaultInstance()) return this;
+      if (!other.getItemName().isEmpty()) {
+        itemName_ = other.itemName_;
+        onChanged();
       }
       if (other.getQuantityToPick() != 0) {
         setQuantityToPick(other.getQuantityToPick());
@@ -410,11 +444,11 @@ private static final long serialVersionUID = 0L;
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
-      com.javainuse.orders.CreateOrderItemDTO parsedMessage = null;
+      com.javainuse.orders.GetOrderItem parsedMessage = null;
       try {
         parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
       } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-        parsedMessage = (com.javainuse.orders.CreateOrderItemDTO) e.getUnfinishedMessage();
+        parsedMessage = (com.javainuse.orders.GetOrderItem) e.getUnfinishedMessage();
         throw e.unwrapIOException();
       } finally {
         if (parsedMessage != null) {
@@ -424,28 +458,91 @@ private static final long serialVersionUID = 0L;
       return this;
     }
 
-    private int itemId_ ;
+    private java.lang.Object itemName_ = "";
     /**
-     * <code>int32 item_id = 1;</code>
+     * <pre>
+     * For fetching, we return the full item
+     * </pre>
+     *
+     * <code>string itemName = 1;</code>
      */
-    public int getItemId() {
-      return itemId_;
+    public java.lang.String getItemName() {
+      java.lang.Object ref = itemName_;
+      if (!(ref instanceof java.lang.String)) {
+        com.google.protobuf.ByteString bs =
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        itemName_ = s;
+        return s;
+      } else {
+        return (java.lang.String) ref;
+      }
     }
     /**
-     * <code>int32 item_id = 1;</code>
+     * <pre>
+     * For fetching, we return the full item
+     * </pre>
+     *
+     * <code>string itemName = 1;</code>
      */
-    public Builder setItemId(int value) {
-      
-      itemId_ = value;
+    public com.google.protobuf.ByteString
+        getItemNameBytes() {
+      java.lang.Object ref = itemName_;
+      if (ref instanceof String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        itemName_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+    /**
+     * <pre>
+     * For fetching, we return the full item
+     * </pre>
+     *
+     * <code>string itemName = 1;</code>
+     */
+    public Builder setItemName(
+        java.lang.String value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  
+      itemName_ = value;
       onChanged();
       return this;
     }
     /**
-     * <code>int32 item_id = 1;</code>
+     * <pre>
+     * For fetching, we return the full item
+     * </pre>
+     *
+     * <code>string itemName = 1;</code>
      */
-    public Builder clearItemId() {
+    public Builder clearItemName() {
       
-      itemId_ = 0;
+      itemName_ = getDefaultInstance().getItemName();
+      onChanged();
+      return this;
+    }
+    /**
+     * <pre>
+     * For fetching, we return the full item
+     * </pre>
+     *
+     * <code>string itemName = 1;</code>
+     */
+    public Builder setItemNameBytes(
+        com.google.protobuf.ByteString value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+      
+      itemName_ = value;
       onChanged();
       return this;
     }
@@ -488,41 +585,41 @@ private static final long serialVersionUID = 0L;
     }
 
 
-    // @@protoc_insertion_point(builder_scope:orders.CreateOrderItemDTO)
+    // @@protoc_insertion_point(builder_scope:orders.GetOrderItem)
   }
 
-  // @@protoc_insertion_point(class_scope:orders.CreateOrderItemDTO)
-  private static final com.javainuse.orders.CreateOrderItemDTO DEFAULT_INSTANCE;
+  // @@protoc_insertion_point(class_scope:orders.GetOrderItem)
+  private static final com.javainuse.orders.GetOrderItem DEFAULT_INSTANCE;
   static {
-    DEFAULT_INSTANCE = new com.javainuse.orders.CreateOrderItemDTO();
+    DEFAULT_INSTANCE = new com.javainuse.orders.GetOrderItem();
   }
 
-  public static com.javainuse.orders.CreateOrderItemDTO getDefaultInstance() {
+  public static com.javainuse.orders.GetOrderItem getDefaultInstance() {
     return DEFAULT_INSTANCE;
   }
 
-  private static final com.google.protobuf.Parser<CreateOrderItemDTO>
-      PARSER = new com.google.protobuf.AbstractParser<CreateOrderItemDTO>() {
+  private static final com.google.protobuf.Parser<GetOrderItem>
+      PARSER = new com.google.protobuf.AbstractParser<GetOrderItem>() {
     @java.lang.Override
-    public CreateOrderItemDTO parsePartialFrom(
+    public GetOrderItem parsePartialFrom(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
-      return new CreateOrderItemDTO(input, extensionRegistry);
+      return new GetOrderItem(input, extensionRegistry);
     }
   };
 
-  public static com.google.protobuf.Parser<CreateOrderItemDTO> parser() {
+  public static com.google.protobuf.Parser<GetOrderItem> parser() {
     return PARSER;
   }
 
   @java.lang.Override
-  public com.google.protobuf.Parser<CreateOrderItemDTO> getParserForType() {
+  public com.google.protobuf.Parser<GetOrderItem> getParserForType() {
     return PARSER;
   }
 
   @java.lang.Override
-  public com.javainuse.orders.CreateOrderItemDTO getDefaultInstanceForType() {
+  public com.javainuse.orders.GetOrderItem getDefaultInstanceForType() {
     return DEFAULT_INSTANCE;
   }
 

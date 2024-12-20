@@ -3,8 +3,8 @@
 
 package com.javainuse.orders;
 
-public interface OrderRequestOrBuilder extends
-    // @@protoc_insertion_point(interface_extends:orders.OrderRequest)
+public interface CreateOrderOrBuilder extends
+    // @@protoc_insertion_point(interface_extends:orders.CreateOrder)
     com.google.protobuf.MessageOrBuilder {
 
   /**
@@ -12,24 +12,24 @@ public interface OrderRequestOrBuilder extends
    * For creating, we only send item_ids
    * </pre>
    *
-   * <code>repeated .orders.CreateOrderItemDTO order_items = 1;</code>
+   * <code>repeated .orders.CreateOrderItem order_items = 1;</code>
    */
-  java.util.List<com.javainuse.orders.CreateOrderItemDTO> 
+  java.util.List<com.javainuse.orders.CreateOrderItem> 
       getOrderItemsList();
   /**
    * <pre>
    * For creating, we only send item_ids
    * </pre>
    *
-   * <code>repeated .orders.CreateOrderItemDTO order_items = 1;</code>
+   * <code>repeated .orders.CreateOrderItem order_items = 1;</code>
    */
-  com.javainuse.orders.CreateOrderItemDTO getOrderItems(int index);
+  com.javainuse.orders.CreateOrderItem getOrderItems(int index);
   /**
    * <pre>
    * For creating, we only send item_ids
    * </pre>
    *
-   * <code>repeated .orders.CreateOrderItemDTO order_items = 1;</code>
+   * <code>repeated .orders.CreateOrderItem order_items = 1;</code>
    */
   int getOrderItemsCount();
   /**
@@ -37,18 +37,18 @@ public interface OrderRequestOrBuilder extends
    * For creating, we only send item_ids
    * </pre>
    *
-   * <code>repeated .orders.CreateOrderItemDTO order_items = 1;</code>
+   * <code>repeated .orders.CreateOrderItem order_items = 1;</code>
    */
-  java.util.List<? extends com.javainuse.orders.CreateOrderItemDTOOrBuilder> 
+  java.util.List<? extends com.javainuse.orders.CreateOrderItemOrBuilder> 
       getOrderItemsOrBuilderList();
   /**
    * <pre>
    * For creating, we only send item_ids
    * </pre>
    *
-   * <code>repeated .orders.CreateOrderItemDTO order_items = 1;</code>
+   * <code>repeated .orders.CreateOrderItem order_items = 1;</code>
    */
-  com.javainuse.orders.CreateOrderItemDTOOrBuilder getOrderItemsOrBuilder(
+  com.javainuse.orders.CreateOrderItemOrBuilder getOrderItemsOrBuilder(
       int index);
 
   /**

@@ -9,7 +9,7 @@ namespace Entities.DTOs
         public int OrderId { get; set; }
         public string OrderStatus { get; set; }
         public DateTime DeliveryDate { get; set; }
-        public List<OrderItemDTO> OrderItems { get; set; }
+        public List<GetOrderItemDTO> OrderItems { get; set; }
         public string AssignedUser { get; set; }
         public string CreatedBy { get; set; }
         public DateTimeOffset CreatedAt { get; set; }
@@ -26,6 +26,11 @@ namespace Entities.DTOs
     public class OrderItemDTO
     {
         public ItemDTO item { get; set; }
+        public int QuantityToPick { get; set; }
+    }
+    public class GetOrderItemDTO
+    {
+        public string itemName { get; set; }
         public int QuantityToPick { get; set; }
     }
 

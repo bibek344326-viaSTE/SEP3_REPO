@@ -3,8 +3,8 @@
 
 package com.javainuse.orders;
 
-public interface CreateOrderItemDTOOrBuilder extends
-    // @@protoc_insertion_point(interface_extends:orders.CreateOrderItemDTO)
+public interface CreateOrderItemOrBuilder extends
+    // @@protoc_insertion_point(interface_extends:orders.CreateOrderItem)
     com.google.protobuf.MessageOrBuilder {
 
   /**

@@ -3,8 +3,8 @@
 
 package com.javainuse.orders;
 
-public interface OrderDTOOrBuilder extends
-    // @@protoc_insertion_point(interface_extends:orders.OrderDTO)
+public interface OrderOrBuilder extends
+    // @@protoc_insertion_point(interface_extends:orders.Order)
     com.google.protobuf.MessageOrBuilder {
 
   /**
@@ -13,27 +13,27 @@ public interface OrderDTOOrBuilder extends
   int getOrderId();
 
   /**
-   * <code>repeated .orders.OrderItemDTO order_items = 2;</code>
+   * <code>repeated .orders.GetOrderItem order_items = 2;</code>
    */
-  java.util.List<com.javainuse.orders.OrderItemDTO> 
+  java.util.List<com.javainuse.orders.GetOrderItem> 
       getOrderItemsList();
   /**
-   * <code>repeated .orders.OrderItemDTO order_items = 2;</code>
+   * <code>repeated .orders.GetOrderItem order_items = 2;</code>
    */
-  com.javainuse.orders.OrderItemDTO getOrderItems(int index);
+  com.javainuse.orders.GetOrderItem getOrderItems(int index);
   /**
-   * <code>repeated .orders.OrderItemDTO order_items = 2;</code>
+   * <code>repeated .orders.GetOrderItem order_items = 2;</code>
    */
   int getOrderItemsCount();
   /**
-   * <code>repeated .orders.OrderItemDTO order_items = 2;</code>
+   * <code>repeated .orders.GetOrderItem order_items = 2;</code>
    */
-  java.util.List<? extends com.javainuse.orders.OrderItemDTOOrBuilder> 
+  java.util.List<? extends com.javainuse.orders.GetOrderItemOrBuilder> 
       getOrderItemsOrBuilderList();
   /**
-   * <code>repeated .orders.OrderItemDTO order_items = 2;</code>
+   * <code>repeated .orders.GetOrderItem order_items = 2;</code>
    */
-  com.javainuse.orders.OrderItemDTOOrBuilder getOrderItemsOrBuilder(
+  com.javainuse.orders.GetOrderItemOrBuilder getOrderItemsOrBuilder(
       int index);
 
   /**

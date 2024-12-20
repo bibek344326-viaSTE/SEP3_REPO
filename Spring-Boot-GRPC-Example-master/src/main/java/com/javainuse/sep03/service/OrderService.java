@@ -2,7 +2,6 @@ package com.javainuse.sep03.service;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.protobuf.Empty;
-import com.javainuse.item.Item;
 import com.javainuse.orders.*;
 import io.grpc.stub.StreamObserver;
 import io.netty.handler.ssl.SslContextBuilder;
@@ -20,6 +19,7 @@ import reactor.netty.http.client.HttpClient;
 import java.time.Instant;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @GrpcService
@@ -36,32 +36,19 @@ public class OrderService extends OrderServiceGrpc.OrderServiceImplBase {
             ))
             .build();
 
-
     @Override
-    public void createOrder(OrderRequest request, StreamObserver<CreateOrderResponse> responseObserver) {
-        logger.info("Received request to create order: {}", request);
+    public void createOrder(CreateOrder request, StreamObserver<CreateOrderResponse> responseObserver) {
+        logger.info("Received request to create order");
 
         try {
-            // Map gRPC OrderRequest to REST API CreateOrderDTO
             CreateOrderDTO createOrderDTO = new CreateOrderDTO(
-                    Instant.ofEpochSecond(request.getDeliveryDate().getSeconds()).toString(), // Convert gRPC timestamp to ISO-8601 date string
-                    request.getOrderItemsList().stream().map(orderItemDTO -> {
-                        try {
-                            logger.info("Processing order item: {}", orderItemDTO);
-                            return new RestOrderItemDTO(
-                                    orderItemDTO.getItemId(), // Send only itemId for create
-                                    orderItemDTO.getQuantityToPick()
-                            );
-                        } catch (Exception e) {
-                            logger.error("Failed to map order item: {}", orderItemDTO, e);
-                            throw new RuntimeException("Error while processing order item", e);
-                        }
-                    }).collect(Collectors.toList()),
+                    Instant.ofEpochSecond(request.getDeliveryDate().getSeconds()).toString(),
+                    request.getOrderItemsList().stream().map(orderItem ->
+                            new RestOrderItemDTO(orderItem.getItemId(), orderItem.getQuantityToPick())
+                    ).collect(Collectors.toList()),
                     request.getCreatedBy(),
-                    Instant.now().toString() // Set createdAt as current timestamp in ISO-8601 format
+                    Instant.now().toString()
             );
-
-            logger.info("Mapped CreateOrderDTO to send to REST API: {}", createOrderDTO);
 
             webClient.post()
                     .uri("/")
@@ -69,14 +56,13 @@ public class OrderService extends OrderServiceGrpc.OrderServiceImplBase {
                     .body(Mono.just(createOrderDTO), CreateOrderDTO.class)
                     .retrieve()
                     .onStatus(HttpStatus::isError, response -> {
-                        logger.error("Error from REST API: {}", response.statusCode());
+                        logger.error("Error from REST API with status: {}", response.statusCode());
                         return Mono.error(new RuntimeException("Error calling REST API"));
                     })
                     .bodyToMono(Boolean.class)
-                    .doOnSuccess(success -> logger.info("Order created successfully: {}", success))
-                    .doOnError(error -> logger.error("Failed to create order", error))
                     .subscribe(
                             success -> {
+                                logger.info("Order created successfully");
                                 CreateOrderResponse response = CreateOrderResponse.newBuilder().setSuccess(success).build();
                                 responseObserver.onNext(response);
                                 responseObserver.onCompleted();
@@ -92,10 +78,9 @@ public class OrderService extends OrderServiceGrpc.OrderServiceImplBase {
         }
     }
 
-
     @Override
     public void getAllOrders(Empty request, StreamObserver<OrderList> responseObserver) {
-        logger.info("Received request to get all orders from REST API");
+        logger.info("Fetching all orders from REST API");
 
         webClient.get()
                 .uri("/")
@@ -105,62 +90,95 @@ public class OrderService extends OrderServiceGrpc.OrderServiceImplBase {
                 .subscribe(
                         orders -> {
                             try {
-                                List<OrderDTO> grpcOrderList = ((List<?>) orders).stream().map(order -> {
+                                List<Order> grpcOrderList = ((List<?>) orders).stream().map(order -> {
                                     try {
                                         Map<String, Object> orderMap = (Map<String, Object>) order;
-                                        List<OrderItemDTO> orderItems = ((List<?>) orderMap.getOrDefault("orderItems", List.of()))
-                                                .stream().map(orderItem -> {
-                                                    Map<String, Object> orderItemMap = (Map<String, Object>) orderItem;
-                                                    Map<String, Object> itemMap = (Map<String, Object>) orderItemMap.get("item");
 
-                                                    return OrderItemDTO.newBuilder()
-                                                            .setItem(Item.newBuilder()
-                                                                    .setItemId((Integer) itemMap.getOrDefault("itemId", 0))
-                                                                    .setItemName((String) itemMap.getOrDefault("itemName", "Unknown"))
-                                                                    .setDescription(itemMap.get("description") != null ? (String) itemMap.get("description") : "") // Null check for description
-                                                                    .setQuantityInStore((Integer) itemMap.getOrDefault("quantityInStore", 0))
-                                                                    .build())
-                                                            .setQuantityToPick((Integer) orderItemMap.getOrDefault("quantityToPick", 0))
-                                                            .build();
+                                        // Safely extract order items
+                                        List<GetOrderItem> orderItems = ((List<?>) orderMap.getOrDefault("orderItems", List.of()))
+                                                .stream().map(orderItem -> {
+                                                    try {
+                                                        Map<String, Object> orderItemMap = (Map<String, Object>) orderItem;
+                                                        String itemName = Optional.ofNullable((String) orderItemMap.get("itemName")).orElse("Unknown");
+                                                        int quantityToPick = ((Number) orderItemMap.getOrDefault("quantityToPick", 0)).intValue();
+                                                        return GetOrderItem.newBuilder()
+                                                                .setItemName(itemName)
+                                                                .setQuantityToPick(quantityToPick)
+                                                                .build();
+                                                    } catch (Exception e) {
+                                                        logger.error("Error while processing order item: {}", orderItem, e);
+                                                        throw e;
+                                                    }
                                                 }).collect(Collectors.toList());
 
-                                        return OrderDTO.newBuilder()
-                                                .setOrderId((Integer) orderMap.getOrDefault("orderId", 0))
+                                        // Safely extract order-level fields
+                                        int orderId = ((Number) orderMap.getOrDefault("orderId", 0)).intValue();
+                                        String assignedUser = Optional.ofNullable((String) orderMap.get("assignedUser")).orElse("Unassigned");
+                                        String createdBy = Optional.ofNullable((String) orderMap.get("createdBy")).orElse("Unknown");
+                                        String orderStatusStr = Optional.ofNullable((String) orderMap.get("orderStatus")).orElse("IN_PROGRESS");
+
+                                        // Handle date parsing with null checks
+                                        Instant deliveryDate = Optional.ofNullable(orderMap.get("deliveryDate"))
+                                                .map(dateStr -> {
+                                                    try {
+                                                        return Instant.parse((String) dateStr);
+                                                    } catch (Exception e) {
+                                                        logger.warn("Invalid delivery date format: {}", dateStr, e);
+                                                        return Instant.now(); // Default to now if the date is invalid
+                                                    }
+                                                }).orElse(Instant.now());
+
+                                        Instant createdAt = Optional.ofNullable(orderMap.get("createdAt"))
+                                                .map(dateStr -> {
+                                                    try {
+                                                        return Instant.parse((String) dateStr);
+                                                    } catch (Exception e) {
+                                                        logger.warn("Invalid created at date format: {}", dateStr, e);
+                                                        return Instant.now(); // Default to now if the date is invalid
+                                                    }
+                                                }).orElse(Instant.now());
+
+                                        // Safely build the Order object
+                                        return Order.newBuilder()
+                                                .setOrderId(orderId)
                                                 .addAllOrderItems(orderItems)
                                                 .setCreatedAt(com.google.protobuf.Timestamp.newBuilder()
-                                                        .setSeconds(((String) orderMap.getOrDefault("createdAt", "1970-01-01T00:00:00Z")).hashCode())
+                                                        .setSeconds(createdAt.getEpochSecond())
+                                                        .setNanos(createdAt.getNano())
                                                         .build())
-                                                .setAssignedUser(orderMap.get("assignedUser") != null ? orderMap.get("assignedUser").toString() : "Unassigned") // Null check for assignedUser
-                                                .setCreatedByUser(orderMap.getOrDefault("createdBy", "Unknown").toString()) // Null check for createdBy
-                                                .setOrderStatus(OrderStatus.valueOf((String) orderMap.getOrDefault("orderStatus", "IN_PROGRESS"))) // Null check for orderStatus
+                                                .setAssignedUser(assignedUser)
+                                                .setCreatedByUser(createdBy)
+                                                .setOrderStatus(OrderStatus.valueOf(orderStatusStr))
                                                 .setDeliveryDate(com.google.protobuf.Timestamp.newBuilder()
-                                                        .setSeconds(((String) orderMap.getOrDefault("deliveryDate", "1970-01-01T00:00:00Z")).hashCode())
+                                                        .setSeconds(deliveryDate.getEpochSecond())
+                                                        .setNanos(deliveryDate.getNano())
                                                         .build())
                                                 .build();
                                     } catch (Exception e) {
-                                        logger.error("Failed to process order: {}", order, e);
-                                        throw new RuntimeException(e);
+                                        logger.error("Error while processing order: {}", order, e);
+                                        throw e;
                                     }
                                 }).collect(Collectors.toList());
+
+                                logger.info("Successfully fetched {} orders", grpcOrderList.size());
 
                                 OrderList orderList = OrderList.newBuilder().addAllOrders(grpcOrderList).build();
                                 responseObserver.onNext(orderList);
                                 responseObserver.onCompleted();
                             } catch (Exception e) {
-                                logger.error("Exception while processing orders", e);
+                                logger.error("Error processing orders from REST API response", e);
                                 responseObserver.onError(e);
                             }
                         },
                         error -> {
-                            logger.error("Error occurred while fetching orders", error);
+                            logger.error("Error occurred while fetching orders from REST API", error);
                             responseObserver.onError(error);
                         }
                 );
-
-
     }
-    public static class CreateOrderDTO {
 
+
+    public static class CreateOrderDTO {
         @JsonProperty("deliveryDate")
         private String deliveryDate;
 
@@ -174,90 +192,23 @@ public class OrderService extends OrderServiceGrpc.OrderServiceImplBase {
         private String createdAt;
 
         public CreateOrderDTO(String deliveryDate, List<RestOrderItemDTO> orderItems, int createdBy, String createdAt) {
-            this.deliveryDate = deliveryDate; // ISO-8601 formatted string
-            this.orderItems = orderItems;
-            this.createdBy = createdBy;
-            this.createdAt = createdAt;
-        }
-
-        public String getDeliveryDate() {
-            return deliveryDate;
-        }
-
-        public void setDeliveryDate(String deliveryDate) {
             this.deliveryDate = deliveryDate;
-        }
-
-        public List<RestOrderItemDTO> getOrderItems() {
-            return orderItems;
-        }
-
-        public void setOrderItems(List<RestOrderItemDTO> orderItems) {
             this.orderItems = orderItems;
-        }
-
-        public int getCreatedBy() {
-            return createdBy;
-        }
-
-        public void setCreatedBy(int createdBy) {
             this.createdBy = createdBy;
-        }
-
-        public String getCreatedAt() {
-            return createdAt;
-        }
-
-        public void setCreatedAt(String createdAt) {
             this.createdAt = createdAt;
-        }
-
-        @Override
-        public String toString() {
-            return "CreateOrderDTO{" +
-                    "deliveryDate='" + deliveryDate + '\'' +
-                    ", orderItems=" + orderItems +
-                    ", createdBy=" + createdBy +
-                    ", createdAt='" + createdAt + '\'' +
-                    '}';
         }
     }
-    public static class RestOrderItemDTO {
 
-        @JsonProperty("itemId")
-        private int itemId;
+    public static class RestOrderItemDTO {
+        @JsonProperty("itemName")
+        private int itemName;
 
         @JsonProperty("quantityToPick")
         private int quantityToPick;
 
         public RestOrderItemDTO(int itemId, int quantityToPick) {
-            this.itemId = itemId; // Send only the item ID
+            this.itemName = itemId;
             this.quantityToPick = quantityToPick;
-        }
-
-        public int getItemId() {
-            return itemId;
-        }
-
-        public void setItemId(int itemId) {
-            this.itemId = itemId;
-        }
-
-        public int getQuantityToPick() {
-            return quantityToPick;
-        }
-
-        public void setQuantityToPick(int quantityToPick) {
-            this.quantityToPick = quantityToPick;
-        }
-
-        @Override
-        public String toString() {
-            return "RestOrderItemDTO{" +
-                    "itemId=" + itemId +
-                    ", quantityToPick=" + quantityToPick +
-                    '}';
         }
     }
-
 }
