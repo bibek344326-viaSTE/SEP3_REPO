@@ -59,12 +59,23 @@ public class UsersController: ControllerBase
     // ********** UPDATE Endpoints **********
     // PUT: /Users/{id}
     [HttpPut("{id}")]
-    public async Task<ActionResult> UpdateUser([FromRoute] int id, [FromBody] User request)
+    public async Task<ActionResult> UpdateUser([FromRoute] int id, [FromBody] UserDto request)
     {
         try
         {
+            // Step 1: Map UserDto to User entity
+            User user = new User
+            {
+                UserId = id, // Ensure the UserId is set properly
+                UserName = request.UserName,
+                Password = request.Password,
+                UserRole = request.UserRole,
+                IsActive = true // This ensures the user remains active (can be omitted if it's set in the database)
+            };
 
-            await userRepo.UpdateUserAsync(id, request);
+            // Step 2: Pass the User entity to the repository (not the DTO)
+            await userRepo.UpdateUserAsync(id, user);
+
             return NoContent();
         }
         catch (InvalidOperationException)
@@ -77,6 +88,7 @@ public class UsersController: ControllerBase
             return StatusCode(500, $"An error occurred: {e.Message}");
         }
     }
+
 
     // ********** Delete Endpoints **********
     // DELETE: /Users/{id}

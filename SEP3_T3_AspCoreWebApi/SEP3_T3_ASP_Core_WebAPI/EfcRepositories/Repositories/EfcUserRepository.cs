@@ -77,12 +77,9 @@ public class EfcUserRepository: IUserRepository
         }
 
         // Update UserRole (since role updates are straightforward)
-        userToUpdate.UserRole = user.UserRole;
-
-        // Check if user exists (userId should match an existing user)
-        if (!_ctx.Users.Any(u => u.UserId == userToUpdate.UserId))
+        if (user.UserRole != userToUpdate.UserRole)
         {
-            throw new InvalidOperationException("User does not exist");
+            userToUpdate.UserRole = user.UserRole;
         }
 
         // Update the user in the context

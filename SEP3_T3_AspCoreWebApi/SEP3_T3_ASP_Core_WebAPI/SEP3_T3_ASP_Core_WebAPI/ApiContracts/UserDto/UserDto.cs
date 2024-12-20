@@ -18,4 +18,12 @@ namespace SEP3_T3_ASP_Core_WebAPI.ApiContracts.UserDto
         public UserRole UserRole { get; set; }
         public bool IsActive { get; set; }
     }
+    public class UserDto
+    {
+        public int UserId { get; set; }
+        public string UserName { get; set; } = string.Empty;
+        public string Password { get; set; }
+        [JsonConverter(typeof(JsonStringEnumConverter))]
+        public UserRole UserRole { get; set; }
+    }
 }
