@@ -9,6 +9,8 @@ import com.google.protobuf.Empty;
 import io.netty.handler.ssl.SslContextBuilder;
 import io.netty.handler.ssl.util.InsecureTrustManagerFactory;
 import net.devh.boot.grpc.server.service.GrpcService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.client.reactive.ReactorClientHttpConnector;
 import org.springframework.web.reactive.function.client.WebClient;
 import io.grpc.stub.StreamObserver;
@@ -76,6 +78,8 @@ class ItemDTO {
 @GrpcService
 public class ItemService extends ItemServiceGrpc.ItemServiceImplBase {
 
+    private static final Logger logger = LoggerFactory.getLogger(ItemService.class);
+
     WebClient webClient = WebClient.builder()
             .baseUrl("https://localhost:7211/Items")
             .clientConnector(new ReactorClientHttpConnector(
@@ -87,9 +91,8 @@ public class ItemService extends ItemServiceGrpc.ItemServiceImplBase {
 
     @Override
     public void createItem(CreateItem request, StreamObserver<Item> responseObserver) {
-        System.out.println("Received create request: " + request);
+        logger.info("Received create request: {}", request);
 
-        // Create RestCreateItem from the gRPC CreateItem request
         ItemDTO restCreateItem = new ItemDTO();
         restCreateItem.setItemName(request.getName());
         restCreateItem.setDescription(request.getDescription());
@@ -115,18 +118,18 @@ public class ItemService extends ItemServiceGrpc.ItemServiceImplBase {
                     .setQuantityInStore(createdItem.getQuantityInStore())
                     .build();
 
-            System.out.println("Item created successfully: " + grpcItem);
+            logger.info("Item created successfully: {}", grpcItem);
             responseObserver.onNext(grpcItem);
             responseObserver.onCompleted();
         } catch (Exception e) {
-            System.err.println("Error occurred during create REST API call: " + e.getMessage());
+            logger.error("Error occurred during create REST API call: {}", e.getMessage(), e);
             responseObserver.onError(e);
         }
     }
 
     @Override
     public void editItem(Item request, StreamObserver<Empty> responseObserver) {
-        System.out.println("Received edit request: " + request);
+        logger.info("Received edit request: {}", request);
 
         int itemId = request.getItemId();
 
@@ -136,7 +139,7 @@ public class ItemService extends ItemServiceGrpc.ItemServiceImplBase {
         restItem.setDescription(request.getDescription());
         restItem.setQuantityInStore(request.getQuantityInStore());
 
-        System.out.println("Calling REST API with RestItem: " + restItem);
+        logger.info("Calling REST API with RestItem: {}", restItem);
 
         try {
             webClient.put()
@@ -146,20 +149,19 @@ public class ItemService extends ItemServiceGrpc.ItemServiceImplBase {
                     .toBodilessEntity()
                     .block();
 
-            System.out.println("Item updated successfully: " + restItem);
+            logger.info("Item updated successfully: {}", restItem);
             responseObserver.onNext(Empty.getDefaultInstance());
             responseObserver.onCompleted();
         } catch (Exception e) {
-            System.err.println("Error occurred during REST API call: " + e.getMessage());
+            logger.error("Error occurred during REST API call: {}", e.getMessage(), e);
             responseObserver.onError(e);
         }
     }
 
     @Override
     public void deleteItem(DeleteItem request, StreamObserver<Empty> responseObserver) {
-        int itemId = request.getItemId(); // Extract the itemId from DeleteItem request
-
-        System.out.println("Received delete request for itemId: " + itemId);
+        int itemId = request.getItemId();
+        logger.info("Received delete request for itemId: {}", itemId);
 
         try {
             webClient.delete()
@@ -168,18 +170,18 @@ public class ItemService extends ItemServiceGrpc.ItemServiceImplBase {
                     .toBodilessEntity()
                     .block();
 
-            System.out.println("Item deleted successfully with itemId: " + itemId);
+            logger.info("Item deleted successfully with itemId: {}", itemId);
             responseObserver.onNext(Empty.getDefaultInstance());
             responseObserver.onCompleted();
         } catch (Exception e) {
-            System.err.println("Error occurred during delete REST API call: " + e.getMessage());
+            logger.error("Error occurred during delete REST API call: {}", e.getMessage(), e);
             responseObserver.onError(e);
         }
     }
 
     @Override
     public void getAllItems(Empty request, StreamObserver<ItemList> responseObserver) {
-        System.out.println("Received request to get all items");
+        logger.info("Received request to get all items");
 
         try {
             List<RestItem> restItems = webClient.get()
@@ -205,11 +207,11 @@ public class ItemService extends ItemServiceGrpc.ItemServiceImplBase {
                 itemListBuilder.addItems(grpcItem);
             }
 
-            System.out.println("Items retrieved successfully: " + itemListBuilder.getItemsList().size());
+            logger.info("Items retrieved successfully: {}", itemListBuilder.getItemsList().size());
             responseObserver.onNext(itemListBuilder.build());
             responseObserver.onCompleted();
         } catch (Exception e) {
-            System.err.println("Error occurred during get all items REST API call: " + e.getMessage());
+            logger.error("Error occurred during get all items REST API call: {}", e.getMessage(), e);
             responseObserver.onError(e);
         }
     }
