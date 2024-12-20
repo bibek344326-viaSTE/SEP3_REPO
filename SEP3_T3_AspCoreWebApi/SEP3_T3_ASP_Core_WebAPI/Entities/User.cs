@@ -2,6 +2,7 @@
 
 namespace Entities
 {
+    [JsonConverter(typeof(JsonStringEnumConverter))] // Applies only to this enum
     public enum UserRole
     {
         INVENTORY_MANAGER,
