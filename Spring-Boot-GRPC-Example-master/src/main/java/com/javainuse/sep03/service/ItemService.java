@@ -36,17 +36,17 @@ public class ItemService extends ItemServiceGrpc.ItemServiceImplBase {
     public void createItem(CreateItem request, StreamObserver<Item> responseObserver) {
         logger.info("Received create request: {}", request);
 
-        ItemDTO restCreateItem = new ItemDTO();
+        ItemData restCreateItem = new ItemData();
         restCreateItem.setItemName(request.getName());
         restCreateItem.setDescription(request.getDescription());
         restCreateItem.setQuantityInStore(request.getQuantityInStore());
 
         try {
-            RestItem createdItem = webClient.post()
+            ItemData createdItem = webClient.post()
                     .uri("")
                     .bodyValue(restCreateItem)
                     .retrieve()
-                    .bodyToMono(RestItem.class)
+                    .bodyToMono(ItemData.class)
                     .block();
 
             if (createdItem == null) {
@@ -76,13 +76,13 @@ public class ItemService extends ItemServiceGrpc.ItemServiceImplBase {
 
         int itemId = request.getItemId();
 
-        RestItem restItem = new RestItem();
+        ItemData restItem = new ItemData();
         restItem.setItemId(itemId);
         restItem.setItemName(request.getItemName());
         restItem.setDescription(request.getDescription());
         restItem.setQuantityInStore(request.getQuantityInStore());
 
-        logger.info("Calling REST API with RestItem: {}", restItem);
+        logger.info("Calling REST API with ItemData: {}", restItem);
 
         try {
             webClient.put()
@@ -127,10 +127,10 @@ public class ItemService extends ItemServiceGrpc.ItemServiceImplBase {
         logger.info("Received request to get all items");
 
         try {
-            List<RestItem> restItems = webClient.get()
+            List<ItemData> restItems = webClient.get()
                     .uri("")
                     .retrieve()
-                    .bodyToFlux(RestItem.class)
+                    .bodyToFlux(ItemData.class)
                     .collectList()
                     .block();
 
@@ -140,7 +140,7 @@ public class ItemService extends ItemServiceGrpc.ItemServiceImplBase {
             }
 
             ItemList.Builder itemListBuilder = ItemList.newBuilder();
-            for (RestItem ri : restItems) {
+            for (ItemData ri : restItems) {
                 Item grpcItem = Item.newBuilder()
                         .setItemId(ri.getItemId())
                         .setItemName(ri.getItemName())
@@ -159,7 +159,7 @@ public class ItemService extends ItemServiceGrpc.ItemServiceImplBase {
         }
     }
 
-    public static class RestItem {
+    public static class ItemData {
         private int itemId;
         private String itemName;
         private String description;
@@ -189,30 +189,16 @@ public class ItemService extends ItemServiceGrpc.ItemServiceImplBase {
         public void setQuantityInStore(int quantityInStore) {
             this.quantityInStore = quantityInStore;
         }
+
+        @Override
+        public String toString() {
+            return "ItemData{" +
+                    "itemId=" + itemId +
+                    ", itemName='" + itemName + '\'' +
+                    ", description='" + description + '\'' +
+                    ", quantityInStore=" + quantityInStore +
+                    '}';
+        }
     }
 
-    public static class ItemDTO {
-        private String itemName;
-        private String description;
-        private int quantityInStore;
-
-        public String getItemName() {
-            return itemName;
-        }
-        public void setItemName(String itemName) {
-            this.itemName = itemName;
-        }
-        public String getDescription() {
-            return description;
-        }
-        public void setDescription(String description) {
-            this.description = description;
-        }
-        public int getQuantityInStore() {
-            return quantityInStore;
-        }
-        public void setQuantityInStore(int quantityInStore) {
-            this.quantityInStore = quantityInStore;
-        }
-    }
 }

@@ -41,10 +41,10 @@ public class OrderService extends OrderServiceGrpc.OrderServiceImplBase {
         logger.info("Received request to create order");
 
         try {
-            CreateOrderDTO createOrderDTO = new CreateOrderDTO(
+            OrderData createOrderDTO = new OrderData(
                     Instant.ofEpochSecond(request.getDeliveryDate().getSeconds()).toString(),
                     request.getOrderItemsList().stream().map(orderItem ->
-                            new RestOrderItemDTO(orderItem.getItemId(), orderItem.getQuantityToPick())
+                            new OrderItemData(orderItem.getItemId(), orderItem.getQuantityToPick())
                     ).collect(Collectors.toList()),
                     request.getCreatedBy(),
                     Instant.now().toString()
@@ -53,7 +53,7 @@ public class OrderService extends OrderServiceGrpc.OrderServiceImplBase {
             webClient.post()
                     .uri("/")
                     .contentType(MediaType.APPLICATION_JSON)
-                    .body(Mono.just(createOrderDTO), CreateOrderDTO.class)
+                    .body(Mono.just(createOrderDTO), OrderData.class)
                     .retrieve()
                     .onStatus(HttpStatus::isError, response -> {
                         logger.error("Error from REST API with status: {}", response.statusCode());
@@ -178,12 +178,12 @@ public class OrderService extends OrderServiceGrpc.OrderServiceImplBase {
     }
 
 
-    public static class CreateOrderDTO {
+    public static class OrderData {
         @JsonProperty("deliveryDate")
         private String deliveryDate;
 
         @JsonProperty("orderItems")
-        private List<RestOrderItemDTO> orderItems;
+        private List<OrderItemData> orderItems;
 
         @JsonProperty("createdBy")
         private int createdBy;
@@ -191,7 +191,7 @@ public class OrderService extends OrderServiceGrpc.OrderServiceImplBase {
         @JsonProperty("createdAt")
         private String createdAt;
 
-        public CreateOrderDTO(String deliveryDate, List<RestOrderItemDTO> orderItems, int createdBy, String createdAt) {
+        public OrderData(String deliveryDate, List<OrderItemData> orderItems, int createdBy, String createdAt) {
             this.deliveryDate = deliveryDate;
             this.orderItems = orderItems;
             this.createdBy = createdBy;
@@ -199,14 +199,14 @@ public class OrderService extends OrderServiceGrpc.OrderServiceImplBase {
         }
     }
 
-    public static class RestOrderItemDTO {
+    public static class OrderItemData {
         @JsonProperty("itemName")
         private int itemName;
 
         @JsonProperty("quantityToPick")
         private int quantityToPick;
 
-        public RestOrderItemDTO(int itemId, int quantityToPick) {
+        public OrderItemData(int itemId, int quantityToPick) {
             this.itemName = itemId;
             this.quantityToPick = quantityToPick;
         }

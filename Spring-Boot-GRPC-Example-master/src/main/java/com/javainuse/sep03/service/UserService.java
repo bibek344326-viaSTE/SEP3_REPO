@@ -39,7 +39,7 @@ public class UserService extends UserServiceGrpc.UserServiceImplBase {
         logger.info("STARTING addUser request for user: {}", request.getUserName());
         Instant startTime = Instant.now();
 
-        UserDTO restRequest = new UserDTO(
+        UserData restRequest = new UserData(
                 request.getUserName(),
                 request.getPassword(),
                 request.getUserRole().getNumber()
@@ -51,7 +51,7 @@ public class UserService extends UserServiceGrpc.UserServiceImplBase {
                 .contentType(MediaType.APPLICATION_JSON)
                 .bodyValue(restRequest)
                 .retrieve()
-                .bodyToMono(UserDTO.class)
+                .bodyToMono(UserData.class)
                 .doOnSuccess(userResponse -> {
                     logger.info("POST /Users SUCCESS. Response: {}", userResponse);
                     GetUser userDTO = GetUser.newBuilder()
@@ -76,7 +76,7 @@ public class UserService extends UserServiceGrpc.UserServiceImplBase {
         logger.info("STARTING editUser request for userId: {}", request.getUserId());
         Instant startTime = Instant.now();
 
-        UserDTO restRequest = new UserDTO(
+        UserData restRequest = new UserData(
                 request.getUsername(),
                 request.getPassword(),
                 request.getUserRole().getNumber()
@@ -133,7 +133,7 @@ public class UserService extends UserServiceGrpc.UserServiceImplBase {
                 .uri("/")
                 .accept(MediaType.APPLICATION_JSON)
                 .retrieve()
-                .bodyToFlux(UserDTO.class)
+                .bodyToFlux(UserData.class)
                 .collectList()
                 .doOnSuccess(userResponseList -> {
                     logger.info("GET /Users SUCCESS. Total users: {}, Users: {}", userResponseList.size(), userResponseList);
@@ -158,7 +158,7 @@ public class UserService extends UserServiceGrpc.UserServiceImplBase {
     }
 
 // Custom DTO for Unified User
-    public static class UserDTO {
+    public static class UserData {
         private int userId;
         private String userName;
         private String password;
@@ -166,9 +166,9 @@ public class UserService extends UserServiceGrpc.UserServiceImplBase {
         @JsonDeserialize(using = UserRoleDeserializer.class)
         private int userRole; // Role stays an INT, but the deserializer will convert from string
 
-        public UserDTO() {}
+        public UserData() {}
 
-        public UserDTO(String userName, String password, int userRole) {
+        public UserData(String userName, String password, int userRole) {
             this.userName = userName;
             this.password = password;
             this.userRole = userRole;
