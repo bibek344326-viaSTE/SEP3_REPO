@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("EfcRepositories")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+33b8eba8998fb7b151eff361fc81039eba30b1bb")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+5ebb62cd37ceee6ab5a1a6b756920a3065c8da46")]
 [assembly: System.Reflection.AssemblyProductAttribute("EfcRepositories")]
 [assembly: System.Reflection.AssemblyTitleAttribute("EfcRepositories")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

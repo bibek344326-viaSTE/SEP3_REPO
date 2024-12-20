@@ -27,28 +27,28 @@ public final class ItemServiceGrpc {
   public static final String SERVICE_NAME = "items.ItemService";
 
   // Static method descriptors that strictly reflect the proto.
-  private static volatile io.grpc.MethodDescriptor<com.javainuse.item.ItemDTO,
+  private static volatile io.grpc.MethodDescriptor<com.javainuse.item.CreateItem,
       com.javainuse.item.Item> getCreateItemMethod;
 
   @io.grpc.stub.annotations.RpcMethod(
       fullMethodName = SERVICE_NAME + '/' + "createItem",
-      requestType = com.javainuse.item.ItemDTO.class,
+      requestType = com.javainuse.item.CreateItem.class,
       responseType = com.javainuse.item.Item.class,
       methodType = io.grpc.MethodDescriptor.MethodType.UNARY)
-  public static io.grpc.MethodDescriptor<com.javainuse.item.ItemDTO,
+  public static io.grpc.MethodDescriptor<com.javainuse.item.CreateItem,
       com.javainuse.item.Item> getCreateItemMethod() {
-    io.grpc.MethodDescriptor<com.javainuse.item.ItemDTO, com.javainuse.item.Item> getCreateItemMethod;
+    io.grpc.MethodDescriptor<com.javainuse.item.CreateItem, com.javainuse.item.Item> getCreateItemMethod;
     if ((getCreateItemMethod = ItemServiceGrpc.getCreateItemMethod) == null) {
       synchronized (ItemServiceGrpc.class) {
         if ((getCreateItemMethod = ItemServiceGrpc.getCreateItemMethod) == null) {
           ItemServiceGrpc.getCreateItemMethod = getCreateItemMethod = 
-              io.grpc.MethodDescriptor.<com.javainuse.item.ItemDTO, com.javainuse.item.Item>newBuilder()
+              io.grpc.MethodDescriptor.<com.javainuse.item.CreateItem, com.javainuse.item.Item>newBuilder()
               .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
               .setFullMethodName(generateFullMethodName(
                   "items.ItemService", "createItem"))
               .setSampledToLocalTracing(true)
               .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  com.javainuse.item.ItemDTO.getDefaultInstance()))
+                  com.javainuse.item.CreateItem.getDefaultInstance()))
               .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
                   com.javainuse.item.Item.getDefaultInstance()))
                   .setSchemaDescriptor(new ItemServiceMethodDescriptorSupplier("createItem"))
@@ -91,28 +91,28 @@ public final class ItemServiceGrpc {
      return getEditItemMethod;
   }
 
-  private static volatile io.grpc.MethodDescriptor<com.javainuse.item.Item,
+  private static volatile io.grpc.MethodDescriptor<com.javainuse.item.DeleteItem,
       com.google.protobuf.Empty> getDeleteItemMethod;
 
   @io.grpc.stub.annotations.RpcMethod(
       fullMethodName = SERVICE_NAME + '/' + "deleteItem",
-      requestType = com.javainuse.item.Item.class,
+      requestType = com.javainuse.item.DeleteItem.class,
       responseType = com.google.protobuf.Empty.class,
       methodType = io.grpc.MethodDescriptor.MethodType.UNARY)
-  public static io.grpc.MethodDescriptor<com.javainuse.item.Item,
+  public static io.grpc.MethodDescriptor<com.javainuse.item.DeleteItem,
       com.google.protobuf.Empty> getDeleteItemMethod() {
-    io.grpc.MethodDescriptor<com.javainuse.item.Item, com.google.protobuf.Empty> getDeleteItemMethod;
+    io.grpc.MethodDescriptor<com.javainuse.item.DeleteItem, com.google.protobuf.Empty> getDeleteItemMethod;
     if ((getDeleteItemMethod = ItemServiceGrpc.getDeleteItemMethod) == null) {
       synchronized (ItemServiceGrpc.class) {
         if ((getDeleteItemMethod = ItemServiceGrpc.getDeleteItemMethod) == null) {
           ItemServiceGrpc.getDeleteItemMethod = getDeleteItemMethod = 
-              io.grpc.MethodDescriptor.<com.javainuse.item.Item, com.google.protobuf.Empty>newBuilder()
+              io.grpc.MethodDescriptor.<com.javainuse.item.DeleteItem, com.google.protobuf.Empty>newBuilder()
               .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
               .setFullMethodName(generateFullMethodName(
                   "items.ItemService", "deleteItem"))
               .setSampledToLocalTracing(true)
               .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  com.javainuse.item.Item.getDefaultInstance()))
+                  com.javainuse.item.DeleteItem.getDefaultInstance()))
               .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
                   com.google.protobuf.Empty.getDefaultInstance()))
                   .setSchemaDescriptor(new ItemServiceMethodDescriptorSupplier("deleteItem"))
@@ -184,7 +184,7 @@ public final class ItemServiceGrpc {
 
     /**
      */
-    public void createItem(com.javainuse.item.ItemDTO request,
+    public void createItem(com.javainuse.item.CreateItem request,
         io.grpc.stub.StreamObserver<com.javainuse.item.Item> responseObserver) {
       asyncUnimplementedUnaryCall(getCreateItemMethod(), responseObserver);
     }
@@ -198,7 +198,7 @@ public final class ItemServiceGrpc {
 
     /**
      */
-    public void deleteItem(com.javainuse.item.Item request,
+    public void deleteItem(com.javainuse.item.DeleteItem request,
         io.grpc.stub.StreamObserver<com.google.protobuf.Empty> responseObserver) {
       asyncUnimplementedUnaryCall(getDeleteItemMethod(), responseObserver);
     }
@@ -216,7 +216,7 @@ public final class ItemServiceGrpc {
             getCreateItemMethod(),
             asyncUnaryCall(
               new MethodHandlers<
-                com.javainuse.item.ItemDTO,
+                com.javainuse.item.CreateItem,
                 com.javainuse.item.Item>(
                   this, METHODID_CREATE_ITEM)))
           .addMethod(
@@ -230,7 +230,7 @@ public final class ItemServiceGrpc {
             getDeleteItemMethod(),
             asyncUnaryCall(
               new MethodHandlers<
-                com.javainuse.item.Item,
+                com.javainuse.item.DeleteItem,
                 com.google.protobuf.Empty>(
                   this, METHODID_DELETE_ITEM)))
           .addMethod(
@@ -264,7 +264,7 @@ public final class ItemServiceGrpc {
 
     /**
      */
-    public void createItem(com.javainuse.item.ItemDTO request,
+    public void createItem(com.javainuse.item.CreateItem request,
         io.grpc.stub.StreamObserver<com.javainuse.item.Item> responseObserver) {
       asyncUnaryCall(
           getChannel().newCall(getCreateItemMethod(), getCallOptions()), request, responseObserver);
@@ -280,7 +280,7 @@ public final class ItemServiceGrpc {
 
     /**
      */
-    public void deleteItem(com.javainuse.item.Item request,
+    public void deleteItem(com.javainuse.item.DeleteItem request,
         io.grpc.stub.StreamObserver<com.google.protobuf.Empty> responseObserver) {
       asyncUnaryCall(
           getChannel().newCall(getDeleteItemMethod(), getCallOptions()), request, responseObserver);
@@ -315,7 +315,7 @@ public final class ItemServiceGrpc {
 
     /**
      */
-    public com.javainuse.item.Item createItem(com.javainuse.item.ItemDTO request) {
+    public com.javainuse.item.Item createItem(com.javainuse.item.CreateItem request) {
       return blockingUnaryCall(
           getChannel(), getCreateItemMethod(), getCallOptions(), request);
     }
@@ -329,7 +329,7 @@ public final class ItemServiceGrpc {
 
     /**
      */
-    public com.google.protobuf.Empty deleteItem(com.javainuse.item.Item request) {
+    public com.google.protobuf.Empty deleteItem(com.javainuse.item.DeleteItem request) {
       return blockingUnaryCall(
           getChannel(), getDeleteItemMethod(), getCallOptions(), request);
     }
@@ -363,7 +363,7 @@ public final class ItemServiceGrpc {
     /**
      */
     public com.google.common.util.concurrent.ListenableFuture<com.javainuse.item.Item> createItem(
-        com.javainuse.item.ItemDTO request) {
+        com.javainuse.item.CreateItem request) {
       return futureUnaryCall(
           getChannel().newCall(getCreateItemMethod(), getCallOptions()), request);
     }
@@ -379,7 +379,7 @@ public final class ItemServiceGrpc {
     /**
      */
     public com.google.common.util.concurrent.ListenableFuture<com.google.protobuf.Empty> deleteItem(
-        com.javainuse.item.Item request) {
+        com.javainuse.item.DeleteItem request) {
       return futureUnaryCall(
           getChannel().newCall(getDeleteItemMethod(), getCallOptions()), request);
     }
@@ -416,7 +416,7 @@ public final class ItemServiceGrpc {
     public void invoke(Req request, io.grpc.stub.StreamObserver<Resp> responseObserver) {
       switch (methodId) {
         case METHODID_CREATE_ITEM:
-          serviceImpl.createItem((com.javainuse.item.ItemDTO) request,
+          serviceImpl.createItem((com.javainuse.item.CreateItem) request,
               (io.grpc.stub.StreamObserver<com.javainuse.item.Item>) responseObserver);
           break;
         case METHODID_EDIT_ITEM:
@@ -424,7 +424,7 @@ public final class ItemServiceGrpc {
               (io.grpc.stub.StreamObserver<com.google.protobuf.Empty>) responseObserver);
           break;
         case METHODID_DELETE_ITEM:
-          serviceImpl.deleteItem((com.javainuse.item.Item) request,
+          serviceImpl.deleteItem((com.javainuse.item.DeleteItem) request,
               (io.grpc.stub.StreamObserver<com.google.protobuf.Empty>) responseObserver);
           break;
         case METHODID_GET_ALL_ITEMS:

@@ -15,10 +15,10 @@ public final class ItemServiceOuterClass {
         (com.google.protobuf.ExtensionRegistryLite) registry);
   }
   static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_items_ItemDTO_descriptor;
+    internal_static_items_CreateItem_descriptor;
   static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_items_ItemDTO_fieldAccessorTable;
+      internal_static_items_CreateItem_fieldAccessorTable;
   static final com.google.protobuf.Descriptors.Descriptor
     internal_static_items_Item_descriptor;
   static final 
@@ -29,6 +29,11 @@ public final class ItemServiceOuterClass {
   static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_items_ItemList_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_items_DeleteItem_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_items_DeleteItem_fieldAccessorTable;
 
   public static com.google.protobuf.Descriptors.FileDescriptor
       getDescriptor() {
@@ -39,18 +44,19 @@ public final class ItemServiceOuterClass {
   static {
     java.lang.String[] descriptorData = {
       "\n\022item-service.proto\022\005items\032\033google/prot" +
-      "obuf/empty.proto\"G\n\007ItemDTO\022\014\n\004name\030\001 \001(" +
-      "\t\022\023\n\013description\030\002 \001(\t\022\031\n\021quantity_in_st" +
-      "ore\030\003 \001(\005\"X\n\004Item\022\016\n\006itemId\030\001 \001(\005\022\020\n\010ite" +
-      "mName\030\002 \001(\t\022\023\n\013description\030\003 \001(\t\022\031\n\021quan" +
-      "tity_in_store\030\004 \001(\005\"&\n\010ItemList\022\032\n\005items" +
-      "\030\001 \003(\0132\013.items.Item2\324\001\n\013ItemService\022)\n\nc" +
-      "reateItem\022\016.items.ItemDTO\032\013.items.Item\022/" +
-      "\n\010editItem\022\013.items.Item\032\026.google.protobu" +
-      "f.Empty\0221\n\ndeleteItem\022\013.items.Item\032\026.goo" +
-      "gle.protobuf.Empty\0226\n\013getAllItems\022\026.goog" +
-      "le.protobuf.Empty\032\017.items.ItemListB\026\n\022co" +
-      "m.javainuse.itemP\001b\006proto3"
+      "obuf/empty.proto\"J\n\nCreateItem\022\014\n\004name\030\001" +
+      " \001(\t\022\023\n\013description\030\002 \001(\t\022\031\n\021quantity_in" +
+      "_store\030\003 \001(\005\"X\n\004Item\022\016\n\006itemId\030\001 \001(\005\022\020\n\010" +
+      "itemName\030\002 \001(\t\022\023\n\013description\030\003 \001(\t\022\031\n\021q" +
+      "uantity_in_store\030\004 \001(\005\"&\n\010ItemList\022\032\n\005it" +
+      "ems\030\001 \003(\0132\013.items.Item\"\034\n\nDeleteItem\022\016\n\006" +
+      "itemId\030\001 \001(\0052\335\001\n\013ItemService\022,\n\ncreateIt" +
+      "em\022\021.items.CreateItem\032\013.items.Item\022/\n\010ed" +
+      "itItem\022\013.items.Item\032\026.google.protobuf.Em" +
+      "pty\0227\n\ndeleteItem\022\021.items.DeleteItem\032\026.g" +
+      "oogle.protobuf.Empty\0226\n\013getAllItems\022\026.go" +
+      "ogle.protobuf.Empty\032\017.items.ItemListB\026\n\022" +
+      "com.javainuse.itemP\001b\006proto3"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -65,11 +71,11 @@ public final class ItemServiceOuterClass {
         new com.google.protobuf.Descriptors.FileDescriptor[] {
           com.google.protobuf.EmptyProto.getDescriptor(),
         }, assigner);
-    internal_static_items_ItemDTO_descriptor =
+    internal_static_items_CreateItem_descriptor =
       getDescriptor().getMessageTypes().get(0);
-    internal_static_items_ItemDTO_fieldAccessorTable = new
+    internal_static_items_CreateItem_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_items_ItemDTO_descriptor,
+        internal_static_items_CreateItem_descriptor,
         new java.lang.String[] { "Name", "Description", "QuantityInStore", });
     internal_static_items_Item_descriptor =
       getDescriptor().getMessageTypes().get(1);
@@ -83,6 +89,12 @@ public final class ItemServiceOuterClass {
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_items_ItemList_descriptor,
         new java.lang.String[] { "Items", });
+    internal_static_items_DeleteItem_descriptor =
+      getDescriptor().getMessageTypes().get(3);
+    internal_static_items_DeleteItem_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_items_DeleteItem_descriptor,
+        new java.lang.String[] { "ItemId", });
     com.google.protobuf.EmptyProto.getDescriptor();
   }
 

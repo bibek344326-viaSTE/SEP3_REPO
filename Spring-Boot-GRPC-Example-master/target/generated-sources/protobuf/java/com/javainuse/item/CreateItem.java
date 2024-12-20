@@ -4,18 +4,18 @@
 package com.javainuse.item;
 
 /**
- * Protobuf type {@code items.ItemDTO}
+ * Protobuf type {@code items.CreateItem}
  */
-public  final class ItemDTO extends
+public  final class CreateItem extends
     com.google.protobuf.GeneratedMessageV3 implements
-    // @@protoc_insertion_point(message_implements:items.ItemDTO)
-    ItemDTOOrBuilder {
+    // @@protoc_insertion_point(message_implements:items.CreateItem)
+    CreateItemOrBuilder {
 private static final long serialVersionUID = 0L;
-  // Use ItemDTO.newBuilder() to construct.
-  private ItemDTO(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+  // Use CreateItem.newBuilder() to construct.
+  private CreateItem(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
     super(builder);
   }
-  private ItemDTO() {
+  private CreateItem() {
     name_ = "";
     description_ = "";
     quantityInStore_ = 0;
@@ -26,7 +26,7 @@ private static final long serialVersionUID = 0L;
   getUnknownFields() {
     return this.unknownFields;
   }
-  private ItemDTO(
+  private CreateItem(
       com.google.protobuf.CodedInputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
@@ -83,15 +83,15 @@ private static final long serialVersionUID = 0L;
   }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
-    return com.javainuse.item.ItemServiceOuterClass.internal_static_items_ItemDTO_descriptor;
+    return com.javainuse.item.ItemServiceOuterClass.internal_static_items_CreateItem_descriptor;
   }
 
   @java.lang.Override
   protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internalGetFieldAccessorTable() {
-    return com.javainuse.item.ItemServiceOuterClass.internal_static_items_ItemDTO_fieldAccessorTable
+    return com.javainuse.item.ItemServiceOuterClass.internal_static_items_CreateItem_fieldAccessorTable
         .ensureFieldAccessorsInitialized(
-            com.javainuse.item.ItemDTO.class, com.javainuse.item.ItemDTO.Builder.class);
+            com.javainuse.item.CreateItem.class, com.javainuse.item.CreateItem.Builder.class);
   }
 
   public static final int NAME_FIELD_NUMBER = 1;
@@ -223,10 +223,10 @@ private static final long serialVersionUID = 0L;
     if (obj == this) {
      return true;
     }
-    if (!(obj instanceof com.javainuse.item.ItemDTO)) {
+    if (!(obj instanceof com.javainuse.item.CreateItem)) {
       return super.equals(obj);
     }
-    com.javainuse.item.ItemDTO other = (com.javainuse.item.ItemDTO) obj;
+    com.javainuse.item.CreateItem other = (com.javainuse.item.CreateItem) obj;
 
     boolean result = true;
     result = result && getName()
@@ -257,69 +257,69 @@ private static final long serialVersionUID = 0L;
     return hash;
   }
 
-  public static com.javainuse.item.ItemDTO parseFrom(
+  public static com.javainuse.item.CreateItem parseFrom(
       java.nio.ByteBuffer data)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data);
   }
-  public static com.javainuse.item.ItemDTO parseFrom(
+  public static com.javainuse.item.CreateItem parseFrom(
       java.nio.ByteBuffer data,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data, extensionRegistry);
   }
-  public static com.javainuse.item.ItemDTO parseFrom(
+  public static com.javainuse.item.CreateItem parseFrom(
       com.google.protobuf.ByteString data)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data);
   }
-  public static com.javainuse.item.ItemDTO parseFrom(
+  public static com.javainuse.item.CreateItem parseFrom(
       com.google.protobuf.ByteString data,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data, extensionRegistry);
   }
-  public static com.javainuse.item.ItemDTO parseFrom(byte[] data)
+  public static com.javainuse.item.CreateItem parseFrom(byte[] data)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data);
   }
-  public static com.javainuse.item.ItemDTO parseFrom(
+  public static com.javainuse.item.CreateItem parseFrom(
       byte[] data,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data, extensionRegistry);
   }
-  public static com.javainuse.item.ItemDTO parseFrom(java.io.InputStream input)
+  public static com.javainuse.item.CreateItem parseFrom(java.io.InputStream input)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseWithIOException(PARSER, input);
   }
-  public static com.javainuse.item.ItemDTO parseFrom(
+  public static com.javainuse.item.CreateItem parseFrom(
       java.io.InputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseWithIOException(PARSER, input, extensionRegistry);
   }
-  public static com.javainuse.item.ItemDTO parseDelimitedFrom(java.io.InputStream input)
+  public static com.javainuse.item.CreateItem parseDelimitedFrom(java.io.InputStream input)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseDelimitedWithIOException(PARSER, input);
   }
-  public static com.javainuse.item.ItemDTO parseDelimitedFrom(
+  public static com.javainuse.item.CreateItem parseDelimitedFrom(
       java.io.InputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
   }
-  public static com.javainuse.item.ItemDTO parseFrom(
+  public static com.javainuse.item.CreateItem parseFrom(
       com.google.protobuf.CodedInputStream input)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseWithIOException(PARSER, input);
   }
-  public static com.javainuse.item.ItemDTO parseFrom(
+  public static com.javainuse.item.CreateItem parseFrom(
       com.google.protobuf.CodedInputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws java.io.IOException {
@@ -332,7 +332,7 @@ private static final long serialVersionUID = 0L;
   public static Builder newBuilder() {
     return DEFAULT_INSTANCE.toBuilder();
   }
-  public static Builder newBuilder(com.javainuse.item.ItemDTO prototype) {
+  public static Builder newBuilder(com.javainuse.item.CreateItem prototype) {
     return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
   }
   @java.lang.Override
@@ -348,26 +348,26 @@ private static final long serialVersionUID = 0L;
     return builder;
   }
   /**
-   * Protobuf type {@code items.ItemDTO}
+   * Protobuf type {@code items.CreateItem}
    */
   public static final class Builder extends
       com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
-      // @@protoc_insertion_point(builder_implements:items.ItemDTO)
-      com.javainuse.item.ItemDTOOrBuilder {
+      // @@protoc_insertion_point(builder_implements:items.CreateItem)
+      com.javainuse.item.CreateItemOrBuilder {
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.javainuse.item.ItemServiceOuterClass.internal_static_items_ItemDTO_descriptor;
+      return com.javainuse.item.ItemServiceOuterClass.internal_static_items_CreateItem_descriptor;
     }
 
     @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.javainuse.item.ItemServiceOuterClass.internal_static_items_ItemDTO_fieldAccessorTable
+      return com.javainuse.item.ItemServiceOuterClass.internal_static_items_CreateItem_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
-              com.javainuse.item.ItemDTO.class, com.javainuse.item.ItemDTO.Builder.class);
+              com.javainuse.item.CreateItem.class, com.javainuse.item.CreateItem.Builder.class);
     }
 
-    // Construct using com.javainuse.item.ItemDTO.newBuilder()
+    // Construct using com.javainuse.item.CreateItem.newBuilder()
     private Builder() {
       maybeForceBuilderInitialization();
     }
@@ -397,17 +397,17 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.google.protobuf.Descriptors.Descriptor
         getDescriptorForType() {
-      return com.javainuse.item.ItemServiceOuterClass.internal_static_items_ItemDTO_descriptor;
+      return com.javainuse.item.ItemServiceOuterClass.internal_static_items_CreateItem_descriptor;
     }
 
     @java.lang.Override
-    public com.javainuse.item.ItemDTO getDefaultInstanceForType() {
-      return com.javainuse.item.ItemDTO.getDefaultInstance();
+    public com.javainuse.item.CreateItem getDefaultInstanceForType() {
+      return com.javainuse.item.CreateItem.getDefaultInstance();
     }
 
     @java.lang.Override
-    public com.javainuse.item.ItemDTO build() {
-      com.javainuse.item.ItemDTO result = buildPartial();
+    public com.javainuse.item.CreateItem build() {
+      com.javainuse.item.CreateItem result = buildPartial();
       if (!result.isInitialized()) {
         throw newUninitializedMessageException(result);
       }
@@ -415,8 +415,8 @@ private static final long serialVersionUID = 0L;
     }
 
     @java.lang.Override
-    public com.javainuse.item.ItemDTO buildPartial() {
-      com.javainuse.item.ItemDTO result = new com.javainuse.item.ItemDTO(this);
+    public com.javainuse.item.CreateItem buildPartial() {
+      com.javainuse.item.CreateItem result = new com.javainuse.item.CreateItem(this);
       result.name_ = name_;
       result.description_ = description_;
       result.quantityInStore_ = quantityInStore_;
@@ -458,16 +458,16 @@ private static final long serialVersionUID = 0L;
     }
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
-      if (other instanceof com.javainuse.item.ItemDTO) {
-        return mergeFrom((com.javainuse.item.ItemDTO)other);
+      if (other instanceof com.javainuse.item.CreateItem) {
+        return mergeFrom((com.javainuse.item.CreateItem)other);
       } else {
         super.mergeFrom(other);
         return this;
       }
     }
 
-    public Builder mergeFrom(com.javainuse.item.ItemDTO other) {
-      if (other == com.javainuse.item.ItemDTO.getDefaultInstance()) return this;
+    public Builder mergeFrom(com.javainuse.item.CreateItem other) {
+      if (other == com.javainuse.item.CreateItem.getDefaultInstance()) return this;
       if (!other.getName().isEmpty()) {
         name_ = other.name_;
         onChanged();
@@ -494,11 +494,11 @@ private static final long serialVersionUID = 0L;
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
-      com.javainuse.item.ItemDTO parsedMessage = null;
+      com.javainuse.item.CreateItem parsedMessage = null;
       try {
         parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
       } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-        parsedMessage = (com.javainuse.item.ItemDTO) e.getUnfinishedMessage();
+        parsedMessage = (com.javainuse.item.CreateItem) e.getUnfinishedMessage();
         throw e.unwrapIOException();
       } finally {
         if (parsedMessage != null) {
@@ -684,41 +684,41 @@ private static final long serialVersionUID = 0L;
     }
 
 
-    // @@protoc_insertion_point(builder_scope:items.ItemDTO)
+    // @@protoc_insertion_point(builder_scope:items.CreateItem)
   }
 
-  // @@protoc_insertion_point(class_scope:items.ItemDTO)
-  private static final com.javainuse.item.ItemDTO DEFAULT_INSTANCE;
+  // @@protoc_insertion_point(class_scope:items.CreateItem)
+  private static final com.javainuse.item.CreateItem DEFAULT_INSTANCE;
   static {
-    DEFAULT_INSTANCE = new com.javainuse.item.ItemDTO();
+    DEFAULT_INSTANCE = new com.javainuse.item.CreateItem();
   }
 
-  public static com.javainuse.item.ItemDTO getDefaultInstance() {
+  public static com.javainuse.item.CreateItem getDefaultInstance() {
     return DEFAULT_INSTANCE;
   }
 
-  private static final com.google.protobuf.Parser<ItemDTO>
-      PARSER = new com.google.protobuf.AbstractParser<ItemDTO>() {
+  private static final com.google.protobuf.Parser<CreateItem>
+      PARSER = new com.google.protobuf.AbstractParser<CreateItem>() {
     @java.lang.Override
-    public ItemDTO parsePartialFrom(
+    public CreateItem parsePartialFrom(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
-      return new ItemDTO(input, extensionRegistry);
+      return new CreateItem(input, extensionRegistry);
     }
   };
 
-  public static com.google.protobuf.Parser<ItemDTO> parser() {
+  public static com.google.protobuf.Parser<CreateItem> parser() {
     return PARSER;
   }
 
   @java.lang.Override
-  public com.google.protobuf.Parser<ItemDTO> getParserForType() {
+  public com.google.protobuf.Parser<CreateItem> getParserForType() {
     return PARSER;
   }
 
   @java.lang.Override
-  public com.javainuse.item.ItemDTO getDefaultInstanceForType() {
+  public com.javainuse.item.CreateItem getDefaultInstanceForType() {
     return DEFAULT_INSTANCE;
   }
 

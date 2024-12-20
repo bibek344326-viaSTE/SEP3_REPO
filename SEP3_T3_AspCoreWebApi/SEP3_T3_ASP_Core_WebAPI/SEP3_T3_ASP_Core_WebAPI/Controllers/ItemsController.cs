@@ -180,7 +180,7 @@ public class ItemsController: ControllerBase
     {
         try
         {
-            await itemRepository.DeleteItemAsync(id);
+            await itemRepository.DeleteItemAsync(id); // Call the updated repository method
             return NoContent();
         }
         catch (InvalidOperationException)
@@ -193,4 +193,5 @@ public class ItemsController: ControllerBase
             return StatusCode(500, $"An error occurred: {e.Message}");
         }
     }
+
 }

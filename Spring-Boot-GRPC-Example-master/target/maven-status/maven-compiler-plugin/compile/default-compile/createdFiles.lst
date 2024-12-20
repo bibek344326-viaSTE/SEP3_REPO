@@ -1,4 +1,12 @@
 com\javainuse\orders\CreateOrderItemDTO$Builder.class
+com\javainuse\item\DeleteItem$Builder.class
+com\javainuse\item\CreateItem$Builder.class
+com\javainuse\item\CreateItem.class
 com\javainuse\orders\CreateOrderItemDTOOrBuilder.class
+com\javainuse\item\CreateItemOrBuilder.class
+com\javainuse\item\DeleteItem$1.class
 com\javainuse\orders\CreateOrderItemDTO.class
+com\javainuse\item\DeleteItem.class
 com\javainuse\orders\CreateOrderItemDTO$1.class
+com\javainuse\item\CreateItem$1.class
+com\javainuse\item\DeleteItemOrBuilder.class

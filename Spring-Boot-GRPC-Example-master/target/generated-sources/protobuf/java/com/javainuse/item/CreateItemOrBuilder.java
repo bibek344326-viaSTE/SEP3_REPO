@@ -3,8 +3,8 @@
 
 package com.javainuse.item;
 
-public interface ItemDTOOrBuilder extends
-    // @@protoc_insertion_point(interface_extends:items.ItemDTO)
+public interface CreateItemOrBuilder extends
+    // @@protoc_insertion_point(interface_extends:items.CreateItem)
     com.google.protobuf.MessageOrBuilder {
 
   /**

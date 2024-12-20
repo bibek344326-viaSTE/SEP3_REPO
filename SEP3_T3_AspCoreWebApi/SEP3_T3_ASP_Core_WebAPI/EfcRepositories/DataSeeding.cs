@@ -71,7 +71,12 @@ namespace SEP3_T3_ASP_Core_WebAPI.Data
 
                     context.SaveChanges();
 
-                    // ----- Step 3: Insert Orders -----
+
+
+
+
+
+                                         // ----- Step 3: Insert Orders -----
                     var orders = new List<Order>
                     {
                         new Order
@@ -119,12 +124,10 @@ namespace SEP3_T3_ASP_Core_WebAPI.Data
                             }
                         }
                     };
-
-                    context.Orders.AddRange(orders);
+                                        context.Orders.AddRange(orders);
                     context.SaveChanges();
-
-                    // ----- Step 4: Insert Additional Orders and OrderItems -----
-                    var random = new Random(); // Ensuring a single Random instance for unique randomness
+                                        // ----- Step 4: Insert Additional Orders and OrderItems -----
+                       var random = new Random(); // Ensuring a single Random instance for unique randomness
                     for (int i = 3; i < 20; i++) // Creating orders #4 to #20
                     {
                         var order = new Order
@@ -160,6 +163,8 @@ namespace SEP3_T3_ASP_Core_WebAPI.Data
 
                     context.Orders.AddRange(orders.GetRange(3, orders.Count - 3));
                     context.SaveChanges();
+
+                     
 
                 }
 

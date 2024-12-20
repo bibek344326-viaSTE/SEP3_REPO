@@ -1,8 +1,8 @@
 package com.javainuse.sep03.service;
 
+import com.javainuse.item.CreateItem;
+import com.javainuse.item.DeleteItem;
 import com.javainuse.item.Item;
-import com.javainuse.item.ItemDTO;
-
 import com.javainuse.item.ItemList;
 import com.javainuse.item.ItemServiceGrpc;
 import com.google.protobuf.Empty;
@@ -16,7 +16,6 @@ import reactor.netty.http.client.HttpClient;
 
 import java.util.List;
 
-// The REST API returns/accepts JSON objects with fields matching these:
 class RestItem {
     private int itemId;
     private String itemName;
@@ -49,7 +48,7 @@ class RestItem {
     }
 }
 
-class RestItemDto {
+class ItemDTO {
     private String itemName;
     private String description;
     private int quantityInStore;
@@ -87,12 +86,49 @@ public class ItemService extends ItemServiceGrpc.ItemServiceImplBase {
             .build();
 
     @Override
+    public void createItem(CreateItem request, StreamObserver<Item> responseObserver) {
+        System.out.println("Received create request: " + request);
+
+        // Create RestCreateItem from the gRPC CreateItem request
+        ItemDTO restCreateItem = new ItemDTO();
+        restCreateItem.setItemName(request.getName());
+        restCreateItem.setDescription(request.getDescription());
+        restCreateItem.setQuantityInStore(request.getQuantityInStore());
+
+        try {
+            RestItem createdItem = webClient.post()
+                    .uri("")
+                    .bodyValue(restCreateItem)
+                    .retrieve()
+                    .bodyToMono(RestItem.class)
+                    .block();
+
+            if (createdItem == null) {
+                responseObserver.onError(new RuntimeException("Failed to create item"));
+                return;
+            }
+
+            Item grpcItem = Item.newBuilder()
+                    .setItemId(createdItem.getItemId())
+                    .setItemName(createdItem.getItemName())
+                    .setDescription(createdItem.getDescription() == null ? "" : createdItem.getDescription())
+                    .setQuantityInStore(createdItem.getQuantityInStore())
+                    .build();
+
+            System.out.println("Item created successfully: " + grpcItem);
+            responseObserver.onNext(grpcItem);
+            responseObserver.onCompleted();
+        } catch (Exception e) {
+            System.err.println("Error occurred during create REST API call: " + e.getMessage());
+            responseObserver.onError(e);
+        }
+    }
+
+    @Override
     public void editItem(Item request, StreamObserver<Empty> responseObserver) {
         System.out.println("Received edit request: " + request);
 
-        // To edit an item, we do a PUT /Items/{id}
         int itemId = request.getItemId();
-
 
         RestItem restItem = new RestItem();
         restItem.setItemId(itemId);
@@ -108,7 +144,7 @@ public class ItemService extends ItemServiceGrpc.ItemServiceImplBase {
                     .bodyValue(restItem)
                     .retrieve()
                     .toBodilessEntity()
-                    .block(); // Blocking call
+                    .block();
 
             System.out.println("Item updated successfully: " + restItem);
             responseObserver.onNext(Empty.getDefaultInstance());
@@ -119,36 +155,39 @@ public class ItemService extends ItemServiceGrpc.ItemServiceImplBase {
         }
     }
 
-
     @Override
-    public void deleteItem(Item request, StreamObserver<Empty> responseObserver) {
-        // DELETE /Items/{id}
-        int itemId = request.getItemId();
+    public void deleteItem(DeleteItem request, StreamObserver<Empty> responseObserver) {
+        int itemId = request.getItemId(); // Extract the itemId from DeleteItem request
+
+        System.out.println("Received delete request for itemId: " + itemId);
 
         try {
             webClient.delete()
                     .uri("/{id}", itemId)
                     .retrieve()
                     .toBodilessEntity()
-                    .block(); // Blocking
+                    .block();
 
+            System.out.println("Item deleted successfully with itemId: " + itemId);
             responseObserver.onNext(Empty.getDefaultInstance());
             responseObserver.onCompleted();
         } catch (Exception e) {
+            System.err.println("Error occurred during delete REST API call: " + e.getMessage());
             responseObserver.onError(e);
         }
     }
 
     @Override
     public void getAllItems(Empty request, StreamObserver<ItemList> responseObserver) {
-        // GET /Items
+        System.out.println("Received request to get all items");
+
         try {
             List<RestItem> restItems = webClient.get()
                     .uri("")
                     .retrieve()
                     .bodyToFlux(RestItem.class)
                     .collectList()
-                    .block(); // Blocking call
+                    .block();
 
             if (restItems == null) {
                 responseObserver.onError(new RuntimeException("No items returned"));
@@ -158,7 +197,7 @@ public class ItemService extends ItemServiceGrpc.ItemServiceImplBase {
             ItemList.Builder itemListBuilder = ItemList.newBuilder();
             for (RestItem ri : restItems) {
                 Item grpcItem = Item.newBuilder()
-                        .setItemId((ri.getItemId()))
+                        .setItemId(ri.getItemId())
                         .setItemName(ri.getItemName())
                         .setDescription(ri.getDescription() == null ? "" : ri.getDescription())
                         .setQuantityInStore(ri.getQuantityInStore())
@@ -166,46 +205,12 @@ public class ItemService extends ItemServiceGrpc.ItemServiceImplBase {
                 itemListBuilder.addItems(grpcItem);
             }
 
+            System.out.println("Items retrieved successfully: " + itemListBuilder.getItemsList().size());
             responseObserver.onNext(itemListBuilder.build());
             responseObserver.onCompleted();
         } catch (Exception e) {
+            System.err.println("Error occurred during get all items REST API call: " + e.getMessage());
             responseObserver.onError(e);
         }
     }
-
-    @Override
-    public void createItem(ItemDTO request,
-                           StreamObserver<Item> responseObserver) {
-        RestItemDto dto = new RestItemDto();
-        dto.setItemName(request.getName());
-        dto.setDescription(request.getDescription());
-        dto.setQuantityInStore(request.getQuantityInStore());
-
-        try {
-            RestItem createdItem = webClient.post()
-                    .uri("")
-                    .bodyValue(dto)
-                    .retrieve()
-                    .bodyToMono(RestItem.class)
-                    .block();
-
-            if (createdItem == null) {
-                responseObserver.onError(new RuntimeException("Failed to create item"));
-                return;
-            }
-
-            com.javainuse.item.Item grpcItem = com.javainuse.item.Item.newBuilder()
-                    .setItemId((createdItem.getItemId()))
-                    .setItemName(createdItem.getItemName())
-                    .setDescription(createdItem.getDescription() == null ? "" : createdItem.getDescription())
-                    .setQuantityInStore(createdItem.getQuantityInStore())
-                    .build();
-
-            responseObserver.onNext(grpcItem);
-            responseObserver.onCompleted();
-        } catch (Exception e) {
-            responseObserver.onError(e);
-        }
-    }
-
 }

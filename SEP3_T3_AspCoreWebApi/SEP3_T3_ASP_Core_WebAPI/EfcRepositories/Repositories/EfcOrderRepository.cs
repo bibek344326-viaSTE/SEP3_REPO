@@ -44,15 +44,29 @@ public class EfcOrderRepository : IOrderRepository
             throw new Exception($"User with UserId '{order.CreatedById}' not found.");
         }
 
-        // Ensure these timestamps are in UTC before saving them to the database
-        order.CreatedAt = DateTimeOffset.UtcNow; // Automatically set CreatedAt to UTC
-        order.DeliveryDate = order.DeliveryDate.ToUniversalTime(); // Convert DeliveryDate to UTC
+        // Ensure timestamps are in UTC
+        order.CreatedAt = DateTimeOffset.UtcNow;
+        order.DeliveryDate = order.DeliveryDate.ToUniversalTime();
         order.CreatedBy = createdByUser;
 
-        EntityEntry<Order> entityEntry = await ctx.Orders.AddAsync(order);
-        await ctx.SaveChangesAsync();
-        return entityEntry.Entity;
+        // Save Order first
+        await ctx.Orders.AddAsync(order);
+        await ctx.SaveChangesAsync(); // Now OrderId is available!
+        Console.WriteLine($"Order created successfully with OrderId: {order.OrderId}");
+
+        // Attach the OrderId to all OrderItems
+        foreach (var orderItem in order.OrderItems)
+        {
+            orderItem.OrderId = order.OrderId; // Attach the new OrderId to each OrderItem
+            ctx.Attach(orderItem); // Attach instead of Add
+        }
+
+        await ctx.SaveChangesAsync(); // Save all changes at once
+        return order;
     }
+
+
+
 
 
     public async Task<Order> UpdateOrderAsync(Order order)

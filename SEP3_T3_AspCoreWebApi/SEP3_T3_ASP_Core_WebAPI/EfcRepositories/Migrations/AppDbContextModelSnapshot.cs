@@ -33,6 +33,9 @@ namespace EfcRepositories.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("text");
 
+                    b.Property<bool>("IsAvailable")
+                        .HasColumnType("boolean");
+
                     b.Property<string>("ItemName")
                         .IsRequired()
                         .HasColumnType("text");
