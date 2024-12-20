@@ -40,22 +40,21 @@ public class EfcItemRepository: IItemRepository
     }
 
     // Delete an item from the database
+    // Delete an item from the database
     public async Task<Item> DeleteItemAsync(int id)
     {
-        // Find the existing item by ID
-        Item? existingItem = await _ctx.Items.FindAsync(id);
-        if (existingItem == null)
+        // Find the item by Id
+        var item = await _ctx.Items.FindAsync(id);
+
+        if (item == null)
         {
-            throw new InvalidOperationException("Item does not exist");
+            throw new KeyNotFoundException($"Item with ID {id} not found.");
         }
 
-        // Mark item as unavailable instead of removing it
-        existingItem.IsAvailable = false;
+        _ctx.Items.Remove(item); // Remove the item from the context
+        await _ctx.SaveChangesAsync(); // Save the changes to the database
 
-        // Save changes to the database
-        await _ctx.SaveChangesAsync();
-
-        return existingItem;
+        return item; // Return the deleted item
     }
 
 

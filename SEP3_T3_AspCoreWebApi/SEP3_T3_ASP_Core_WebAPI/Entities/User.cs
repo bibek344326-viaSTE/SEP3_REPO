@@ -13,7 +13,7 @@ namespace Entities
         public required string UserName { get; set; }
         public required string Password { get; set; }
         public required UserRole UserRole { get; set; }
-        public required bool IsActive { get; set; }
+        public List<Order> Orders { get; set; } = new List<Order>();
 
 
         public static User Create(string requestUserName, string requestPassword, UserRole requestUserRole)
@@ -23,7 +23,6 @@ namespace Entities
                 UserName = requestUserName,
                 Password = requestPassword,
                 UserRole = requestUserRole,
-                IsActive = true
             };
         }
 

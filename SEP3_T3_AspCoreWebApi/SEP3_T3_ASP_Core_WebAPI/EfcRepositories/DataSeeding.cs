@@ -34,15 +34,13 @@ namespace SEP3_T3_ASP_Core_WebAPI.Data
                         UserName = "admin",
                         UserRole = UserRole.INVENTORY_MANAGER,
                         Password = passwordHasher.HashPassword(null, "admin"),
-                        IsActive = true
                     };
 
                     var user2 = new User
                     {
                         UserName = "worker",
                         UserRole = UserRole.WAREHOUSE_WORKER,
-                        Password = passwordHasher.HashPassword(null, "worker"),
-                        IsActive = true
+                        Password = passwordHasher.HashPassword(null, "worker")
                     };
 
                     context.Users.AddRange(user1, user2);

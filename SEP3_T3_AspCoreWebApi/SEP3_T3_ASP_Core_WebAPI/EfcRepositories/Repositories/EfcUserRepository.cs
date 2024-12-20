@@ -95,21 +95,25 @@ public class EfcUserRepository: IUserRepository
     // Delete a user from the database
     public async Task<User> DeleteUserAsync(int id)
     {
-        User? existingUser = await _ctx.Users.SingleOrDefaultAsync(u => u.UserId == id);
-        if (existingUser == null)
+        // Find the user by Id
+        var user = await _ctx.Users.FindAsync(id);
+
+        if (user == null)
         {
-            throw new InvalidOperationException("User does not exist");
+            throw new KeyNotFoundException($"User with ID {id} not found.");
         }
-        existingUser.IsActive = false;
-        _ctx.Users.Update(existingUser);
-        await _ctx.SaveChangesAsync();
-        return existingUser;
+
+        _ctx.Users.Remove(user); // Remove the user from the context
+        await _ctx.SaveChangesAsync(); // Save the changes to the database
+
+        return user; // Return the deleted user
     }
+
 
 
     public IQueryable<User> GetAllUsers()
     {
-        return _ctx.Users.Where(user => user.IsActive).AsQueryable();
+        return _ctx.Users.AsQueryable();
     }
 
 

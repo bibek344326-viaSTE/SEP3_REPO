@@ -37,7 +37,6 @@ public class UsersController: ControllerBase
             UserId = created.UserId,
             UserName = created.UserName,
             UserRole = created.UserRole,
-            IsActive = created.IsActive
         };
 
         // Return the created user DTO with status 201 (Created)
@@ -70,7 +69,6 @@ public class UsersController: ControllerBase
                 UserName = request.UserName,
                 Password = request.Password,
                 UserRole = request.UserRole,
-                IsActive = true // This ensures the user remains active (can be omitted if it's set in the database)
             };
 
             // Step 2: Pass the User entity to the repository (not the DTO)
@@ -97,7 +95,6 @@ public class UsersController: ControllerBase
     {
         try
         {
-            User userToDelete = await userRepo.GetUserById(id);
             await userRepo.DeleteUserAsync(id);
             return NoContent();
         }
@@ -126,7 +123,6 @@ public class UsersController: ControllerBase
                 UserName = user.UserName,
                 Password = user.Password,
                 UserRole = user.UserRole,
-                IsActive = user.IsActive,
             };
             return Ok(dto);
         }
@@ -154,7 +150,6 @@ public class UsersController: ControllerBase
                     UserId = user.UserId,
                     UserName = user.UserName,
                     UserRole = user.UserRole,
-                    IsActive = user.IsActive
                 })
                 .ToListAsync(); // Ensure asynchronous operation
 

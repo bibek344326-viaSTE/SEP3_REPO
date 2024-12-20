@@ -23,7 +23,6 @@ namespace SEP3_T3_ASP_Core_WebAPI
             }
         }
 
-
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<OrderItem>()
@@ -32,24 +31,44 @@ namespace SEP3_T3_ASP_Core_WebAPI
             modelBuilder.Entity<OrderItem>()
                 .HasOne(oi => oi.Order)
                 .WithMany(o => o.OrderItems)
-                .HasForeignKey(oi => oi.OrderId);
+                .HasForeignKey(oi => oi.OrderId)
+                .OnDelete(DeleteBehavior.Cascade); // Delete on cascade for OrderItem when Order is deleted
 
             modelBuilder.Entity<OrderItem>()
                 .HasOne(oi => oi.Item)
                 .WithMany(i => i.OrderItems)
-                .HasForeignKey(oi => oi.ItemId);
+                .HasForeignKey(oi => oi.ItemId)
+                .OnDelete(DeleteBehavior.Cascade); // Delete on cascade for OrderItem when Item is deleted
 
             modelBuilder.Entity<Order>()
                 .HasOne(o => o.AssignedUser)
-                .WithMany()
+                .WithMany(u => u.Orders) // Added this relationship to allow User to access Orders
                 .HasForeignKey(o => o.UserId)
-                .OnDelete(DeleteBehavior.Restrict);
+    .OnDelete(DeleteBehavior.Cascade); // Change from Restrict to Cascade
 
             modelBuilder.Entity<Order>()
                 .HasOne(o => o.CreatedBy)
                 .WithMany()
                 .HasForeignKey(o => o.CreatedById)
-                .OnDelete(DeleteBehavior.Restrict);
+    .OnDelete(DeleteBehavior.Cascade); // Change from Restrict to Cascade
+
+            modelBuilder.Entity<Item>()
+                .HasMany(i => i.OrderItems)
+                .WithOne(oi => oi.Item)
+                .HasForeignKey(oi => oi.ItemId)
+                .OnDelete(DeleteBehavior.Cascade); // Delete on cascade for OrderItem when Item is deleted
+
+            modelBuilder.Entity<Order>()
+                .HasMany(o => o.OrderItems)
+                .WithOne(oi => oi.Order)
+                .HasForeignKey(oi => oi.OrderId)
+                .OnDelete(DeleteBehavior.Cascade); // Delete on cascade for OrderItem when Order is deleted
+
+            modelBuilder.Entity<User>()
+                .HasMany<Order>(u => u.Orders) // Added missing Orders navigation property in User entity
+                .WithOne(o => o.AssignedUser)
+                .HasForeignKey(o => o.UserId)
+                .OnDelete(DeleteBehavior.Cascade); // Delete on cascade for Orders when User is deleted
         }
     }
 }
