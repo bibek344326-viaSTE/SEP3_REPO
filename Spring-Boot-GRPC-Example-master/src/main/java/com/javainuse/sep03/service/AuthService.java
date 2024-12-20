@@ -7,6 +7,8 @@ import io.grpc.stub.StreamObserver;
 import io.netty.handler.ssl.SslContextBuilder;
 import io.netty.handler.ssl.util.InsecureTrustManagerFactory;
 import net.devh.boot.grpc.server.service.GrpcService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.client.reactive.ReactorClientHttpConnector;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.netty.http.client.HttpClient;
@@ -15,6 +17,8 @@ import java.util.Map;
 
 @GrpcService
 public class AuthService extends AuthServiceGrpc.AuthServiceImplBase {
+
+    private static final Logger logger = LoggerFactory.getLogger(AuthService.class);
 
     WebClient webClient = WebClient.builder()
             .baseUrl("https://localhost:7211/api/auth")
@@ -27,7 +31,7 @@ public class AuthService extends AuthServiceGrpc.AuthServiceImplBase {
 
     @Override
     public void login(LoginRequest request, StreamObserver<LoginResponse> responseObserver) {
-        System.out.println("Login attempt: Username - " + request.getUsername() + " Password - " + request.getPassword());
+        logger.info("Login attempt: Username - {} Password - {}", request.getUsername(), request.getPassword());
 
         Map<String, String> requestBody = Map.of(
                 "username", request.getUsername(),
@@ -41,14 +45,14 @@ public class AuthService extends AuthServiceGrpc.AuthServiceImplBase {
                     .retrieve()
                     .bodyToMono(String.class) // Assuming the response is a String JSON response
                     .doOnNext(responseString -> {
-                        System.out.println("Response body from REST API: " + responseString);
+                        logger.info("Response body from REST API: {}", responseString);
                     })
                     .map(this::extractTokenFromResponse) // Extract the token from the response
                     .doOnNext(token -> {
-                        System.out.println("Extracted Token: " + token);
+                        logger.info("Extracted Token: {}", token);
                     })
                     .doOnError(throwable -> {
-                        System.err.println("Error during login request: " + throwable.getMessage());
+                        logger.error("Error during login request: {}", throwable.getMessage(), throwable);
                         responseObserver.onError(throwable);
                     })
                     .subscribe(token -> {
@@ -60,24 +64,27 @@ public class AuthService extends AuthServiceGrpc.AuthServiceImplBase {
                         responseObserver.onCompleted();
                     });
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error("Unexpected error during login: {}", e.getMessage(), e);
             responseObserver.onError(e);
         }
     }
 
     /**
      * Extracts the token from the response JSON.
-     * Example response: {"token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxOSIsInVuaXF1ZV9uYW1lIjoiYWRtaW4iLCJyb2xlIjoiSU5WRU5UT1JZX01BTkFHRVIiLCJqdGkiOiJlMzM5N2UwNS0yOTM0LTQ0ODMtYWFiMy03ODA0ZTM1N2EwYjMiLCJuYmYiOjE3MzQyNDkwODQsImV4cCI6MTczNDI1MjY4NCwiaWF0IjoxNzM0MjQ5MDg0fQ.7JuGwezrmbMgTfECJRaw2xKcimHJegPxPyKwR6HVM7c"}
+     * Example response: {"token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxOSIsInVuaXF1ZV9uYW1lIjoiYWRtaW4iLCJyb2xlIjoiSU5WRU5UT1JZX01BTkFHRVIiLCJqdGkiOiJlMzM5N2UwNS0yOTM0LTQ0ODMtYWFiMy03ODA0ZTM1N2EwYjMiLCJuYmYiOjE3MzQyNDkwODQsImV4cCI6MTczNDI1MjY4NCwiaWF0IjoxNzM0MjQ5MDg0fQ.7JuGwezrmbMgTfECJRaw2xKcimHJegPxPyKwR6HVM7c" }
      */
     private String extractTokenFromResponse(String response) {
         try {
             int tokenStartIndex = response.indexOf("\"token\":\"") + 9; // Position after "token":"
             int tokenEndIndex = response.indexOf("\"", tokenStartIndex);
             if (tokenStartIndex != -1 && tokenEndIndex != -1) {
-                return response.substring(tokenStartIndex, tokenEndIndex);
+                String token = response.substring(tokenStartIndex, tokenEndIndex);
+                logger.info("Successfully extracted token from response: {}", token);
+                return token;
             }
             throw new RuntimeException("Failed to extract token from response");
         } catch (Exception e) {
+            logger.error("Error while extracting token from response: {}", e.getMessage(), e);
             throw new RuntimeException("Error while extracting token from response: " + e.getMessage());
         }
     }

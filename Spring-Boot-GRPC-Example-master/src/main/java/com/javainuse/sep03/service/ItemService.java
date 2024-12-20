@@ -18,63 +18,6 @@ import reactor.netty.http.client.HttpClient;
 
 import java.util.List;
 
-class RestItem {
-    private int itemId;
-    private String itemName;
-    private String description;
-    private int quantityInStore;
-
-    public int getItemId() {
-        return itemId;
-    }
-    public void setItemId(int itemId) {
-        this.itemId = itemId;
-    }
-    public String getItemName() {
-        return itemName;
-    }
-    public void setItemName(String itemName) {
-        this.itemName = itemName;
-    }
-    public String getDescription() {
-        return description;
-    }
-    public void setDescription(String description) {
-        this.description = description;
-    }
-    public int getQuantityInStore() {
-        return quantityInStore;
-    }
-    public void setQuantityInStore(int quantityInStore) {
-        this.quantityInStore = quantityInStore;
-    }
-}
-
-class ItemDTO {
-    private String itemName;
-    private String description;
-    private int quantityInStore;
-
-    public String getItemName() {
-        return itemName;
-    }
-    public void setItemName(String itemName) {
-        this.itemName = itemName;
-    }
-    public String getDescription() {
-        return description;
-    }
-    public void setDescription(String description) {
-        this.description = description;
-    }
-    public int getQuantityInStore() {
-        return quantityInStore;
-    }
-    public void setQuantityInStore(int quantityInStore) {
-        this.quantityInStore = quantityInStore;
-    }
-}
-
 @GrpcService
 public class ItemService extends ItemServiceGrpc.ItemServiceImplBase {
 
@@ -213,6 +156,63 @@ public class ItemService extends ItemServiceGrpc.ItemServiceImplBase {
         } catch (Exception e) {
             logger.error("Error occurred during get all items REST API call: {}", e.getMessage(), e);
             responseObserver.onError(e);
+        }
+    }
+
+    public static class RestItem {
+        private int itemId;
+        private String itemName;
+        private String description;
+        private int quantityInStore;
+
+        public int getItemId() {
+            return itemId;
+        }
+        public void setItemId(int itemId) {
+            this.itemId = itemId;
+        }
+        public String getItemName() {
+            return itemName;
+        }
+        public void setItemName(String itemName) {
+            this.itemName = itemName;
+        }
+        public String getDescription() {
+            return description;
+        }
+        public void setDescription(String description) {
+            this.description = description;
+        }
+        public int getQuantityInStore() {
+            return quantityInStore;
+        }
+        public void setQuantityInStore(int quantityInStore) {
+            this.quantityInStore = quantityInStore;
+        }
+    }
+
+    public static class ItemDTO {
+        private String itemName;
+        private String description;
+        private int quantityInStore;
+
+        public String getItemName() {
+            return itemName;
+        }
+        public void setItemName(String itemName) {
+            this.itemName = itemName;
+        }
+        public String getDescription() {
+            return description;
+        }
+        public void setDescription(String description) {
+            this.description = description;
+        }
+        public int getQuantityInStore() {
+            return quantityInStore;
+        }
+        public void setQuantityInStore(int quantityInStore) {
+            this.quantityInStore = quantityInStore;
         }
     }
 }
