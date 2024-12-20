@@ -15,20 +15,25 @@ public final class UserServiceOuterClass {
         (com.google.protobuf.ExtensionRegistryLite) registry);
   }
   static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_users_DeleteUser_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_users_DeleteUser_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
     internal_static_users_User_descriptor;
   static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_users_User_fieldAccessorTable;
   static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_users_UserCreateDTO_descriptor;
+    internal_static_users_CreateUser_descriptor;
   static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_users_UserCreateDTO_fieldAccessorTable;
+      internal_static_users_CreateUser_fieldAccessorTable;
   static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_users_GetUserDTO_descriptor;
+    internal_static_users_GetUser_descriptor;
   static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_users_GetUserDTO_fieldAccessorTable;
+      internal_static_users_GetUser_fieldAccessorTable;
   static final com.google.protobuf.Descriptors.Descriptor
     internal_static_users_UserList_descriptor;
   static final 
@@ -44,23 +49,23 @@ public final class UserServiceOuterClass {
   static {
     java.lang.String[] descriptorData = {
       "\n\022user-service.proto\022\005users\032\033google/prot" +
-      "obuf/empty.proto\"o\n\004User\022\016\n\006userId\030\001 \001(\005" +
-      "\022\020\n\010username\030\002 \001(\t\022\020\n\010password\030\003 \001(\t\022!\n\010" +
-      "userRole\030\004 \001(\0162\017.users.UserRole\022\020\n\010isAct" +
-      "ive\030\005 \001(\010\"V\n\rUserCreateDTO\022\020\n\010userName\030\001" +
-      " \001(\t\022\020\n\010password\030\002 \001(\t\022!\n\010userRole\030\003 \001(\016" +
-      "2\017.users.UserRole\"c\n\nGetUserDTO\022\016\n\006userI" +
-      "d\030\001 \001(\005\022\020\n\010userName\030\002 \001(\t\022!\n\010userRole\030\003 " +
-      "\001(\0162\017.users.UserRole\022\020\n\010isActive\030\004 \001(\010\"," +
-      "\n\010UserList\022 \n\005users\030\001 \003(\0132\021.users.GetUse" +
-      "rDTO*7\n\010UserRole\022\025\n\021INVENTORY_MANAGER\020\000\022" +
-      "\024\n\020WAREHOUSE_WORKER\020\0012\335\001\n\013UserService\0222\n" +
-      "\007addUser\022\024.users.UserCreateDTO\032\021.users.G" +
-      "etUserDTO\022/\n\010editUser\022\013.users.User\032\026.goo" +
-      "gle.protobuf.Empty\0221\n\ndeleteUser\022\013.users" +
-      ".User\032\026.google.protobuf.Empty\0226\n\013getAllU" +
-      "sers\022\026.google.protobuf.Empty\032\017.users.Use" +
-      "rListB\026\n\022com.javainuse.userP\001b\006proto3"
+      "obuf/empty.proto\"\034\n\nDeleteUser\022\016\n\006userId" +
+      "\030\001 \001(\005\"]\n\004User\022\016\n\006userId\030\001 \001(\005\022\020\n\010userna" +
+      "me\030\002 \001(\t\022\020\n\010password\030\003 \001(\t\022!\n\010userRole\030\004" +
+      " \001(\0162\017.users.UserRole\"S\n\nCreateUser\022\020\n\010u" +
+      "serName\030\001 \001(\t\022\020\n\010password\030\002 \001(\t\022!\n\010userR" +
+      "ole\030\003 \001(\0162\017.users.UserRole\"N\n\007GetUser\022\016\n" +
+      "\006userId\030\001 \001(\005\022\020\n\010userName\030\002 \001(\t\022!\n\010userR" +
+      "ole\030\003 \001(\0162\017.users.UserRole\")\n\010UserList\022\035" +
+      "\n\005users\030\001 \003(\0132\016.users.GetUser*7\n\010UserRol" +
+      "e\022\025\n\021INVENTORY_MANAGER\020\000\022\024\n\020WAREHOUSE_WO" +
+      "RKER\020\0012\335\001\n\013UserService\022,\n\007addUser\022\021.user" +
+      "s.CreateUser\032\016.users.GetUser\022/\n\010editUser" +
+      "\022\013.users.User\032\026.google.protobuf.Empty\0227\n" +
+      "\ndeleteUser\022\021.users.DeleteUser\032\026.google." +
+      "protobuf.Empty\0226\n\013getAllUsers\022\026.google.p" +
+      "rotobuf.Empty\032\017.users.UserListB\026\n\022com.ja" +
+      "vainuse.userP\001b\006proto3"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -75,26 +80,32 @@ public final class UserServiceOuterClass {
         new com.google.protobuf.Descriptors.FileDescriptor[] {
           com.google.protobuf.EmptyProto.getDescriptor(),
         }, assigner);
-    internal_static_users_User_descriptor =
+    internal_static_users_DeleteUser_descriptor =
       getDescriptor().getMessageTypes().get(0);
+    internal_static_users_DeleteUser_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_users_DeleteUser_descriptor,
+        new java.lang.String[] { "UserId", });
+    internal_static_users_User_descriptor =
+      getDescriptor().getMessageTypes().get(1);
     internal_static_users_User_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_users_User_descriptor,
-        new java.lang.String[] { "UserId", "Username", "Password", "UserRole", "IsActive", });
-    internal_static_users_UserCreateDTO_descriptor =
-      getDescriptor().getMessageTypes().get(1);
-    internal_static_users_UserCreateDTO_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_users_UserCreateDTO_descriptor,
-        new java.lang.String[] { "UserName", "Password", "UserRole", });
-    internal_static_users_GetUserDTO_descriptor =
+        new java.lang.String[] { "UserId", "Username", "Password", "UserRole", });
+    internal_static_users_CreateUser_descriptor =
       getDescriptor().getMessageTypes().get(2);
-    internal_static_users_GetUserDTO_fieldAccessorTable = new
+    internal_static_users_CreateUser_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_users_GetUserDTO_descriptor,
-        new java.lang.String[] { "UserId", "UserName", "UserRole", "IsActive", });
-    internal_static_users_UserList_descriptor =
+        internal_static_users_CreateUser_descriptor,
+        new java.lang.String[] { "UserName", "Password", "UserRole", });
+    internal_static_users_GetUser_descriptor =
       getDescriptor().getMessageTypes().get(3);
+    internal_static_users_GetUser_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_users_GetUser_descriptor,
+        new java.lang.String[] { "UserId", "UserName", "UserRole", });
+    internal_static_users_UserList_descriptor =
+      getDescriptor().getMessageTypes().get(4);
     internal_static_users_UserList_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_users_UserList_descriptor,

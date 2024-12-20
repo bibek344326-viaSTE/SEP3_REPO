@@ -4,18 +4,18 @@
 package com.javainuse.user;
 
 /**
- * Protobuf type {@code users.UserCreateDTO}
+ * Protobuf type {@code users.CreateUser}
  */
-public  final class UserCreateDTO extends
+public  final class CreateUser extends
     com.google.protobuf.GeneratedMessageV3 implements
-    // @@protoc_insertion_point(message_implements:users.UserCreateDTO)
-    UserCreateDTOOrBuilder {
+    // @@protoc_insertion_point(message_implements:users.CreateUser)
+    CreateUserOrBuilder {
 private static final long serialVersionUID = 0L;
-  // Use UserCreateDTO.newBuilder() to construct.
-  private UserCreateDTO(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+  // Use CreateUser.newBuilder() to construct.
+  private CreateUser(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
     super(builder);
   }
-  private UserCreateDTO() {
+  private CreateUser() {
     userName_ = "";
     password_ = "";
     userRole_ = 0;
@@ -26,7 +26,7 @@ private static final long serialVersionUID = 0L;
   getUnknownFields() {
     return this.unknownFields;
   }
-  private UserCreateDTO(
+  private CreateUser(
       com.google.protobuf.CodedInputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
@@ -84,15 +84,15 @@ private static final long serialVersionUID = 0L;
   }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
-    return com.javainuse.user.UserServiceOuterClass.internal_static_users_UserCreateDTO_descriptor;
+    return com.javainuse.user.UserServiceOuterClass.internal_static_users_CreateUser_descriptor;
   }
 
   @java.lang.Override
   protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internalGetFieldAccessorTable() {
-    return com.javainuse.user.UserServiceOuterClass.internal_static_users_UserCreateDTO_fieldAccessorTable
+    return com.javainuse.user.UserServiceOuterClass.internal_static_users_CreateUser_fieldAccessorTable
         .ensureFieldAccessorsInitialized(
-            com.javainuse.user.UserCreateDTO.class, com.javainuse.user.UserCreateDTO.Builder.class);
+            com.javainuse.user.CreateUser.class, com.javainuse.user.CreateUser.Builder.class);
   }
 
   public static final int USERNAME_FIELD_NUMBER = 1;
@@ -232,10 +232,10 @@ private static final long serialVersionUID = 0L;
     if (obj == this) {
      return true;
     }
-    if (!(obj instanceof com.javainuse.user.UserCreateDTO)) {
+    if (!(obj instanceof com.javainuse.user.CreateUser)) {
       return super.equals(obj);
     }
-    com.javainuse.user.UserCreateDTO other = (com.javainuse.user.UserCreateDTO) obj;
+    com.javainuse.user.CreateUser other = (com.javainuse.user.CreateUser) obj;
 
     boolean result = true;
     result = result && getUserName()
@@ -265,69 +265,69 @@ private static final long serialVersionUID = 0L;
     return hash;
   }
 
-  public static com.javainuse.user.UserCreateDTO parseFrom(
+  public static com.javainuse.user.CreateUser parseFrom(
       java.nio.ByteBuffer data)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data);
   }
-  public static com.javainuse.user.UserCreateDTO parseFrom(
+  public static com.javainuse.user.CreateUser parseFrom(
       java.nio.ByteBuffer data,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data, extensionRegistry);
   }
-  public static com.javainuse.user.UserCreateDTO parseFrom(
+  public static com.javainuse.user.CreateUser parseFrom(
       com.google.protobuf.ByteString data)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data);
   }
-  public static com.javainuse.user.UserCreateDTO parseFrom(
+  public static com.javainuse.user.CreateUser parseFrom(
       com.google.protobuf.ByteString data,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data, extensionRegistry);
   }
-  public static com.javainuse.user.UserCreateDTO parseFrom(byte[] data)
+  public static com.javainuse.user.CreateUser parseFrom(byte[] data)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data);
   }
-  public static com.javainuse.user.UserCreateDTO parseFrom(
+  public static com.javainuse.user.CreateUser parseFrom(
       byte[] data,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data, extensionRegistry);
   }
-  public static com.javainuse.user.UserCreateDTO parseFrom(java.io.InputStream input)
+  public static com.javainuse.user.CreateUser parseFrom(java.io.InputStream input)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseWithIOException(PARSER, input);
   }
-  public static com.javainuse.user.UserCreateDTO parseFrom(
+  public static com.javainuse.user.CreateUser parseFrom(
       java.io.InputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseWithIOException(PARSER, input, extensionRegistry);
   }
-  public static com.javainuse.user.UserCreateDTO parseDelimitedFrom(java.io.InputStream input)
+  public static com.javainuse.user.CreateUser parseDelimitedFrom(java.io.InputStream input)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseDelimitedWithIOException(PARSER, input);
   }
-  public static com.javainuse.user.UserCreateDTO parseDelimitedFrom(
+  public static com.javainuse.user.CreateUser parseDelimitedFrom(
       java.io.InputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
   }
-  public static com.javainuse.user.UserCreateDTO parseFrom(
+  public static com.javainuse.user.CreateUser parseFrom(
       com.google.protobuf.CodedInputStream input)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseWithIOException(PARSER, input);
   }
-  public static com.javainuse.user.UserCreateDTO parseFrom(
+  public static com.javainuse.user.CreateUser parseFrom(
       com.google.protobuf.CodedInputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws java.io.IOException {
@@ -340,7 +340,7 @@ private static final long serialVersionUID = 0L;
   public static Builder newBuilder() {
     return DEFAULT_INSTANCE.toBuilder();
   }
-  public static Builder newBuilder(com.javainuse.user.UserCreateDTO prototype) {
+  public static Builder newBuilder(com.javainuse.user.CreateUser prototype) {
     return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
   }
   @java.lang.Override
@@ -356,26 +356,26 @@ private static final long serialVersionUID = 0L;
     return builder;
   }
   /**
-   * Protobuf type {@code users.UserCreateDTO}
+   * Protobuf type {@code users.CreateUser}
    */
   public static final class Builder extends
       com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
-      // @@protoc_insertion_point(builder_implements:users.UserCreateDTO)
-      com.javainuse.user.UserCreateDTOOrBuilder {
+      // @@protoc_insertion_point(builder_implements:users.CreateUser)
+      com.javainuse.user.CreateUserOrBuilder {
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.javainuse.user.UserServiceOuterClass.internal_static_users_UserCreateDTO_descriptor;
+      return com.javainuse.user.UserServiceOuterClass.internal_static_users_CreateUser_descriptor;
     }
 
     @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.javainuse.user.UserServiceOuterClass.internal_static_users_UserCreateDTO_fieldAccessorTable
+      return com.javainuse.user.UserServiceOuterClass.internal_static_users_CreateUser_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
-              com.javainuse.user.UserCreateDTO.class, com.javainuse.user.UserCreateDTO.Builder.class);
+              com.javainuse.user.CreateUser.class, com.javainuse.user.CreateUser.Builder.class);
     }
 
-    // Construct using com.javainuse.user.UserCreateDTO.newBuilder()
+    // Construct using com.javainuse.user.CreateUser.newBuilder()
     private Builder() {
       maybeForceBuilderInitialization();
     }
@@ -405,17 +405,17 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.google.protobuf.Descriptors.Descriptor
         getDescriptorForType() {
-      return com.javainuse.user.UserServiceOuterClass.internal_static_users_UserCreateDTO_descriptor;
+      return com.javainuse.user.UserServiceOuterClass.internal_static_users_CreateUser_descriptor;
     }
 
     @java.lang.Override
-    public com.javainuse.user.UserCreateDTO getDefaultInstanceForType() {
-      return com.javainuse.user.UserCreateDTO.getDefaultInstance();
+    public com.javainuse.user.CreateUser getDefaultInstanceForType() {
+      return com.javainuse.user.CreateUser.getDefaultInstance();
     }
 
     @java.lang.Override
-    public com.javainuse.user.UserCreateDTO build() {
-      com.javainuse.user.UserCreateDTO result = buildPartial();
+    public com.javainuse.user.CreateUser build() {
+      com.javainuse.user.CreateUser result = buildPartial();
       if (!result.isInitialized()) {
         throw newUninitializedMessageException(result);
       }
@@ -423,8 +423,8 @@ private static final long serialVersionUID = 0L;
     }
 
     @java.lang.Override
-    public com.javainuse.user.UserCreateDTO buildPartial() {
-      com.javainuse.user.UserCreateDTO result = new com.javainuse.user.UserCreateDTO(this);
+    public com.javainuse.user.CreateUser buildPartial() {
+      com.javainuse.user.CreateUser result = new com.javainuse.user.CreateUser(this);
       result.userName_ = userName_;
       result.password_ = password_;
       result.userRole_ = userRole_;
@@ -466,16 +466,16 @@ private static final long serialVersionUID = 0L;
     }
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
-      if (other instanceof com.javainuse.user.UserCreateDTO) {
-        return mergeFrom((com.javainuse.user.UserCreateDTO)other);
+      if (other instanceof com.javainuse.user.CreateUser) {
+        return mergeFrom((com.javainuse.user.CreateUser)other);
       } else {
         super.mergeFrom(other);
         return this;
       }
     }
 
-    public Builder mergeFrom(com.javainuse.user.UserCreateDTO other) {
-      if (other == com.javainuse.user.UserCreateDTO.getDefaultInstance()) return this;
+    public Builder mergeFrom(com.javainuse.user.CreateUser other) {
+      if (other == com.javainuse.user.CreateUser.getDefaultInstance()) return this;
       if (!other.getUserName().isEmpty()) {
         userName_ = other.userName_;
         onChanged();
@@ -502,11 +502,11 @@ private static final long serialVersionUID = 0L;
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
-      com.javainuse.user.UserCreateDTO parsedMessage = null;
+      com.javainuse.user.CreateUser parsedMessage = null;
       try {
         parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
       } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-        parsedMessage = (com.javainuse.user.UserCreateDTO) e.getUnfinishedMessage();
+        parsedMessage = (com.javainuse.user.CreateUser) e.getUnfinishedMessage();
         throw e.unwrapIOException();
       } finally {
         if (parsedMessage != null) {
@@ -711,41 +711,41 @@ private static final long serialVersionUID = 0L;
     }
 
 
-    // @@protoc_insertion_point(builder_scope:users.UserCreateDTO)
+    // @@protoc_insertion_point(builder_scope:users.CreateUser)
   }
 
-  // @@protoc_insertion_point(class_scope:users.UserCreateDTO)
-  private static final com.javainuse.user.UserCreateDTO DEFAULT_INSTANCE;
+  // @@protoc_insertion_point(class_scope:users.CreateUser)
+  private static final com.javainuse.user.CreateUser DEFAULT_INSTANCE;
   static {
-    DEFAULT_INSTANCE = new com.javainuse.user.UserCreateDTO();
+    DEFAULT_INSTANCE = new com.javainuse.user.CreateUser();
   }
 
-  public static com.javainuse.user.UserCreateDTO getDefaultInstance() {
+  public static com.javainuse.user.CreateUser getDefaultInstance() {
     return DEFAULT_INSTANCE;
   }
 
-  private static final com.google.protobuf.Parser<UserCreateDTO>
-      PARSER = new com.google.protobuf.AbstractParser<UserCreateDTO>() {
+  private static final com.google.protobuf.Parser<CreateUser>
+      PARSER = new com.google.protobuf.AbstractParser<CreateUser>() {
     @java.lang.Override
-    public UserCreateDTO parsePartialFrom(
+    public CreateUser parsePartialFrom(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
-      return new UserCreateDTO(input, extensionRegistry);
+      return new CreateUser(input, extensionRegistry);
     }
   };
 
-  public static com.google.protobuf.Parser<UserCreateDTO> parser() {
+  public static com.google.protobuf.Parser<CreateUser> parser() {
     return PARSER;
   }
 
   @java.lang.Override
-  public com.google.protobuf.Parser<UserCreateDTO> getParserForType() {
+  public com.google.protobuf.Parser<CreateUser> getParserForType() {
     return PARSER;
   }
 
   @java.lang.Override
-  public com.javainuse.user.UserCreateDTO getDefaultInstanceForType() {
+  public com.javainuse.user.CreateUser getDefaultInstanceForType() {
     return DEFAULT_INSTANCE;
   }
 

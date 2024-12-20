@@ -20,7 +20,6 @@ private static final long serialVersionUID = 0L;
     username_ = "";
     password_ = "";
     userRole_ = 0;
-    isActive_ = false;
   }
 
   @java.lang.Override
@@ -68,11 +67,6 @@ private static final long serialVersionUID = 0L;
             int rawValue = input.readEnum();
 
             userRole_ = rawValue;
-            break;
-          }
-          case 40: {
-
-            isActive_ = input.readBool();
             break;
           }
           default: {
@@ -201,15 +195,6 @@ private static final long serialVersionUID = 0L;
     return result == null ? com.javainuse.user.UserRole.UNRECOGNIZED : result;
   }
 
-  public static final int ISACTIVE_FIELD_NUMBER = 5;
-  private boolean isActive_;
-  /**
-   * <code>bool isActive = 5;</code>
-   */
-  public boolean getIsActive() {
-    return isActive_;
-  }
-
   private byte memoizedIsInitialized = -1;
   @java.lang.Override
   public final boolean isInitialized() {
@@ -236,9 +221,6 @@ private static final long serialVersionUID = 0L;
     if (userRole_ != com.javainuse.user.UserRole.INVENTORY_MANAGER.getNumber()) {
       output.writeEnum(4, userRole_);
     }
-    if (isActive_ != false) {
-      output.writeBool(5, isActive_);
-    }
     unknownFields.writeTo(output);
   }
 
@@ -261,10 +243,6 @@ private static final long serialVersionUID = 0L;
     if (userRole_ != com.javainuse.user.UserRole.INVENTORY_MANAGER.getNumber()) {
       size += com.google.protobuf.CodedOutputStream
         .computeEnumSize(4, userRole_);
-    }
-    if (isActive_ != false) {
-      size += com.google.protobuf.CodedOutputStream
-        .computeBoolSize(5, isActive_);
     }
     size += unknownFields.getSerializedSize();
     memoizedSize = size;
@@ -289,8 +267,6 @@ private static final long serialVersionUID = 0L;
     result = result && getPassword()
         .equals(other.getPassword());
     result = result && userRole_ == other.userRole_;
-    result = result && (getIsActive()
-        == other.getIsActive());
     result = result && unknownFields.equals(other.unknownFields);
     return result;
   }
@@ -310,9 +286,6 @@ private static final long serialVersionUID = 0L;
     hash = (53 * hash) + getPassword().hashCode();
     hash = (37 * hash) + USERROLE_FIELD_NUMBER;
     hash = (53 * hash) + userRole_;
-    hash = (37 * hash) + ISACTIVE_FIELD_NUMBER;
-    hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
-        getIsActive());
     hash = (29 * hash) + unknownFields.hashCode();
     memoizedHashCode = hash;
     return hash;
@@ -454,8 +427,6 @@ private static final long serialVersionUID = 0L;
 
       userRole_ = 0;
 
-      isActive_ = false;
-
       return this;
     }
 
@@ -486,7 +457,6 @@ private static final long serialVersionUID = 0L;
       result.username_ = username_;
       result.password_ = password_;
       result.userRole_ = userRole_;
-      result.isActive_ = isActive_;
       onBuilt();
       return result;
     }
@@ -548,9 +518,6 @@ private static final long serialVersionUID = 0L;
       }
       if (other.userRole_ != 0) {
         setUserRoleValue(other.getUserRoleValue());
-      }
-      if (other.getIsActive() != false) {
-        setIsActive(other.getIsActive());
       }
       this.mergeUnknownFields(other.unknownFields);
       onChanged();
@@ -786,32 +753,6 @@ private static final long serialVersionUID = 0L;
     public Builder clearUserRole() {
       
       userRole_ = 0;
-      onChanged();
-      return this;
-    }
-
-    private boolean isActive_ ;
-    /**
-     * <code>bool isActive = 5;</code>
-     */
-    public boolean getIsActive() {
-      return isActive_;
-    }
-    /**
-     * <code>bool isActive = 5;</code>
-     */
-    public Builder setIsActive(boolean value) {
-      
-      isActive_ = value;
-      onChanged();
-      return this;
-    }
-    /**
-     * <code>bool isActive = 5;</code>
-     */
-    public Builder clearIsActive() {
-      
-      isActive_ = false;
       onChanged();
       return this;
     }

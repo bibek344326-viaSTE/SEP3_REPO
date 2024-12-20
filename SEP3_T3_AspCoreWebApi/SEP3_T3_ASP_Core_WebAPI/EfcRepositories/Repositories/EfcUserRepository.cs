@@ -109,11 +109,12 @@ public class EfcUserRepository: IUserRepository
         return existingUser;
     }
 
-    
+
     public IQueryable<User> GetAllUsers()
     {
-        return _ctx.Users.AsQueryable();
+        return _ctx.Users.Where(user => user.IsActive).AsQueryable();
     }
+
 
     public IQueryable<User> GetAllUsersByRole(UserRole type)
     {

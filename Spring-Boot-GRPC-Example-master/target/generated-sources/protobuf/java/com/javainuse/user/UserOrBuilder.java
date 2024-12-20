@@ -40,9 +40,4 @@ public interface UserOrBuilder extends
    * <code>.users.UserRole userRole = 4;</code>
    */
   com.javainuse.user.UserRole getUserRole();
-
-  /**
-   * <code>bool isActive = 5;</code>
-   */
-  boolean getIsActive();
 }

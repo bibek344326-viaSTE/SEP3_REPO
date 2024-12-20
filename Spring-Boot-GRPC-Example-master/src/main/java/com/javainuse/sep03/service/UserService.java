@@ -8,7 +8,6 @@ import com.javainuse.user.*;
 import org.springframework.http.MediaType;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
 import io.grpc.stub.StreamObserver;
 import net.devh.boot.grpc.server.service.GrpcService;
 import org.slf4j.Logger;
@@ -35,10 +34,9 @@ public class UserService extends UserServiceGrpc.UserServiceImplBase {
             .build();
 
     @Override
-    public void addUser(UserCreateDTO request, StreamObserver<GetUserDTO> responseObserver) {
+    public void addUser(CreateUser request, StreamObserver<GetUser> responseObserver) {
         logger.info("Starting addUser request for user: {}", request.getUserName());
 
-        // Convert the Protobuf request to a RestUserCreateDTO
         RestUserCreateDTO restRequest = new RestUserCreateDTO(
                 request.getUserName(),
                 request.getPassword(),
@@ -48,26 +46,14 @@ public class UserService extends UserServiceGrpc.UserServiceImplBase {
         webClient.post()
                 .uri("/")
                 .contentType(MediaType.APPLICATION_JSON)
-                .bodyValue(restRequest)  // Use the plain DTO
+                .bodyValue(restRequest)
                 .retrieve()
-                .bodyToMono(String.class)
-                .doOnNext(responseBody -> logger.info("Raw API Response: {}", responseBody))
-                .flatMap(responseBody -> {
-                    try {
-                        ObjectMapper mapper = new ObjectMapper();
-                        UserResponse userResponse = mapper.readValue(responseBody, UserResponse.class);
-                        return Mono.just(userResponse);
-                    } catch (Exception e) {
-                        logger.error("Failed to parse JSON into UserResponse: ", e);
-                        return Mono.error(new RuntimeException("Failed to parse JSON: " + e.getMessage()));
-                    }
-                })
+                .bodyToMono(UserResponse.class)
                 .doOnSuccess(userResponse -> {
-                    GetUserDTO userDTO = GetUserDTO.newBuilder()
+                    GetUser userDTO = GetUser.newBuilder()
                             .setUserId(userResponse.getUserId())
                             .setUserName(userResponse.getUserName())
                             .setUserRole(userResponse.getUserRole())
-                            .setIsActive(userResponse.isActive())
                             .build();
 
                     logger.info("User successfully created: {}", userDTO);
@@ -85,19 +71,17 @@ public class UserService extends UserServiceGrpc.UserServiceImplBase {
     public void editUser(User request, StreamObserver<Empty> responseObserver) {
         logger.info("Starting editUser request for userId: {}", request.getUserId());
 
-        // Step 1: Convert Protobuf User to RestUserUpdateDTO
         RestUserUpdateDTO restRequest = new RestUserUpdateDTO(
                 request.getUserId(),
                 request.getUsername(),
                 request.getPassword(),
-                request.getUserRoleValue(),
-                request.getIsActive()
+                request.getUserRoleValue()
         );
 
         webClient.put()
                 .uri("/{id}", restRequest.getUserId())
                 .contentType(MediaType.APPLICATION_JSON)
-                .bodyValue(restRequest) // Step 2: Use clean DTO for REST request
+                .bodyValue(restRequest)
                 .retrieve()
                 .toBodilessEntity()
                 .doOnSuccess(response -> {
@@ -112,9 +96,8 @@ public class UserService extends UserServiceGrpc.UserServiceImplBase {
                 .subscribe();
     }
 
-
     @Override
-    public void deleteUser(User request, StreamObserver<Empty> responseObserver) {
+    public void deleteUser(DeleteUser request, StreamObserver<Empty> responseObserver) {
         logger.info("Starting deleteUser request for userId: {}", request.getUserId());
 
         webClient.delete()
@@ -142,7 +125,6 @@ public class UserService extends UserServiceGrpc.UserServiceImplBase {
                 .accept(MediaType.APPLICATION_JSON)
                 .retrieve()
                 .bodyToMono(String.class)
-                .doOnNext(responseBody -> logger.info("Raw API Response: {}", responseBody))
                 .flatMapMany(responseBody -> {
                     try {
                         ObjectMapper mapper = new ObjectMapper();
@@ -154,11 +136,10 @@ public class UserService extends UserServiceGrpc.UserServiceImplBase {
                     }
                 })
                 .map(userResponse -> {
-                    return GetUserDTO.newBuilder()
+                    return GetUser.newBuilder()
                             .setUserId(userResponse.getUserId())
                             .setUserName(userResponse.getUserName())
                             .setUserRole(userResponse.getUserRole())
-                            .setIsActive(userResponse.isActive())
                             .build();
                 })
                 .collectList()
@@ -174,66 +155,11 @@ public class UserService extends UserServiceGrpc.UserServiceImplBase {
                 })
                 .subscribe();
     }
-    public class RestUserUpdateDTO {
-        private int userId;
-        private String username;
-        private String password;
-        private int userRole;
-        private boolean isActive;
 
-        public RestUserUpdateDTO(int userId, String username, String password, int userRole, boolean isActive) {
-            this.userId = userId;
-            this.username = username;
-            this.password = password;
-            this.userRole = userRole;
-            this.isActive = isActive;
-        }
-
-        public int getUserId() {
-            return userId;
-        }
-
-        public void setUserId(int userId) {
-            this.userId = userId;
-        }
-
-        public String getUsername() {
-            return username;
-        }
-
-        public void setUsername(String username) {
-            this.username = username;
-        }
-
-        public String getPassword() {
-            return password;
-        }
-
-        public void setPassword(String password) {
-            this.password = password;
-        }
-
-        public int getUserRole() {
-            return userRole;
-        }
-
-        public void setUserRole(int userRole) {
-            this.userRole = userRole;
-        }
-
-        public boolean getIsActive() {
-            return isActive;
-        }
-
-        public void setIsActive(boolean isActive) {
-            this.isActive = isActive;
-        }
-    }
-
-    public class RestUserCreateDTO {
+    public static class RestUserCreateDTO {
         private String userName;
         private String password;
-        private int userRole; // This could be a String too if you want to use the role name
+        private int userRole;
 
         public RestUserCreateDTO(String userName, String password, int userRole) {
             this.userName = userName;
@@ -241,6 +167,7 @@ public class UserService extends UserServiceGrpc.UserServiceImplBase {
             this.userRole = userRole;
         }
 
+        // Getter and Setter for userName
         public String getUserName() {
             return userName;
         }
@@ -249,6 +176,7 @@ public class UserService extends UserServiceGrpc.UserServiceImplBase {
             this.userName = userName;
         }
 
+        // Getter and Setter for password
         public String getPassword() {
             return password;
         }
@@ -257,6 +185,7 @@ public class UserService extends UserServiceGrpc.UserServiceImplBase {
             this.password = password;
         }
 
+        // Getter and Setter for userRole
         public int getUserRole() {
             return userRole;
         }
@@ -265,6 +194,69 @@ public class UserService extends UserServiceGrpc.UserServiceImplBase {
             this.userRole = userRole;
         }
     }
+
+
+    public static class RestUserUpdateDTO {
+        private int userId;
+        private String username;
+        private String password;
+        private int userRole;
+        private boolean isActive;
+
+        public RestUserUpdateDTO(int userId, String username, String password, int userRole) {
+            this.userId = userId;
+            this.username = username;
+            this.password = password;
+            this.userRole = userRole;
+            this.isActive = isActive;
+        }
+
+        // Getter and Setter for userId
+        public int getUserId() {
+            return userId;
+        }
+
+        public void setUserId(int userId) {
+            this.userId = userId;
+        }
+
+        // Getter and Setter for username
+        public String getUsername() {
+            return username;
+        }
+
+        public void setUsername(String username) {
+            this.username = username;
+        }
+
+        // Getter and Setter for password
+        public String getPassword() {
+            return password;
+        }
+
+        public void setPassword(String password) {
+            this.password = password;
+        }
+
+        // Getter and Setter for userRole
+        public int getUserRole() {
+            return userRole;
+        }
+
+        public void setUserRole(int userRole) {
+            this.userRole = userRole;
+        }
+
+        // Getter and Setter for isActive
+        public boolean isActive() {
+            return isActive;
+        }
+
+        public void setActive(boolean active) {
+            isActive = active;
+        }
+    }
+
 
     public static class UserResponse {
         @JsonProperty("userId")
@@ -279,20 +271,45 @@ public class UserService extends UserServiceGrpc.UserServiceImplBase {
         @JsonProperty("isActive")
         private boolean isActive;
 
+        // Default constructor
+        public UserResponse() {}
+
+        // Getter and Setter for userId
         public int getUserId() {
             return userId;
         }
 
+        public void setUserId(int userId) {
+            this.userId = userId;
+        }
+
+        // Getter and Setter for userName
         public String getUserName() {
             return userName;
         }
 
+        public void setUserName(String userName) {
+            this.userName = userName;
+        }
+
+        // Getter and Setter for userRole
         public UserRole getUserRole() {
             return userRole;
         }
 
+        public void setUserRole(UserRole userRole) {
+            this.userRole = userRole;
+        }
+
+        // Getter and Setter for isActive
         public boolean isActive() {
             return isActive;
         }
+
+        public void setActive(boolean active) {
+            isActive = active;
+        }
     }
+
+
 }

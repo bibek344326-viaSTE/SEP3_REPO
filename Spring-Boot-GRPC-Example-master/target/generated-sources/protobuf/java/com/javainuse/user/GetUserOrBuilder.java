@@ -3,8 +3,8 @@
 
 package com.javainuse.user;
 
-public interface GetUserDTOOrBuilder extends
-    // @@protoc_insertion_point(interface_extends:users.GetUserDTO)
+public interface GetUserOrBuilder extends
+    // @@protoc_insertion_point(interface_extends:users.GetUser)
     com.google.protobuf.MessageOrBuilder {
 
   /**
@@ -30,9 +30,4 @@ public interface GetUserDTOOrBuilder extends
    * <code>.users.UserRole userRole = 3;</code>
    */
   com.javainuse.user.UserRole getUserRole();
-
-  /**
-   * <code>bool isActive = 4;</code>
-   */
-  boolean getIsActive();
 }

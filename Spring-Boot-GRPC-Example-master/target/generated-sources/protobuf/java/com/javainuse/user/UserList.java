@@ -45,11 +45,11 @@ private static final long serialVersionUID = 0L;
             break;
           case 10: {
             if (!((mutable_bitField0_ & 0x00000001) == 0x00000001)) {
-              users_ = new java.util.ArrayList<com.javainuse.user.GetUserDTO>();
+              users_ = new java.util.ArrayList<com.javainuse.user.GetUser>();
               mutable_bitField0_ |= 0x00000001;
             }
             users_.add(
-                input.readMessage(com.javainuse.user.GetUserDTO.parser(), extensionRegistry));
+                input.readMessage(com.javainuse.user.GetUser.parser(), extensionRegistry));
             break;
           }
           default: {
@@ -88,36 +88,36 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int USERS_FIELD_NUMBER = 1;
-  private java.util.List<com.javainuse.user.GetUserDTO> users_;
+  private java.util.List<com.javainuse.user.GetUser> users_;
   /**
-   * <code>repeated .users.GetUserDTO users = 1;</code>
+   * <code>repeated .users.GetUser users = 1;</code>
    */
-  public java.util.List<com.javainuse.user.GetUserDTO> getUsersList() {
+  public java.util.List<com.javainuse.user.GetUser> getUsersList() {
     return users_;
   }
   /**
-   * <code>repeated .users.GetUserDTO users = 1;</code>
+   * <code>repeated .users.GetUser users = 1;</code>
    */
-  public java.util.List<? extends com.javainuse.user.GetUserDTOOrBuilder> 
+  public java.util.List<? extends com.javainuse.user.GetUserOrBuilder> 
       getUsersOrBuilderList() {
     return users_;
   }
   /**
-   * <code>repeated .users.GetUserDTO users = 1;</code>
+   * <code>repeated .users.GetUser users = 1;</code>
    */
   public int getUsersCount() {
     return users_.size();
   }
   /**
-   * <code>repeated .users.GetUserDTO users = 1;</code>
+   * <code>repeated .users.GetUser users = 1;</code>
    */
-  public com.javainuse.user.GetUserDTO getUsers(int index) {
+  public com.javainuse.user.GetUser getUsers(int index) {
     return users_.get(index);
   }
   /**
-   * <code>repeated .users.GetUserDTO users = 1;</code>
+   * <code>repeated .users.GetUser users = 1;</code>
    */
-  public com.javainuse.user.GetUserDTOOrBuilder getUsersOrBuilder(
+  public com.javainuse.user.GetUserOrBuilder getUsersOrBuilder(
       int index) {
     return users_.get(index);
   }
@@ -465,22 +465,22 @@ private static final long serialVersionUID = 0L;
     }
     private int bitField0_;
 
-    private java.util.List<com.javainuse.user.GetUserDTO> users_ =
+    private java.util.List<com.javainuse.user.GetUser> users_ =
       java.util.Collections.emptyList();
     private void ensureUsersIsMutable() {
       if (!((bitField0_ & 0x00000001) == 0x00000001)) {
-        users_ = new java.util.ArrayList<com.javainuse.user.GetUserDTO>(users_);
+        users_ = new java.util.ArrayList<com.javainuse.user.GetUser>(users_);
         bitField0_ |= 0x00000001;
        }
     }
 
     private com.google.protobuf.RepeatedFieldBuilderV3<
-        com.javainuse.user.GetUserDTO, com.javainuse.user.GetUserDTO.Builder, com.javainuse.user.GetUserDTOOrBuilder> usersBuilder_;
+        com.javainuse.user.GetUser, com.javainuse.user.GetUser.Builder, com.javainuse.user.GetUserOrBuilder> usersBuilder_;
 
     /**
-     * <code>repeated .users.GetUserDTO users = 1;</code>
+     * <code>repeated .users.GetUser users = 1;</code>
      */
-    public java.util.List<com.javainuse.user.GetUserDTO> getUsersList() {
+    public java.util.List<com.javainuse.user.GetUser> getUsersList() {
       if (usersBuilder_ == null) {
         return java.util.Collections.unmodifiableList(users_);
       } else {
@@ -488,7 +488,7 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>repeated .users.GetUserDTO users = 1;</code>
+     * <code>repeated .users.GetUser users = 1;</code>
      */
     public int getUsersCount() {
       if (usersBuilder_ == null) {
@@ -498,9 +498,9 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>repeated .users.GetUserDTO users = 1;</code>
+     * <code>repeated .users.GetUser users = 1;</code>
      */
-    public com.javainuse.user.GetUserDTO getUsers(int index) {
+    public com.javainuse.user.GetUser getUsers(int index) {
       if (usersBuilder_ == null) {
         return users_.get(index);
       } else {
@@ -508,10 +508,10 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>repeated .users.GetUserDTO users = 1;</code>
+     * <code>repeated .users.GetUser users = 1;</code>
      */
     public Builder setUsers(
-        int index, com.javainuse.user.GetUserDTO value) {
+        int index, com.javainuse.user.GetUser value) {
       if (usersBuilder_ == null) {
         if (value == null) {
           throw new NullPointerException();
@@ -525,10 +525,10 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>repeated .users.GetUserDTO users = 1;</code>
+     * <code>repeated .users.GetUser users = 1;</code>
      */
     public Builder setUsers(
-        int index, com.javainuse.user.GetUserDTO.Builder builderForValue) {
+        int index, com.javainuse.user.GetUser.Builder builderForValue) {
       if (usersBuilder_ == null) {
         ensureUsersIsMutable();
         users_.set(index, builderForValue.build());
@@ -539,9 +539,9 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>repeated .users.GetUserDTO users = 1;</code>
+     * <code>repeated .users.GetUser users = 1;</code>
      */
-    public Builder addUsers(com.javainuse.user.GetUserDTO value) {
+    public Builder addUsers(com.javainuse.user.GetUser value) {
       if (usersBuilder_ == null) {
         if (value == null) {
           throw new NullPointerException();
@@ -555,10 +555,10 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>repeated .users.GetUserDTO users = 1;</code>
+     * <code>repeated .users.GetUser users = 1;</code>
      */
     public Builder addUsers(
-        int index, com.javainuse.user.GetUserDTO value) {
+        int index, com.javainuse.user.GetUser value) {
       if (usersBuilder_ == null) {
         if (value == null) {
           throw new NullPointerException();
@@ -572,10 +572,10 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>repeated .users.GetUserDTO users = 1;</code>
+     * <code>repeated .users.GetUser users = 1;</code>
      */
     public Builder addUsers(
-        com.javainuse.user.GetUserDTO.Builder builderForValue) {
+        com.javainuse.user.GetUser.Builder builderForValue) {
       if (usersBuilder_ == null) {
         ensureUsersIsMutable();
         users_.add(builderForValue.build());
@@ -586,10 +586,10 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>repeated .users.GetUserDTO users = 1;</code>
+     * <code>repeated .users.GetUser users = 1;</code>
      */
     public Builder addUsers(
-        int index, com.javainuse.user.GetUserDTO.Builder builderForValue) {
+        int index, com.javainuse.user.GetUser.Builder builderForValue) {
       if (usersBuilder_ == null) {
         ensureUsersIsMutable();
         users_.add(index, builderForValue.build());
@@ -600,10 +600,10 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>repeated .users.GetUserDTO users = 1;</code>
+     * <code>repeated .users.GetUser users = 1;</code>
      */
     public Builder addAllUsers(
-        java.lang.Iterable<? extends com.javainuse.user.GetUserDTO> values) {
+        java.lang.Iterable<? extends com.javainuse.user.GetUser> values) {
       if (usersBuilder_ == null) {
         ensureUsersIsMutable();
         com.google.protobuf.AbstractMessageLite.Builder.addAll(
@@ -615,7 +615,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>repeated .users.GetUserDTO users = 1;</code>
+     * <code>repeated .users.GetUser users = 1;</code>
      */
     public Builder clearUsers() {
       if (usersBuilder_ == null) {
@@ -628,7 +628,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>repeated .users.GetUserDTO users = 1;</code>
+     * <code>repeated .users.GetUser users = 1;</code>
      */
     public Builder removeUsers(int index) {
       if (usersBuilder_ == null) {
@@ -641,16 +641,16 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>repeated .users.GetUserDTO users = 1;</code>
+     * <code>repeated .users.GetUser users = 1;</code>
      */
-    public com.javainuse.user.GetUserDTO.Builder getUsersBuilder(
+    public com.javainuse.user.GetUser.Builder getUsersBuilder(
         int index) {
       return getUsersFieldBuilder().getBuilder(index);
     }
     /**
-     * <code>repeated .users.GetUserDTO users = 1;</code>
+     * <code>repeated .users.GetUser users = 1;</code>
      */
-    public com.javainuse.user.GetUserDTOOrBuilder getUsersOrBuilder(
+    public com.javainuse.user.GetUserOrBuilder getUsersOrBuilder(
         int index) {
       if (usersBuilder_ == null) {
         return users_.get(index);  } else {
@@ -658,9 +658,9 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>repeated .users.GetUserDTO users = 1;</code>
+     * <code>repeated .users.GetUser users = 1;</code>
      */
-    public java.util.List<? extends com.javainuse.user.GetUserDTOOrBuilder> 
+    public java.util.List<? extends com.javainuse.user.GetUserOrBuilder> 
          getUsersOrBuilderList() {
       if (usersBuilder_ != null) {
         return usersBuilder_.getMessageOrBuilderList();
@@ -669,33 +669,33 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>repeated .users.GetUserDTO users = 1;</code>
+     * <code>repeated .users.GetUser users = 1;</code>
      */
-    public com.javainuse.user.GetUserDTO.Builder addUsersBuilder() {
+    public com.javainuse.user.GetUser.Builder addUsersBuilder() {
       return getUsersFieldBuilder().addBuilder(
-          com.javainuse.user.GetUserDTO.getDefaultInstance());
+          com.javainuse.user.GetUser.getDefaultInstance());
     }
     /**
-     * <code>repeated .users.GetUserDTO users = 1;</code>
+     * <code>repeated .users.GetUser users = 1;</code>
      */
-    public com.javainuse.user.GetUserDTO.Builder addUsersBuilder(
+    public com.javainuse.user.GetUser.Builder addUsersBuilder(
         int index) {
       return getUsersFieldBuilder().addBuilder(
-          index, com.javainuse.user.GetUserDTO.getDefaultInstance());
+          index, com.javainuse.user.GetUser.getDefaultInstance());
     }
     /**
-     * <code>repeated .users.GetUserDTO users = 1;</code>
+     * <code>repeated .users.GetUser users = 1;</code>
      */
-    public java.util.List<com.javainuse.user.GetUserDTO.Builder> 
+    public java.util.List<com.javainuse.user.GetUser.Builder> 
          getUsersBuilderList() {
       return getUsersFieldBuilder().getBuilderList();
     }
     private com.google.protobuf.RepeatedFieldBuilderV3<
-        com.javainuse.user.GetUserDTO, com.javainuse.user.GetUserDTO.Builder, com.javainuse.user.GetUserDTOOrBuilder> 
+        com.javainuse.user.GetUser, com.javainuse.user.GetUser.Builder, com.javainuse.user.GetUserOrBuilder> 
         getUsersFieldBuilder() {
       if (usersBuilder_ == null) {
         usersBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
-            com.javainuse.user.GetUserDTO, com.javainuse.user.GetUserDTO.Builder, com.javainuse.user.GetUserDTOOrBuilder>(
+            com.javainuse.user.GetUser, com.javainuse.user.GetUser.Builder, com.javainuse.user.GetUserOrBuilder>(
                 users_,
                 ((bitField0_ & 0x00000001) == 0x00000001),
                 getParentForChildren(),
